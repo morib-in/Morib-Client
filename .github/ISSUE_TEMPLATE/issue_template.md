@@ -1,9 +1,7 @@
 ---
-name: issue Template
-about: Describe this issue template's purpose here.
-title: ""
-labels: ""
-assignees: ""
+name: Feature request
+about: 기능 추가 이슈 템플릿
+title: "[ ✨ | Feat ]"
 ---
 
 <!-- 제목은 [ 페이지명 ] 내용 으로 작성합니다  -->
