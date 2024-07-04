@@ -14,18 +14,18 @@
 <br/>
 
 <div align="center">
-<table>
+<table >
 <th>팀원</th>
-    <th> 서대원 <a href="https://github.com/suwonthugger"><img src="https://img.shields.io/badge/Github-181717?style=flat-square&logo=Github&logoColor=white"/><a></th>
-	<th> 박상아 <a href="https://github.com/Ivoryeee"><img src="https://img.shields.io/badge/Github-181717?style=flat-square&logo=Github&logoColor=white"/></a></th>
+    <th > 서대원 <a href="https://github.com/suwonthugger"><img src="https://img.shields.io/badge/Github-181717?style=flat-square&logo=Github&logoColor=white"/><a></th>
+	<th > 박상아 <a href="https://github.com/Ivoryeee"><img src="https://img.shields.io/badge/Github-181717?style=flat-square&logo=Github&logoColor=white"/></a></th>
     <th> 김건휘 <a href="https://github.com/KIMGEONHWI"><img src="https://img.shields.io/badge/Github-181717?style=flat-square&logo=Github&logoColor=white" /></a></th>
-    <th> 김한서 <a href="https://github.com/seueooo"><img src="https://img.shields.io/badge/Github-181717?style=flat-square&logo=Github&logoColor=white"/></a></th>
+    <th align="baseline"> 김한서 <a href="https://github.com/seueooo"><img src="https://img.shields.io/badge/Github-181717?style=flat-square&logo=Github&logoColor=white"/></a></th>
     <tr>
-    <td> 팀원 소개 </td>
-    	<td><img src="https://github.com/morib-in/Morib-Client/assets/108131226/0f078d57-a325-4112-8c98-29de5e461000" width="100%"></td>
-    	<td><img src="https://github.com/morib-in/Morib-Client/assets/108131226/69b20ba7-bcac-4e31-8674-f2024bc6b3ac"  ></td>
-      <td><img src="https://github.com/morib-in/Morib-Client/assets/108131226/892026e3-d94a-4301-ace6-4054dbc32efb" width="100%"></td>
-    	<td><img src="https://github.com/morib-in/Morib-Client/assets/108131226/5c6f0b66-b779-4d0e-8dc3-47896aed3681" width="100%"></td>
+    <td > 팀원 소개 </td>
+    	<td width="25%"><img src="https://github.com/morib-in/Morib-Client/assets/108131226/0f078d57-a325-4112-8c98-29de5e461000" width="100%"></td>
+    	<td width="25%"><img src="https://github.com/morib-in/Morib-Client/assets/108131226/69b20ba7-bcac-4e31-8674-f2024bc6b3ac"  width="100%"></td>
+      <td width="25%"><img src="https://github.com/morib-in/Morib-Client/assets/108131226/892026e3-d94a-4301-ace6-4054dbc32efb" width="100%"></td>
+    	<td width="25%"><img src="https://github.com/morib-in/Morib-Client/assets/108131226/5c6f0b66-b779-4d0e-8dc3-47896aed3681" width="100%"></td>
     </tr>
     <tr>
 	<td> 역할 </td>
@@ -251,4 +251,5 @@ type과 콜론 후 한칸 띄고 subject
 
 <br/>
 <hr>
+
 
