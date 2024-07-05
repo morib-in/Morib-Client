@@ -7,7 +7,7 @@ import LoginPage from '@/pages/LoginPage';
 import TimerPage from '@/pages/TimerPage';
 
 import { ROUTES } from './constants/router';
-import withAuthProtection from './hoc/withAuthProtection';
+import withAuthProtection from './hocs/withAuthProtection';
 
 const ProtectedHomePage = withAuthProtection(HomePage);
 const ProtectedTimerPage = withAuthProtection(TimerPage);
