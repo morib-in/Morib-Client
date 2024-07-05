@@ -1,5 +1,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
+import { getAccessTotken } from '@/utils/token';
+
 import { ROUTES } from '@/constants/router';
 
 const API_URL = `${import.meta.env.VITE_API_URL}`;
@@ -24,7 +26,7 @@ const createBaseClient = (additionalConfig: AxiosRequestConfig = {}): AxiosInsta
 // 인증 설정을 추가하는 함수 (토큰)
 const addAuthInterceptor = (axiosClient: AxiosInstance) => {
 	axiosClient.interceptors.request.use(async (config) => {
-		const accessToken = localStorage.getItem('accessToken');
+		const accessToken = getAccessTotken();
 		if (!accessToken) {
 			window.location.href = ROUTES.login.path;
 		}
