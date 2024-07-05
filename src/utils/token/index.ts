@@ -9,7 +9,7 @@ export const getAllToken = () => {
 	return { accessToken, refreshToken };
 };
 
-export const setToken = (accessToken: string, refreshToken: string) => {
+export const setAllToken = (accessToken: string, refreshToken: string) => {
 	localStorage.setItem('accessToken', accessToken);
 	localStorage.setItem('refreshToken', refreshToken);
 };
