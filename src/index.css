@@ -14,64 +14,64 @@
 }
 
 @layer components {	
-  .title-bold-64 {
-    @apply font-pretendard text-[6.4rem] font-bold leading-normal;
+  .title-semibold-64 {
+    @apply text-[6.4rem] font-semibold leading-normal;
   }
   .title-bold-36{
-    @apply font-pretendard text-[3.6rem] font-bold leading-normal;
+    @apply text-[3.6rem] font-bold leading-normal;
   }
   .title-bold-32{
-    @apply font-pretendard text-[3.2rem] font-bold leading-normal;
+    @apply text-[3.2rem] font-bold leading-normal;
   }
   .title-med-32{
-    @apply font-pretendard text-[3.2rem] font-medium leading-normal;
+    @apply text-[3.2rem] font-medium leading-normal;
   }
   .head-bold-30{
-    @apply font-pretendard text-[3rem] font-bold leading-normal;
+    @apply text-[3rem] font-bold leading-normal;
   }
   .head-bold-28{
-    @apply font-pretendard text-[2.8rem] font-bold leading-normal;
+    @apply text-[2.8rem] font-bold leading-normal;
   } 
   .head-bold-24{
-    @apply font-pretendard text-[2.4rem] font-bold leading-normal;
+    @apply text-[2.4rem] font-bold leading-normal;
   }
   .subhead-bold-22{
-    @apply font-pretendard text-[2.2rem] font-bold leading-140;
+    @apply text-[2.2rem] font-bold leading-140;
   }
   .subhead-reg-22{
-    @apply font-pretendard text-[2.2rem] font-normal leading-120;
+    @apply text-[2.2rem] font-normal leading-120;
   }
   .subhead-bold-20{
-    @apply font-pretendard text-[2rem] font-bold leading-120;
+    @apply text-[2rem] font-bold leading-120;
   }
   .subhead-semibold-20{
-    @apply font-pretendard text-[2rem] font-semibold leading-120;
+    @apply text-[2rem] font-semibold leading-120;
   }
   .subhead-semibold-18{
-    @apply font-pretendard text-[1.8rem] font-semibold leading-120;
+    @apply text-[1.8rem] font-semibold leading-120;
   }
   .subhead-med-18{
-    @apply font-pretendard text-[1.8rem] font-medium leading-120;
+    @apply text-[1.8rem] font-medium leading-120;
   }
   .body-semibold-16{
-    @apply font-pretendard text-[1.6rem] font-semibold leading-120;  
+    @apply text-[1.6rem] font-semibold leading-120;  
   }
   .body-semibold-16-done{
-    @apply font-pretendard text-[1.6rem] font-semibold leading-140 line-through;
+    @apply text-[1.6rem] font-semibold leading-140 line-through;
   } 
   .body-med-16{
-    @apply font-pretendard text-[1.6rem] font-medium leading-140;  
+    @apply text-[1.6rem] font-medium leading-140;  
   }  
   .body-reg-16{
-    @apply font-pretendard text-[1.6rm] font-normal leading-140;
+    @apply text-[1.6rm] font-normal leading-140;
   }  
   .detail-semibold-14{
-    @apply font-pretendard text-[1.4rem] font-semibold leading-140;
+    @apply text-[1.4rem] font-semibold leading-140;
   } 
   .detail-reg-14{
-    @apply font-pretendard text-[1.4rem] font-normal leading-140;
+    @apply text-[1.4rem] font-normal leading-140;
   }  
   .detail-reg-12{
-    @apply font-pretendard text-[1.2rem] font-normal leading-120;
+    @apply text-[1.2rem] font-normal leading-120;
   }
 }
