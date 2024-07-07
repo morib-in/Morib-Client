@@ -3,7 +3,7 @@ interface CategoryTitleProps {
 }
 
 const CategoryTitle = (props: CategoryTitleProps) => {
-	return <h1 className="title-med-32 text-gray-04">{props.title}</h1>;
+	return <h2 className="title-med-32 text-gray-04">{props.title}</h2>;
 };
 
 export default CategoryTitle;
