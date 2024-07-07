@@ -1,9 +1,9 @@
-import ProgressCircle from '@/components/atoms/ProgressCircle';
+import TaskTime from '@/components/atoms/TaskTime';
 
 const TimerPage = () => {
 	return (
-		<div className="flex h-screen w-full items-center justify-center bg-gray-bg-01">
-			<ProgressCircle />
+		<div>
+			<TaskTime />
 		</div>
 	);
 };
