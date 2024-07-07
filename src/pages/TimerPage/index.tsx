@@ -1,10 +1,5 @@
-import TimerTItle from '@/components/molecules/TimerTitle';
-
 const TimerPage = () => {
-	return (
-		<>
-			<TimerTItle />
-		</>
-	);
+	return <div>Timer page</div>;
 };
+
 export default TimerPage;
