@@ -2,8 +2,8 @@ interface CategoryTitleProps {
 	title: string;
 }
 
-const CategoryTitle = (props: CategoryTitleProps) => {
-	return <h2 className="title-med-32 text-gray-04">{props.title}</h2>;
+const CategoryTitle = ({ title }: CategoryTitleProps) => {
+	return <h2 className="title-med-32 text-gray-04">{title}</h2>;
 };
 
 export default CategoryTitle;
