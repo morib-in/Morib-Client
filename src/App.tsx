@@ -11,11 +11,10 @@ const queryClient = new QueryClient();
 const App = () => {
 	return (
 		<QueryClientProvider client={queryClient}>
-      <Provider>
-        <RouterProvider router={router} />
-      </Provider>
+			<Provider>
+				<RouterProvider router={router} />
+			</Provider>
 		</QueryClientProvider>
-
 	);
 };
 
