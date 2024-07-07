@@ -1,9 +1,9 @@
-import TaskTime from '@/components/atoms/TaskTime';
+import AccumulatedTime from '@/components/atoms/AccumulatedTime';
 
 const TimerPage = () => {
 	return (
 		<div>
-			<TaskTime />
+			<AccumulatedTime />
 		</div>
 	);
 };
