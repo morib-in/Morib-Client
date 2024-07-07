@@ -1,11 +1,17 @@
 import { useEffect, useState } from 'react';
 
+interface TimerState {
+	timer: number;
+}
+
 const TaskTime = () => {
-	const [timer, setTimer] = useState(0);
+	const [state, setState] = useState<TimerState>({ timer: 0 });
 
 	useEffect(() => {
 		const timerIntervalId = setInterval(() => {
-			setTimer((prevTimer) => prevTimer + 1);
+			setState((prevState) => ({
+				timer: prevState.timer + 1,
+			}));
 		}, 1000);
 
 		return () => {
@@ -14,9 +20,9 @@ const TaskTime = () => {
 	}, []);
 
 	const formatTime = (unit: number) => unit.toString().padStart(2, '0');
-	const hours = Math.floor(timer / 3600);
-	const minutes = Math.floor((timer % 3600) / 60);
-	const seconds = timer % 60;
+	const hours = Math.floor(state.timer / 3600);
+	const minutes = Math.floor((state.timer % 3600) / 60);
+	const seconds = state.timer % 60;
 
 	return (
 		<div className="flex h-screen items-center justify-center bg-gray-bg-01">
