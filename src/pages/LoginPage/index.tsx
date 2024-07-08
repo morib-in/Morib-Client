@@ -1,5 +1,11 @@
+import CategoryDropdown from '@/components/molecules/CategoryDropdown';
+
 const LoginPage = () => {
-	return <div>Login Page</div>;
+	return (
+		<div>
+			<CategoryDropdown />
+		</div>
+	);
 };
 
 export default LoginPage;
