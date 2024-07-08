@@ -1,32 +1,36 @@
 import { useEffect, useState } from 'react';
 
+interface ProgressCircleProps {
+	isPlaying: boolean;
+}
+
 interface ProgressCircleState {
 	progress: number;
 }
 
-const ProgressCircle = () => {
-	const [state, setState] = useState<ProgressCircleState>({
-		progress: 0,
-	});
-	const radius = 224; // 반지름 224
+const ProgressCircle = ({ isPlaying }: ProgressCircleProps) => {
+	const [state, setState] = useState<ProgressCircleState>({ progress: 0 });
+	const radius = 224;
 	const circumference = 2 * Math.PI * radius;
 
 	useEffect(() => {
-		const progressIntervalId = setInterval(() => {
-			setState((prevState) => ({
-				progress: (prevState.progress + 0.01) % 100, // progress 값이 0에서 100 사이의 값만 가지도록
-			}));
-		}, 360); // 60분마다 업데이트
+		let progressIntervalId: ReturnType<typeof setInterval>;
+
+		if (isPlaying) {
+			progressIntervalId = setInterval(() => {
+				setState((prevState) => ({
+					progress: (prevState.progress + 0.01) % 100,
+				}));
+			}, 360);
+		}
 
 		return () => {
-			clearInterval(progressIntervalId);
+			if (progressIntervalId) clearInterval(progressIntervalId);
 		};
-	}, []);
+	}, [isPlaying]);
 
 	const offset = circumference - (state.progress / 100) * circumference;
-
-	// 끝 부분 원의 좌표 계산
-	const angle = (state.progress / 100) * 2 * Math.PI - Math.PI / 2; // 시작점이 위로 향하도록 조정
+	const angle = (state.progress / 100) * 2 * Math.PI - Math.PI / 2;
 	const endX = 240 + radius * Math.cos(angle);
 	const endY = 240 + radius * Math.sin(angle);
 

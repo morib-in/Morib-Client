@@ -1,23 +1,31 @@
 import { useEffect, useState } from 'react';
 
+interface TaskTimeProps {
+	isPlaying: boolean;
+}
+
 interface TimerState {
 	timer: number;
 }
 
-const TaskTime = () => {
+const TaskTime = ({ isPlaying }: TaskTimeProps) => {
 	const [state, setState] = useState<TimerState>({ timer: 0 });
 
 	useEffect(() => {
-		const timerIntervalId = setInterval(() => {
-			setState((prevState) => ({
-				timer: prevState.timer + 1,
-			}));
-		}, 1000);
+		let timerIntervalId: ReturnType<typeof setInterval>;
+
+		if (isPlaying) {
+			timerIntervalId = setInterval(() => {
+				setState((prevState) => ({
+					timer: prevState.timer + 1,
+				}));
+			}, 1000);
+		}
 
 		return () => {
-			clearInterval(timerIntervalId);
+			if (timerIntervalId) clearInterval(timerIntervalId);
 		};
-	}, []);
+	}, [isPlaying]);
 
 	const formatTime = (unit: number) => unit.toString().padStart(2, '0');
 	const hours = Math.floor(state.timer / 3600);

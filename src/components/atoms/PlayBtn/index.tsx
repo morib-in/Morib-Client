@@ -5,14 +5,16 @@ import PlayIcon from '@/assets/svgs/defaultplay.svg?react';
 import HoverPauseIcon from '@/assets/svgs/hoverpause.svg?react';
 import HoverPlayIcon from '@/assets/svgs/hoverplay.svg?react';
 
-const PlayBtn = () => {
-	const [isPlaying, setIsPlaying] = useState(false);
+interface PlayBtnProps {
+	onClick: () => void;
+	isPlaying: boolean;
+}
+
+const PlayBtn = ({ onClick, isPlaying }: PlayBtnProps) => {
 	const [isHovered, setIsHovered] = useState(false);
 
-	const handleClick = () => setIsPlaying(!isPlaying);
-
 	const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-		if (event.key === 'Enter' || event.key === ' ') handleClick();
+		if (event.key === 'Enter' || event.key === ' ') onClick();
 	};
 
 	const icon = isPlaying ? (
@@ -29,7 +31,7 @@ const PlayBtn = () => {
 
 	return (
 		<div
-			onClick={handleClick}
+			onClick={onClick}
 			onKeyDown={handleKeyDown}
 			onMouseEnter={() => setIsHovered(true)}
 			onMouseLeave={() => setIsHovered(false)}
