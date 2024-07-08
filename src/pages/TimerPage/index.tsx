@@ -1,11 +1,5 @@
-import Timer from '@/components/molecules/Timer';
-
 const TimerPage = () => {
-	return (
-		<div>
-			<Timer />
-		</div>
-	);
+	return <div>TimerPage</div>;
 };
 
 export default TimerPage;
