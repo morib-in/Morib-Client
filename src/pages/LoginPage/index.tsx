@@ -1,5 +1,12 @@
+import DatePicker from '@/components/molecules/DatePicker';
+
 const LoginPage = () => {
-	return <div>Login page</div>;
+	return (
+		<div className="bg-blue-400">
+			Login page
+			<DatePicker />
+		</div>
+	);
 };
 
 export default LoginPage;

@@ -1,12 +1,14 @@
+import { ButtonHTMLAttributes } from 'react';
+
 import { Direction } from '@/types/global';
 
 import ButtonArrowIcon from '@/assets/svgs/btn_arrow.svg?react';
 
-interface ArrowSVGButtonProps {
+interface ArrowSVGButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	direction: Direction;
 }
 
-const ArrowSVGButton = ({ direction }: ArrowSVGButtonProps) => {
+const ArrowSVGBtn = ({ direction, ...props }: ArrowSVGButtonProps) => {
 	let rotationStyle = '';
 
 	switch (direction) {
@@ -23,7 +25,11 @@ const ArrowSVGButton = ({ direction }: ArrowSVGButtonProps) => {
 			rotationStyle = '';
 			break;
 	}
-	return <ButtonArrowIcon className={rotationStyle} />;
+	return (
+		<button type="button" {...props}>
+			<ButtonArrowIcon className={rotationStyle} />
+		</button>
+	);
 };
 
-export default ArrowSVGButton;
+export default ArrowSVGBtn;
