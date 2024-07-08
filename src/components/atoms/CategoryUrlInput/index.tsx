@@ -12,7 +12,7 @@ interface CategoryUrlInputProps {
 const CategoryUrlInput = (props: CategoryUrlInputProps) => {
 	const { width, addUrl } = props;
 	const [url, setUrl] = useState<string>('');
-	const [isUrl, setIsUrl] = useState<boolean>(undefined);
+	const [isUrl, setIsUrl] = useState<boolean | null>(null);
 
 	const handleKeyDown = (e) => {
 		if (e.key === 'Enter') {
