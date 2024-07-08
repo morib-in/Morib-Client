@@ -1,12 +1,5 @@
-import CategoryDropdown from '@/components/molecules/CategoryDropdown';
-
 const LoginPage = () => {
-	const disabled = false;
-	return (
-		<div style={{ margin: '30px' }}>
-			<CategoryDropdown disabled={disabled} />
-		</div>
-	);
+	return <div>Login Page</div>;
 };
 
 export default LoginPage;
