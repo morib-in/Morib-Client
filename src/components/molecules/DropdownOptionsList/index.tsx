@@ -1,5 +1,3 @@
-import { ReactNode } from 'react';
-
 import DropdownOptionsBtn from '@/components/atoms/DropdownOptionsBtn';
 
 interface Category {
