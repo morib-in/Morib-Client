@@ -33,9 +33,9 @@ const TaskTime = ({ isPlaying }: TaskTimeProps) => {
 	const seconds = state.timer % 60;
 
 	return (
-		<h3 className="title-semibold-64 text-mint-01">
+		<div className="title-semibold-64 text-mint-01">
 			{`${formatTime(hours)}:${formatTime(minutes)}:${formatTime(seconds)}`}
-		</h3>
+		</div>
 	);
 };
 

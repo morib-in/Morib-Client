@@ -32,11 +32,11 @@ const AccumulatedTime = ({ isPlaying }: AccumulatedTimeProps) => {
 	const minutes = Math.floor((state.timer % 3600) / 60);
 
 	return (
-		<h3 className="head-bold-24 text-white">
+		<text className="head-bold-24 text-white">
 			{hours === 0
 				? `오늘 ${formatTime(minutes)}분 몰입 중`
 				: `오늘 ${formatTime(hours)}시간 ${formatTime(minutes)}분 몰입 중`}
-		</h3>
+		</text>
 	);
 };
 
