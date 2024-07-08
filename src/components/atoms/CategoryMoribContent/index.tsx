@@ -50,7 +50,7 @@ const CategoryMoribContent = (props: CategoryMoribContentProps) => {
 			<table>
 				<thead>
 					<tr className="detail-semibold-14 flex h-[4.6rem] items-center border-b-[0.1rem] border-gray-bg-04 text-gray-04">
-						<th className={`${pageWidth} text-gray-04`} style={{ textAlign: 'left' }}>
+						<th className={`${pageWidth}`} style={{ textAlign: 'left' }}>
 							페이지
 						</th>
 						<th className={`${urlWidth}`} style={{ textAlign: 'left' }}>
