@@ -2,8 +2,7 @@ import { ButtonHTMLAttributes, ReactNode } from 'react';
 
 interface CategoryBtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	variant?: '취소' | '완료';
-
-	children?: ReactNode;
+	children: ReactNode;
 }
 
 const CategoryCommonBtn = ({ disabled, variant, children, ...props }: CategoryBtnProps) => {
