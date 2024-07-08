@@ -24,13 +24,11 @@ const AccumulatedTime = () => {
 	const minutes = Math.floor((state.timer % 3600) / 60);
 
 	return (
-		<div className="flex h-screen items-center justify-center bg-gray-bg-01">
-			<h3 className="head-bold-24 text-white">
-				{hours === 0
-					? `오늘 ${formatTime(minutes)}분 몰입 중`
-					: `오늘 ${formatTime(hours)}시간 ${formatTime(minutes)}분 몰입 중`}
-			</h3>
-		</div>
+		<h3 className="head-bold-24 text-white">
+			{hours === 0
+				? `오늘 ${formatTime(minutes)}분 몰입 중`
+				: `오늘 ${formatTime(hours)}시간 ${formatTime(minutes)}분 몰입 중`}
+		</h3>
 	);
 };
 

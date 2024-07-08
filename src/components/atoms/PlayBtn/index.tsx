@@ -5,7 +5,7 @@ import PlayIcon from '@/assets/svgs/defaultplay.svg?react';
 import HoverPauseIcon from '@/assets/svgs/hoverpause.svg?react';
 import HoverPlayIcon from '@/assets/svgs/hoverplay.svg?react';
 
-const PausePlay = () => {
+const PlayBtn = () => {
 	const [isPlaying, setIsPlaying] = useState(false);
 	const [isHovered, setIsHovered] = useState(false);
 
@@ -42,4 +42,4 @@ const PausePlay = () => {
 	);
 };
 
-export default PausePlay;
+export default PlayBtn;

@@ -1,9 +1,9 @@
-import PausePlay from '@/components/atoms/PausePlay';
+import Timer from '@/components/molecules/Timer';
 
 const TimerPage = () => {
 	return (
 		<div>
-			<PausePlay />
+			<Timer />
 		</div>
 	);
 };
