@@ -1,9 +1,9 @@
-import AccumulatedTime from '@/components/atoms/AccumulatedTime';
+import PausePlay from '@/components/atoms/PausePlay';
 
 const TimerPage = () => {
 	return (
 		<div>
-			<AccumulatedTime />
+			<PausePlay />
 		</div>
 	);
 };
