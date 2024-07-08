@@ -1,11 +1,5 @@
-import CategoryDropdown from '@/components/atoms/CategoryDropdown';
-
 const LoginPage = () => {
-	return (
-		<>
-			<CategoryDropdown />
-		</>
-	);
+	return <div>Login Page</div>;
 };
 
 export default LoginPage;

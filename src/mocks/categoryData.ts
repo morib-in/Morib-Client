@@ -14,7 +14,7 @@ export const CATEGORY_API = [
 	{
 		category: {
 			id: 3,
-			name: 'ID studio',
+			name: '모리비',
 		},
 	},
 	{
