@@ -3,11 +3,8 @@ import { ButtonHTMLAttributes, useState } from 'react';
 import CategoryDropdownBtn from '@/components/atoms/CategoryDropdownBtn';
 import DropdownOptionsBtn from '@/components/atoms/DropdownOptionsBtn';
 
-export interface DropdownBtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-	isClicked?: boolean;
-	handleClicked?: () => void;
-	optionData?: OptionData[];
-	selectedOption: string;
+interface DropdownBtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+	optionData: OptionData[];
 }
 
 interface Category {
