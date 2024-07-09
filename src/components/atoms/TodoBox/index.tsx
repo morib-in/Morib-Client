@@ -35,7 +35,7 @@ const TodoBox = ({ title, date, accumulatedTime }: TodoBoxProps) => {
 			<div className="flex items-center justify-between">
 				<div className="flex items-center gap-[0.6rem]">
 					<CheckBoxBlankIcon />
-					<h3 className="body-semibold-16 text-white">{title}</h3>
+					<h3 className="body-semibold-16 mt-[0.4rem] text-white">{title}</h3>
 				</div>
 				<MeatBall className="opacity-0 hover:opacity-100" />
 			</div>
@@ -43,19 +43,19 @@ const TodoBox = ({ title, date, accumulatedTime }: TodoBoxProps) => {
 			<div className="ml-[0.8rem] mt-[0.7rem] flex flex-col gap-[0.2rem]">
 				<div className="flex items-center gap-[0.6rem]">
 					<ButtonCalendarIcon />
-					<p className="detail-reg-12 text-gray-04">{formattedDate}</p>
+					<p className="detail-reg-12 mt-[0.3rem] text-gray-04">{formattedDate}</p>
 				</div>
 
 				<div className="flex items-center gap-[0.6rem]">
 					{accumulatedTime ? (
 						<>
 							<TimeFillIcon />
-							<p className="detail-reg-12 text-mint-01">{formattedTime}</p>
+							<p className="detail-reg-12 mt-[0.3rem] text-mint-01">{formattedTime}</p>
 						</>
 					) : (
 						<>
 							<TimeLineIcon />
-							<p className="detail-reg-12 text-gray-bg-01">{formattedTime}</p>
+							<p className="detail-reg-12 mt-[0.3rem] text-gray-bg-01">{formattedTime}</p>
 						</>
 					)}
 				</div>
