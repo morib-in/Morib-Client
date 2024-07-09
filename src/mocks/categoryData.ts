@@ -23,4 +23,76 @@ export const CATEGORY_API = [
 			name: '세미나',
 		},
 	},
+	{
+		category: {
+			id: 4,
+			name: '세미나',
+		},
+	},
+	{
+		category: {
+			id: 4,
+			name: '세미나',
+		},
+	},
+	{
+		category: {
+			id: 4,
+			name: '세미나',
+		},
+	},
+	{
+		category: {
+			id: 4,
+			name: '세미나',
+		},
+	},
+	{
+		category: {
+			id: 4,
+			name: '세미나',
+		},
+	},
+	{
+		category: {
+			id: 4,
+			name: '세미나',
+		},
+	},
+	{
+		category: {
+			id: 4,
+			name: '세미나',
+		},
+	},
+	{
+		category: {
+			id: 4,
+			name: '세미나',
+		},
+	},
+	{
+		category: {
+			id: 4,
+			name: '세미나',
+		},
+	},
+	{
+		category: {
+			id: 4,
+			name: '세미나',
+		},
+	},
+	{
+		category: {
+			id: 4,
+			name: '세미나',
+		},
+	},
+	{
+		category: {
+			id: 4,
+			name: 'gjgj',
+		},
+	},
 ];

@@ -37,7 +37,7 @@ const CategoryDropdown = ({ disabled, optionData }: DropdownBtnProps) => {
 				selectedOption={selectedOption}
 			/>
 			{isClicked && (
-				<ul className="w-[27.2rem] flex-col overflow-hidden rounded-[5px] shadow-[0_3px_30px_0_rgba(0,0,0,0.40)]">
+				<ul className="max-h-[41.4rem] w-[27.2rem] flex-col overflow-scroll rounded-[5px] shadow-[0_3px_30px_0_rgba(0,0,0,0.40)]">
 					{optionData?.map((item) => {
 						return (
 							<li key={item.category.id}>
