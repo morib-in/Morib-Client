@@ -1,11 +1,5 @@
-import CategoryTabSelect from '@/components/molecules/CategoryTabSelect';
-
 const LoginPage = () => {
-	return (
-		<div style={{ margin: '50px' }}>
-			<CategoryTabSelect />
-		</div>
-	);
+	return <>Login page</>;
 };
 
 export default LoginPage;
