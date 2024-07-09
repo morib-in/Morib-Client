@@ -27,15 +27,12 @@ const AccumulatedTime = ({ isPlaying }: AccumulatedTimeProps) => {
 		};
 	}, [isPlaying]);
 
-	const formatTime = (unit: number) => unit.toString().padStart(1, '0');
 	const hours = Math.floor(state.timer / 3600);
 	const minutes = Math.floor((state.timer % 3600) / 60);
 
 	return (
 		<text className="head-bold-24 text-white">
-			{hours === 0
-				? `오늘 ${formatTime(minutes)}분 몰입 중`
-				: `오늘 ${formatTime(hours)}시간 ${formatTime(minutes)}분 몰입 중`}
+			{hours === 0 ? `오늘 ${minutes}분 몰입 중` : `오늘 ${hours}시간 ${minutes}분 몰입 중`}
 		</text>
 	);
 };
