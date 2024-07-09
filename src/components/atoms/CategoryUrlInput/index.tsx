@@ -2,17 +2,25 @@ import { useState } from 'react';
 
 import { isUrlValid } from '@/utils/isUrlValid/index';
 
-import AlertIcon from '@/assets/svgs/AlertIcon.svg?react';
+import AlertIcon from '@/assets/svgs/ic_description.svg?react';
 
 interface CategoryUrlInputProps {
-	width: string;
+	variant?: 'basic' | 'small';
 	addUrl: (url: string) => void;
 }
 
-const CategoryUrlInput = (props: CategoryUrlInputProps) => {
-	const { width, addUrl } = props;
-	const [url, setUrl] = useState<string>('');
+const CategoryUrlInput = ({ variant, addUrl }: CategoryUrlInputProps) => {
+	const [url, setUrl] = useState('');
 	const [isUrl, setIsUrl] = useState<boolean | null>(null);
+
+	const sizeVariantWidth = {
+		basic: 'w-[72.8rem]',
+		small: 'w-[53.9rem]',
+	};
+
+	const defaultStyle =
+		'subhead-med-18 h-[4.6rem] rounded-[8px] border-[1px] bg-gray-bg-02 px-[2rem] py-[1rem] text-white placeholder-gray-03 focus:outline-none';
+	const borderStyle = isUrl === false ? 'border-error-02' : `border-transparent ${sizeVariantWidth[variant]}`;
 
 	const handleKeyDown = (e) => {
 		if (e.key === 'Enter') {
@@ -30,7 +38,7 @@ const CategoryUrlInput = (props: CategoryUrlInputProps) => {
 			<input
 				type="text"
 				placeholder="웹사이트 주소를 입력해 주세요."
-				className={`subhead-med-18 h-[4.6rem] rounded-[8px] border-[1px] bg-gray-bg-02 px-[2rem] py-[1rem] text-white placeholder-gray-03 focus:outline-none ${isUrl === false ? 'border-error-02' : 'border-transparent'} ${width}`}
+				className={defaultStyle + borderStyle}
 				onChange={(e) => setUrl(e.target.value)}
 				value={url}
 				onKeyDown={(e) => handleKeyDown(e)}
