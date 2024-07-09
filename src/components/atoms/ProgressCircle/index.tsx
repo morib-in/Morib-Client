@@ -1,36 +1,15 @@
-import { useEffect, useState } from 'react';
-
 interface ProgressCircleProps {
 	isPlaying: boolean;
+	timer: number;
 }
 
-interface ProgressCircleState {
-	progress: number;
-}
-
-const ProgressCircle = ({ isPlaying }: ProgressCircleProps) => {
-	const [state, setState] = useState<ProgressCircleState>({ progress: 0 });
+const ProgressCircle = ({ timer }: ProgressCircleProps) => {
 	const radius = 224;
 	const circumference = 2 * Math.PI * radius;
 
-	useEffect(() => {
-		let progressIntervalId: ReturnType<typeof setInterval>;
-
-		if (isPlaying) {
-			progressIntervalId = setInterval(() => {
-				setState((prevState) => ({
-					progress: (prevState.progress + 0.01) % 100,
-				}));
-			}, 360);
-		}
-
-		return () => {
-			if (progressIntervalId) clearInterval(progressIntervalId);
-		};
-	}, [isPlaying]);
-
-	const offset = circumference - (state.progress / 100) * circumference;
-	const angle = (state.progress / 100) * 2 * Math.PI - Math.PI / 2;
+	const progress = ((timer % 3600) / 3600) * 100;
+	const offset = circumference - (progress / 100) * circumference;
+	const angle = (progress / 100) * 2 * Math.PI - Math.PI / 2;
 	const endX = 240 + radius * Math.cos(angle);
 	const endY = 240 + radius * Math.sin(angle);
 

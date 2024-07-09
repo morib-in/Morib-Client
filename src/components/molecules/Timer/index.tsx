@@ -5,10 +5,15 @@ import PlayBtn from '@/components/atoms/PlayBtn';
 import ProgressCircle from '@/components/atoms/ProgressCircle';
 import TaskTime from '@/components/atoms/TaskTime';
 
+import useTimerCount from '@/hooks/useTimerCount';
+
 import InnerCircleIcon from '@/assets/svgs/elipse.svg?react';
 
 const Timer = () => {
 	const [isPlaying, setIsPlaying] = useState(false);
+	const previousTime = 20000; //임의로 10000을 넣어 놓음
+	const timer = useTimerCount({ isPlaying, previousTime });
+	const accumulatedTime = 20000; //임의로 30000을 넣어 놓음
 
 	const handlePlayPauseToggle = () => {
 		setIsPlaying((prevState) => !prevState);
@@ -17,11 +22,11 @@ const Timer = () => {
 	return (
 		<div className="flex h-screen w-screen items-center justify-center bg-gray-bg-01">
 			<div className="flex items-center justify-center">
-				<ProgressCircle isPlaying={isPlaying} />
+				<ProgressCircle isPlaying={isPlaying} timer={timer} />
 				<InnerCircleIcon className="absolute" />
 				<div className="absolute mt-[3rem] flex flex-col items-center justify-center">
-					<AccumulatedTime isPlaying={isPlaying} />
-					<TaskTime isPlaying={isPlaying} />
+					<AccumulatedTime isPlaying={isPlaying} accumulatedTime={accumulatedTime} />
+					<TaskTime isPlaying={isPlaying} timer={timer} />
 					<div className="mt-[3rem]">
 						<PlayBtn onClick={handlePlayPauseToggle} isPlaying={isPlaying} />
 					</div>
