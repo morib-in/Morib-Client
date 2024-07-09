@@ -28,7 +28,7 @@ const CategoryDropdown = ({ disabled, optionData }: DropdownBtnProps) => {
 		setIsClicked(false);
 	};
 	const handleBtnClicked = () => {
-		setIsClicked(!isClicked);
+		setIsClicked((prev) => !prev);
 	};
 
 	return (

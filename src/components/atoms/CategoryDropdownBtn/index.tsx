@@ -1,10 +1,16 @@
-import { DropdownBtnProps } from '@/components/molecules/CategoryDropdown';
+import { ButtonHTMLAttributes } from 'react';
 
 import DisabledDropIcon from '@/assets/svgs/disabled_dropdown.svg?react';
 import DropIcon from '@/assets/svgs/dropIcon.svg?react';
 import UpIcon from '@/assets/svgs/upIcon.svg?react';
 
-const CategoryDropdownBtn = ({ isClicked, handleClicked, disabled, selectedOption }: DropdownBtnProps) => {
+interface CategoryBtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+	isClicked: boolean;
+	handleClicked: () => void;
+	selectedOption: string;
+}
+
+const CategoryDropdownBtn = ({ isClicked, handleClicked, selectedOption, disabled, ...props }: CategoryBtnProps) => {
 	const clickedDropdownStyle = () => {
 		return isClicked ? 'bg-gray-bg-05 text-white' : 'bg-gray-bg-03 text-white';
 	};
@@ -16,7 +22,7 @@ const CategoryDropdownBtn = ({ isClicked, handleClicked, disabled, selectedOptio
 		: `${clickedDropdownStyle()} ${commonBtnStyle}`;
 
 	return (
-		<button type="button" onClick={handleClicked} className={`${categoryDropdownBtnStyle}`} disabled={disabled}>
+		<button type="button" onClick={handleClicked} className={categoryDropdownBtnStyle} disabled={disabled} {...props}>
 			<p>{selectedOption}</p>
 			{disabled ? (
 				<DisabledDropIcon />
