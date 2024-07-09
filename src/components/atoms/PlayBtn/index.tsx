@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import PauseIcon from '@/assets/svgs/defaultpause.svg?react';
 import PlayIcon from '@/assets/svgs/defaultplay.svg?react';
 import HoverPauseIcon from '@/assets/svgs/hoverpause.svg?react';
@@ -11,29 +9,13 @@ interface PlayBtnProps {
 }
 
 const PlayBtn = ({ onClick, isPlaying }: PlayBtnProps) => {
-	const [isHovered, setIsHovered] = useState(false);
-
-	const icon = isPlaying ? (
-		isHovered ? (
-			<HoverPauseIcon />
-		) : (
-			<PauseIcon />
-		)
-	) : isHovered ? (
-		<HoverPlayIcon />
-	) : (
-		<PlayIcon />
-	);
+	const IconComponent = isPlaying ? PauseIcon : PlayIcon;
+	const HoverIconComponent = isPlaying ? HoverPauseIcon : HoverPlayIcon;
 
 	return (
-		<button
-			onClick={onClick}
-			onMouseEnter={() => setIsHovered(true)}
-			onMouseLeave={() => setIsHovered(false)}
-			tabIndex={0}
-			style={{ cursor: 'pointer' }}
-		>
-			{icon}
+		<button onClick={onClick} className="group relative">
+			<IconComponent className="block group-hover:hidden" />
+			<HoverIconComponent className="hidden group-hover:block" />
 		</button>
 	);
 };

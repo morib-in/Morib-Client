@@ -2,11 +2,11 @@ import useTimerCount from '@/hooks/useTimerCount';
 
 interface TaskTimeProps {
 	isPlaying: boolean;
-	previousTime: number;
+	previousTime?: number;
 }
 
-const TaskTime = ({ isPlaying, previousTime }: TaskTimeProps) => {
-	const timer = useTimerCount(isPlaying, previousTime);
+const TaskTime = ({ isPlaying, previousTime = 0 }: TaskTimeProps) => {
+	const timer = useTimerCount({ isPlaying, previousTime });
 
 	const formatTime = (unit: number) => unit.toString().padStart(2, '0');
 	const hours = Math.floor(timer / 3600);
@@ -14,9 +14,9 @@ const TaskTime = ({ isPlaying, previousTime }: TaskTimeProps) => {
 	const seconds = timer % 60;
 
 	return (
-		<text className="title-semibold-64 text-mint-01">
+		<span className="title-semibold-64 text-mint-01">
 			{`${formatTime(hours)}:${formatTime(minutes)}:${formatTime(seconds)}`}
-		</text>
+		</span>
 	);
 };
 

@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react';
 
-const useTimerCount = (isPlaying: boolean, previousTime: number) => {
+interface UseTimerCountProps {
+	isPlaying: boolean;
+	previousTime: number;
+}
+
+const useTimerCount = ({ isPlaying, previousTime }: UseTimerCountProps) => {
 	const [timer, setTimer] = useState(previousTime);
 
 	useEffect(() => {
