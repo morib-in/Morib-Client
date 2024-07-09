@@ -31,13 +31,13 @@ const TodoBox = ({ title, date, accumulatedTime }: TodoBoxProps) => {
 
 	//추후 SVG 버튼 컴포넌트로 만들것임
 	return (
-		<div className="flex h-[9.6rem] w-[36.6rem] flex-col justify-center rounded-[8px] bg-gray-bg-01 p-[1.4rem]">
+		<div className="group flex h-[9.6rem] w-[36.6rem] transform flex-col justify-center rounded-[8px] bg-gray-bg-01 p-[1.4rem] transition-transform duration-300 hover:-translate-y-2">
 			<div className="flex items-center justify-between">
 				<div className="flex items-center gap-[0.6rem]">
 					<CheckBoxBlankIcon />
 					<h3 className="body-semibold-16 mt-[0.4rem] text-white">{title}</h3>
 				</div>
-				<MeatBall className="opacity-0 hover:opacity-100" />
+				<MeatBall className="opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 			</div>
 
 			<div className="ml-[0.8rem] mt-[0.7rem] flex flex-col gap-[0.2rem]">
