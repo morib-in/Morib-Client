@@ -1,7 +1,5 @@
-import FriendInfoCarousel from '@/components/molecules/FriendInfoCarousel';
-
 const TimerPage = () => {
-	return <FriendInfoCarousel />;
+	return <div>TimerPage</div>
 };
 
 export default TimerPage;
