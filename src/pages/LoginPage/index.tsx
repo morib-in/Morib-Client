@@ -1,7 +1,7 @@
 import FriendInfoCarousel from '@/components/molecules/FriendInfoCarousel';
 
 const LoginPage = () => {
-	return <FriendInfoCarousel />;
+	return <>Login Page</>;
 };
 
 export default LoginPage;
