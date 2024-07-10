@@ -6,11 +6,20 @@ import MeatBallDefault from '@/assets/svgs/todo_meatball_default.svg?react';
 
 import { todoData } from '@/mocks/homeData';
 
-interface CategoryBoxProps {
+interface todo {
+	id: number;
 	title: string;
+	date: string;
+	time: number;
 }
 
-const CategoryBox = ({ title }: CategoryBoxProps) => {
+interface CategoryBoxProps {
+	title: string;
+	completedTodos?: todo[];
+	ongoingTodos?: todo[];
+}
+
+const CategoryBox = ({ title, ongoingTodos = todoData, completedTodos = todoData }: CategoryBoxProps) => {
 	return (
 		<div className="flex h-[73.2rem] w-[40.2rem] flex-col rounded-[16px] bg-gray-bg-03 px-[1.8rem] pt-[1.8rem]">
 			<div className="mt-[0.4rem] flex items-center justify-between">
@@ -26,12 +35,12 @@ const CategoryBox = ({ title }: CategoryBoxProps) => {
 			</div>
 			<div className="overflow-auto">
 				<TodoToggleBtn isCompleted={false} isToggled={true}>
-					{todoData.map(({ id, title, date, time }) => (
+					{ongoingTodos.map(({ id, title, date, time }) => (
 						<TodoBox key={id} title={title} date={date} accumulatedTime={time} isCompleted={false} />
 					))}
 				</TodoToggleBtn>
 				<TodoToggleBtn isCompleted={true} isToggled={false}>
-					{todoData.map(({ id, title, date, time }) => (
+					{completedTodos.map(({ id, title, date, time }) => (
 						<TodoBox key={id} title={title} date={date} accumulatedTime={time} isCompleted={true} />
 					))}
 				</TodoToggleBtn>
