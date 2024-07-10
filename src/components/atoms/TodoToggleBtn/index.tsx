@@ -3,12 +3,14 @@ import { ButtonHTMLAttributes, useState } from 'react';
 import TodoToggleIcon from '@/assets/svgs/todo_toggle.svg?react';
 
 interface TodoToggleBtn extends ButtonHTMLAttributes<HTMLButtonElement> {
-	title: string;
+	isCompleted: boolean;
 	isToggled: boolean;
 }
 
-const TodoToggleBtn = ({ title, children }: TodoToggleBtn) => {
-	const [toggle, setToggle] = useState(false);
+const TodoToggleBtn = ({ children, isCompleted, isToggled = false }: TodoToggleBtn) => {
+	const [toggle, setToggle] = useState(isToggled);
+	const title = isCompleted ? '할 일 목록' : '완료된 일';
+	const ToggleIcon = toggle ? <TodoToggleIcon className="rotate-180" /> : <TodoToggleIcon />;
 
 	const handleToggle = () => {
 		setToggle((prev) => !prev);
@@ -16,20 +18,11 @@ const TodoToggleBtn = ({ title, children }: TodoToggleBtn) => {
 
 	return (
 		<>
-			{toggle ? (
-				<>
-					<button className="flex items-center gap-[0.4rem]" onClick={handleToggle}>
-						<TodoToggleIcon className="rotate-180" />
-						<p className="detail-semibold-14 text-white">{title}</p>
-					</button>
-					{children}
-				</>
-			) : (
-				<button className="flex items-center gap-[0.4rem]" onClick={handleToggle}>
-					<TodoToggleIcon />
-					<p className="detail-semibold-14 text-white">{title}</p>
-				</button>
-			)}
+			<button className="mt-[1.9rem] flex items-center gap-[0.4rem]" onClick={handleToggle}>
+				{ToggleIcon}
+				<p className="detail-semibold-14 text-white">{title}</p>
+			</button>
+			{toggle && children}
 		</>
 	);
 };
