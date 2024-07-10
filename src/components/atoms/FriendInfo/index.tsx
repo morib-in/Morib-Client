@@ -1,3 +1,5 @@
+import { convertTime, formatTime } from '@/utils/time';
+
 import ClockIcon from '@/assets/svgs/icon_clock.svg?react';
 
 interface UserFriendDataProps {
@@ -8,10 +10,7 @@ interface UserFriendDataProps {
 }
 
 const FriendInfo = ({ image, name, time, categoryname }: UserFriendDataProps) => {
-	const formatTime = (unit: number) => unit.toString().padStart(2, '0');
-	const hours = Math.floor(time / 3600);
-	const minutes = Math.floor((time % 3600) / 60);
-	const seconds = time % 60;
+	const { hours, minutes, seconds } = convertTime(time);
 
 	return (
 		<div className="py-[0.5rem 0.7rem] flex h-[15rem] w-[9.8rem] flex-col items-center justify-center px-[0.8rem]">
