@@ -1,5 +1,7 @@
+import TimerTodayTodoBtn from '@/components/atoms/TimerTodayTodoBtn';
+
 const TimerPage = () => {
-	return <div>TimerPage</div>
+	return <TimerTodayTodoBtn variant="홈으로 나가기">홈으로 나가기</TimerTodayTodoBtn>;
 };
 
 export default TimerPage;
