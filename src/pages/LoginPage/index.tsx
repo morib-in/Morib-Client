@@ -1,10 +1,10 @@
-import Timer from '@/components/molecules/Timer';
+import TodayTodoAddBtn from '@/components/atoms/TodayTodoAddBtn';
 
 const LoginPage = () => {
 	return (
 		<>
 			Login Page
-			<Timer />
+			<TodayTodoAddBtn />
 		</>
 	);
 };
