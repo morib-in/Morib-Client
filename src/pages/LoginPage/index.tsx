@@ -1,7 +1,12 @@
-import FriendInfoCarousel from '@/components/molecules/FriendInfoCarousel';
+import Timer from '@/components/molecules/Timer';
 
 const LoginPage = () => {
-	return <>Login Page</>;
+	return (
+		<>
+			Login Page
+			<Timer />
+		</>
+	);
 };
 
 export default LoginPage;
