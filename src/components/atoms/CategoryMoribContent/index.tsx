@@ -9,10 +9,10 @@ interface UrlInfo {
 interface CategoryMoribContentProps {
 	urlInfo: UrlInfo;
 	variant?: 'basic' | 'smallLeft' | 'smallRight';
-	btn?: React.ReactNode;
+	children?: React.ReactNode;
 }
 
-const CategoryMoribContent = ({ urlInfo, variant, btn }: CategoryMoribContentProps) => {
+const CategoryMoribContent = ({ urlInfo, variant, children }: CategoryMoribContentProps) => {
 	const sizeVariant = {
 		basic: {
 			width: 'w-[72.8rem]',
@@ -25,7 +25,6 @@ const CategoryMoribContent = ({ urlInfo, variant, btn }: CategoryMoribContentPro
 			pageWidth: 'w-[18.8rem]',
 			urlWidth: 'w-[28.8rem]',
 			gap: 'gap-[1.2rem]',
-			border: 'w-[48.2rem]',
 		},
 		smallRight: { width: 'w-[53.9rem]', pageWidth: 'w-[18.1rem]', urlWidth: 'w-[21.1rem]', gap: 'gap-[2rem]' },
 	};
@@ -43,7 +42,7 @@ const CategoryMoribContent = ({ urlInfo, variant, btn }: CategoryMoribContentPro
 					</div>
 				</div>
 				<div className={`${tbodyUrlStyle} ${sizeVariant[variant].urlWidth}`}>{urlInfo.url}</div>
-				{btn ? <div className="ml-[0.5rem]">{btn}</div> : ''}
+				{children}
 			</div>
 		</div>
 	);

@@ -6,10 +6,10 @@ import AlertIcon from '@/assets/svgs/ic_description.svg?react';
 
 interface CategoryUrlInputProps {
 	variant?: 'basic' | 'small';
-	handleUrlInputChange: (url: string) => void;
+	onUrlInputChange: (url: string) => void;
 }
 
-const CategoryUrlInput = ({ variant = 'basic', handleUrlInputChange }: CategoryUrlInputProps) => {
+const CategoryUrlInput = ({ variant = 'basic', onUrlInputChange }: CategoryUrlInputProps) => {
 	const [url, setUrl] = useState('');
 	const [isUrlValidated, setIsUrlValidated] = useState<boolean | null>(null);
 
@@ -27,7 +27,7 @@ const CategoryUrlInput = ({ variant = 'basic', handleUrlInputChange }: CategoryU
 			const isValid = isUrlValid(url);
 			setIsUrlValidated(isValid);
 			if (isValid) {
-				handleUrlInputChange(url);
+				onUrlInputChange(url);
 				setUrl('');
 			}
 		}
