@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import useTimerCount from '@/hooks/useTimerCount';
 
 interface AccumulatedTimeProps {
 	isPlaying: boolean;
@@ -6,23 +6,7 @@ interface AccumulatedTimeProps {
 }
 
 const AccumulatedTime = ({ isPlaying, accumulatedTime }: AccumulatedTimeProps) => {
-	const [timer, setTimer] = useState(accumulatedTime);
-
-	useEffect(() => {
-		setTimer(accumulatedTime);
-
-		let timerIntervalId: ReturnType<typeof setInterval>;
-
-		if (isPlaying) {
-			timerIntervalId = setInterval(() => {
-				setTimer((prevTimer) => prevTimer + 1);
-			}, 1000);
-		}
-
-		return () => {
-			if (timerIntervalId) clearInterval(timerIntervalId);
-		};
-	}, [isPlaying, accumulatedTime]);
+	const timer = useTimerCount({ isPlaying, previousTime: accumulatedTime });
 
 	const hours = Math.floor(timer / 3600);
 	const minutes = Math.floor((timer % 3600) / 60);
