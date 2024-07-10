@@ -1,3 +1,4 @@
+import SVGBtn from '@/components/atoms/SVGBtn';
 import TodoBox from '@/components/atoms/TodoBox';
 import TodoToggleBtn from '@/components/atoms/TodoToggleBtn';
 
@@ -25,12 +26,12 @@ const CategoryBox = ({ title, ongoingTodos = todoData, completedTodos = todoData
 			<div className="mt-[0.4rem] flex items-center justify-between">
 				<h2 className="head-bold-24 text-white">{title}</h2>
 				<div className="flex gap-[0.1rem]">
-					<button>
+					<SVGBtn>
 						<ButtonAddIcon />
-					</button>
-					<button>
+					</SVGBtn>
+					<SVGBtn>
 						<MeatBallDefault />
-					</button>
+					</SVGBtn>
 				</div>
 			</div>
 			<div className="overflow-auto">

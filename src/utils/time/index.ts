@@ -10,7 +10,7 @@ export const formatSeconds = (seconds: number) => {
 	const formattedSeconds = String(secs).padStart(2, '0');
 
 	return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
-}
+};
 
 export const convertTime = (time: number) => {
 	const hours = Math.floor(time / 3600);
