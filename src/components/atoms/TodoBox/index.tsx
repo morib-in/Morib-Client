@@ -1,3 +1,5 @@
+import { formatSeconds } from '@/utils/time';
+
 import ButtonCalendarIcon from '@/assets/svgs/btn_cal.svg?react';
 import CheckBoxBlankIcon from '@/assets/svgs/check_box_blank.svg?react';
 import CheckBoxFillIcon from '@/assets/svgs/check_box_fill.svg?react';
@@ -11,20 +13,6 @@ interface TodoBoxProps {
 	accumulatedTime: number;
 	isCompleted: boolean;
 }
-
-const formatSeconds = (seconds: number) => {
-	if (seconds === 0) return '00:00:00';
-
-	const hours = Math.floor(seconds / 3600);
-	const minutes = Math.floor((seconds % 3600) / 60);
-	const secs = seconds % 60;
-
-	const formattedHours = String(hours).padStart(2, '0');
-	const formattedMinutes = String(minutes).padStart(2, '0');
-	const formattedSeconds = String(secs).padStart(2, '0');
-
-	return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
-};
 
 const TodoBox = ({ title, date, accumulatedTime, isCompleted }: TodoBoxProps) => {
 	const formattedTime = formatSeconds(accumulatedTime);

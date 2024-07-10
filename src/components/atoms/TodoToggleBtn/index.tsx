@@ -9,6 +9,7 @@ interface TodoToggleBtn extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const TodoToggleBtn = ({ children, isCompleted, isToggled = false }: TodoToggleBtn) => {
 	const [toggle, setToggle] = useState(isToggled);
+
 	const title = isCompleted ? '할 일 목록' : '완료된 일';
 	const ToggleIcon = toggle ? <TodoToggleIcon className="rotate-180" /> : <TodoToggleIcon />;
 
