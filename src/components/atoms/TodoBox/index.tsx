@@ -7,6 +7,8 @@ import TimeFillIcon from '@/assets/svgs/mingcute_time-fill.svg?react';
 import TimeLineIcon from '@/assets/svgs/mingcute_time-line.svg?react';
 import MeatBall from '@/assets/svgs/todo_meatball_default.svg?react';
 
+import SVGBtn from '../SVGBtn';
+
 interface TodoBoxProps {
 	title: string;
 	date: string;
@@ -32,9 +34,9 @@ const TodoBox = ({ title, date, accumulatedTime, isCompleted }: TodoBoxProps) =>
 					<button>{CheckBoxIcon}</button>
 					<h3 className={`body-semibold-16 + mt-[0.42rem] text-white ${titleStyle}`}>{title}</h3>
 				</div>
-				<button>
+				<SVGBtn>
 					<MeatBall className="opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-				</button>
+				</SVGBtn>
 			</div>
 
 			<div className="ml-[0.8rem] mt-[0.7rem] flex flex-col gap-[0.2rem]">
