@@ -1,4 +1,10 @@
+import CategoryModalRight from '@/components/molecules/CategoryModalRight';
+
 const LoginPage = () => {
-	return <>Login Page</>;
+	return (
+		<>
+			<CategoryModalRight />
+		</>
+	);
 };
 export default LoginPage;
