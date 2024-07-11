@@ -39,8 +39,8 @@ const CategoryMoribContentSet = ({ variant, urlInfos, children }: CategoryMoribC
 		},
 	};
 
-	const showYScroll = urlInfos.length > 7;
-	const defaultTableStyle = 'overflow-y overflow-x-hidden rounded-[8px] px-[2rem] h-[36.8rem]  max-h-[36.8rem]';
+	const showYScroll = urlInfos.length > 9;
+	const defaultTableStyle = 'overflow-y overflow-x-hidden rounded-[8px] px-[2rem] h-[46em]  max-h-[46rem]';
 	const optionalScrollStyle = showYScroll === true ? 'overflow-y-auto' : 'overflow-y-hidden';
 	const theadStyle =
 		'px-[0.1rem] detail-semibold-14 flex h-[4.6rem] items-center border-b-[0.1rem] border-gray-bg-04 text-gray-04';
@@ -61,7 +61,7 @@ const CategoryMoribContentSet = ({ variant, urlInfos, children }: CategoryMoribC
 					<tr>
 						<td>{children}</td>
 					</tr>
-					{Array.from({ length: Math.max(7 - urlInfos.length, 0) }, (_, index) => (
+					{Array.from({ length: Math.max(9 - urlInfos.length, 0) }, (_, index) => (
 						<tr key={`empty-row-${index}`}>
 							<td className="h-[4.6rem] border-b-[0.1rem] border-gray-bg-04" />
 						</tr>

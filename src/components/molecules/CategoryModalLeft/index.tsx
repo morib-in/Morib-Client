@@ -50,11 +50,11 @@ const CategoryModalLeft = ({ optionData }: ModalProps) => {
 			<div className="mb-[3.3rem]">
 				<CategoryCommonTitle />
 			</div>
-			<div className="">
+			<div className="mb-[8px]">
 				<CategoryTabSelect tabs={CATEGORY_MODALTABS} handleTabChange={handleTabChange} isSelectedTab={isSelectedTab} />
 			</div>
 
-			<div className="mt-[8px]">
+			<div className="relative mt-[0px]">
 				<CategoryDropdown optionData={optionData} disabled={disabled} />
 			</div>
 			<CategoryMoribContentSet variant="smallLeft" urlInfos={urlInfos}>

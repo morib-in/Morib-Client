@@ -21,7 +21,7 @@ const CategoryDropdownBtn = ({ isClicked, handleClicked, selectedOption, disable
 		: `${clickedDropdownStyle} ${commonBtnStyle}`;
 
 	return (
-		<button type="button" onClick={handleClicked} className={categoryDropdownBtnStyle} disabled={disabled} {...props}>
+		<button onClick={handleClicked} className={categoryDropdownBtnStyle} disabled={disabled} {...props}>
 			<p>{selectedOption}</p>
 			{disabled ? (
 				<DisabledDropIcon />
