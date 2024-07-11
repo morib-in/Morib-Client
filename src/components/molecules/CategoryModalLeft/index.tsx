@@ -2,10 +2,16 @@
 import { useState } from 'react';
 
 import CategoryCommonTitle from '@/components/atoms/CategoryCommonTitle';
+import CategoryMoribContent from '@/components/atoms/CategoryMoribContent';
 import CategoryDropdown from '@/components/molecules/CategoryDropdown';
+import CategoryMoribContentSet from '@/components/molecules/CategoryMoribContentSet';
 import CategoryTabSelect from '@/components/molecules/CategoryTabSelect';
 
 import { CATEGORY_MODALTABS } from '@/constants/tabSelections';
+
+import AddBtn from '@/assets/svgs/add_btn.svg?react';
+
+import { CATEGORY_API } from '@/mocks/categoryData';
 
 interface ModalProps {
 	optionData: OptionData[];
@@ -33,6 +39,12 @@ const CategoryModalLeft = ({ optionData }: ModalProps) => {
 		}
 	};
 
+	const urlInfos = CATEGORY_API[0].msetList.map((item) => ({
+		url: item.url,
+		favicon: item.favicon,
+		domain: item.name,
+	}));
+
 	return (
 		<div className="h-[80rem] w-[68.8rem] rounded-l-[10px] bg-gray-bg-04 px-[4.4rem] py-[2.8rem]">
 			<div className="mb-[3.3rem]">
@@ -41,8 +53,18 @@ const CategoryModalLeft = ({ optionData }: ModalProps) => {
 			<div className="">
 				<CategoryTabSelect tabs={CATEGORY_MODALTABS} handleTabChange={handleTabChange} isSelectedTab={isSelectedTab} />
 			</div>
-
-			<CategoryDropdown optionData={optionData} disabled={disabled} />
+			<div className="mt-[8px]">
+				<CategoryDropdown optionData={optionData} disabled={disabled} />
+			</div>
+			<CategoryMoribContentSet variant="smallLeft" urlInfos={urlInfos}>
+				{urlInfos.map((urlInfo, url) => (
+					<CategoryMoribContent key={url} urlInfo={urlInfo} variant="smallLeft">
+						<button>
+							<AddBtn />
+						</button>
+					</CategoryMoribContent>
+				))}
+			</CategoryMoribContentSet>
 		</div>
 	);
 };
