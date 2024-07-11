@@ -1,12 +1,7 @@
-import Timer from '@/components/molecules/Timer';
+import CategoryModalRight from '@/components/molecules/CategoryModalRight';
 
 const LoginPage = () => {
-	return (
-		<>
-			Login Page
-			<Timer />
-		</>
-	);
+	return <>Login Page</>;
 };
 
 export default LoginPage;
