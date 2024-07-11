@@ -66,8 +66,6 @@ const CategoryModalLeft = ({ optionData }: ModalProps) => {
 					</CategoryMoribContent>
 				))}
 			</CategoryMoribContentSet>
-
-			<CategoryDropdown optionData={optionData} disabled={disabled} />
 		</div>
 	);
 };
