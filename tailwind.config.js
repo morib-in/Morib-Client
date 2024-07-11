@@ -27,7 +27,7 @@ export default {
 				'gray-05': '#DFDFDF',
 				white: '#FFFFFF',
 				'error-01': '#F84949',
-				'error-02': '##FF1717',
+				'error-02': '#FF1717',
 				'error-03': '#AE3333',
 				black: '#000000',
 				dim: 'rgba(0, 0, 0, 0.6)',
