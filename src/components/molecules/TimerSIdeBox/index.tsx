@@ -16,7 +16,7 @@ const TimerSideBox = () => {
 					<p className="detail-semibold-14 mt-[0.8rem] px-[1.2rem] py-[1.3rem] text-white">Web</p>
 					<ul>
 						{Favicon_DATA.map((item) => (
-							<li key={item.id} className="px-[1.1rem] py-[1.1rem]">
+							<li key={item.id} className="rounded-[1.6rem] px-[1.1rem] py-[1.1rem] hover:bg-gray-bg-04">
 								<TimerFavicon {...item} />
 							</li>
 						))}
