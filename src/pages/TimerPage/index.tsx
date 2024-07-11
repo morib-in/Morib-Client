@@ -1,7 +1,5 @@
-import TimerSideBox from '@/components/molecules/TimerSIdeBox';
-
 const TimerPage = () => {
-	return <TimerSideBox />;
+	return <div>TimerPage</div>;
 };
 
 export default TimerPage;
