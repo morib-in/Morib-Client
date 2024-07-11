@@ -13,10 +13,10 @@ interface TodoBoxProps {
 	title: string;
 	date: string;
 	accumulatedTime: number;
-	isCompleted: boolean;
+	isCompleted?: boolean;
 }
 
-const TodoBox = ({ title, date, accumulatedTime, isCompleted }: TodoBoxProps) => {
+const TodoBox = ({ title, date, accumulatedTime, isCompleted = false }: TodoBoxProps) => {
 	const formattedTime = formatSeconds(accumulatedTime);
 	const formattedDate = date.replace(/-/g, '.');
 

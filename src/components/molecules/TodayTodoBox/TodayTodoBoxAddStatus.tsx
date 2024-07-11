@@ -1,10 +1,11 @@
-import TodayTodoLargeBtn from '../TodayTodoLargeBtn';
+import TodayTodoLargeBtn from '@/components/atoms/TodayTodoLargeBtn';
 
-interface TodayTodoDefaultProps {
+interface TodayTodoDefaultStatusProps {
 	hasTodos: boolean;
+	onEnableAddStatus: () => void;
 }
 
-const TodayTodoDefault = ({ hasTodos }: TodayTodoDefaultProps) => {
+const TodayTodoBoxDefaultStatus = ({ hasTodos, onEnableAddStatus }: TodayTodoDefaultStatusProps) => {
 	return (
 		<div className="mt-[21.4rem] flex w-full flex-col justify-center text-white">
 			<p className="subhead-med-18 text-center text-gray-03">아직 오늘 할 일이 없어요</p>
@@ -14,10 +15,10 @@ const TodayTodoDefault = ({ hasTodos }: TodayTodoDefaultProps) => {
 				타이머를 시작해보세요.
 			</p>
 			<div className="mx-auto">
-				<TodayTodoLargeBtn variant="추가" disabled={!hasTodos} />
+				<TodayTodoLargeBtn variant="추가" disabled={!hasTodos} onClick={onEnableAddStatus} />
 			</div>
 		</div>
 	);
 };
 
-export default TodayTodoDefault;
+export default TodayTodoBoxDefaultStatus;
