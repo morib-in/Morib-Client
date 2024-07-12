@@ -42,7 +42,7 @@ const CategoryModalRight = () => {
 			<CategoryMoribContentSet urlInfos={urlInfos} variant="smallRight">
 				{urlInfos.map((urlInfo, url) => (
 					<CategoryMoribContent key={url} urlInfo={urlInfo} variant="smallRight">
-						<button>
+						<button type="button">
 							<MinusBtn />
 						</button>
 					</CategoryMoribContent>
