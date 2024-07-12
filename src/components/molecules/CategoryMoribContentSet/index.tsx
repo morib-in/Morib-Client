@@ -41,6 +41,7 @@ const CategoryMoribContentSet = ({ variant, urlInfos, children }: CategoryMoribC
 
 	const showYScroll = urlInfos.length > 9;
 	const defaultTableStyle = 'overflow-y overflow-x-hidden rounded-[8px] px-[2rem] h-[46rem]  max-h-[46rem]';
+
 	const optionalScrollStyle = showYScroll === true ? 'overflow-y-auto' : 'overflow-y-hidden';
 	const theadStyle =
 		'px-[0.1rem] detail-semibold-14 flex h-[4.6rem] items-center border-b-[0.1rem] border-gray-bg-04 text-gray-04';
@@ -50,7 +51,7 @@ const CategoryMoribContentSet = ({ variant, urlInfos, children }: CategoryMoribC
 		<div
 			className={`${defaultTableStyle} ${optionalScrollStyle} ${sizeVariant[variant].bgColor} ${sizeVariant[variant].width}`}
 		>
-			<table className={`${sizeVariant[variant].border}`}>
+			<table className={`${sizeVariant[variant].border} `}>
 				<thead>
 					<tr className={`${theadStyle}`}>
 						<th className={`text-left ${sizeVariant[variant].pageHeadWidth}`}>페이지</th>

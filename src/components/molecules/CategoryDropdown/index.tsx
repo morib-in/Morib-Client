@@ -37,10 +37,13 @@ const CategoryDropdown = ({ disabled, optionData }: DropdownBtnProps) => {
 				selectedOption={selectedOption}
 			/>
 			{isClicked && (
-				<ul className="max-h-[41.4rem] w-[27.2rem] flex-col overflow-scroll rounded-[5px] shadow-[0_3px_30px_0_rgba(0,0,0,0.40)]">
+				<ul className="absolute top-[5.6rem] max-h-[41.4rem] w-[27.2rem] flex-col overflow-scroll rounded-[5px] shadow-[0_3px_30px_0_rgba(0,0,0,0.40)]">
 					{optionData?.map((item) => {
 						return (
-							<li key={item.category.id}>
+							<li
+								key={item.category.id}
+								className="subhead-med-18 flex h-[4.6rem] w-[27.2rem] flex-row items-center border-none"
+							>
 								<DropdownOptionsBtn
 									onClick={() => {
 										handleOptionClick(item.category.name);
