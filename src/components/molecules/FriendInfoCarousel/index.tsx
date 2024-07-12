@@ -1,7 +1,7 @@
 import ArrowSVGBtn from '@/components/atoms/ArrowSVGBtn';
 import FriendInfo from '@/components/atoms/FriendInfo';
 
-import useFriendInfoCarousel from '@/hooks/useFriendInfoCarousel';
+import useFriendInfoCarousel from '@/hooks/useFriendInfoCarousel';
 
 import { Direction } from '@/types/global';
 
@@ -9,7 +9,7 @@ const FriendInfoCarousel = () => {
 	const { handlePrevClick, handleNextClick, visibleFriends } = useFriendInfoCarousel();
 
 	return (
-		<div className="flex h-[15rem] w-[86.2rem] items-center justify-center bg-gray-bg-01">
+		<div className="mt-[4.8rem] flex h-[15rem] w-[86.2rem] items-center justify-center bg-gray-bg-01">
 			<ArrowSVGBtn className="mr-[1.6rem]" direction={Direction.LEFT} onClick={handlePrevClick} />
 			<div className="flex gap-[4.2rem]">
 				{visibleFriends().map((friend) => (

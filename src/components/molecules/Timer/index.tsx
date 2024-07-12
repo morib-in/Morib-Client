@@ -20,16 +20,14 @@ const Timer = () => {
 	};
 
 	return (
-		<div className="flex h-screen w-screen items-center justify-center bg-gray-bg-01">
-			<div className="flex items-center justify-center">
-				<ProgressCircle isPlaying={isPlaying} timer={timer} />
-				<InnerCircleIcon className="absolute" />
-				<div className="absolute mt-[3rem] flex flex-col items-center justify-center">
-					<AccumulatedTime isPlaying={isPlaying} accumulatedTime={accumulatedTime} />
-					<TaskTime isPlaying={isPlaying} timer={timer} />
-					<div className="mt-[3rem]">
-						<PlayBtn onClick={handlePlayPauseToggle} isPlaying={isPlaying} />
-					</div>
+		<div className="mt-[8.2rem] flex items-center justify-center">
+			<ProgressCircle isPlaying={isPlaying} timer={timer} />
+			<InnerCircleIcon className="absolute" />
+			<div className="absolute mt-[3rem] flex flex-col items-center justify-center">
+				<AccumulatedTime isPlaying={isPlaying} accumulatedTime={accumulatedTime} />
+				<TaskTime isPlaying={isPlaying} timer={timer} />
+				<div className="mt-[3rem]">
+					<PlayBtn onClick={handlePlayPauseToggle} isPlaying={isPlaying} />
 				</div>
 			</div>
 		</div>
