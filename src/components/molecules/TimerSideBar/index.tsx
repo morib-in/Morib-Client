@@ -2,7 +2,7 @@ import TimerTodayTodoBtn from '@/components/atoms/TimerTodayTodoBtn';
 import TodoBox from '@/components/atoms/TodoBox';
 import TodoToggleBtn from '@/components/atoms/TodoToggleBtn';
 
-import useAnimateSidebar from '@/hooks/useAnimaterSideBar';
+import useCloseSidebar from '@/hooks/useCloseSideBar';
 
 import BtnListIcon from '@/assets/svgs/btn_list.svg?react';
 
@@ -19,20 +19,10 @@ interface CategoryBoxProps {
 	completedTodos?: Todo[];
 	ongoingTodos?: Todo[];
 	toggleSidebar: () => void;
-	isSidebarOpen: boolean;
 }
 
-const TimerSideBar = ({
-	ongoingTodos = todoData,
-	completedTodos = todoData,
-	toggleSidebar,
-	isSidebarOpen,
-}: CategoryBoxProps) => {
-	const animate = useAnimateSidebar(isSidebarOpen);
-
-	const handleClose = () => {
-		toggleSidebar();
-	};
+const TimerSideBar = ({ ongoingTodos = todoData, completedTodos = todoData, toggleSidebar }: CategoryBoxProps) => {
+	const { animate, handleClose } = useCloseSidebar(toggleSidebar);
 
 	return (
 		<div

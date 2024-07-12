@@ -1,5 +1,3 @@
-import React from 'react';
-
 import FriendInfoCarousel from '@/components/molecules/FriendInfoCarousel';
 import Timer from '@/components/molecules/Timer';
 import TimerSideBox from '@/components/molecules/TimerSIdeBox';
@@ -7,14 +5,12 @@ import TimerSideBar from '@/components/molecules/TimerSideBar';
 import TimerTitle from '@/components/molecules/TimerTitle';
 import TimerPageTemplates from '@/components/templates/TimerPageTemplates';
 
-import useAnimateSidebar from '@/hooks/useAnimaterSideBar';
 import useToggleSidebar from '@/hooks/useToggleSideBar';
 
 import HamburgerIcon from '@/assets/svgs/btn_hamburger.svg?react';
 
-const TimerPage: React.FC = () => {
+const TimerPage = () => {
 	const { isSidebarOpen, toggleSidebar } = useToggleSidebar();
-	const animate = useAnimateSidebar(isSidebarOpen);
 
 	return (
 		<TimerPageTemplates>
@@ -34,10 +30,8 @@ const TimerPage: React.FC = () => {
 					</button>
 				</div>
 				{isSidebarOpen && (
-					<div
-						className={`fixed inset-0 flex justify-end bg-black bg-opacity-50 transition-opacity duration-300 ease-in-out ${animate ? 'opacity-100' : 'opacity-0'}`}
-					>
-						<TimerSideBar toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
+					<div className={`fixed inset-0 flex justify-end bg-gray-bg-01 bg-opacity-50`}>
+						<TimerSideBar toggleSidebar={toggleSidebar} />
 					</div>
 				)}
 			</div>
