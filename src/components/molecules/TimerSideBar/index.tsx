@@ -30,7 +30,7 @@ const TimerSideBar = ({ ongoingTodos = todoData, completedTodos = todoData, togg
 		>
 			<div className="flex h-[5.4rem] w-[36.6rem] items-center justify-between pl-[0.2rem] pt-[2rem]">
 				<p className="head-bold-24 text-white">오늘 할 일</p>
-				<button onClick={handleClose}>
+				<button className="rounded-[1.5rem] hover:bg-gray-bg-04" onClick={handleClose}>
 					<BtnListIcon />
 				</button>
 			</div>
