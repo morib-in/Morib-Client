@@ -16,14 +16,17 @@ interface todo {
 interface CategoryBoxProps {
 	completedTodos?: todo[];
 	ongoingTodos?: todo[];
+	toggleSidebar: () => void;
 }
 
-const TimerSideBar = ({ ongoingTodos = todoData, completedTodos = todoData }: CategoryBoxProps) => {
+const TimerSideBar = ({ ongoingTodos = todoData, completedTodos = todoData, toggleSidebar }: CategoryBoxProps) => {
 	return (
 		<div className="flex h-screen w-[40.2rem] flex-col rounded-bl-[16px] rounded-tl-[16px] bg-gray-bg-03 pl-[1.8rem]">
 			<div className="flex h-[5.4rem] w-[36.6rem] items-center justify-between pl-[0.2rem] pt-[2rem]">
 				<p className="head-bold-24 text-white">오늘 할 일</p>
-				<BtnListIcon />
+				<button onClick={toggleSidebar}>
+					<BtnListIcon />
+				</button>
 			</div>
 			<div className="h-[82.6rem] overflow-auto pb-[2rem] pt-[1rem]">
 				{ongoingTodos.map(({ id, title, date, time }) => (
