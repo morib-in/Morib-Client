@@ -33,15 +33,19 @@ const CategoryMoribContent = ({ urlInfo, variant, children }: CategoryMoribConte
 		'detail-reg-14 h-[2.1rem] truncate rounded-[2rem] bg-gray-bg-04 px-[1rem] py-[0.1rem] text-white';
 
 	return (
-		<div className={`h-[4.6rem] border-b-[0.1rem] border-gray-bg-04 px-[0.8rem] ${sizeVariant[variant].width}`}>
-			<div className={`mr-[0.2rem] flex h-[4.6rem] items-center py-[1.2rem] ${sizeVariant[variant].gap}`}>
+		<div className={`h-[4.6rem] ${sizeVariant[variant].width}`}>
+			<div
+				className={`group flex h-[4.6rem] items-center border-b-[0.1rem] border-gray-bg-04 px-[0.8rem] py-[1.2rem] hover:bg-gray-bg-04 ${sizeVariant[variant].gap}`}
+			>
 				<div className={`my-[0.1rem] flex h-[2.2rem] items-center`}>
 					<img src={urlInfo.favicon} alt="favicon" className="my-[0.1rem] mr-[1.2rem] h-[2rem] w-[2rem]" />
-					<div className={`body-reg-16 my-[0.05rem] text-white ${sizeVariant[variant].pageWidth}`}>
+					<div className={`body-reg-16 my-[0.05rem] truncate text-white ${sizeVariant[variant].pageWidth}`}>
 						{urlInfo.domain}
 					</div>
 				</div>
-				<div className={`${tbodyUrlStyle} ${sizeVariant[variant].urlWidth}`}>{urlInfo.url}</div>
+				<div className={`${tbodyUrlStyle} ${sizeVariant[variant].urlWidth} group-hover:bg-gray-bg-06`}>
+					{urlInfo.url}
+				</div>
 				{children}
 			</div>
 		</div>
