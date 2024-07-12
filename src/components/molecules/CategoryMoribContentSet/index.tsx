@@ -50,7 +50,7 @@ const CategoryMoribContentSet = ({ variant, urlInfos, children }: CategoryMoribC
 		<div
 			className={`${defaultTableStyle} ${optionalScrollStyle} ${sizeVariant[variant].bgColor} ${sizeVariant[variant].width}`}
 		>
-			<table className={`${sizeVariant[variant].border}`}>
+			<table className={`${sizeVariant[variant].border} `}>
 				<thead>
 					<tr className={`${theadStyle}`}>
 						<th className={`text-left ${sizeVariant[variant].pageHeadWidth}`}>페이지</th>

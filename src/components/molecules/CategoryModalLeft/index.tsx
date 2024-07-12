@@ -28,17 +28,12 @@ interface OptionData {
 
 const CategoryModalLeft = ({ optionData }: ModalProps) => {
 	const [isSelectedTab, setSelectedTab] = useState(CATEGORY_MODALTABS[0].id);
-	const [disabled, setIsDisabled] = useState(false);
 
 	const handleTabChange = (tab: number) => {
 		setSelectedTab(tab);
-		if (tab === 2) {
-			setIsDisabled(true);
-		} else {
-			setIsDisabled(false);
-		}
 	};
 
+	const disabled = isSelectedTab === 2;
 	const urlInfos = CATEGORY_API[0].msetList.map((item) => ({
 		url: item.url,
 		favicon: item.favicon,
@@ -46,7 +41,7 @@ const CategoryModalLeft = ({ optionData }: ModalProps) => {
 	}));
 
 	return (
-		<div className="h-[80rem] w-[68.8rem] rounded-l-[10px] bg-gray-bg-04 px-[4.4rem] py-[2.8rem]">
+		<div className="h-[80rem] w-[68.8rem] rounded-l-[10px] bg-gray-bg-04 py-[2.8rem] pl-[4.4rem] pr-[4.3rem]">
 			<div className="mb-[3.3rem]">
 				<CategoryCommonTitle />
 			</div>
@@ -60,8 +55,8 @@ const CategoryModalLeft = ({ optionData }: ModalProps) => {
 			<CategoryMoribContentSet variant="smallLeft" urlInfos={urlInfos}>
 				{urlInfos.map((urlInfo, url) => (
 					<CategoryMoribContent key={url} urlInfo={urlInfo} variant="smallLeft">
-						<button>
-							<AddBtn />
+						<button className="">
+							<AddBtn className="fill-gray-bg-07 hover:fill-mint-02-hover active:fill-mint-02-press" />
 						</button>
 					</CategoryMoribContent>
 				))}
