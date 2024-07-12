@@ -40,7 +40,8 @@ const CategoryMoribContentSet = ({ variant, urlInfos, children }: CategoryMoribC
 	};
 
 	const showYScroll = urlInfos.length > 9;
-	const defaultTableStyle = 'overflow-y overflow-x-hidden rounded-[8px] px-[2rem] h-[46em]  max-h-[46rem]';
+	const defaultTableStyle = 'overflow-y overflow-x-hidden rounded-[8px] px-[2rem] h-[46rem]  max-h-[46rem]';
+
 	const optionalScrollStyle = showYScroll === true ? 'overflow-y-auto' : 'overflow-y-hidden';
 	const theadStyle =
 		'px-[0.1rem] detail-semibold-14 flex h-[4.6rem] items-center border-b-[0.1rem] border-gray-bg-04 text-gray-04';
