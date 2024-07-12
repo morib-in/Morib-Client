@@ -1,18 +1,17 @@
-import { useState } from 'react';
-
 import CategoryTabBtn from '@/components/atoms/CategoryTabBtn';
 
-const CategoryTabSelect = () => {
-	const tabs = [
-		{ id: 1, name: '기존 모립 세트' },
-		{ id: 2, name: '현재 열린 탭' },
-	];
-	const [isSelectedTab, setSelectedTab] = useState(tabs[0].id);
+interface Tabs {
+	id: number;
+	name: string;
+}
 
-	const handleTabChange = (tab: number) => {
-		setSelectedTab(tab);
-	};
+interface TabSelectProps {
+	tabs: Tabs[];
+	handleTabChange: (number: number) => void;
+	isSelectedTab: number;
+}
 
+const CategoryTabSelect = ({ tabs, handleTabChange, isSelectedTab }: TabSelectProps) => {
 	return (
 		<>
 			{tabs.map((tab) => (
