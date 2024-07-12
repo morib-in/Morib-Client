@@ -18,7 +18,10 @@ const TimerPage = () => {
 				<TimerTitle />
 				<Timer />
 				<FriendInfoCarousel />
-				<button onClick={toggleSidebar} className="mr-3.4 mt-3.2 absolute right-0 top-0">
+				<button
+					onClick={toggleSidebar}
+					className="absolute right-0 top-0 mr-[3.4rem] mt-[3.2rem] rounded-[1.5rem] hover:bg-gray-bg-04"
+				>
 					<HamburgerIcon />
 				</button>
 			</div>
