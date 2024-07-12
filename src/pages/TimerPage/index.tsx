@@ -1,5 +1,5 @@
 const TimerPage = () => {
-	return <div>TimerPage</div>
+	return <div>TimerPage</div>;
 };
 
 export default TimerPage;

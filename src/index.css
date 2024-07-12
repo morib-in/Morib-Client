@@ -63,7 +63,7 @@
     @apply text-[1.6rem] font-medium leading-140;  
   }  
   .body-reg-16{
-    @apply text-[1.6rm] font-normal leading-140;
+    @apply text-[1.6rem] font-normal leading-140;
   }  
   .detail-semibold-14{
     @apply text-[1.4rem] font-semibold leading-140;
