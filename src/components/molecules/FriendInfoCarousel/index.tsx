@@ -9,7 +9,7 @@ const FriendInfoCarousel = () => {
 	const { handlePrevClick, handleNextClick, visibleFriends } = useFriendInfoCarousel();
 
 	return (
-		<div className="mt-[4.8rem] flex h-[15rem] w-[86.2rem] items-center justify-center bg-gray-bg-01">
+		<div className="w-[86.2rem mt-[4.8rem] flex h-[15rem] items-center justify-center">
 			<ArrowSVGBtn className="mr-[1.6rem]" direction={Direction.LEFT} onClick={handlePrevClick} />
 			<div className="flex gap-[4.2rem]">
 				{visibleFriends().map((friend) => (
