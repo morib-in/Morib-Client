@@ -1,7 +1,7 @@
 import FriendInfoCarousel from '@/components/molecules/FriendInfoCarousel';
 import Timer from '@/components/molecules/Timer';
-import TimerSideBox from '@/components/molecules/TimerSIdeBox';
 import TimerSideBar from '@/components/molecules/TimerSideBar';
+import TimerSideBox from '@/components/molecules/TimerSideBox';
 import TimerTitle from '@/components/molecules/TimerTitle';
 import TimerPageTemplates from '@/components/templates/TimerPageTemplates';
 
@@ -38,5 +38,4 @@ const TimerPage = () => {
 		</TimerPageTemplates>
 	);
 };
-
 export default TimerPage;
