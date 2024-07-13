@@ -1,4 +1,6 @@
+import MoreFriendsBtn from '@/components/atoms/MoreFriendsBtn';
 import SVGBtn from '@/components/atoms/SVGBtn';
+import UserProfile from '@/components/atoms/UserProfile';
 import CategoryBox from '@/components/molecules/CategoryBox';
 import DatePicker from '@/components/molecules/DatePicker';
 import HomeSideBar from '@/components/molecules/HomeSideBar';
@@ -15,7 +17,21 @@ const HomePage = () => {
 			<HomeSideBar />
 			<div className="flex h-full w-full justify-between p-[4.2rem]">
 				<section>
-					<div className="h-[11rem] bg-black"></div>
+					<div className="flex h-[11rem] items-center gap-[1.8rem] pt-[1.2rem]">
+						<UserProfile isMyProfile />
+						<ul className="flex gap-[1.8rem]">
+							<li>
+								<UserProfile isConnecting />
+							</li>
+							<li>
+								<UserProfile isConnecting />
+							</li>
+							<li>
+								<UserProfile isConnecting />
+							</li>
+						</ul>
+						<MoreFriendsBtn friendsCount={12} />
+					</div>
 					<DatePicker />
 					<article>
 						<CategoryBox title={'morib 프로젝트'} />
