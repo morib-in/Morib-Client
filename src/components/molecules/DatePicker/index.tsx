@@ -14,7 +14,7 @@ const DatePicker = () => {
 		useDatePicker();
 
 	return (
-		<header>
+		<header className="mb-[2.8rem]">
 			<div className="flex gap-[2rem]">
 				<YearMonthTitle selectedDate={currentDate} />
 				<ArrowSVGBtn direction={Direction.DOWN} />

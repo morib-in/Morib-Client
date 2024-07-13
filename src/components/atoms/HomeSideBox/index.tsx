@@ -6,7 +6,7 @@ interface HomeSideBoxProps {
 
 const HomeSideBox = ({ children }: HomeSideBoxProps) => {
 	return (
-		<div className="flex h-screen w-[7.4rem] flex-col items-center justify-between bg-gray-bg-02 pb-[2.1rem] pt-[5.4rem]">
+		<div className="flex h-full w-[7.4rem] flex-col items-center justify-between bg-gray-bg-02 pb-[2.1rem] pt-[5.4rem]">
 			{children}
 		</div>
 	);
