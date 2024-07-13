@@ -1,7 +1,7 @@
 import ArrowSVGBtn from '@/components/atoms/ArrowSVGBtn';
 import FriendInfo from '@/components/atoms/FriendInfo';
 
-import useFriendInfoCarousel from '@/hooks/useFriendInfoCarousel';
+import useFriendInfoCarousel from '@/hooks/useFriendInfoCarousel';
 
 import { Direction } from '@/types/global';
 
@@ -19,6 +19,7 @@ const FriendInfoCarousel = () => {
 						time={friend.time}
 						name={friend.name}
 						categoryname={friend.categoryname}
+						isPlaying={friend.isPlaying}
 					/>
 				))}
 			</div>
