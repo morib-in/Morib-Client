@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 import MoreFriendsBtn from '@/components/atoms/MoreFriendsBtn';
 import SVGBtn from '@/components/atoms/SVGBtn';
 import UserProfile from '@/components/atoms/UserProfile';
@@ -8,6 +10,7 @@ import TodayTodoBox from '@/components/molecules/TodayTodoBox';
 
 import BellIcon from '@/assets/svgs/bell.svg?react';
 import FriendSettingIcon from '@/assets/svgs/friend_setting.svg?react';
+import LargePlusIcon from '@/assets/svgs/large_plus.svg?react';
 
 import { todoData } from '@/mocks/homeData';
 
@@ -33,9 +36,19 @@ const HomePage = () => {
 						<MoreFriendsBtn friendsCount={12} />
 					</div>
 					<DatePicker />
-					<article>
-						<CategoryBox title={'morib 프로젝트'} />
-					</article>
+					<div className="flex">
+						<article className="flex h-[732px] w-[1262px] gap-[2.8rem] overflow-x-auto">
+							{/*Todo: 서버 상태 받아서 map 로직 추가 */}
+							<CategoryBox title={'morib 프로젝트'} ongoingTodos={todoData} completedTodos={todoData} />
+							<CategoryBox title={'morib 프로젝트'} />
+							<CategoryBox title={'morib 프로젝트'} />
+						</article>
+						<div className="ml-[2.2rem] flex flex-col">
+							<SVGBtn className="flex-shrink-0">
+								<LargePlusIcon className="rounded-full bg-gray-bg-03 hover:bg-gray-bg-05" />
+							</SVGBtn>
+						</div>
+					</div>
 				</section>
 				<section className="flex items-end justify-end">
 					<div className="flex flex-col">

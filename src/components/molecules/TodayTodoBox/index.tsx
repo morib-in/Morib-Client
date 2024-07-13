@@ -9,8 +9,8 @@ import TodayTodoBoxAddStatus from './TodayTodoBoxDefaultStatus';
 
 interface TodayTodoBoxProps {
 	time: number;
-	selectedTodayTodos: TodoDataTypes[];
-	todos: TodoDataTypes[];
+	selectedTodayTodos: TodoDataTypes[] | [];
+	todos: TodoDataTypes[] | [];
 }
 
 const TodayTodoBox = ({ time = 0, selectedTodayTodos = [], todos = [] }: TodayTodoBoxProps) => {

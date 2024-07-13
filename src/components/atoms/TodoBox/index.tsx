@@ -31,14 +31,13 @@ const TodoBox = ({ title, date, accumulatedTime, isCompleted = false }: TodoBoxP
 		<div className="group mt-[1rem] flex h-[9.6rem] w-[36.6rem] transform flex-col justify-center rounded-[8px] bg-gray-bg-01 p-[1.4rem] transition-transform duration-300 hover:-translate-y-2">
 			<div className="flex items-center justify-between">
 				<div className="flex items-center gap-[0.6rem]">
-					<button>{CheckBoxIcon}</button>
+					<SVGBtn>{CheckBoxIcon}</SVGBtn>
 					<h3 className={`body-semibold-16 + mt-[0.42rem] text-white ${titleStyle}`}>{title}</h3>
 				</div>
 				<SVGBtn>
 					<MeatBall className="opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 				</SVGBtn>
 			</div>
-
 			<div className="ml-[0.8rem] mt-[0.7rem] flex flex-col gap-[0.2rem]">
 				<div className="flex items-center gap-[0.6rem]">
 					<ButtonCalendarIcon />

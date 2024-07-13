@@ -40,7 +40,7 @@ const DatePicker = () => {
 				<div className="flex gap-[1rem]">
 					<ArrowSVGBtn direction={Direction.LEFT} onClick={handlePreviousWeek} />
 					<SVGBtn onClick={handleToday}>
-						<BtnTodayIcon />
+						<BtnTodayIcon className="rounded-[37px] bg-gray-bg-03 hover:bg-gray-bg-05" />
 					</SVGBtn>
 					<ArrowSVGBtn direction={Direction.RIGHT} onClick={handleNextWeek} />
 				</div>
