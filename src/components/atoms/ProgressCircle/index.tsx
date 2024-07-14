@@ -21,7 +21,7 @@ const ProgressCircle = ({ timer }: ProgressCircleProps) => {
 				cy="240"
 				r={radius}
 				stroke="url(#paint0_linear_1570_35)"
-				strokeWidth="32"
+				strokeWidth="33"
 				fill="none"
 				strokeDasharray={circumference}
 				strokeDashoffset={offset}
