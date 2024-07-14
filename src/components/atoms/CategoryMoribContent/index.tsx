@@ -37,12 +37,6 @@ const CategoryMoribContent = ({
 		smallRight: { width: 'w-[53.9rem]', pageWidth: 'w-[18.1rem]', urlWidth: 'w-[21.1rem]', gap: 'gap-[2rem]' },
 	};
 
-	const handlekeyDown = (event: React.KeyboardEvent) => {
-		if (event.key === 'Enter' || event.key === ' ') {
-			return;
-		}
-	};
-
 	const tbodyUrlStyle =
 		'detail-reg-14 h-[2.1rem] truncate rounded-[2rem] bg-gray-bg-04 px-[1rem] py-[0.1rem] text-white';
 
@@ -50,13 +44,7 @@ const CategoryMoribContent = ({
 	const hoverStyleUrls = enableHover ? `group-hover:bg-gray-bg-06` : ``;
 
 	return (
-		<div
-			className={`h-[4.6rem] ${sizeVariant[variant].width}`}
-			onClick={handleSelectedInfo}
-			onKeyDown={handlekeyDown}
-			role="button"
-			tabIndex={0}
-		>
+		<div className={`h-[4.6rem] ${sizeVariant[variant].width}`} onClick={handleSelectedInfo}>
 			<div
 				className={`group flex h-[4.6rem] items-center border-b-[0.1rem] border-gray-bg-04 px-[0.8rem] py-[1.2rem] ${hoverStyleInfos} ${sizeVariant[variant].gap}`}
 			>
