@@ -60,7 +60,7 @@ const HomePage = () => {
 								<BellIcon className="rounded-[1.6rem] hover:bg-gray-bg-04 active:bg-gray-bg-05" />
 							</SVGBtn>
 						</div>
-						<TodayTodoBox time={0} selectedTodayTodos={[]} todos={todoData} />
+						<TodayTodoBox time={0} selectedTodayTodos={todoData} todos={todoData} />
 					</div>
 				</section>
 			</div>
