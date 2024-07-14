@@ -15,6 +15,7 @@ import { CATEGORY_API } from '@/mocks/categoryData';
 
 interface ModalProps {
 	optionData: OptionData[];
+	handleSelectedInfo: () => string;
 }
 
 interface Category {
@@ -26,7 +27,7 @@ interface OptionData {
 	category: Category;
 }
 
-const CategoryModalLeft = ({ optionData }: ModalProps) => {
+const CategoryModalLeft = ({ optionData, handleSelectedInfo }: ModalProps) => {
 	const [isSelectedTab, setSelectedTab] = useState(CATEGORY_MODALTABS[0].id);
 
 	const handleTabChange = (tab: number) => {
@@ -54,7 +55,7 @@ const CategoryModalLeft = ({ optionData }: ModalProps) => {
 			</div>
 			<CategoryMoribContentSet variant="smallLeft" urlInfos={urlInfos}>
 				{urlInfos.map((urlInfo, url) => (
-					<CategoryMoribContent key={url} urlInfo={urlInfo} variant="smallLeft">
+					<CategoryMoribContent key={url} urlInfo={urlInfo} variant="smallLeft" handleSelectedInfo={handleSelectedInfo}>
 						<button className="">
 							<AddBtn className="fill-gray-bg-07 hover:fill-mint-02-hover active:fill-mint-02-press" />
 						</button>

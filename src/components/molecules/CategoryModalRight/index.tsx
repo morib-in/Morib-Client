@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import CategoryCommonBtn from '@/components/atoms/CategoryCommonBtn';
 import CategoryModalRightTitle from '@/components/atoms/CategoryModalRightTitle';
 import CategoryMoribContent from '@/components/atoms/CategoryMoribContent';
@@ -8,28 +6,18 @@ import CategoryMoribContentSet from '@/components/molecules/CategoryMoribContent
 
 import MinusBtn from '@/assets/svgs/minus_btn.svg?react';
 
-import { URL_DATA } from '@/mocks/urlData';
-
 interface UrlInfo {
 	url: string;
 	domain: string;
 	favicon: string;
 }
-const CategoryModalRight = () => {
-	const [urlInfos, setUrlInfos] = useState<UrlInfo[]>([]);
-	const handleUrlInputChange = (url: string) => {
-		const index = urlInfos.length;
-		if (index < URL_DATA.length) {
-			const newUrlInfo: UrlInfo = {
-				url: url,
-				domain: URL_DATA[index].tabName,
-				favicon: URL_DATA[index].favicon,
-			};
 
-			setUrlInfos((prevUrlInfos) => [...prevUrlInfos, newUrlInfo]);
-		}
-	};
+interface ModalRightProps {
+	selectedInfo: UrlInfo[];
+	handleUrlInputChange: () => string;
+}
 
+const CategoryModalRight = ({ selectedInfo, handleUrlInputChange }: ModalRightProps) => {
 	return (
 		<div className="flex h-[80rem] w-[61.2rem] flex-col items-end justify-between rounded-r-[1rem] bg-gray-bg-03 pb-[3rem] pl-[3rem] pr-[4.3rem] pt-[9.7rem]">
 			<div className="flex w-full flex-row justify-start">
@@ -39,8 +27,8 @@ const CategoryModalRight = () => {
 				<CategoryUrlInput variant="basic" onUrlInputChange={handleUrlInputChange} />
 			</div>
 			<div className="flex w-full" />
-			<CategoryMoribContentSet urlInfos={urlInfos} variant="smallRight">
-				{urlInfos.map((urlInfo, url) => (
+			<CategoryMoribContentSet urlInfos={selectedInfo} variant="smallRight">
+				{selectedInfo.map((urlInfo, url) => (
 					<CategoryMoribContent key={url} urlInfo={urlInfo} variant="smallRight">
 						<button type="button">
 							<MinusBtn />
