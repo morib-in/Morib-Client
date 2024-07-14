@@ -1,0 +1,83 @@
+  /* 스크린 리더 속성 없애기 */
+  .react-datepicker__aria-live {
+    display: none;
+  } 
+
+  /*이전 달, 다음 달에 해당하는 날짜는 표시되지 않도록*/
+  .react-datepicker__day--outside-month {
+    cursor: default; 
+  } 
+    
+  /* 달 셀 크기 설정 */
+  .react-datepicker__month {
+    @apply flex-col w-[25.5rem] h-[19.2rem] mx-[1rem] mb-[0.5rem] items-start self-stretch; 
+}
+
+  /* days (week)의 각 행을 가로로 나란히 배치 */
+  /* gap 5px까지 추가하면 그 사이에 배경색 출력이 안 됨*/
+  .react-datepicker__week {
+/*     @apply flex mb-[0.8rem] ;  */
+    @apply flex mb-[0.5rem] ; 
+  }
+  
+
+  /* 날짜 셀 크기 설정  mr-[0.5rem]*/
+  .react-datepicker__day {
+/*     @apply relative w-[3.2rem] h-[3.2rem] text-white flex items-center justify-center; */
+  @apply relative w-[3.7rem] h-[3.7rem] text-white flex items-center justify-center; 
+}
+
+  /* 마지막 요소는 margin 제거 */
+  .react-datepicker__day:last-child {
+    @apply mr-0; 
+  }
+
+  /* 오늘 날짜 스타일 설정 */
+  .react-datepicker__day--today {
+    @apply font-bold text-mint-01; 
+  }
+
+  /* 선택된 날짜 스타일 설정 */
+  .react-datepicker__day--selected {
+    @apply bg-mint-01 text-black rounded-full; 
+  }
+
+  /* 호버된 날짜 스타일 설정 */
+  .react-datepicker__day:hover {
+    @apply bg-gray-bg-04 rounded-full; 
+  }
+
+    /* 선택된 날짜 호버 시 스타일 설정 */
+  .react-datepicker__day--selected:hover,
+  .react-datepicker__day--pressed:hover {
+      @apply bg-mint-01 text-black rounded-full; 
+  }
+
+  /* 달력 외부 날짜 스타일 설정 */
+  .react-datepicker__day--outside-month {
+    cursor: default;
+    @apply text-gray-03;
+  }
+
+  .react-datepicker__day--in-selecting-range,
+  .react-datepicker__day--in-range{
+    @apply bg-date-active rounded-none;
+  }
+
+  .react-datepicker__day--in-selecting-range:hover {
+    @apply bg-date-active rounded-none;
+  }
+
+  .react-datepicker__day.react-datepicker__day--in-range + .react-datepicker__day--in-range::before {
+    content: "";
+    @apply absolute inset-y-0 left-0 right-0 bg-date-active;
+    z-index: -1;
+  }
+
+  .react-datepicker__day--range-start {
+    @apply bg-mint-01 text-gray-bg-06 rounded-full  !important;
+/*     rounded-tr-2xl rounded-br-2xl */
+  }  
+  .react-datepicker__day--range-end {
+    @apply bg-mint-01 text-black rounded-full rounded-tl-2xl rounded-bl-2xl !important; 
+  }
