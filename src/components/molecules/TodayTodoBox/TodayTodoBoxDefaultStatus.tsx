@@ -1,6 +1,10 @@
-import TodayTodoLargeBtn from '@/components/atoms/TodayTodoLargeBtn';
-import TodayTodoSmallBtn from '@/components/atoms/TodayTodoSmallBtn';
+import HomeLargeBtn from '@/components/atoms/HomeLargeBtn';
+import HomeSmallBtn from '@/components/atoms/HomeSmallBtn';
 import TodoBox from '@/components/atoms/TodoBox';
+
+import { HomeLargeBtnVariant } from '@/types/global';
+
+import { LARGE_BTN_TEXT, SMALL_BTN_TEXT } from '@/constants/btnText';
 
 interface TodayTodoAddStatusProps {
 	selectedTodayTodos: TodoBoxProps[];
@@ -36,8 +40,10 @@ const TodayTodoBoxAddStatus = ({ selectedTodayTodos, onDisableAddStatus }: Today
 			)}
 
 			<div className="flex justify-between">
-				<TodayTodoSmallBtn onClick={onDisableAddStatus}>취소</TodayTodoSmallBtn>
-				<TodayTodoLargeBtn variant="시작" disabled={!hasTodayTodos} />
+				<HomeSmallBtn onClick={onDisableAddStatus}>{SMALL_BTN_TEXT.CANCEL}</HomeSmallBtn>
+				<HomeLargeBtn variant={HomeLargeBtnVariant.LARGE} disabled={!hasTodayTodos}>
+					{LARGE_BTN_TEXT.START_TIMER}
+				</HomeLargeBtn>
 			</div>
 		</div>
 	);

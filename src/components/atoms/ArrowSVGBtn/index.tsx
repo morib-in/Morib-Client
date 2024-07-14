@@ -9,6 +9,7 @@ interface ArrowSVGButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const ArrowSVGBtn = ({ direction, ...props }: ArrowSVGButtonProps) => {
+	const defaultBtnStyle = ' bg-gray-bg-03 hover:bg-gray-bg-05 rounded-full';
 	let rotationStyle = '';
 
 	switch (direction) {
@@ -27,7 +28,7 @@ const ArrowSVGBtn = ({ direction, ...props }: ArrowSVGButtonProps) => {
 	}
 	return (
 		<button type="button" {...props}>
-			<ButtonArrowIcon className={rotationStyle} />
+			<ButtonArrowIcon className={rotationStyle + defaultBtnStyle} />
 		</button>
 	);
 };

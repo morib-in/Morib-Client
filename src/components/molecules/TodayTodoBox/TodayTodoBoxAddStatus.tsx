@@ -1,4 +1,8 @@
-import TodayTodoLargeBtn from '@/components/atoms/TodayTodoLargeBtn';
+import HomeLargeBtn from '@/components/atoms/HomeLargeBtn';
+
+import { HomeLargeBtnVariant } from '@/types/global';
+
+import { LARGE_BTN_TEXT } from '@/constants/btnText';
 
 interface TodayTodoDefaultStatusProps {
 	hasTodos: boolean;
@@ -15,7 +19,9 @@ const TodayTodoBoxDefaultStatus = ({ hasTodos, onEnableAddStatus }: TodayTodoDef
 				타이머를 시작해보세요.
 			</p>
 			<div className="mx-auto">
-				<TodayTodoLargeBtn variant="추가" disabled={!hasTodos} onClick={onEnableAddStatus} />
+				<HomeLargeBtn variant={HomeLargeBtnVariant.MIDDLE} disabled={!hasTodos} onClick={onEnableAddStatus}>
+					{LARGE_BTN_TEXT.ADD_TODAY_TODO}
+				</HomeLargeBtn>
 			</div>
 		</div>
 	);
