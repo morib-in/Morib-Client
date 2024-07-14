@@ -1,11 +1,4 @@
-import Calendar from '@/components/molecules/Calendar';
-
 const LoginPage = () => {
-	return (
-		<>
-			Login Page
-			<Calendar />
-		</>
-	);
+	return <>Login Page</>;
 };
 export default LoginPage;
