@@ -12,17 +12,16 @@ const CategoryInput = ({ onChange, isValid, placeholder, errorMessage }: Categor
 	const [value, setValue] = useState('');
 
 	const defaultStyle =
-		'subhead-med-18 h-[4.6rem] w-[34rem] rounded-[8px] border-[1px] bg-gray-bg-02 px-[2rem] py-[1rem] text-white placeholder-gray-03 focus:outline-none';
+		'subhead-med-18 h-[4.6rem] w-[34rem] rounded-[8px] border-[1px] bg-gray-bg-02 px-[2rem] py-[1rem]  text-white placeholder-gray-03 focus:outline-none';
 	const optionalStyle = isValid === false ? 'border-error-01' : 'border-transparent';
 
 	const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const newValue = e.target.value;
-		setValue(newValue);
-		setValue(newValue);
+		setValue(e.target.value);
+		onChange(e.target.value);
 	};
 
 	return (
-		<>
+		<div>
 			<input
 				type="text"
 				placeholder={placeholder}
@@ -31,12 +30,12 @@ const CategoryInput = ({ onChange, isValid, placeholder, errorMessage }: Categor
 				value={value}
 			/>
 			<div className={`flex ${isValid === false ? 'visible' : 'invisible'}`}>
-				<div className="my-[0.6rem] flex">
+				<div className="mt-[0.5rem] flex items-center gap-[5px]">
 					<AlertIcon />
-					<div className="detail-reg-14 ml-[0.5rem] text-error-01">{errorMessage}</div>
+					<div className="detail-reg-14 text-error-01">{errorMessage}</div>
 				</div>
 			</div>
-		</>
+		</div>
 	);
 };
 
