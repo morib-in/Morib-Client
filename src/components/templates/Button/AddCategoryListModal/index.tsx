@@ -32,15 +32,17 @@ const AddCategoryListModal = () => {
 		}
 	};
 
-	console.log('qoduf:', selectedInfo);
+	const handleDeleteUrlInfo = (urlInfoToDelete: UrlInfo) => {
+		setSelectedInfo((prevUrlInfos) => prevUrlInfos.filter((urlInfo) => urlInfo.url !== urlInfoToDelete.url));
+	};
 
 	return (
 		<div className="flex">
 			<CategoryModalLeft optionData={CATEGORY_API} handleSelectedInfo={handleSelectedInfo} />
 			<CategoryModalRight
 				selectedInfo={selectedInfo}
-				handleSelectedInfo={handleSelectedInfo}
 				handleUrlInputChange={handleUrlInputChange}
+				handleDeleteUrlInfo={handleDeleteUrlInfo}
 			/>
 		</div>
 	);
