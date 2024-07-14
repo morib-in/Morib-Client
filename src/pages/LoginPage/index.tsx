@@ -1,4 +1,10 @@
+import AddCategoryListModal from '@/components/templates/AddCategoryListModal';
+
 const LoginPage = () => {
-	return <>Login Page</>;
+	return (
+		<>
+			<AddCategoryListModal />
+		</>
+	);
 };
 export default LoginPage;

@@ -12,7 +12,7 @@ interface UrlInfo {
 	favicon: string;
 }
 
-const AddCategoryListModal = ({ dialogRef }) => {
+const AddCategoryListModal = () => {
 	const [selectedInfo, setSelectedInfo] = useState<UrlInfo[]>([]);
 
 	const handleSelectedInfo = (urlInfo: UrlInfo) => {
@@ -37,7 +37,7 @@ const AddCategoryListModal = ({ dialogRef }) => {
 	};
 
 	return (
-		<dialog ref={dialogRef}>
+		<div>
 			<div className="flex">
 				<CategoryModalLeft optionData={CATEGORY_API} handleSelectedInfo={handleSelectedInfo} />
 				<CategoryModalRight
@@ -46,7 +46,7 @@ const AddCategoryListModal = ({ dialogRef }) => {
 					handleDeleteUrlInfo={handleDeleteUrlInfo}
 				/>
 			</div>
-		</dialog>
+		</div>
 	);
 };
 export default AddCategoryListModal;
