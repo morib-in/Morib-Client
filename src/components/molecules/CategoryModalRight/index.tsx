@@ -31,7 +31,7 @@ const CategoryModalRight = ({ selectedInfo, handleUrlInputChange }: ModalRightPr
 				{selectedInfo.map((urlInfo, url) => (
 					<CategoryMoribContent key={url} urlInfo={urlInfo} variant="smallRight">
 						<button type="button">
-							<MinusBtn />
+							<MinusBtn className="fill-gray-bg-07 hover:fill-error-01 active:fill-error-03" />
 						</button>
 					</CategoryMoribContent>
 				))}
