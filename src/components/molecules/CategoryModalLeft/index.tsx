@@ -1,4 +1,3 @@
-// CategoryModalLeft
 import { useState } from 'react';
 
 import CategoryCommonTitle from '@/components/atoms/CategoryCommonTitle';
