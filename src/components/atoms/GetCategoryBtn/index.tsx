@@ -1,8 +1,10 @@
+import React from 'react';
+
 import ArrowCircleUpRight from '@/assets/svgs/arrow_circle_up_right.svg?react';
 
-type GetCategoryBtnProps = {
+interface GetCategoryBtnProps {
 	onClick: () => void;
-};
+}
 
 const GetCategoryBtn = ({ onClick }: GetCategoryBtnProps) => {
 	return (
