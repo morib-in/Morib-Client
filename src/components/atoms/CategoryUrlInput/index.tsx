@@ -44,6 +44,8 @@ const CategoryUrlInput = ({ variant = 'basic', onUrlInputChange, selectedInfo }:
 					setUrl('');
 					setErrorMessage('알맞은 도메인을 입력해주세요.');
 				}
+			} else {
+				setErrorMessage('알맞은 도메인을 입력해주세요.');
 			}
 		}
 	};
@@ -51,6 +53,7 @@ const CategoryUrlInput = ({ variant = 'basic', onUrlInputChange, selectedInfo }:
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setUrl(e.target.value);
 		setIsUrlValidated(null);
+		setErrorMessage('');
 	};
 
 	return (
