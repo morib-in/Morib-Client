@@ -5,7 +5,7 @@ interface TimerPageTemplatesProps {
 }
 
 const TimerPageTemplates = ({ children }: TimerPageTemplatesProps) => {
-	return <div className="flex bg-gray-bg-01">{children}</div>;
+	return <div className="flex h-[108rem] w-[192rem] bg-gray-bg-01">{children}</div>;
 };
 
 export default TimerPageTemplates;

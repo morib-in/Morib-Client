@@ -4,7 +4,7 @@ const useToggleSideBar = () => {
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
 	const toggleSidebar = () => {
-		setIsSidebarOpen(!isSidebarOpen);
+		setIsSidebarOpen((prev) => !prev);
 	};
 
 	return {
