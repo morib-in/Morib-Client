@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import DatePicker from 'react-datepicker';
 
 import CalendarCustomHeader from '@/components/atoms/CalendarCustomHeader/index';
 import CalendarInput from '@/components/atoms/CalendarInput/index';
+import CategoryInputTitle from '@/components/atoms/CategoryInputTitle';
 import CategoryRoutine from '@/components/atoms/CategoryRoutine/index';
 import CategoryToggle from '@/components/atoms/CategoryToggle';
 
@@ -10,7 +11,7 @@ import { formatCalendarDate } from '@/utils/calendar/index';
 
 import './tailwind-datepicker.css';
 
-const weekDays = ['일', '월', '화', '수', '목', '금', '토'];
+const weekDays: string[] = ['일', '월', '화', '수', '목', '금', '토'];
 
 const Calendar = () => {
 	const [selectedStartDate, setSelectedStartDate] = useState<Date>(null);
@@ -18,21 +19,24 @@ const Calendar = () => {
 	const [isDateToggleOn, setIsDateToggleOn] = useState(false);
 	const [isPeriodOn, setIsPeriodOn] = useState(false);
 	const [isRoutineOn, setIsRoutineOn] = useState(false);
-	const [isStartDateChanged, setIsStartDateChanged] = useState(false);
+	const [isCalendarOpened, setIsCalenderOpened] = useState(false);
+
+	const calendarRef = useRef(null);
 
 	const defaultDate = new Date();
 
 	const defaultToggleStyle = 'flex justify-between px-[1.75rem]';
 	const calendarStyle =
-		'detail-reg-14 shadow-[0_3px_30px_0_rgba(0, 0, 0, 0.40)] w-[30.3rem] flex-col gap-[2.1rem] rounded-[8px] bg-gray-bg-02 p-[1.4rem]';
+		'detail-reg-14 shadow-[0_3px_30px_0_rgba(0, 0, 0, 0.40)] w-[30.3rem] flex-col gap-[2.1rem] rounded-[8px] bg-gray-bg-02 p-[1.4rem] absolute z-50'; // Added absolute positioning and high z-index
 	const inputStyle = 'body-med-16 h-[3.2rem] w-[27.5rem] rounded-[3px] border-[1px] px-[1rem] py-[0.5rem] ';
-	const calendarInputStyle = 'body-med-16 h-[3.2rem] w-[13.2rem] rounded-[3px] border-[1px]  px-[1rem] py-[0.5rem] ';
+	const calendarInputStyle =
+		'body-med-16 h-[3.2rem] w-[13.2rem] rounded-[3px] border-[1px]  px-[1rem] py-[0.5rem]  bg-gray-bg-02 ';
 
 	const isDateSelected = !!selectedStartDate;
 	const isEndDateSelected = !!selectedEndDate;
 
 	const optionalStyle = isPeriodOn
-		? isStartDateChanged && isDateSelected && !isEndDateSelected
+		? selectedStartDate && isDateSelected && !isEndDateSelected
 			? 'border-mint-01 bg-date-active text-white'
 			: 'border-gray-bg-05 bg-gray-bg-02 text-gray-bg-04'
 		: isDateSelected
@@ -64,34 +68,60 @@ const Calendar = () => {
 		const [start, end] = dates;
 		setSelectedStartDate(start ?? new Date());
 		setSelectedEndDate(end);
-		if (start) {
-			setIsStartDateChanged(true);
-		}
 	};
 
 	const handleDateToggle = () => {
-		setIsDateToggleOn(!isDateToggleOn);
+		if (isDateToggleOn === false) setIsCalenderOpened(true);
+		setIsDateToggleOn((prev) => !prev);
 	};
 	const handlePeriodToggle = () => {
-		setIsPeriodOn(!isPeriodOn);
+		setIsPeriodOn((prev) => !prev);
 	};
 	const handleRoutineToggle = () => {
-		setIsRoutineOn(!isRoutineOn);
+		setIsRoutineOn((prev) => !prev);
 	};
 
+	const handleOpenCalendar = () => {
+		setIsCalenderOpened(true);
+	};
+
+	const handleClickOutside = (event) => {
+		if (calendarRef.current && !calendarRef.current.contains(event.target)) {
+			setIsCalenderOpened(false);
+		}
+	};
+
+	useEffect(() => {
+		document.addEventListener('mousedown', handleClickOutside);
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutside);
+		};
+	}, []);
+
+	useEffect(() => {
+		if (isDateToggleOn === false) {
+			setIsCalenderOpened(false);
+		}
+	}, [isCalendarOpened, isDateToggleOn]);
+
 	return (
-		<div>
-			<div className="flex">
-				<div>날짜 </div>
-				<CategoryToggle isToggleOn={isDateToggleOn} onToggle={handleDateToggle} />
+		<div ref={calendarRef} className="relative">
+			<div className="ml-[1rem] mt-[1rem] flex items-center gap-[1rem]">
+				<CategoryInputTitle title="날짜" />
+				<div className="mb-[0.6rem]">
+					<CategoryToggle isToggleOn={isDateToggleOn} onToggle={handleDateToggle} />
+				</div>
 			</div>
 			{isDateToggleOn && (
+				<CalendarInput
+					isPeriodOn={isPeriodOn}
+					selectedStartDate={selectedStartDate || defaultDate}
+					selectedEndDate={selectedEndDate}
+					onCalendarInputClick={handleOpenCalendar}
+				/>
+			)}
+			{isCalendarOpened && (
 				<>
-					<CalendarInput
-						isPeriodOn={isPeriodOn}
-						selectedStartDate={selectedStartDate || defaultDate}
-						selectedEndDate={selectedEndDate}
-					/>
 					<div className={`${calendarStyle}`}>
 						{!isPeriodOn ? (
 							<>

@@ -4,11 +4,17 @@ interface CalendarInputProps {
 	selectedStartDate: Date;
 	selectedEndDate?: Date;
 	isPeriodOn: boolean;
+	onCalendarInputClick: () => void;
 }
 
-const CalendarInput = ({ selectedStartDate, selectedEndDate, isPeriodOn }: CalendarInputProps) => {
+const CalendarInput = ({
+	onCalendarInputClick,
+	selectedStartDate,
+	selectedEndDate,
+	isPeriodOn,
+}: CalendarInputProps) => {
 	const defaultStyle =
-		'subhead-med-18 h-[4.6rem] w-[34.4rem] rounded-[8px] border-[1px] border-gray-bg-07 bg-gray-bg-03 px-[2rem] py-[0.8rem] text-white';
+		'cursor-pointer items-center self-stretch subhead-med-18 h-[4.6rem] w-[34.4rem] rounded-[8px] border-[1px] border-gray-bg-07 bg-gray-bg-03 px-[2rem] py-[0.8rem] mb-[0.9rem] text-white';
 
 	const formattedDate = formatInputDate(selectedStartDate);
 
@@ -23,9 +29,11 @@ const CalendarInput = ({ selectedStartDate, selectedEndDate, isPeriodOn }: Calen
 	return (
 		<>
 			{!isPeriodOn ? (
-				<div className={`${defaultStyle}`}>{formattedDate}</div>
+				<div className={`${defaultStyle}`} onClick={onCalendarInputClick}>
+					{formattedDate}
+				</div>
 			) : (
-				<div className={`${defaultStyle}`}>
+				<div className={`${defaultStyle}`} onClick={onCalendarInputClick}>
 					{formattedDate} ~ {formattedEndDate}
 				</div>
 			)}

@@ -3,7 +3,6 @@ import React, { useRef, useState } from 'react';
 import CategoryCommonBtn from '@/components/atoms/CategoryCommonBtn/index';
 import CategoryCommonTitle from '@/components/atoms/CategoryCommonTitle/index';
 import CategoryMoribContent from '@/components/atoms/CategoryMoribContent';
-import GetCategoryBtn from '@/components/atoms/GetCategoryBtn/index';
 import Calendar from '@/components/molecules/Calendar/index';
 import CategoryInputMoribName from '@/components/molecules/CategoryInputMoribName/index';
 import CategoryMoribContentSet from '@/components/molecules/CategoryMoribContentSet';
@@ -56,7 +55,7 @@ const AddCategoryModal = () => {
 			<button type="button" onClick={handleCloseDialog}>
 				Close Dialog
 			</button>
-			<CategoryModal ref={categoryRef}>
+			<CategoryModal ref={categoryRef} className="relative">
 				{(handleCloseModal) => (
 					<div>
 						<CategoryCommonTitle>카테고리 추가</CategoryCommonTitle>
@@ -65,7 +64,7 @@ const AddCategoryModal = () => {
 							<Calendar />
 						</div>
 
-						<div className="relative flex flex-col">
+						<div className="flex flex-col">
 							<CategoryMoribSet onUrlInputChange={handleUrlInputChange} />
 							<div>
 								<CategoryMoribContentSet urlInfos={urlInfos} variant="basic">
@@ -74,9 +73,6 @@ const AddCategoryModal = () => {
 									))}
 								</CategoryMoribContentSet>
 							</div>
-						</div>
-						<div className="absolute right-[4.4rem] top-[20rem]">
-							<GetCategoryBtn />
 						</div>
 
 						<div className="mt-[3rem] flex justify-end gap-[1.6rem]">

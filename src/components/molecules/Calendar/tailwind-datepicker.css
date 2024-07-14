@@ -60,19 +60,10 @@
   @apply rounded-full;
 }
 
-/*
-.react-datepicker__day.react-datepicker__day--in-range + .react-datepicker__day--in-range::before {
-  content: "";
-  @apply absolute inset-y-0 left-0 right-0 bg-date-active;
-  z-index: -1;
-}
-  */
-
 .react-datepicker__day--range-start {
-  @apply bg-mint-01 text-gray-bg-06 rounded-full !important;
+  @apply bg-mint-01 text-gray-bg-06 rounded-full ;
 }
 
 .react-datepicker__day--range-end {
-  @apply bg-mint-01 text-black rounded-full !important;
+  @apply bg-mint-01 text-black rounded-full;
 }
-
