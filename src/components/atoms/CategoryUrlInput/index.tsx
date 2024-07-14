@@ -13,7 +13,7 @@ interface UrlInfo {
 interface CategoryUrlInputProps {
 	variant?: 'basic' | 'small';
 	onUrlInputChange: (url: string) => void;
-	selectedInfo: UrlInfo[];
+	selectedInfo?: UrlInfo[];
 }
 
 const CategoryUrlInput = ({ variant = 'basic', onUrlInputChange, selectedInfo }: CategoryUrlInputProps) => {

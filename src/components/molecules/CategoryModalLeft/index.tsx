@@ -12,9 +12,14 @@ import AddBtn from '@/assets/svgs/add_btn.svg?react';
 
 import { CATEGORY_API } from '@/mocks/categoryData';
 
+interface UrlInfo {
+	url: string;
+	domain: string;
+	favicon: string;
+}
 interface ModalProps {
 	optionData: OptionData[];
-	handleSelectedInfo: () => string;
+	handleSelectedInfo: (url: UrlInfo) => void;
 }
 
 interface Category {
@@ -59,7 +64,7 @@ const CategoryModalLeft = ({ optionData, handleSelectedInfo }: ModalProps) => {
 						key={url}
 						urlInfo={urlInfo}
 						variant="smallLeft"
-						handleSelectedInfo={handleSelectedInfo}
+						handleSelectedInfo={(urlInfo: UrlInfo) => handleSelectedInfo(urlInfo)}
 					>
 						<button className="">
 							<AddBtn className="fill-gray-bg-07 hover:fill-mint-02-hover active:fill-mint-02-press" />
