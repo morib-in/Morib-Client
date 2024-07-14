@@ -6,6 +6,7 @@ import DatePicker from '@/components/molecules/DatePicker';
 import HomeDefaultStatus from '@/components/molecules/HomeDefaultStatus';
 import HomeSideBar from '@/components/molecules/HomeSideBar';
 import TodayTodoBox from '@/components/molecules/TodayTodoBox';
+import HomePageWrapper from '@/components/templates/HomePageWrapper';
 
 import BellIcon from '@/assets/svgs/bell.svg?react';
 import FriendSettingIcon from '@/assets/svgs/friend_setting.svg?react';
@@ -15,7 +16,7 @@ import { todoData } from '@/mocks/homeData';
 
 const HomePage = () => {
 	return (
-		<div className="flex h-[1080px] w-[1920px] bg-gray-bg-01">
+		<HomePageWrapper>
 			<HomeSideBar />
 			<div className="flex h-full w-full justify-between p-[4.2rem]">
 				<section>
@@ -64,7 +65,7 @@ const HomePage = () => {
 					</div>
 				</section>
 			</div>
-		</div>
+		</HomePageWrapper>
 	);
 };
 
