@@ -10,7 +10,7 @@ interface CategoryMoribContentProps {
 	urlInfo: UrlInfo;
 	variant: 'basic' | 'smallLeft' | 'smallRight';
 	children?: React.ReactNode;
-	handleSelectedInfo: () => void;
+	handleSelectedInfo?: () => void;
 	enableHover?: boolean;
 }
 
@@ -39,7 +39,7 @@ const CategoryMoribContent = ({
 
 	const handlekeyDown = (event: React.KeyboardEvent) => {
 		if (event.key === 'Enter' || event.key === ' ') {
-			handleSelectedInfo();
+			return;
 		}
 	};
 

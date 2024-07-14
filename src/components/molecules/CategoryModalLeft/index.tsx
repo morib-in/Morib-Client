@@ -64,7 +64,7 @@ const CategoryModalLeft = ({ optionData, handleSelectedInfo }: ModalProps) => {
 						key={url}
 						urlInfo={urlInfo}
 						variant="smallLeft"
-						handleSelectedInfo={(urlInfo: UrlInfo) => handleSelectedInfo(urlInfo)}
+						handleSelectedInfo={() => handleSelectedInfo(urlInfo)}
 					>
 						<button className="">
 							<AddBtn className="fill-gray-bg-07 hover:fill-mint-02-hover active:fill-mint-02-press" />
