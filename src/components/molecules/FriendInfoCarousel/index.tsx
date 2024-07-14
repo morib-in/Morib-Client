@@ -19,6 +19,7 @@ const FriendInfoCarousel = () => {
 						time={friend.time}
 						name={friend.name}
 						categoryname={friend.categoryname}
+						isPlaying={friend.isPlaying}
 					/>
 				))}
 			</div>

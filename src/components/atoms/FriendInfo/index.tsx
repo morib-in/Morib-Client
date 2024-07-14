@@ -1,3 +1,5 @@
+import useTimerCount from '@/hooks/useTimerCount';
+
 import { formatSeconds } from '@/utils/time';
 
 import ClockIcon from '@/assets/svgs/icon_clock.svg?react';
@@ -7,10 +9,12 @@ interface UserFriendDataProps {
 	name: string;
 	time: number;
 	categoryname: string;
+	isPlaying: boolean;
 }
 
-const FriendInfo = ({ image, name, time, categoryname }: UserFriendDataProps) => {
-	const formattedTime = formatSeconds(time);
+const FriendInfo = ({ image, name, time, categoryname, isPlaying }: UserFriendDataProps) => {
+	const timer = useTimerCount({ isPlaying, previousTime: time });
+	const formattedTime = formatSeconds(timer);
 
 	return (
 		<div className="py-[0.5rem 0.7rem] flex h-[15rem] w-[9.8rem] flex-col items-center justify-center px-[0.8rem]">

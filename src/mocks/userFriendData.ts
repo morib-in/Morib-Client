@@ -10,6 +10,7 @@ export const userFriendData = [
 		name: '이유리1',
 		time: 762,
 		categoryname: '교양수업',
+		isPlaying: true,
 	},
 	{
 		id: 2,
@@ -17,6 +18,7 @@ export const userFriendData = [
 		name: '서수아2',
 		time: 762,
 		categoryname: '기능명세서',
+		isPlaying: true,
 	},
 	{
 		id: 3,
@@ -24,6 +26,7 @@ export const userFriendData = [
 		name: '김온유3',
 		time: 13332,
 		categoryname: 'IA',
+		isPlaying: true,
 	},
 	{
 		id: 4,
@@ -31,6 +34,7 @@ export const userFriendData = [
 		time: 13332,
 		name: '김강민4',
 		categoryname: '캡스톤디자인',
+		isPlaying: true,
 	},
 	{
 		id: 5,
@@ -38,6 +42,7 @@ export const userFriendData = [
 		name: '이유리5',
 		time: 762,
 		categoryname: '교양수업',
+		isPlaying: true,
 	},
 	{
 		id: 6,
@@ -45,6 +50,7 @@ export const userFriendData = [
 		name: '서수아6',
 		time: 762,
 		categoryname: '기능명세서',
+		isPlaying: true,
 	},
 	{
 		id: 7,
@@ -52,6 +58,7 @@ export const userFriendData = [
 		name: '김온유7',
 		time: 13332,
 		categoryname: 'IA',
+		isPlaying: true,
 	},
 	{
 		id: 8,
@@ -59,6 +66,7 @@ export const userFriendData = [
 		name: '강서현8',
 		time: 10004,
 		categoryname: '앱잼 와이어프...',
+		isPlaying: true,
 	},
 	{
 		id: 9,
@@ -66,6 +74,7 @@ export const userFriendData = [
 		time: 13332,
 		name: '김강민9',
 		categoryname: '캡스톤디자인',
+		isPlaying: true,
 	},
 	{
 		id: 10,
@@ -73,6 +82,7 @@ export const userFriendData = [
 		name: '이유리10',
 		time: 762,
 		categoryname: '교양수업',
+		isPlaying: true,
 	},
 	{
 		id: 11,
@@ -80,6 +90,7 @@ export const userFriendData = [
 		name: '김온유11',
 		time: 13332,
 		categoryname: 'IA',
+		isPlaying: true,
 	},
 	{
 		id: 12,
@@ -87,6 +98,7 @@ export const userFriendData = [
 		time: 13332,
 		name: '김강민12',
 		categoryname: '캡스톤디자인',
+		isPlaying: true,
 	},
 	{
 		id: 13,
@@ -94,6 +106,7 @@ export const userFriendData = [
 		name: '이유리13',
 		time: 762,
 		categoryname: '교양수업',
+		isPlaying: true,
 	},
 	{
 		id: 14,
@@ -101,5 +114,6 @@ export const userFriendData = [
 		name: '서수아14',
 		time: 762,
 		categoryname: '기능명세서',
+		isPlaying: true,
 	},
 ];
