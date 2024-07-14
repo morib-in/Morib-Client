@@ -12,7 +12,7 @@ interface Todo {
 	id: number;
 	title: string;
 	date: string;
-	time: number;
+	accumulatedTime: number;
 }
 interface CategoryBoxProps {
 	completedTodos?: Todo[];
@@ -33,12 +33,12 @@ const TimerSideBar = ({ ongoingTodos = todoData, completedTodos = todoData, togg
 				</button>
 			</div>
 			<div className="h-[82.6rem] overflow-auto pb-[2rem] pt-[1rem]">
-				{ongoingTodos.map(({ id, title, date, time }) => (
-					<TodoBox key={id} title={title} date={date} accumulatedTime={time} isCompleted={false} />
+				{ongoingTodos.map(({ id, title, date, accumulatedTime }) => (
+					<TodoBox key={id} title={title} date={date} accumulatedTime={accumulatedTime} isCompleted={false} />
 				))}
 				<TodoToggleBtn isCompleted={false} isToggled={false}>
-					{completedTodos.map(({ id, title, date, time }) => (
-						<TodoBox key={id} title={title} date={date} accumulatedTime={time} isCompleted={true} />
+					{completedTodos.map(({ id, title, date, accumulatedTime }) => (
+						<TodoBox key={id} title={title} date={date} accumulatedTime={accumulatedTime} isCompleted={true} />
 					))}
 				</TodoToggleBtn>
 			</div>
