@@ -21,11 +21,11 @@ interface ModalRightProps {
 const CategoryModalRight = ({ selectedInfo, handleUrlInputChange, handleDeleteUrlInfo }: ModalRightProps) => {
 	return (
 		<div className="flex h-[80rem] w-[61.2rem] flex-col items-end justify-between rounded-r-[1rem] bg-gray-bg-03 pb-[3rem] pl-[3rem] pr-[4.3rem] pt-[9.7rem]">
-			<div className="flex w-full flex-row justify-start">
+			<div className="mb-[8px] flex w-full flex-row justify-start">
 				<CategoryModalRightTitle msetName="앱잼 와이어프레임" />
 			</div>
-			<div className="mb-[2.8rem] flex w-full">
-				<CategoryUrlInput variant="basic" onUrlInputChange={handleUrlInputChange} />
+			<div className="mb-[2.8rem] flex w-full flex-col">
+				<CategoryUrlInput selectedInfo={selectedInfo} variant="small" onUrlInputChange={handleUrlInputChange} />
 			</div>
 			<div className="flex w-full" />
 			<CategoryMoribContentSet urlInfos={selectedInfo} variant="smallRight">
