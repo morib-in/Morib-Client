@@ -18,7 +18,7 @@ interface UrlInfo {
 	favicon: string;
 }
 
-const AddCategoryPage = () => {
+const AddCategoryModal = () => {
 	const [urlInfos, setUrlInfos] = useState<UrlInfo[]>([]);
 	const [name, setName] = useState('');
 
@@ -92,4 +92,4 @@ const AddCategoryPage = () => {
 	);
 };
 
-export default AddCategoryPage;
+export default AddCategoryModal;
