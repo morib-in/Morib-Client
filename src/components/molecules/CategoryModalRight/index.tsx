@@ -14,8 +14,8 @@ interface UrlInfo {
 
 interface ModalRightProps {
 	selectedInfo: UrlInfo[];
-	handleUrlInputChange: () => string;
-	handleDeleteUrlInfo: () => string;
+	handleUrlInputChange: (url: string) => void;
+	handleDeleteUrlInfo: (url: UrlInfo) => void;
 }
 
 const CategoryModalRight = ({ selectedInfo, handleUrlInputChange, handleDeleteUrlInfo }: ModalRightProps) => {
@@ -26,7 +26,11 @@ const CategoryModalRight = ({ selectedInfo, handleUrlInputChange, handleDeleteUr
 				<CategoryModalRightTitle msetName="앱잼 와이어프레임" />
 			</div>
 			<div className="mb-[2.8rem] flex w-full flex-col">
-				<CategoryUrlInput selectedInfo={selectedInfo} variant="small" onUrlInputChange={handleUrlInputChange} />
+				<CategoryUrlInput
+					selectedInfo={selectedInfo}
+					variant="small"
+					onUrlInputChange={(url: string) => handleUrlInputChange(url)}
+				/>
 			</div>
 			<div className="flex w-full" />
 			<CategoryMoribContentSet urlInfos={selectedInfo} variant="smallRight">

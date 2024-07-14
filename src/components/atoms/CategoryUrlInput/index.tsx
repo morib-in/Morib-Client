@@ -13,7 +13,7 @@ interface UrlInfo {
 interface CategoryUrlInputProps {
 	variant?: 'basic' | 'small';
 	onUrlInputChange: (url: string) => void;
-	selectedInfo: UrlInfo[];
+	selectedInfo?: UrlInfo[];
 }
 
 const CategoryUrlInput = ({ variant = 'basic', onUrlInputChange, selectedInfo }: CategoryUrlInputProps) => {
@@ -35,7 +35,7 @@ const CategoryUrlInput = ({ variant = 'basic', onUrlInputChange, selectedInfo }:
 			const isValid = isUrlValid(url);
 			setIsUrlValidated(isValid);
 			if (isValid) {
-				const isExist = selectedInfo.some((info) => info.url === url);
+				const isExist = selectedInfo!.some((info) => info.url === url);
 				if (isExist) {
 					setErrorMessage('이미 추가된 주소입니다.');
 					setIsUrlValidated(false);

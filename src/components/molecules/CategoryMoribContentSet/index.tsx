@@ -7,7 +7,7 @@ interface UrlInfo {
 }
 
 interface CategoryMoribContentProps {
-	variant?: 'basic' | 'smallLeft' | 'smallRight';
+	variant: 'basic' | 'smallLeft' | 'smallRight';
 	urlInfos: UrlInfo[];
 	children?: React.ReactNode;
 }

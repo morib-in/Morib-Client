@@ -8,7 +8,7 @@ interface UrlInfo {
 
 interface CategoryMoribContentProps {
 	urlInfo: UrlInfo;
-	variant?: 'basic' | 'smallLeft' | 'smallRight';
+	variant: 'basic' | 'smallLeft' | 'smallRight';
 	children?: React.ReactNode;
 	handleSelectedInfo?: () => void;
 	enableHover?: boolean;
@@ -44,7 +44,7 @@ const CategoryMoribContent = ({
 	const hoverStyleUrls = enableHover ? `group-hover:bg-gray-bg-06` : ``;
 
 	return (
-		<div className={`h-[4.6rem] ${sizeVariant[variant].width}`} onClick={() => handleSelectedInfo(urlInfo)}>
+		<div className={`h-[4.6rem] ${sizeVariant[variant].width}`} onClick={handleSelectedInfo}>
 			<div
 				className={`group flex h-[4.6rem] items-center border-b-[0.1rem] border-gray-bg-04 px-[0.8rem] py-[1.2rem] ${hoverStyleInfos} ${sizeVariant[variant].gap}`}
 			>

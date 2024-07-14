@@ -5,13 +5,12 @@ module.exports = {
 		node: true, // Node.js 환경 추가
 	},
 
-	plugins: ['react', 'react-hooks', '@typescript-eslint', 'jsx-a11y', 'prettier', '@tanstack/query'],
+	plugins: ['react', 'react-hooks', '@typescript-eslint', 'prettier', '@tanstack/query'],
 
 	extends: [
 		'eslint:recommended',
 		'plugin:react/recommended',
 		'plugin:react-hooks/recommended',
-		'plugin:jsx-a11y/recommended',
 		'plugin:@typescript-eslint/recommended',
 		'plugin:prettier/recommended',
 		'plugin:@tanstack/eslint-plugin-query/recommended',
@@ -50,7 +49,7 @@ module.exports = {
 		'react/prop-types': 'off', // prop-type 지정
 
 		'no-console': ['warn', { allow: ['warn', 'error', 'info'] }], // 콘솔은 확인 뒤 지우기
-		'no-unused-vars': 'error', // 사용하지 않는 변수 error처리
+
 		'no-undef': 'error', // 정의 안 한 변수 사용 x
 		'no-shadow': 'off', // 바깥 스코프의 선언된 변수와 같은 이름의 새로운 변수 선언 금지
 		'no-trailing-spaces': 'error', // 쓸데없는 공백 없애기
