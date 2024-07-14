@@ -1,7 +1,8 @@
 import { ButtonHTMLAttributes } from 'react';
 
-const TodayTodoSmallBtn = ({ children, disabled = false, ...props }: ButtonHTMLAttributes<HTMLButtonElement>) => {
-	const defaultStyle = 'subhead-bold-20 flex items-center justify-center rounded-[0.8rem] px-[3.6rem] py-[2rem] ';
+const HomeSmallBtn = ({ children, disabled = false, ...props }: ButtonHTMLAttributes<HTMLButtonElement>) => {
+	const defaultStyle =
+		'subhead-bold-20 flex items-center justify-center rounded-[0.8rem] px-[3.6rem] py-[2rem] flex-shrink-0 ';
 	const buttonStyle = disabled
 		? 'bg-gray-bg-06 text-gray-04 '
 		: 'bg-gray-bg-05 text-white hover:bg-gray-bg-04 active:bg-gray-bg-05 ';
@@ -13,4 +14,4 @@ const TodayTodoSmallBtn = ({ children, disabled = false, ...props }: ButtonHTMLA
 	);
 };
 
-export default TodayTodoSmallBtn;
+export default HomeSmallBtn;

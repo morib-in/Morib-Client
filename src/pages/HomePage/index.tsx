@@ -1,10 +1,9 @@
-import axios from 'axios';
-
 import MoreFriendsBtn from '@/components/atoms/MoreFriendsBtn';
 import SVGBtn from '@/components/atoms/SVGBtn';
 import UserProfile from '@/components/atoms/UserProfile';
 import CategoryBox from '@/components/molecules/CategoryBox';
 import DatePicker from '@/components/molecules/DatePicker';
+import HomeDefaultStatus from '@/components/molecules/HomeDefaultStatus';
 import HomeSideBar from '@/components/molecules/HomeSideBar';
 import TodayTodoBox from '@/components/molecules/TodayTodoBox';
 
@@ -39,15 +38,16 @@ const HomePage = () => {
 					<div className="flex">
 						<article className="flex h-[732px] w-[1262px] gap-[2.8rem] overflow-x-auto">
 							{/*Todo: 서버 상태 받아서 map 로직 추가 */}
-							<CategoryBox title={'morib 프로젝트'} ongoingTodos={todoData} completedTodos={todoData} />
+							{/* <CategoryBox title={'morib 프로젝트'} ongoingTodos={todoData} completedTodos={todoData} />
 							<CategoryBox title={'morib 프로젝트'} />
-							<CategoryBox title={'morib 프로젝트'} />
+							<CategoryBox title={'morib 프로젝트'} /> */}
+							<HomeDefaultStatus />
 						</article>
-						<div className="ml-[2.2rem] flex flex-col">
+						{/* <div className="ml-[2.2rem] flex flex-col">
 							<SVGBtn className="flex-shrink-0">
 								<LargePlusIcon className="rounded-full bg-gray-bg-03 hover:bg-gray-bg-05" />
 							</SVGBtn>
-						</div>
+						</div> */}
 					</div>
 				</section>
 				<section className="flex items-end justify-end">

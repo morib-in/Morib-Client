@@ -4,3 +4,8 @@ export enum Direction {
 	UP = 'up',
 	DOWN = 'down',
 }
+
+export enum HomeLargeBtnVariant {
+	MIDDLE = 'middle',
+	LARGE = 'large',
+}
