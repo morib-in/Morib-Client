@@ -48,8 +48,6 @@ const AddCategoryPage = () => {
 		categoryRef.current?.close();
 	};
 
-	console.log(name);
-	console.log(urlInfos);
 	return (
 		<div>
 			<button type="button" onClick={handleOpenDialog}>
