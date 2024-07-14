@@ -4,14 +4,22 @@ import { isUrlValid } from '@/utils/isUrlValid/index';
 
 import AlertIcon from '@/assets/svgs/ic_description.svg?react';
 
+interface UrlInfo {
+	url: string;
+	domain: string;
+	favicon: string;
+}
+
 interface CategoryUrlInputProps {
 	variant?: 'basic' | 'small';
 	onUrlInputChange: (url: string) => void;
+	selectedInfo: UrlInfo[];
 }
 
-const CategoryUrlInput = ({ variant = 'basic', onUrlInputChange }: CategoryUrlInputProps) => {
+const CategoryUrlInput = ({ variant = 'basic', onUrlInputChange, selectedInfo }: CategoryUrlInputProps) => {
 	const [url, setUrl] = useState('');
 	const [isUrlValidated, setIsUrlValidated] = useState<boolean | null>(null);
+	const [errorMessage, setErrorMessage] = useState<string>('');
 
 	const sizeVariantWidth = {
 		basic: 'w-[72.8rem]',
@@ -27,8 +35,17 @@ const CategoryUrlInput = ({ variant = 'basic', onUrlInputChange }: CategoryUrlIn
 			const isValid = isUrlValid(url);
 			setIsUrlValidated(isValid);
 			if (isValid) {
-				onUrlInputChange(url);
-				setUrl('');
+				const isExist = selectedInfo.some((info) => info.url === url);
+				if (isExist) {
+					setErrorMessage('이미 추가된 주소입니다.');
+					setIsUrlValidated(false);
+				} else {
+					onUrlInputChange(url);
+					setUrl('');
+					setErrorMessage('알맞은 도메인을 입력해주세요.');
+				}
+			} else {
+				setErrorMessage('알맞은 도메인을 입력해주세요.');
 			}
 		}
 	};
@@ -36,6 +53,7 @@ const CategoryUrlInput = ({ variant = 'basic', onUrlInputChange }: CategoryUrlIn
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setUrl(e.target.value);
 		setIsUrlValidated(null);
+		setErrorMessage('');
 	};
 
 	return (
@@ -51,9 +69,10 @@ const CategoryUrlInput = ({ variant = 'basic', onUrlInputChange }: CategoryUrlIn
 			{isUrlValidated === false && (
 				<div className="my-[0.6rem] flex">
 					<AlertIcon />
-					<div className="detail-reg-14 ml-[0.5rem] text-error-01">알맞은 도메인을 입력해주세요.</div>
+					<div className="detail-reg-14 ml-[0.5rem] text-error-01">{errorMessage}</div>
 				</div>
 			)}
+			{}
 		</>
 	);
 };
