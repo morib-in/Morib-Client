@@ -62,7 +62,7 @@ const CategoryModalLeft = ({ optionData, handleSelectedInfo }: ModalProps) => {
 				{urlInfos.map((urlInfo, url) => (
 					<tr
 						key={url}
-						className="flex h-[4.6rem] w-[100%] gap-[1.2rem] border-b border-gray-bg-04 px-[0.8rem] hover:bg-gray-bg-06"
+						className="group flex h-[4.6rem] w-[100%] gap-[1.2rem] border-b border-gray-bg-04 px-[0.8rem] hover:bg-gray-bg-04"
 						onClick={() => handleSelectedInfo(urlInfo)}
 					>
 						<CategoryMoribContentPage urlInfo={urlInfo} variant="smallLeft" />

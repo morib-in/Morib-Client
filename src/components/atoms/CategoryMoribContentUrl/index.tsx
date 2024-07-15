@@ -24,7 +24,7 @@ const CategoryMoribContentUrl = ({ urlInfo, variant, children }: CategoryMoribCo
 	};
 
 	const tbodyUrlStyle =
-		'detail-reg-14 h-[2.1rem] truncate rounded-[2rem] bg-gray-bg-04 px-[1rem] py-[0.1rem] text-white';
+		'detail-reg-14 h-[2.1rem] truncate rounded-[2rem] bg-gray-bg-04 px-[1rem] py-[0.1rem] text-white group-hover:bg-gray-bg-06';
 
 	return (
 		<td className="flex items-center">

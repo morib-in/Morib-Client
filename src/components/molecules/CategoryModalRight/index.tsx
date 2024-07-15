@@ -35,10 +35,7 @@ const CategoryModalRight = ({ selectedInfo, handleUrlInputChange, handleDeleteUr
 			<div className="flex w-full" />
 			<CategoryMoribContentSet urlInfos={selectedInfo} variant="smallRight">
 				{selectedInfo.map((urlInfo, url) => (
-					<tr
-						key={url}
-						className="flex h-[4.6rem] gap-[2rem] border-b border-gray-bg-04 px-[0.8rem] hover:bg-gray-bg-06"
-					>
+					<tr key={url} className="flex h-[4.6rem] gap-[2rem] border-b border-gray-bg-04 px-[0.8rem]">
 						<CategoryMoribContentPage urlInfo={urlInfo} variant="smallRight" />
 						<CategoryMoribContentUrl urlInfo={urlInfo} variant="smallRight">
 							<div className="p-[1.25rem]">
