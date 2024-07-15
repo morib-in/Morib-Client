@@ -11,16 +11,9 @@ interface CategoryMoribContentProps {
 	variant: 'basic' | 'smallLeft' | 'smallRight';
 	children?: React.ReactNode;
 	handleSelectedInfo?: () => void;
-	enableHover?: boolean;
 }
 
-const CategoryMoribContent = ({
-	urlInfo,
-	variant,
-	children,
-	enableHover,
-	handleSelectedInfo,
-}: CategoryMoribContentProps) => {
+const CategoryMoribContent = ({ urlInfo, variant, children, handleSelectedInfo }: CategoryMoribContentProps) => {
 	const sizeVariant = {
 		basic: {
 			width: 'w-[72.8rem]',
@@ -40,13 +33,10 @@ const CategoryMoribContent = ({
 	const tbodyUrlStyle =
 		'detail-reg-14 h-[2.1rem] truncate rounded-[2rem] bg-gray-bg-04 px-[1rem] py-[0.1rem] text-white';
 
-	const hoverStyleInfos = enableHover ? `hover:bg-gray-bg-04` : ``;
-	const hoverStyleUrls = enableHover ? `group-hover:bg-gray-bg-06` : ``;
-
 	return (
-		<div className={`h-[4.6rem] ${sizeVariant[variant].width}`} onClick={handleSelectedInfo}>
+		<div className={`h-[4.6rem] ${sizeVariant[variant]?.width}`} onClick={() => handleSelectedInfo(urlInfo)}>
 			<div
-				className={`group flex h-[4.6rem] items-center border-b-[0.1rem] border-gray-bg-04 px-[0.8rem] py-[1.2rem] ${hoverStyleInfos} ${sizeVariant[variant].gap}`}
+				className={`group flex h-[4.6rem] items-center border-b-[0.1rem] border-gray-bg-04 px-[0.8rem] py-[1.2rem] hover:bg-gray-bg-04 ${sizeVariant[variant].gap}`}
 			>
 				<div className={`my-[0.1rem] flex h-[2.2rem] items-center`}>
 					<img src={urlInfo.favicon} alt="favicon" className="my-[0.1rem] mr-[1.2rem] h-[2rem] w-[2rem]" />
@@ -54,7 +44,9 @@ const CategoryMoribContent = ({
 						{urlInfo.domain}
 					</div>
 				</div>
-				<div className={`${tbodyUrlStyle} ${sizeVariant[variant].urlWidth} ${hoverStyleUrls}`}>{urlInfo.url}</div>
+				<div className={`${tbodyUrlStyle} ${sizeVariant[variant].urlWidth} group-hover:bg-gray-bg-06`}>
+					{urlInfo.url}
+				</div>
 				{children}
 			</div>
 		</div>
