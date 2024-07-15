@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 import CategoryCommonBtn from '@/components/atoms/CategoryCommonBtn/index';
 import CategoryCommonTitle from '@/components/atoms/CategoryCommonTitle/index';
@@ -55,10 +55,10 @@ const AddCategoryModal = () => {
 			<button type="button" onClick={handleCloseDialog}>
 				Close Dialog
 			</button>
-			<CategoryModal ref={categoryRef} className="relative">
+			<CategoryModal ref={categoryRef}>
 				{(handleCloseModal) => (
 					<div>
-						<CategoryCommonTitle>카테고리 추가</CategoryCommonTitle>
+						<CategoryCommonTitle />
 						<div className="flex-start mt-[1.6rem] inline-flex gap-[4.4rem]">
 							<CategoryInputMoribName onNameChange={handleNameChange} />
 							<Calendar />

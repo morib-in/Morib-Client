@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
 

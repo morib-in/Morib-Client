@@ -3,13 +3,13 @@ import React, { useState } from 'react';
 import AlertIcon from '@/assets/svgs/ic_description.svg?react';
 
 interface CategoryInputNameProps {
-	onChange: () => void;
-	isValid: boolean;
+	onNameChange: (name: string) => void;
+	isValid?: boolean;
 	placeholder: string;
 	errorMessage: string;
 }
 
-const CategoryInput = ({ onChange, isValid, placeholder, errorMessage }: CategoryInputNameProps) => {
+const CategoryInput = ({ onNameChange, isValid, placeholder, errorMessage }: CategoryInputNameProps) => {
 	const [value, setValue] = useState('');
 
 	const defaultStyle =
@@ -18,7 +18,7 @@ const CategoryInput = ({ onChange, isValid, placeholder, errorMessage }: Categor
 
 	const handleValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setValue(event.target.value);
-		onChange(event.target.value);
+		onNameChange(event.target.value);
 	};
 
 	return (

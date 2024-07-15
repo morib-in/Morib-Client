@@ -20,7 +20,7 @@ const CalendarInput = ({
 
 	const getFormattedEndDate = () => {
 		if (isPeriodOn) {
-			return formatInputDate(selectedEndDate);
+			return formatInputDate(selectedEndDate || null);
 		}
 	};
 

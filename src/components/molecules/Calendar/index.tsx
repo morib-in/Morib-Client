@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import DatePicker from 'react-datepicker';
 
 import CalendarCustomHeader from '@/components/atoms/CalendarCustomHeader/index';
@@ -13,15 +13,15 @@ import './tailwind-datepicker.css';
 
 const weekDays: string[] = ['일', '월', '화', '수', '목', '금', '토'];
 
-const Calendar = () => {
-	const [selectedStartDate, setSelectedStartDate] = useState<Date>(null);
-	const [selectedEndDate, setSelectedEndDate] = useState<Date>(null);
+const Calendar: React.FC = () => {
+	const [selectedStartDate, setSelectedStartDate] = useState<Date | null>(null);
+	const [selectedEndDate, setSelectedEndDate] = useState<Date | null>(null);
 	const [isDateToggleOn, setIsDateToggleOn] = useState(false);
 	const [isPeriodOn, setIsPeriodOn] = useState(false);
 	const [isRoutineOn, setIsRoutineOn] = useState(false);
 	const [isCalendarOpened, setIsCalenderOpened] = useState(false);
 
-	const calendarRef = useRef(null);
+	const calendarRef = useRef<HTMLDivElement>(null);
 
 	const defaultDate = new Date();
 
@@ -52,22 +52,30 @@ const Calendar = () => {
 
 	const toggleTxtStyle = 'detail-reg-12 text-white';
 
+	const formatWeekDay = (date: string): string => {
+		const dayOfWeek = new Date(date).getDay();
+		return weekDays[dayOfWeek];
+	};
+
 	const commonDatePickerProps = {
-		renderCustomHeader: (props) => <CalendarCustomHeader {...props} />,
-		formatWeekDay: (dayOfWeek) => weekDays[dayOfWeek],
+		renderCustomHeader: (props: any) => <CalendarCustomHeader {...props} />,
+		formatWeekDay: formatWeekDay,
 		dateFormat: 'yyyy년 M월 dd일',
 		inline: true,
 		disabledKeyboardNavigation: true,
 	};
 
-	const handleDateChange = (date) => {
+	const handleDateChange = (date: Date | null) => {
 		setSelectedStartDate(date);
 	};
 
-	const handlePeriodChange = (dates) => {
-		const [start, end] = dates;
-		setSelectedStartDate(start ?? new Date());
-		setSelectedEndDate(end);
+	const handlePeriodChange = (dates: (Date | null)[]) => {
+		if (dates && dates.length === 2) {
+			setSelectedStartDate(dates[0]);
+			setSelectedEndDate(dates[1]);
+		} else {
+			setSelectedEndDate(null);
+		}
 	};
 
 	const handleDateToggle = () => {
@@ -85,8 +93,8 @@ const Calendar = () => {
 		setIsCalenderOpened(true);
 	};
 
-	const handleClickOutside = (event) => {
-		if (calendarRef.current && !calendarRef.current.contains(event.target)) {
+	const handleClickOutside = (event: MouseEvent) => {
+		if (calendarRef.current && !calendarRef.current.contains(event.target as Node)) {
 			setIsCalenderOpened(false);
 		}
 	};
@@ -115,8 +123,8 @@ const Calendar = () => {
 			{isDateToggleOn && (
 				<CalendarInput
 					isPeriodOn={isPeriodOn}
-					selectedStartDate={selectedStartDate || defaultDate}
-					selectedEndDate={selectedEndDate}
+					selectedStartDate={selectedStartDate ?? defaultDate}
+					selectedEndDate={selectedEndDate ?? undefined}
 					onCalendarInputClick={handleOpenCalendar}
 				/>
 			)}
@@ -128,10 +136,13 @@ const Calendar = () => {
 								<input
 									type="text"
 									value={formatCalendarDate(selectedStartDate) || formatCalendarDate(defaultDate)}
-									onChange={(date) => handleDateChange(date)}
 									className={`${inputStyle} ${optionalStyle}`}
 								/>
-								<DatePicker selected={selectedStartDate} onChange={handleDateChange} {...commonDatePickerProps} />
+								<DatePicker
+									startDate={selectedStartDate !== null ? selectedStartDate : undefined}
+									onChange={handleDateChange}
+									{...commonDatePickerProps}
+								/>
 							</>
 						) : (
 							<>
@@ -151,8 +162,8 @@ const Calendar = () => {
 								</div>
 								<DatePicker
 									selectsRange
-									startDate={selectedStartDate}
-									endDate={selectedEndDate}
+									startDate={selectedStartDate ?? undefined}
+									endDate={selectedEndDate ?? undefined}
 									onChange={handlePeriodChange}
 									{...commonDatePickerProps}
 								/>
