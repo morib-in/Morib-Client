@@ -12,9 +12,14 @@ import AddBtn from '@/assets/svgs/add_btn.svg?react';
 
 import { CATEGORY_API } from '@/mocks/categoryData';
 
+interface UrlInfo {
+	url: string;
+	domain: string;
+	favicon: string;
+}
 interface ModalProps {
 	optionData: OptionData[];
-	handleSelectedInfo: () => string;
+	handleSelectedInfo: (url: UrlInfo) => void;
 }
 
 interface Category {
@@ -28,7 +33,7 @@ interface OptionData {
 
 const CategoryModalLeft = ({ optionData, handleSelectedInfo }: ModalProps) => {
 	const [isSelectedTab, setSelectedTab] = useState(CATEGORY_MODALTABS[0].id);
-
+	const enableHover = true;
 	const handleTabChange = (tab: number) => {
 		setSelectedTab(tab);
 	};
@@ -54,7 +59,13 @@ const CategoryModalLeft = ({ optionData, handleSelectedInfo }: ModalProps) => {
 			</div>
 			<CategoryMoribContentSet variant="smallLeft" urlInfos={urlInfos}>
 				{urlInfos.map((urlInfo, url) => (
-					<CategoryMoribContent key={url} urlInfo={urlInfo} variant="smallLeft" handleSelectedInfo={handleSelectedInfo}>
+					<CategoryMoribContent
+						enableHover={enableHover}
+						key={url}
+						urlInfo={urlInfo}
+						variant="smallLeft"
+						handleSelectedInfo={() => handleSelectedInfo(urlInfo)}
+					>
 						<button className="">
 							<AddBtn className="fill-gray-bg-07 hover:fill-mint-02-hover active:fill-mint-02-press" />
 						</button>

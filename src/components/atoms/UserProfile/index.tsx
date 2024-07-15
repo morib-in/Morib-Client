@@ -22,7 +22,7 @@ const UserProfile = ({
 			<div className="flex flex-col">
 				<div className="relative h-[6rem] w-[6rem]">
 					{(isMyProfile || isSelectedUser) && <GradientCircleIcon />}
-					<img className="absolute left-0 top-0" src={defaultPorfileIcon} />
+					<img className="absolute left-0 top-0" src={defaultPorfileIcon} alt="친구 캐러셀 이미지" />
 					{(isMyProfile || isConnecting) && (
 						<ConnectionIcon className="absolute bottom-[0.5rem] left-[4.3rem] rounded-full border-[0.2rem] border-gray-bg-01" />
 					)}
