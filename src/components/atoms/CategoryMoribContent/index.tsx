@@ -10,7 +10,7 @@ interface CategoryMoribContentProps {
 	urlInfo: UrlInfo;
 	variant: 'basic' | 'smallLeft' | 'smallRight';
 	children?: React.ReactNode;
-	handleSelectedInfo?: () => void;
+	handleSelectedInfo: () => void;
 }
 
 const CategoryMoribContent = ({ urlInfo, variant, children, handleSelectedInfo }: CategoryMoribContentProps) => {
@@ -34,7 +34,7 @@ const CategoryMoribContent = ({ urlInfo, variant, children, handleSelectedInfo }
 		'detail-reg-14 h-[2.1rem] truncate rounded-[2rem] bg-gray-bg-04 px-[1rem] py-[0.1rem] text-white';
 
 	return (
-		<div className={`h-[4.6rem] ${sizeVariant[variant]?.width}`} onClick={() => handleSelectedInfo(urlInfo)}>
+		<div className={`h-[4.6rem] ${sizeVariant[variant]?.width}`} onClick={handleSelectedInfo}>
 			<div
 				className={`group flex h-[4.6rem] items-center border-b-[0.1rem] border-gray-bg-04 px-[0.8rem] py-[1.2rem] hover:bg-gray-bg-04 ${sizeVariant[variant].gap}`}
 			>
