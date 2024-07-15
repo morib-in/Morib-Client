@@ -18,7 +18,6 @@ export const useLottieAnimation = () => {
 	return {
 		isAnimationComplete,
 		lottieRef,
-
 		handleAnimationComplete,
 	};
 };
