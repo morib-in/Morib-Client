@@ -1,8 +1,9 @@
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 import CategoryCommonBtn from '@/components/atoms/CategoryCommonBtn/index';
 import CategoryCommonTitle from '@/components/atoms/CategoryCommonTitle/index';
-import CategoryMoribContent from '@/components/atoms/CategoryMoribContent';
+import CategoryMoribContentPage from '@/components/atoms/CategoryMoribContentPage';
+import CategoryMoribContentUrl from '@/components/atoms/CategoryMoribContentUrl';
 import GetCategoryBtn from '@/components/atoms/GetCategoryBtn/index';
 import Calendar from '@/components/molecules/Calendar/index';
 import CategoryInputMoribName from '@/components/molecules/CategoryInputMoribName/index';
@@ -32,12 +33,13 @@ const AddCategoryModal = () => {
 			const newUrlInfo: UrlInfo = {
 				url: url,
 				domain: URL_DATA[index].tabName,
-				favicon: URL_DATA[index].favicon,
+				favicon: `${url}/favicon.ico`,
 			};
 
 			setUrlInfos((prevUrlInfos) => [...prevUrlInfos, newUrlInfo]);
 		}
 	};
+
 	const categoryRef = useRef<CategoryRef>(null);
 
 	const handleOpenDialog = () => {
@@ -70,7 +72,13 @@ const AddCategoryModal = () => {
 							<div>
 								<CategoryMoribContentSet urlInfos={urlInfos} variant="basic">
 									{urlInfos.map((urlInfo, url) => (
-										<CategoryMoribContent key={url} urlInfo={urlInfo} variant="basic" />
+										<tr
+											key={url}
+											className="flex h-[4.6rem] gap-[1.2rem] border-b border-gray-bg-04 px-[0.8rem] hover:bg-gray-bg-06"
+										>
+											<CategoryMoribContentPage urlInfo={urlInfo} variant="basic" />
+											<CategoryMoribContentUrl urlInfo={urlInfo} variant="basic" />
+										</tr>
 									))}
 								</CategoryMoribContentSet>
 							</div>
