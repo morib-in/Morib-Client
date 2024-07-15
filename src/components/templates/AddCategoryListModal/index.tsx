@@ -25,7 +25,7 @@ const AddCategoryListModal = () => {
 			const newUrlInfo: UrlInfo = {
 				url: url,
 				domain: URL_DATA[index].tabName,
-				favicon: URL_DATA[index].favicon,
+				favicon: `${url}/favicon.ico`,
 			};
 
 			setSelectedInfo((prevUrlInfos) => [...prevUrlInfos, newUrlInfo]);

@@ -1,7 +1,8 @@
 import { useState } from 'react';
 
 import CategoryCommonTitle from '@/components/atoms/CategoryCommonTitle';
-import CategoryMoribContent from '@/components/atoms/CategoryMoribContent';
+import CategoryMoribContentPage from '@/components/atoms/CategoryMoribContentPage';
+import CategoryMoribContentUrl from '@/components/atoms/CategoryMoribContentUrl';
 import CategoryDropdown from '@/components/molecules/CategoryDropdown';
 import CategoryMoribContentSet from '@/components/molecules/CategoryMoribContentSet';
 import CategoryTabSelect from '@/components/molecules/CategoryTabSelect';
@@ -33,7 +34,7 @@ interface OptionData {
 
 const CategoryModalLeft = ({ optionData, handleSelectedInfo }: ModalProps) => {
 	const [isSelectedTab, setSelectedTab] = useState(CATEGORY_MODALTABS[0].id);
-	const enableHover = true;
+
 	const handleTabChange = (tab: number) => {
 		setSelectedTab(tab);
 	};
@@ -41,7 +42,7 @@ const CategoryModalLeft = ({ optionData, handleSelectedInfo }: ModalProps) => {
 	const disabled = isSelectedTab === 2;
 	const urlInfos = CATEGORY_API[0].msetList.map((item) => ({
 		url: item.url,
-		favicon: item.favicon,
+		favicon: `${item.url}/favicon.ico`,
 		domain: item.name,
 	}));
 
@@ -59,17 +60,20 @@ const CategoryModalLeft = ({ optionData, handleSelectedInfo }: ModalProps) => {
 			</div>
 			<CategoryMoribContentSet variant="smallLeft" urlInfos={urlInfos}>
 				{urlInfos.map((urlInfo, url) => (
-					<CategoryMoribContent
-						enableHover={enableHover}
+					<tr
 						key={url}
-						urlInfo={urlInfo}
-						variant="smallLeft"
-						handleSelectedInfo={() => handleSelectedInfo(urlInfo)}
+						className="group flex h-[4.6rem] w-[100%] gap-[1.2rem] border-b border-gray-bg-04 px-[0.8rem] hover:bg-gray-bg-04"
+						onClick={() => handleSelectedInfo(urlInfo)}
 					>
-						<button className="">
-							<AddBtn className="fill-gray-bg-07 hover:fill-mint-02-hover active:fill-mint-02-press" />
-						</button>
-					</CategoryMoribContent>
+						<CategoryMoribContentPage urlInfo={urlInfo} variant="smallLeft" />
+						<CategoryMoribContentUrl urlInfo={urlInfo} variant="smallLeft">
+							<div className="p-[1.25rem]">
+								<button type="button">
+									<AddBtn className="fill-gray-bg-07 hover:fill-mint-02-hover active:fill-mint-02-press" />
+								</button>
+							</div>
+						</CategoryMoribContentUrl>
+					</tr>
 				))}
 			</CategoryMoribContentSet>
 		</div>

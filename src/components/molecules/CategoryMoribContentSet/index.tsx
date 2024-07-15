@@ -24,7 +24,6 @@ const CategoryMoribContentSet = ({ variant, urlInfos, children }: CategoryMoribC
 			bgColor: ' bg-gray-bg-02',
 			border: 'w-[68.8rem]',
 			rowCounts: 7,
-
 		},
 		smallLeft: {
 			height: 'h-[46rem]',
@@ -55,8 +54,8 @@ const CategoryMoribContentSet = ({ variant, urlInfos, children }: CategoryMoribC
 
 	const optionalScrollStyle = showYScroll === true ? 'overflow-y-auto' : 'overflow-y-hidden';
 	const theadStyle =
-		'px-[1rem] detail-semibold-14 flex h-[4.6rem] items-center border-b-[0.1rem] border-gray-bg-04 text-gray-04';
-	const tbodyStyle = 'px-[0.8rem]';
+		'px-[0rem] detail-semibold-14 flex h-[4.6rem] items-center border-b-[0.1rem] border-gray-bg-04 text-gray-04';
+	const tbodyStyle = 'px-[0rem]';
 
 	return (
 		<div
