@@ -3,9 +3,10 @@ import { ButtonHTMLAttributes, ReactNode } from 'react';
 interface CategoryBtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	variant?: '취소' | '완료';
 	children: ReactNode;
+	handleCloseModal?: () => void;
 }
 
-const CategoryCommonBtn = ({ disabled, variant, children, ...props }: CategoryBtnProps) => {
+const CategoryCommonBtn = ({ disabled, variant, children, handleCloseModal, ...props }: CategoryBtnProps) => {
 	const btnVariant = {
 		취소: 'text-white bg-gray-bg-06',
 		완료: 'text-gray-bg-01 bg-mint-02',
@@ -17,7 +18,7 @@ const CategoryCommonBtn = ({ disabled, variant, children, ...props }: CategoryBt
 	const styledBtn = disabled ? disabledBtn : variant ? btnVariant[variant] : '';
 
 	return (
-		<button className={`${styledBtn} ${commonStyle}`} disabled={disabled} {...props}>
+		<button className={`${styledBtn} ${commonStyle}`} disabled={disabled} {...props} onClick={handleCloseModal}>
 			{children}
 		</button>
 	);
