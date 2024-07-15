@@ -3,6 +3,11 @@ export const getAccessTotken = () => {
 	return accessToken;
 };
 
+export const getRefreshToken = () => {
+	const refresh = localStorage.getItem('refreshToken');
+	return refresh;
+};
+
 export const getAllToken = () => {
 	const accessToken = localStorage.getItem('accessToken');
 	const refreshToken = localStorage.getItem('refreshToken');

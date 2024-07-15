@@ -4,7 +4,9 @@ import { getAccessTotken } from '@/utils/token';
 
 import { ROUTES } from '@/constants/router';
 
-const API_URL = `${import.meta.env.VITE_API_URL}`;
+import { reissueToken } from './auth/axios';
+
+const API_URL = `${import.meta.env.VITE_BASE_URL}`;
 
 const defaultConfig: AxiosRequestConfig = {
 	baseURL: API_URL,
@@ -32,11 +34,25 @@ const addAuthInterceptor = (axiosClient: AxiosInstance) => {
 		}
 
 		config.headers.Authorization = `Bearer ${accessToken}`;
-
 		return config;
 	});
 
-	//Todo: 응답에 따라서 에러처리 . 리프레시 토큰 발급하는 로직 추가 axiosClient.interceptors.response.use
+	axiosClient.interceptors.response.use(
+		(response) => {
+			return response;
+		},
+		async (e) => {
+			if (e.response.status === 401) {
+				// 401 에러가 떴을 때 토큰 재발급
+				try {
+					reissueToken();
+				} catch (reissueError) {
+					window.location.href = ROUTES.login.path;
+				}
+			}
+			return Promise.reject(e);
+		},
+	);
 };
 
 // 폼 데이터 설정을 추가하는 함수
