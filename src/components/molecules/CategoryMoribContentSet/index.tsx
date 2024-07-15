@@ -24,6 +24,7 @@ const CategoryMoribContentSet = ({ variant, urlInfos, children }: CategoryMoribC
 			bgColor: ' bg-gray-bg-02',
 			border: 'w-[68.8rem]',
 			rowCounts: 7,
+
 		},
 		smallLeft: {
 			height: 'h-[46rem]',

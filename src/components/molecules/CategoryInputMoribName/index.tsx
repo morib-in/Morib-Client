@@ -13,7 +13,7 @@ const CategoryInputMoribName = ({ onNameChange }: CategoryInputMoribName) => {
 					<CategoryInputTitle title="이름 *" />
 				</div>
 				<CategoryInput
-					onChange={onNameChange}
+					onNameChange={onNameChange}
 					placeholder="이름을 10자 이내로 작성해주세요."
 					errorMessage="이미 존재하는 작업 카테고리입니다."
 				/>

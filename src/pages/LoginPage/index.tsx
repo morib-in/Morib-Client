@@ -45,5 +45,6 @@ const LoginPage = () => {
 			</div>
 		</LoginPageWrapper>
 	);
+
 };
 export default LoginPage;

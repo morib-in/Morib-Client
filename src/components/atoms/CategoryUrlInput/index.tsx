@@ -34,7 +34,7 @@ const CategoryUrlInput = ({ variant = 'basic', onUrlInputChange, selectedInfo }:
 			const isValid = isUrlValid(url);
 			setIsUrlValidated(isValid);
 			if (isValid) {
-				const isExist = selectedInfo!.some((info) => info.url === url);
+				const isExist = selectedInfo?.some((info) => info.url === url);
 				if (isExist) {
 					setErrorMessage('이미 추가된 주소입니다.');
 					setIsUrlValidated(false);
@@ -67,7 +67,7 @@ const CategoryUrlInput = ({ variant = 'basic', onUrlInputChange, selectedInfo }:
 			/>
 			<div className={`my-[0.6rem] flex ${isUrlValidated === false ? 'visible' : 'invisible'}`}>
 				<AlertIcon />
-				<div className="detail-reg-14 ml-[0.5rem] text-error-01">{errorMessage} 도메인을 입력해주세요.</div>
+				<div className="detail-reg-14 ml-[0.5rem] text-error-01">{errorMessage}</div>
 			</div>
 		</div>
 	);

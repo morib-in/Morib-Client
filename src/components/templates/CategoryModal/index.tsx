@@ -1,4 +1,4 @@
-import React, { ReactNode, forwardRef, useImperativeHandle, useRef } from 'react';
+import { ReactNode, forwardRef, useImperativeHandle, useRef } from 'react';
 
 interface CategoryProps {
 	children: (handleCloseModal: () => void) => ReactNode;
@@ -9,7 +9,7 @@ export interface CategoryRef {
 	close: () => void;
 }
 
-const CategoryModal = forwardRef<CategoryRef, CategoryProps>(({ children }, ref) => {
+const CategoryModal = forwardRef<CategoryRef, CategoryProps>(function CategoryModal({ children }: CategoryProps, ref) {
 	const dialogRef = useRef<HTMLDialogElement>(null);
 
 	const handleOpenModal = () => {

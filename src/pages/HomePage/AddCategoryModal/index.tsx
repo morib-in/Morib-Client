@@ -61,13 +61,13 @@ const AddCategoryModal = () => {
 			<CategoryModal ref={categoryRef}>
 				{(handleCloseModal) => (
 					<div>
-						<CategoryCommonTitle>카테고리 추가</CategoryCommonTitle>
+						<CategoryCommonTitle />
 						<div className="flex-start mt-[1.6rem] inline-flex gap-[4.4rem]">
 							<CategoryInputMoribName onNameChange={handleNameChange} />
 							<Calendar />
 						</div>
 
-						<div className="relative flex flex-col">
+						<div className="flex flex-col">
 							<CategoryMoribSet onUrlInputChange={handleUrlInputChange} />
 							<div>
 								<CategoryMoribContentSet urlInfos={urlInfos} variant="basic">
@@ -82,9 +82,6 @@ const AddCategoryModal = () => {
 									))}
 								</CategoryMoribContentSet>
 							</div>
-						</div>
-						<div className="absolute right-[4.4rem] top-[20rem]">
-							<GetCategoryBtn />
 						</div>
 
 						<div className="mt-[3rem] flex justify-end gap-[1.6rem]">

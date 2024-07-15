@@ -3,21 +3,22 @@ import React, { useState } from 'react';
 import AlertIcon from '@/assets/svgs/ic_description.svg?react';
 
 interface CategoryInputNameProps {
-	onChange: (value: string) => void;
-	isValid: boolean;
+	onNameChange: (name: string) => void;
+	isValid?: boolean;
 	placeholder: string;
 	errorMessage: string;
 }
-const CategoryInput = ({ onChange, isValid, placeholder, errorMessage }: CategoryInputNameProps) => {
+
+const CategoryInput = ({ onNameChange, isValid, placeholder, errorMessage }: CategoryInputNameProps) => {
 	const [value, setValue] = useState('');
 
 	const defaultStyle =
-		'subhead-med-18 h-[4.6rem] w-[34rem] rounded-[8px] border-[1px] bg-gray-bg-02 px-[2rem] py-[1rem]  text-white placeholder-gray-03 focus:outline-none';
-	const optionalStyle = isValid === false ? 'border-error-01' : 'border-transparent';
+		'subhead-med-18 h-[4.6rem] w-[34rem] rounded-[8px] border-[1px] bg-gray-bg-03 px-[2rem] py-[1rem] text-white placeholder-gray-03 focus:outline-none';
+	const optionalStyle = isValid === false ? 'border-error-01' : 'border-gray-bg-07';
 
-	const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setValue(e.target.value);
-		onChange(e.target.value);
+	const handleValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setValue(event.target.value);
+		onNameChange(event.target.value);
 	};
 
 	return (

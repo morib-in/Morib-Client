@@ -1,14 +1,15 @@
-import React from 'react';
-
 import ArrowCircleUpRight from '@/assets/svgs/arrow_circle_up_right.svg?react';
 
 interface GetCategoryBtnProps {
-	onClick: () => void;
+	onMoveCategoryModal: () => void;
 }
 
-const GetCategoryBtn = ({ onClick }: GetCategoryBtnProps) => {
+const GetCategoryBtn = ({ onMoveCategoryModal }: GetCategoryBtnProps) => {
 	return (
-		<button className="flex gap-[0.8rem] rounded-[5px] bg-gray-bg-04 px-[1.2rem] py-[0.8rem]" onClick={onClick}>
+		<button
+			className="flex items-center gap-[0.8rem] rounded-[5px] bg-gray-bg-04 px-[1.2rem] py-[0.8rem]"
+			onClick={onMoveCategoryModal}
+		>
 			<div className="pretendard my-[0.15rem] text-[1.4rem] font-normal leading-120 text-white">빠른 불러오기</div>
 			<ArrowCircleUpRight className="h-[2rem] w-[2rem]" />
 		</button>
