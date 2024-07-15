@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { RefObject, useState } from 'react';
 
 import CategoryModalLeft from '@/components/molecules/CategoryModalLeft';
 import CategoryModalRight from '@/components/molecules/CategoryModalRight';
@@ -12,7 +12,12 @@ interface UrlInfo {
 	favicon: string;
 }
 
-const AddCategoryListModal = () => {
+type CategoryListModalProp = {
+	dialogRef: RefObject<HTMLDialogElement>;
+	handleCloseModal: () => void;
+};
+
+const AddCategoryListModal = ({ dialogRef, handleCloseModal }: CategoryListModalProp) => {
 	const [selectedInfo, setSelectedInfo] = useState<UrlInfo[]>([]);
 
 	const handleSelectedInfo = (urlInfo: UrlInfo) => {
@@ -37,7 +42,7 @@ const AddCategoryListModal = () => {
 	};
 
 	return (
-		<div>
+		<dialog ref={dialogRef}>
 			<div className="flex">
 				<CategoryModalLeft
 					optionData={CATEGORY_API}
@@ -47,9 +52,10 @@ const AddCategoryListModal = () => {
 					selectedInfo={selectedInfo}
 					handleUrlInputChange={(url: string) => handleUrlInputChange(url)}
 					handleDeleteUrlInfo={(url: UrlInfo) => handleDeleteUrlInfo(url)}
+					handleCloseModal={handleCloseModal}
 				/>
 			</div>
-		</div>
+		</dialog>
 	);
 };
 export default AddCategoryListModal;

@@ -17,9 +17,15 @@ interface ModalRightProps {
 	selectedInfo: UrlInfo[];
 	handleUrlInputChange: (url: string) => void;
 	handleDeleteUrlInfo: (url: UrlInfo) => void;
+	handleCloseModal: () => void;
 }
 
-const CategoryModalRight = ({ selectedInfo, handleUrlInputChange, handleDeleteUrlInfo }: ModalRightProps) => {
+const CategoryModalRight = ({
+	selectedInfo,
+	handleUrlInputChange,
+	handleDeleteUrlInfo,
+	handleCloseModal,
+}: ModalRightProps) => {
 	return (
 		<div className="flex h-[80rem] w-[61.2rem] flex-col items-end justify-between rounded-r-[1rem] bg-gray-bg-03 pb-[3rem] pl-[3rem] pr-[4.3rem] pt-[9.7rem]">
 			<div className="mb-[8px] flex w-full flex-row justify-start">
@@ -50,7 +56,9 @@ const CategoryModalRight = ({ selectedInfo, handleUrlInputChange, handleDeleteUr
 
 			<div className="mt-[3rem] flex gap-[16px]">
 				<CategoryCommonBtn variant="취소">취소</CategoryCommonBtn>
-				<CategoryCommonBtn variant="완료">완료</CategoryCommonBtn>
+				<CategoryCommonBtn variant="완료" handleCloseModal={handleCloseModal}>
+					완료
+				</CategoryCommonBtn>
 			</div>
 		</div>
 	);
