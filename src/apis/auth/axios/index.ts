@@ -11,18 +11,20 @@ const AUTH_URL = {
 };
 
 export const signIn = async () => {
-	const { data } = await nonAuthClient.get(AUTH_URL.SIGN_IN);
+	const { data } = await nonAuthClient.post(AUTH_URL.SIGN_IN);
 	return data;
 };
 
-export const singUp = async () => {
-	const { data } = await nonAuthClient.get(AUTH_URL.SIGN_UP);
+export const singUp = async (authorizationCode: string | null) => {
+	const { data } = await nonAuthClient.post(AUTH_URL.SIGN_UP, {
+		authorizationCode: authorizationCode,
+	});
 	return data;
 };
 
 export const reissueToken = async () => {
 	const refreshToken = getRefreshToken();
-	const { data } = await axios.get(AUTH_URL.REISSUE_TOKEN, {
+	const { data } = await axios.patch(AUTH_URL.REISSUE_TOKEN, {
 		headers: {
 			Authorization: `Bearer ${refreshToken}`,
 		},

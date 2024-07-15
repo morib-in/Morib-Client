@@ -37,22 +37,23 @@ const addAuthInterceptor = (axiosClient: AxiosInstance) => {
 		return config;
 	});
 
-	axiosClient.interceptors.response.use(
-		(response) => {
-			return response;
-		},
-		async (e) => {
-			if (e.response.status === 401) {
-				// 401 에러가 떴을 때 토큰 재발급
-				try {
-					reissueToken();
-				} catch (reissueError) {
-					window.location.href = ROUTES.login.path;
-				}
-			}
-			return Promise.reject(e);
-		},
-	);
+	// Todo: 서버 이슈로 앱잼 이후 refresh 토큰 재발급 설정
+	// axiosClient.interceptors.response.use(
+	// 	(response) => {
+	// 		return response;
+	// 	},
+	// 	async (e) => {
+	// 		if (e.response.status === 401) {
+	// 			// 401 에러가 떴을 때 토큰 재발급
+	// 			try {
+	// 				reissueToken();
+	// 			} catch (reissueError) {
+	// 				window.location.href = ROUTES.login.path;
+	// 			}
+	// 		}
+	// 		return Promise.reject(e);
+	// 	},
+	// );
 };
 
 // 폼 데이터 설정을 추가하는 함수

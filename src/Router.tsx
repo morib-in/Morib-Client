@@ -8,6 +8,7 @@ import TimerPage from '@/pages/TimerPage';
 
 import { ROUTES } from './constants/router';
 import withAuthProtection from './hocs/withAuthProtection';
+import RedirectPage from './pages/RedirectPage';
 
 const ProtectedHomePage = withAuthProtection(HomePage);
 const ProtectedTimerPage = withAuthProtection(TimerPage);
@@ -24,5 +25,9 @@ export const router: Router = createBrowserRouter([
 	{
 		path: ROUTES.timer.path,
 		element: <ProtectedTimerPage />,
+	},
+	{
+		path: ROUTES.redirect.path,
+		element: <RedirectPage />,
 	},
 ]);
