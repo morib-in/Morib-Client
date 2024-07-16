@@ -5,6 +5,8 @@ import CategoryModalRight from '@/components/molecules/CategoryModalRight';
 
 import { useCategoryLists, useGetMsets } from '@/apis/modal/queries';
 
+import { URL_DATA } from '@/mocks/urlData';
+
 interface UrlInfo {
 	url: string;
 	domain: string;
@@ -40,16 +42,16 @@ const AddCategoryListModal = ({ dialogRef, handleCloseModal }: CategoryListModal
 			}
 			return [...prevItems, urlInfo]; // 존재하지 않으면 새로운 배열 반환
 		});
-		// setSelectedInfo((prevUrlInfos) => [...prevUrlInfos, urlInfo]);
 	};
 
 	const handleUrlInputChange = (url: string) => {
 		const index = selectedInfo.length;
 
-		if (index < msets.length) {
+		if (index < msetsList.length) {
 			const newUrlInfo: UrlInfo = {
 				url: url,
-				domain: msetsList[index].name,
+				//TODO: API로 가져온 tabName 추가 필요
+				domain: '',
 				favicon: `https://www.google.com/s2/favicons?domain=${url}`,
 			};
 

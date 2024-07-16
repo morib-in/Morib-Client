@@ -4,14 +4,11 @@ import CategoryCommonBtn from '@/components/atoms/CategoryCommonBtn/index';
 import CategoryCommonTitle from '@/components/atoms/CategoryCommonTitle/index';
 import CategoryMoribContentPage from '@/components/atoms/CategoryMoribContentPage';
 import CategoryMoribContentUrl from '@/components/atoms/CategoryMoribContentUrl';
-import GetCategoryBtn from '@/components/atoms/GetCategoryBtn/index';
 import Calendar from '@/components/molecules/Calendar/index';
 import CategoryInputMoribName from '@/components/molecules/CategoryInputMoribName/index';
 import CategoryMoribContentSet from '@/components/molecules/CategoryMoribContentSet';
 import CategoryMoribSet from '@/components/molecules/CategoryMoribSet';
 import CategoryModal, { CategoryRef } from '@/components/templates/CategoryModal/index';
-
-import { useGetTabName } from '@/apis/modal/queries';
 
 import { URL_DATA } from '@/mocks/urlData.ts';
 
