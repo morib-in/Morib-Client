@@ -13,11 +13,10 @@ import CategoryMoribContentSet from '@/components/molecules/CategoryMoribContent
 import CategoryMoribSet from '@/components/molecules/CategoryMoribSet';
 import CategoryModal, { CategoryRef } from '@/components/templates/CategoryModal/index';
 
-import { usePostCategory } from '@/apis/tasks/queries/index';
+import { getTabName } from '@/apis/tasks/axios/index';
+import { useGetTabName, usePostCategory } from '@/apis/tasks/queries/index';
 
 import { formatCalendarApiDate } from '@/utils/calendar/index';
-
-import { URL_DATA } from '@/mocks/urlData.ts';
 
 interface UrlInfo {
 	url: string;
@@ -27,8 +26,14 @@ interface UrlInfo {
 
 const AddCategoryModal = () => {
 	const [urlInfos, setUrlInfos] = useState<UrlInfo[]>([]);
-	const { mutate: postCategory, isError, isPending, error } = usePostCategory();
 	const [name, setName] = useState('');
+	const {
+		mutate: postCategory,
+		isError: isMutateError,
+		isPending: isMutatePending,
+		error: mutateError,
+	} = usePostCategory();
+	const { isLoading: isQueryLoading, error: queryError } = useGetTabName('');
 
 	const handleNameChange = (newName: string) => {
 		setName(newName);
@@ -41,16 +46,17 @@ const AddCategoryModal = () => {
 
 	const defaultDate = new Date();
 
-	const handleUrlInputChange = (url: string) => {
-		const index = urlInfos.length;
-		if (index < URL_DATA.length) {
+	const handleUrlInputChange = async (url: string) => {
+		try {
+			const tabNameData = await getTabName(url);
 			const newUrlInfo: UrlInfo = {
 				url: url,
-				domain: URL_DATA[index].tabName,
+				domain: tabNameData.data.tabName,
 				favicon: `https://www.google.com/s2/favicons?domain=${url}`,
 			};
-
 			setUrlInfos((prevUrlInfos) => [...prevUrlInfos, newUrlInfo]);
+		} catch (isQueryError) {
+			console.error(queryError);
 		}
 	};
 
@@ -125,9 +131,9 @@ const AddCategoryModal = () => {
 	const handlePostDataClick = () => {
 		postCategory(categoryData);
 		handleCloseDialog();
-		if (isPending) return <div>Loading</div>;
-		if (isError) {
-			console.log(error);
+		if (isMutatePending) return <div>Loading</div>;
+		if (isMutateError) {
+			console.log(mutateError);
 		}
 	};
 
@@ -196,7 +202,11 @@ const AddCategoryModal = () => {
 							<CategoryCommonBtn variant="취소" onClick={handleCloseModal}>
 								취소
 							</CategoryCommonBtn>
-							<CategoryCommonBtn variant="완료" handleSubmit={handlePostDataClick} disabled={!isFormValid()}>
+							<CategoryCommonBtn
+								variant="완료"
+								handleSubmit={handlePostDataClick}
+								disabled={!isFormValid() && isQueryLoading}
+							>
 								완료
 							</CategoryCommonBtn>
 						</div>
