@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { authClient, nonAuthClient } from '@/apis/client';
+import { nonAuthClient } from '@/apis/client';
 
 import { getRefreshToken } from '@/utils/token';
 
