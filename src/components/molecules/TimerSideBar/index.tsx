@@ -18,8 +18,16 @@ interface CategoryBoxProps {
 	completedTodos: Todo[];
 	ongoingTodos: Todo[];
 	toggleSidebar: () => void;
+	setTargetTime: (time: number) => void;
+	setTargetName: (name: string) => void;
 }
-const TimerSideBar = ({ ongoingTodos = [], completedTodos = [], toggleSidebar }: CategoryBoxProps) => {
+const TimerSideBar = ({
+	ongoingTodos = [],
+	completedTodos = [],
+	toggleSidebar,
+	setTargetTime,
+	setTargetName,
+}: CategoryBoxProps) => {
 	const { animate, handleClose } = useCloseSidebar(toggleSidebar);
 
 	return (
@@ -34,26 +42,25 @@ const TimerSideBar = ({ ongoingTodos = [], completedTodos = [], toggleSidebar }:
 				</button>
 			</div>
 			<div className="h-[82.6rem] overflow-auto pb-[2rem] pt-[1rem]">
-				{ongoingTodos.map(({ name, startDate, endDate, targetTime, isComplete }) => (
+				{ongoingTodos.map((todo) => (
 					<TodoBox
-						key={name}
-						name={name}
-						startDate={startDate}
-						endDate={endDate}
-						targetTime={targetTime}
-						isComplete={isComplete}
+						key={todo.id}
+						{...todo}
+						onClick={() => {
+							setTargetTime(todo.targetTime);
+							setTargetName(todo.name);
+						}}
 					/>
 				))}
 				<TodoToggleBtn isCompleted={false} isToggled={false}>
-					{completedTodos.map(({ name, startDate, endDate, targetTime, isComplete }) => (
+					{completedTodos.map((todo) => (
 						<TodoBox
-							// Todo: 서버와 협의 후 id 값을 받아서 지정해주기(name 등은 중복될 수 있음)
-							key={name}
-							name={name}
-							startDate={startDate}
-							endDate={endDate}
-							targetTime={targetTime}
-							isComplete={isComplete}
+							key={todo.id}
+							{...todo}
+							onClick={() => {
+								setTargetTime(todo.targetTime);
+								setTargetName(todo.name);
+							}}
 						/>
 					))}
 				</TodoToggleBtn>

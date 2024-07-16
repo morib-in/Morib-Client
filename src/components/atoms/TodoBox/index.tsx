@@ -18,6 +18,7 @@ interface TodoBoxProps {
 	isComplete: boolean;
 	isSelected?: boolean;
 	selectedNumber?: number;
+	onClick: () => void;
 }
 
 const TodoBox = ({
@@ -28,6 +29,7 @@ const TodoBox = ({
 	isComplete,
 	isSelected = true,
 	selectedNumber = 1,
+	onClick,
 }: TodoBoxProps) => {
 	const formattedTime = formatSeconds(targetTime);
 	const formattedstartDate = startDate.replace(/-/g, '.');
@@ -41,10 +43,10 @@ const TodoBox = ({
 
 	const selectedStyle = isSelected ? ' border-[0.2rem] border-mint-01' : '';
 
-	//추후 SVG 버튼 컴포넌트로 만들것임
 	return (
 		<div
 			className={`group relative mt-[1rem] h-[9.6rem] w-[36.6rem] transform rounded-[8px] bg-gray-bg-01 p-[1.4rem] transition-transform duration-300 hover:-translate-y-2 ${selectedStyle}`}
+			onClick={onClick}
 		>
 			<div className="flex flex-col justify-center">
 				<div className="flex items-center justify-between">
