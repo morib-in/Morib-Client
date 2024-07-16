@@ -17,8 +17,13 @@ const defaultOptions = {
 	},
 };
 
+const API_URL = `${import.meta.env.VITE_GOOGLE_URL}`;
+
 const LoginPage = () => {
 	const { isAnimationComplete, lottieRef, handleAnimationComplete } = useLottieAnimation();
+	const handleClick = () => {
+		window.location.href = API_URL;
+	};
 
 	return (
 		<LoginPageWrapper>
@@ -38,6 +43,7 @@ const LoginPage = () => {
 				/>
 				{/* Todo: 추후 로그인 로직 추가 */}
 				<SVGBtn
+					onClick={handleClick}
 					className={`ml-[12rem] transition-opacity duration-300 ${isAnimationComplete ? 'opacity-100' : 'opacity-0'}`}
 				>
 					<GoogleLoginIcon />
@@ -45,6 +51,5 @@ const LoginPage = () => {
 			</div>
 		</LoginPageWrapper>
 	);
-
 };
 export default LoginPage;
