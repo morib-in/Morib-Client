@@ -35,13 +35,25 @@ const CategoryBox = ({ title, ongoingTodos = [], completedTodos = [] }: Category
 				<div className="overflow-auto">
 					<TodoToggleBtn isCompleted={false} isToggled={true}>
 						{ongoingTodos.map(({ id, title, date, accumulatedTime }) => (
-							<TodoBox key={id} title={title} date={date} accumulatedTime={accumulatedTime} isCompleted={false} />
+							<TodoBox
+								key={id}
+								name={title}
+								startDate={'2024-07-07'}
+								endDate={'2024-07-21'}
+								targetTime={accumulatedTime}
+							/>
 						))}
 					</TodoToggleBtn>
 					{completedTodos && (
 						<TodoToggleBtn isCompleted isToggled={false}>
 							{completedTodos.map(({ id, title, date, accumulatedTime }) => (
-								<TodoBox key={id} title={title} date={date} accumulatedTime={accumulatedTime} isCompleted={true} />
+								<TodoBox
+									key={id}
+									name={title}
+									startDate={'2024-07-07'}
+									endDate={'2024-07-21'}
+									targetTime={accumulatedTime}
+								/>
 							))}
 						</TodoToggleBtn>
 					)}
