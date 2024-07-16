@@ -6,37 +6,58 @@ import YearMonthTitle from '@/components/atoms/YearMonthTitle';
 
 import { useDatePicker } from '@/hooks/useDatePicker';
 
+import { getHomeDropdownData } from '@/utils/date';
+
 import { Direction } from '@/types/global';
 
 import BtnTodayIcon from '@/assets/svgs/btn_today.svg?react';
 
-import { CATEGORY_API } from '@/mocks/categoryData';
 import { todoData } from '@/mocks/homeData';
 
 import CategoryDropdown from '../CategoryDropdown';
 
 const DatePicker = () => {
-	const { selectedDate, currentDate, weekDates, handleNextWeek, handlePreviousWeek, handleToday, handleDateChange } =
-		useDatePicker();
+	const {
+		todayDate,
+		selectedDate,
+		currentDate,
+		weekDates,
+		dropdownToggle,
+		handleNextWeek,
+		handlePreviousWeek,
+		handleToday,
+		handleSelectedDateChange,
+		handleYearMonthClick,
+		handleDropdownToggle,
+	} = useDatePicker();
+
+	const homeDropdownData = getHomeDropdownData(todayDate);
 
 	return (
 		<header className="mb-[2.8rem]">
-			<div className="flex gap-[2rem]">
-				<YearMonthTitle selectedDate={currentDate} />
-				<ArrowSVGBtn direction={Direction.DOWN} />
-				<ul className="absolute top-[5.6rem] max-h-[41.4rem] w-[21.6rem] flex-col overflow-scroll rounded-[5px] shadow-[0_3px_30px_0_rgba(0,0,0,0.40)]">
-					{CATEGORY_API?.map((item) => {
-						return (
-							<li
-								key={item.category.id}
-								className="flex h-[4.6rem] w-[21.6rem] flex-row items-center border-none bg-mint-01"
-							>
-								<DropdownOptionsBtn>{item.category.name}</DropdownOptionsBtn>
-							</li>
-						);
-					})}
-				</ul>
-			</div>
+			<section className="relative">
+				<button type="button" className="flex items-center gap-[2rem]" onClick={handleDropdownToggle}>
+					<YearMonthTitle selectedDate={currentDate} />
+					<ArrowSVGBtn direction={Direction.DOWN} />
+				</button>
+				{dropdownToggle && (
+					<ul className="absolute top-[5.4rem] max-h-[41.4rem] w-[22.5rem] flex-col overflow-scroll rounded-[5px] shadow-[0_3px_30px_0_rgba(0,0,0,0.40)]">
+						{homeDropdownData.map((item) => {
+							return (
+								<li
+									key={item.format('YYYY년 MM월')}
+									className="flex h-[4.6rem] w-full flex-row items-center justify-center border-none bg-mint-01"
+								>
+									<DropdownOptionsBtn onClick={() => handleYearMonthClick(item)}>
+										{item.format('YYYY년 MM월')}
+									</DropdownOptionsBtn>
+								</li>
+							);
+						})}
+					</ul>
+				)}
+			</section>
+
 			<div className="flex items-center gap-[4.7rem]">
 				<nav>
 					<ul className="flex">
@@ -48,7 +69,7 @@ const DatePicker = () => {
 								<li key={day}>
 									<DateBtn
 										isSelected={isSelected}
-										onClick={() => handleDateChange(date)}
+										onClick={() => handleSelectedDateChange(date)}
 									>{`${formattedDate} ${day}`}</DateBtn>
 								</li>
 							);

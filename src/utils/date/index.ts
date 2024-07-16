@@ -17,3 +17,13 @@ export const getWeekDates = (selectedDate: Dayjs) => {
 
 	return weekDates;
 };
+
+export const getHomeDropdownData = (currentDate: Dayjs) => {
+	const startDate = dayjs(currentDate).subtract(1, 'year').startOf('month');
+	const endDate = dayjs(currentDate).add(1, 'year').startOf('month');
+
+	const diffMonths = endDate.diff(startDate, 'month') + 1;
+	const homeDropdownDate = Array.from({ length: diffMonths }, (_, i) => startDate.add(i, 'month'));
+
+	return homeDropdownDate;
+};
