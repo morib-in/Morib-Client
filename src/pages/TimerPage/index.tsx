@@ -22,11 +22,15 @@ const TimerPage = () => {
 
 	const [targetTime, setTargetTime] = useState(0);
 	const [targetName, setTargetName] = useState('');
+	const [targetCategoryName, setTargetCategoryName] = useState('');
+	const [id, setId] = useState(null);
 
 	useEffect(() => {
 		if (todos.length > 0) {
 			setTargetTime(todos[0].targetTime);
 			setTargetName(todos[0].name);
+			setTargetCategoryName(todos[0].categoryName);
+			setId(todos[0].id);
 		}
 	}, [todos]);
 
@@ -40,7 +44,7 @@ const TimerPage = () => {
 					<TimerSideBox />
 				</div>
 				<div className="ml-[56.6rem] mt-[-0.8rem]">
-					<TimerTitle targetName={targetName} />
+					<TimerTitle targetName={targetName} targetCategoryName={targetCategoryName} />
 					<Timer totalTimeOfToday={tasktotaltime.totalTimeOfToday} targetTime={targetTime} />
 					<FriendInfoCarousel />
 				</div>
