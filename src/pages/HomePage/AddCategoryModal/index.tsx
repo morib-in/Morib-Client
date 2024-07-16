@@ -11,6 +11,8 @@ import CategoryMoribContentSet from '@/components/molecules/CategoryMoribContent
 import CategoryMoribSet from '@/components/molecules/CategoryMoribSet';
 import CategoryModal, { CategoryRef } from '@/components/templates/CategoryModal/index';
 
+import { useGetTabName } from '@/apis/modal/queries';
+
 import { URL_DATA } from '@/mocks/urlData.ts';
 
 interface UrlInfo {
@@ -22,6 +24,8 @@ interface UrlInfo {
 const AddCategoryModal = () => {
 	const [urlInfos, setUrlInfos] = useState<UrlInfo[]>([]);
 	const [name, setName] = useState('');
+
+	// const { data: tabNames, error, isLoading } = useGetTabName(requestUrl);
 
 	const handleNameChange = (newName: string) => {
 		setName(newName);

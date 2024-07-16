@@ -4,16 +4,14 @@ import CategoryDropdownBtn from '@/components/atoms/CategoryDropdownBtn';
 import DropdownOptionsBtn from '@/components/atoms/DropdownOptionsBtn';
 
 interface DropdownBtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-	optionData: OptionData[];
+	optionData: Category[];
 }
 
 interface Category {
 	id: number;
 	name: string;
-}
-
-interface OptionData {
-	category: Category;
+	startDate: string;
+	endDate: string;
 }
 
 const CategoryDropdown = ({ disabled, optionData }: DropdownBtnProps) => {
@@ -41,15 +39,15 @@ const CategoryDropdown = ({ disabled, optionData }: DropdownBtnProps) => {
 					{optionData?.map((item) => {
 						return (
 							<li
-								key={item.category.id}
+								key={item.id}
 								className="subhead-med-18 flex h-[4.6rem] w-[27.2rem] flex-row items-center border-none"
 							>
 								<DropdownOptionsBtn
 									onClick={() => {
-										handleOptionClick(item.category.name);
+										handleOptionClick(item.name);
 									}}
 								>
-									{item.category.name}
+									{item.name}
 								</DropdownOptionsBtn>
 							</li>
 						);

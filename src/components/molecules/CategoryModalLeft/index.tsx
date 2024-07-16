@@ -19,17 +19,15 @@ interface UrlInfo {
 	favicon: string;
 }
 interface ModalProps {
-	optionData: OptionData[];
+	optionData: Category[];
 	handleSelectedInfo: (url: UrlInfo) => void;
 }
 
 interface Category {
 	id: number;
 	name: string;
-}
-
-interface OptionData {
-	category: Category;
+	startDate: string;
+	endDate: string;
 }
 
 const CategoryModalLeft = ({ optionData, handleSelectedInfo }: ModalProps) => {
