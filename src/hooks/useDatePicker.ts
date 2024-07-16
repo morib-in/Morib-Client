@@ -1,18 +1,10 @@
-import dayjs, { Dayjs } from 'dayjs';
-import timezone from 'dayjs/plugin/timezone';
-import utc from 'dayjs/plugin/utc';
+import { Dayjs } from 'dayjs';
 
 import { useState } from 'react';
 
 import { getWeekDates } from '@/utils/date';
 
-dayjs.extend(utc);
-dayjs.extend(timezone);
-
-const todayDate = dayjs().tz('Asia/Seoul');
-
-export const useDatePicker = () => {
-	const [selectedDate, setSelectedDate] = useState(todayDate);
+export const useDatePicker = (todayDate: Dayjs) => {
 	const [currentDate, setCurrentDate] = useState(todayDate);
 	const [dropdownToggle, setDropdownToggle] = useState(false);
 
@@ -30,10 +22,6 @@ export const useDatePicker = () => {
 
 	const handleToday = () => {
 		setCurrentDate(todayDate);
-	};
-
-	const handleSelectedDateChange = (date: Dayjs) => {
-		setSelectedDate(date);
 	};
 
 	const handleDropdownToggle = () => {
@@ -56,14 +44,12 @@ export const useDatePicker = () => {
 
 	return {
 		todayDate,
-		selectedDate,
 		currentDate,
 		weekDates,
 		dropdownToggle,
 		handleNextWeek,
 		handlePreviousWeek,
 		handleToday,
-		handleSelectedDateChange,
 		handleYearMonthClick,
 		handleDropdownToggle,
 		handleDropdownClose,

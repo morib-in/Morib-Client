@@ -1,3 +1,5 @@
+import { Dayjs } from 'dayjs';
+
 import { useRef } from 'react';
 
 import ArrowSVGBtn from '@/components/atoms/ArrowSVGBtn';
@@ -13,30 +15,31 @@ import { getHomeDropdownData } from '@/utils/date';
 
 import { Direction } from '@/types/global';
 
+import ButtonArrowIcon from '@/assets/svgs/btn_arrow.svg?react';
 import BtnTodayIcon from '@/assets/svgs/btn_today.svg?react';
 
-import { todoData } from '@/mocks/homeData';
+interface DatePickerProps {
+	todayDate: Dayjs;
+	selectedDate: Dayjs;
+	onSelectedDateChange: (date: Dayjs) => void;
+}
 
-import CategoryDropdown from '../CategoryDropdown';
-
-const DatePicker = () => {
+const DatePicker = ({ todayDate, selectedDate, onSelectedDateChange }: DatePickerProps) => {
 	const {
-		todayDate,
-		selectedDate,
 		currentDate,
 		weekDates,
 		dropdownToggle,
 		handleNextWeek,
 		handlePreviousWeek,
 		handleToday,
-		handleSelectedDateChange,
 		handleYearMonthClick,
 		handleDropdownToggle,
 		handleDropdownClose,
-	} = useDatePicker();
+	} = useDatePicker(todayDate);
 
 	const homeDropdownData = getHomeDropdownData(todayDate);
 	const dropdownRef = useRef<HTMLUListElement>(null);
+
 	useClickOutside(dropdownRef, handleDropdownClose);
 
 	return (
@@ -44,7 +47,7 @@ const DatePicker = () => {
 			<section className="relative">
 				<button type="button" className="flex items-center gap-[2rem]" onClick={handleDropdownToggle}>
 					<YearMonthTitle selectedDate={currentDate} />
-					<ArrowSVGBtn direction={Direction.DOWN} />
+					<ButtonArrowIcon className={'rounded-full bg-gray-bg-03 hover:bg-gray-bg-05'} />
 				</button>
 				{dropdownToggle && (
 					<ul
@@ -78,7 +81,7 @@ const DatePicker = () => {
 								<li key={day}>
 									<DateBtn
 										isSelected={isSelected}
-										onClick={() => handleSelectedDateChange(date)}
+										onClick={() => onSelectedDateChange(date)}
 									>{`${formattedDate} ${day}`}</DateBtn>
 								</li>
 							);

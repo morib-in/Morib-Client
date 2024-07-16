@@ -27,3 +27,10 @@ export const getHomeDropdownData = (currentDate: Dayjs) => {
 
 	return homeDropdownDate;
 };
+
+export const getThisWeekRange = (selectedDate: Dayjs) => {
+	const startDate = dayjs(selectedDate).startOf('isoWeek').format('YYYY-MM-DD');
+	const endDate = dayjs(selectedDate).endOf('isoWeek').format('YYYY-MM-DD');
+
+	return { startDate, endDate };
+};
