@@ -21,7 +21,7 @@ export const categoryLists = async () => {
 };
 
 export const getMsets = async (categoryId: number | null) => {
-	const { data } = await nonAuthClient.get(CATEGORY_URL.MSETS_FROM_CATEGORY, {
+	const { data } = await nonAuthClient.get(`${CATEGORY_URL.MSETS_FROM_CATEGORY}${categoryId}`, {
 		params: {
 			categoryId: categoryId,
 		},

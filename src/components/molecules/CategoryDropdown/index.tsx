@@ -5,6 +5,7 @@ import DropdownOptionsBtn from '@/components/atoms/DropdownOptionsBtn';
 
 interface DropdownBtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	optionData: Category[];
+	handleOptionId: (id: number) => void;
 }
 
 interface Category {
@@ -14,7 +15,7 @@ interface Category {
 	endDate: string;
 }
 
-const CategoryDropdown = ({ disabled, optionData }: DropdownBtnProps) => {
+const CategoryDropdown = ({ disabled, handleOptionId, optionData }: DropdownBtnProps) => {
 	const [isClicked, setIsClicked] = useState(false);
 	const [selectedOption, setSelectedOption] = useState('카테고리 추가');
 
@@ -22,6 +23,7 @@ const CategoryDropdown = ({ disabled, optionData }: DropdownBtnProps) => {
 		setSelectedOption(name);
 		setIsClicked(false);
 	};
+
 	const handleBtnClicked = () => {
 		setIsClicked((prev) => !prev);
 	};
@@ -45,6 +47,7 @@ const CategoryDropdown = ({ disabled, optionData }: DropdownBtnProps) => {
 								<DropdownOptionsBtn
 									onClick={() => {
 										handleOptionClick(item.name);
+										handleOptionId(item.id);
 									}}
 								>
 									{item.name}
