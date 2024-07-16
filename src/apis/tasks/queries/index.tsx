@@ -1,6 +1,6 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
-import { postCategory } from '@/apis/tasks/axios/index';
+import { getTabName, postCategory } from '@/apis/tasks/axios/index';
 
 interface MSet {
 	name: string;
@@ -17,5 +17,13 @@ interface CategoryDataProps {
 export const usePostCategory = () => {
 	return useMutation({
 		mutationFn: (categoryData: CategoryDataProps) => postCategory(categoryData),
+	});
+};
+
+export const useGetTabName = (requestUrl: string) => {
+	return useQuery({
+		queryKey: ['tabName', requestUrl],
+		queryFn: () => getTabName(requestUrl),
+		enabled: requestUrl !== '',
 	});
 };
