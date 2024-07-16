@@ -5,8 +5,6 @@ import CategoryModalRight from '@/components/molecules/CategoryModalRight';
 
 import { useCategoryLists, useGetMsets } from '@/apis/modal/queries';
 
-import { URL_DATA } from '@/mocks/urlData';
-
 interface UrlInfo {
 	url: string;
 	domain: string;

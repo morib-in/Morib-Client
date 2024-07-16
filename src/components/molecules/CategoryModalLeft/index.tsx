@@ -53,8 +53,6 @@ const CategoryModalLeft = ({ optionData, handleSelectedInfo, handleOptionId, mse
 		domain: item.name,
 	}));
 
-	console.log('urlInfos:', urlInfos);
-
 	return (
 		<div className="h-[80rem] w-[68.8rem] rounded-l-[10px] bg-gray-bg-04 py-[2.8rem] pl-[4.4rem] pr-[4.3rem]">
 			<div className="mb-[3.3rem]">
