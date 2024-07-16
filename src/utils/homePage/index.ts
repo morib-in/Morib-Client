@@ -30,3 +30,7 @@ export const splitTasksByCompletion = (tasks: Task[]) => {
 
 	return { completedTasks, ongoingTasks };
 };
+
+export const isTaskExist = (dailyCategoryTask: CategoryWithTasks[]) => {
+	return dailyCategoryTask.some((categoryWithTasks) => categoryWithTasks.tasks.length > 0);
+};

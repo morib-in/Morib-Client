@@ -17,7 +17,7 @@ import HomePageWrapper from '@/components/templates/HomePageWrapper';
 import { useGetAllCategoryTask } from '@/apis/home/queries';
 
 import { getThisWeekRange } from '@/utils/date';
-import { getDailyCategoryTask, splitTasksByCompletion } from '@/utils/homePage';
+import { getDailyCategoryTask, isTaskExist, splitTasksByCompletion } from '@/utils/homePage';
 
 import BellIcon from '@/assets/svgs/bell.svg?react';
 import FriendSettingIcon from '@/assets/svgs/friend_setting.svg?react';
@@ -120,7 +120,7 @@ const HomePage = () => {
 								<BellIcon className="rounded-[1.6rem] hover:bg-gray-bg-04 active:bg-gray-bg-05" />
 							</SVGBtn>
 						</div>
-						<TodayTodoBox time={0} selectedTodayTodos={todoData} todos={todoData} />
+						<TodayTodoBox time={0} selectedTodayTodos={[]} hasTodos={isTaskExist(dailyCategoryTask)} />
 					</div>
 				</section>
 			</div>

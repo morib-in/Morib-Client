@@ -10,13 +10,11 @@ import TodayTodoBoxAddStatus from './TodayTodoBoxDefaultStatus';
 interface TodayTodoBoxProps {
 	time: number;
 	selectedTodayTodos: TodoDataTypes[] | [];
-	todos: TodoDataTypes[] | [];
+	hasTodos: boolean;
 }
 
-const TodayTodoBox = ({ time = 0, selectedTodayTodos = [], todos = [] }: TodayTodoBoxProps) => {
+const TodayTodoBox = ({ time = 0, selectedTodayTodos = [], hasTodos = false }: TodayTodoBoxProps) => {
 	const [addStatus, setAddStatus] = useState(false);
-	// Todo: 배열 상태관련 로직 추가!
-	const [hasTodos, setHasTodos] = useState(!(todos.length === 0)); // 배열이 있는 상태를 나타내기 위한 임시 상태
 
 	const enableAddStatus = () => {
 		setAddStatus(true);
