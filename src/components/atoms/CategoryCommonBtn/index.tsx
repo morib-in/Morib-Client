@@ -4,9 +4,17 @@ interface CategoryBtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	variant?: '취소' | '완료';
 	children: ReactNode;
 	handleCloseModal?: () => void;
+	handleSubmit?: () => void;
 }
 
-const CategoryCommonBtn = ({ disabled, variant, children, handleCloseModal, ...props }: CategoryBtnProps) => {
+const CategoryCommonBtn = ({
+	disabled,
+	variant,
+	children,
+	handleCloseModal,
+	handleSubmit,
+	...props
+}: CategoryBtnProps) => {
 	const btnVariant = {
 		취소: 'text-white bg-gray-bg-06',
 		완료: 'text-gray-bg-01 bg-mint-02',
@@ -17,8 +25,15 @@ const CategoryCommonBtn = ({ disabled, variant, children, handleCloseModal, ...p
 
 	const styledBtn = disabled ? disabledBtn : variant ? btnVariant[variant] : '';
 
+	const handleClick = () => {
+		if (handleSubmit) {
+			handleSubmit();
+		} else if (handleCloseModal) {
+			handleCloseModal();
+		}
+	};
 	return (
-		<button className={`${styledBtn} ${commonStyle}`} disabled={disabled} {...props} onClick={handleCloseModal}>
+		<button className={`${styledBtn} ${commonStyle}`} disabled={disabled} {...props} onClick={handleClick}>
 			{children}
 		</button>
 	);

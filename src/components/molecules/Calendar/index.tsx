@@ -102,6 +102,7 @@ const Calendar = ({
 									type="text"
 									value={formatCalendarDate(selectedStartDate) || formatCalendarDate(defaultDate)}
 									className={`${inputStyle} ${optionalStyle}`}
+									readOnly
 								/>
 								<DatePicker
 									selected={selectedStartDate !== undefined ? selectedStartDate : null}

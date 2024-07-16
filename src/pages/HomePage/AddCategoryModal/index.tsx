@@ -13,6 +13,10 @@ import CategoryMoribContentSet from '@/components/molecules/CategoryMoribContent
 import CategoryMoribSet from '@/components/molecules/CategoryMoribSet';
 import CategoryModal, { CategoryRef } from '@/components/templates/CategoryModal/index';
 
+import { usePostCategory } from '@/apis/tasks/queries/index';
+
+import { formatCalendarApiDate } from '@/utils/calendar/index';
+
 import { URL_DATA } from '@/mocks/urlData.ts';
 
 interface UrlInfo {
@@ -23,6 +27,7 @@ interface UrlInfo {
 
 const AddCategoryModal = () => {
 	const [urlInfos, setUrlInfos] = useState<UrlInfo[]>([]);
+	const { mutate: postCategory, isError, isPending, error } = usePostCategory();
 	const [name, setName] = useState('');
 
 	const handleNameChange = (newName: string) => {
@@ -42,7 +47,7 @@ const AddCategoryModal = () => {
 			const newUrlInfo: UrlInfo = {
 				url: url,
 				domain: URL_DATA[index].tabName,
-				favicon: `${url}/favicon.ico`,
+				favicon: `https://www.google.com/s2/favicons?domain=${url}`,
 			};
 
 			setUrlInfos((prevUrlInfos) => [...prevUrlInfos, newUrlInfo]);
@@ -101,6 +106,31 @@ const AddCategoryModal = () => {
 		}
 	}, [isCalendarOpened, isDateToggleOn]);
 
+	const categoryData = {
+		name,
+		startDate: formatCalendarApiDate(selectedStartDate),
+		endDate: formatCalendarApiDate(selectedEndDate),
+		msets: urlInfos.map((info) => ({
+			name: info.domain,
+			url: info.url,
+		})),
+	};
+
+	const isFormValid = () => {
+		if (name && selectedStartDate && urlInfos.length > 0) {
+			return true;
+		}
+	};
+
+	const handlePostDataClick = () => {
+		postCategory(categoryData);
+		handleCloseDialog();
+		if (isPending) return <div>Loading</div>;
+		if (isError) {
+			console.log(error);
+		}
+	};
+
 	return (
 		<div>
 			<button type="button" onClick={handleOpenDialog}>
@@ -126,8 +156,9 @@ const AddCategoryModal = () => {
 									<CalendarInput
 										isPeriodOn={isPeriodOn}
 										selectedStartDate={selectedStartDate ?? defaultDate}
-										selectedEndDate={selectedEndDate ?? undefined}
+										selectedEndDate={selectedEndDate ?? null}
 										onCalendarInputClick={handleOpenCalendar}
+										readOnly={true}
 									/>
 								)}
 								{isDateToggleOn && (
@@ -165,7 +196,9 @@ const AddCategoryModal = () => {
 							<CategoryCommonBtn variant="취소" onClick={handleCloseModal}>
 								취소
 							</CategoryCommonBtn>
-							<CategoryCommonBtn variant="완료">완료</CategoryCommonBtn>
+							<CategoryCommonBtn variant="완료" handleSubmit={handlePostDataClick} disabled={!isFormValid()}>
+								완료
+							</CategoryCommonBtn>
 						</div>
 					</div>
 				)}
