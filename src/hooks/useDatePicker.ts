@@ -50,6 +50,10 @@ export const useDatePicker = () => {
 		handleDropdownToggle();
 	};
 
+	const handleDropdownClose = () => {
+		setDropdownToggle(false);
+	};
+
 	return {
 		todayDate,
 		selectedDate,
@@ -62,5 +66,6 @@ export const useDatePicker = () => {
 		handleSelectedDateChange,
 		handleYearMonthClick,
 		handleDropdownToggle,
+		handleDropdownClose,
 	};
 };

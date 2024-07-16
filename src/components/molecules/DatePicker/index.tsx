@@ -1,9 +1,12 @@
+import { useRef } from 'react';
+
 import ArrowSVGBtn from '@/components/atoms/ArrowSVGBtn';
 import DateBtn from '@/components/atoms/DateBtn';
 import DropdownOptionsBtn from '@/components/atoms/DropdownOptionsBtn';
 import SVGBtn from '@/components/atoms/SVGBtn';
 import YearMonthTitle from '@/components/atoms/YearMonthTitle';
 
+import useClickOutside from '@/hooks/useClickOutside';
 import { useDatePicker } from '@/hooks/useDatePicker';
 
 import { getHomeDropdownData } from '@/utils/date';
@@ -29,9 +32,12 @@ const DatePicker = () => {
 		handleSelectedDateChange,
 		handleYearMonthClick,
 		handleDropdownToggle,
+		handleDropdownClose,
 	} = useDatePicker();
 
 	const homeDropdownData = getHomeDropdownData(todayDate);
+	const dropdownRef = useRef<HTMLUListElement>(null);
+	useClickOutside(dropdownRef, handleDropdownClose);
 
 	return (
 		<header className="mb-[2.8rem]">
@@ -41,7 +47,10 @@ const DatePicker = () => {
 					<ArrowSVGBtn direction={Direction.DOWN} />
 				</button>
 				{dropdownToggle && (
-					<ul className="absolute top-[5.4rem] max-h-[41.4rem] w-[22.5rem] flex-col overflow-scroll rounded-[5px] shadow-[0_3px_30px_0_rgba(0,0,0,0.40)]">
+					<ul
+						ref={dropdownRef}
+						className="absolute top-[5.4rem] max-h-[41.4rem] w-[22.5rem] flex-col overflow-scroll rounded-[5px] shadow-[0_3px_30px_0_rgba(0,0,0,0.40)]"
+					>
 						{homeDropdownData.map((item) => {
 							return (
 								<li
