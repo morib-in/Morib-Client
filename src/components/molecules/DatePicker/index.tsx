@@ -52,7 +52,7 @@ const DatePicker = ({ todayDate, selectedDate, onSelectedDateChange }: DatePicke
 				{dropdownToggle && (
 					<ul
 						ref={dropdownRef}
-						className="absolute top-[5.4rem] max-h-[41.4rem] w-[22.5rem] flex-col overflow-scroll rounded-[5px] shadow-[0_3px_30px_0_rgba(0,0,0,0.40)]"
+						className="absolute top-[5.4rem] z-50 max-h-[41.4rem] w-[22.5rem] flex-col overflow-scroll rounded-[5px] shadow-[0_3px_30px_0_rgba(0,0,0,0.40)]"
 					>
 						{homeDropdownData.map((item) => {
 							return (

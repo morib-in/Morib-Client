@@ -23,8 +23,6 @@ import BellIcon from '@/assets/svgs/bell.svg?react';
 import FriendSettingIcon from '@/assets/svgs/friend_setting.svg?react';
 import LargePlusIcon from '@/assets/svgs/large_plus.svg?react';
 
-import { todoData } from '@/mocks/homeData';
-
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
