@@ -1,10 +1,15 @@
 import dayjs, { Dayjs } from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
 
 import { useState } from 'react';
 
 import { getWeekDates } from '@/utils/date';
 
-export const useDatePicker = (initialDate = dayjs()) => {
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
+export const useDatePicker = (initialDate = dayjs().tz('Asia/Seoul')) => {
 	const [selectedDate, setSelectedDate] = useState(initialDate);
 	const [currentDate, setCurrentDate] = useState(initialDate);
 
