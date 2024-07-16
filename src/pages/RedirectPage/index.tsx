@@ -1,33 +1,36 @@
 import { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-import { useSignUp } from '@/apis/auth/queries';
-
+// import { useLocation } from 'react-router-dom';
+// import { useSignUp } from '@/apis/auth/queries';
 import { ROUTES } from '@/constants/router';
 
 const RedirectPage = () => {
-	const params = new URLSearchParams(useLocation().search);
-	const authorizationCode = params.get('code');
+	//Todo: 서버 이슈로 로그인 관련 로직 앱잼 끝나고 사용
+	// const params = new URLSearchParams(useLocation().search);
+	// const authorizationCode = params.get('code');
 	const navigate = useNavigate();
 
-	const { data, error } = useSignUp(authorizationCode);
+	// const { data, error, isError } = useSignUp(authorizationCode);
+
+	// useEffect(() => {
+	// 	if (data) {
+	// 		const { accessToken, refreshToken } = data || {};
+	// 		if (accessToken && refreshToken) {
+	// 			localStorage.setItem('accessToken', accessToken);
+	// 			localStorage.setItem('refreshToken', refreshToken);
+	// 			navigate(ROUTES.home.path);
+	// 		}
+	// 	}
+	// 	if (error) {
+	// 		alert('다시 로그인 해주세요');
+	// 		navigate(ROUTES.login.path, { replace: true });
+	// 	}
+	// }, [error, navigate, data]);
 
 	useEffect(() => {
-		if (data) {
-			const { accessToken, refreshToken } = data || {};
-
-			if (accessToken && refreshToken) {
-				localStorage.setItem('accessToken', accessToken);
-				localStorage.setItem('refreshToken', refreshToken);
-				navigate(ROUTES.home.path);
-			}
-		}
-
-		if (error) {
-			alert('다시 로그인 해주세요');
-			navigate(ROUTES.login.path, { replace: true });
-		}
-	}, [error, navigate, data]);
+		navigate(ROUTES.home.path, { replace: true });
+	}, [navigate]);
 
 	return <div>RedirectPage</div>;
 };

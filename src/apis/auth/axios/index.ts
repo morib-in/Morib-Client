@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { nonAuthClient } from '@/apis/client';
+import { authClient, nonAuthClient } from '@/apis/client';
 
 import { getRefreshToken } from '@/utils/token';
 
@@ -8,8 +8,10 @@ const AUTH_URL = {
 	SIGN_IN: 'api/v1/users/signin',
 	SIGN_UP: 'api/v1/auth/google/callback',
 	REISSUE_TOKEN: 'api/v1/users/reissue',
+	ADD_CATEGORY: 'api/v1/categories',
 };
 
+//Todo: 서버 이슈로 회원가입/로그인/토큰 관련 API는 앱잼 끝나고 사용
 export const signIn = async () => {
 	const { data } = await nonAuthClient.post(AUTH_URL.SIGN_IN);
 	return data;
