@@ -2,7 +2,7 @@ import SVGBtn from '@/components/atoms/SVGBtn';
 import TodoBox from '@/components/atoms/TodoBox';
 import TodoToggleBtn from '@/components/atoms/TodoToggleBtn';
 
-import { TodoDataTypes } from '@/types/userData';
+import { Task } from '@/types/home';
 
 import ButtonAddIcon from '@/assets/svgs/btn_task_add.svg?react';
 import MeatBallDefault from '@/assets/svgs/todo_meatball_default.svg?react';
@@ -11,8 +11,8 @@ import CategoryBoxDefaultStatus from './CategoryBoxDefaultStatus';
 
 interface CategoryBoxProps {
 	title: string;
-	completedTodos?: TodoDataTypes[];
-	ongoingTodos?: TodoDataTypes[];
+	completedTodos: Task[];
+	ongoingTodos: Task[];
 }
 
 const CategoryBox = ({ title, ongoingTodos = [], completedTodos = [] }: CategoryBoxProps) => {
@@ -33,26 +33,21 @@ const CategoryBox = ({ title, ongoingTodos = [], completedTodos = [] }: Category
 				<CategoryBoxDefaultStatus />
 			) : (
 				<div className="overflow-auto">
-					<TodoToggleBtn isCompleted={false} isToggled={true}>
-						{ongoingTodos.map(({ id, title, date, accumulatedTime }) => (
-							<TodoBox
-								key={id}
-								name={title}
-								startDate={'2024-07-07'}
-								endDate={'2024-07-21'}
-								targetTime={accumulatedTime}
-							/>
+					<TodoToggleBtn isCompleted isToggled={true}>
+						{ongoingTodos.map(({ id, name, startDate, endDate, targetTime }) => (
+							<TodoBox key={id} name={name} startDate={startDate} endDate={endDate} targetTime={targetTime} />
 						))}
 					</TodoToggleBtn>
-					{completedTodos && (
-						<TodoToggleBtn isCompleted isToggled={false}>
-							{completedTodos.map(({ id, title, date, accumulatedTime }) => (
+					{completedTodos.length !== 0 && (
+						<TodoToggleBtn isToggled={false}>
+							{completedTodos.map(({ id, name, startDate, endDate, targetTime }) => (
 								<TodoBox
 									key={id}
-									name={title}
-									startDate={'2024-07-07'}
-									endDate={'2024-07-21'}
-									targetTime={accumulatedTime}
+									isComplete
+									name={name}
+									startDate={startDate}
+									endDate={endDate}
+									targetTime={targetTime}
 								/>
 							))}
 						</TodoToggleBtn>
