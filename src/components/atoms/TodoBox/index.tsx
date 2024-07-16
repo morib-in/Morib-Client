@@ -11,30 +11,33 @@ import MeatBall from '@/assets/svgs/todo_meatball_default.svg?react';
 import SVGBtn from '../SVGBtn';
 
 interface TodoBoxProps {
-	title: string;
-	date: string;
-	accumulatedTime: number;
-	isCompleted?: boolean;
+	name: string;
+	startDate: string;
+	endDate: string | null;
+	targetTime: number;
+	isComplete: boolean;
 	isSelected?: boolean;
 	selectedNumber?: number;
 }
 
 const TodoBox = ({
-	title,
-	date,
-	accumulatedTime,
-	isCompleted = false,
+	name,
+	startDate,
+	endDate,
+	targetTime,
+	isComplete,
 	isSelected = true,
 	selectedNumber = 1,
 }: TodoBoxProps) => {
-	const formattedTime = formatSeconds(accumulatedTime);
-	const formattedDate = date.replace(/-/g, '.');
+	const formattedTime = formatSeconds(targetTime);
+	const formattedstartDate = startDate.replace(/-/g, '.');
+	const formattedendDate = endDate ? endDate.replace(/-/g, '.') : '';
 
-	const titleStyle = isCompleted ? 'line-through' : '';
-	const CheckBoxIcon = isCompleted ? <CheckBoxFillIcon /> : <CheckBoxBlankIcon />;
+	const nameStyle = isComplete ? 'line-through' : '';
+	const CheckBoxIcon = isComplete ? <CheckBoxFillIcon /> : <CheckBoxBlankIcon />;
 
-	const TimeIcon = accumulatedTime ? <TimeFillIcon /> : <TimeLineIcon />;
-	const timeTextClass = accumulatedTime ? 'text-mint-01' : 'text-gray-04';
+	const TimeIcon = targetTime ? <TimeFillIcon /> : <TimeLineIcon />;
+	const timeTextClass = targetTime ? 'text-mint-01' : 'text-gray-04';
 
 	const selectedStyle = isSelected ? ' border-[0.2rem] border-mint-01' : '';
 
@@ -47,7 +50,7 @@ const TodoBox = ({
 				<div className="flex items-center justify-between">
 					<div className="flex items-center gap-[0.6rem]">
 						<SVGBtn>{CheckBoxIcon}</SVGBtn>
-						<h3 className={`body-semibold-16 + mt-[0.42rem] text-white ${titleStyle}`}>{title}</h3>
+						<h3 className={`body-semibold-16 + mt-[0.42rem] text-white ${nameStyle}`}>{name}</h3>
 					</div>
 					<SVGBtn>
 						<MeatBall className="opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
@@ -56,7 +59,9 @@ const TodoBox = ({
 				<div className="ml-[0.8rem] mt-[0.7rem] flex flex-col gap-[0.2rem]">
 					<button className="flex items-center gap-[0.6rem]">
 						<ButtonCalendarIcon />
-						<p className="detail-reg-12 mt-[0.3rem] text-gray-04">{formattedDate}</p>
+						<p className="detail-reg-12 mt-[0.3rem] text-gray-04">
+							{formattedstartDate}~{formattedendDate}
+						</p>
 					</button>
 
 					<div className="flex items-center gap-[0.6rem]">

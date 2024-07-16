@@ -4,7 +4,7 @@ import CategoryCommonBtn from '@/components/atoms/CategoryCommonBtn/index';
 import CategoryCommonTitle from '@/components/atoms/CategoryCommonTitle/index';
 import CategoryMoribContentPage from '@/components/atoms/CategoryMoribContentPage';
 import CategoryMoribContentUrl from '@/components/atoms/CategoryMoribContentUrl';
-import GetCategoryBtn from '@/components/atoms/GetCategoryBtn/index';
+import GetCategoryBtn from '@/components/atoms/GetCategoryBtn';
 import Calendar from '@/components/molecules/Calendar/index';
 import CategoryInputMoribName from '@/components/molecules/CategoryInputMoribName/index';
 import CategoryMoribContentSet from '@/components/molecules/CategoryMoribContentSet';

@@ -7,10 +7,18 @@ import TimerPageTemplates from '@/components/templates/TimerPageTemplates';
 
 import useToggleSidebar from '@/hooks/useToggleSideBar';
 
+import { useGetTodoList } from '@/apis/timer/queries';
+
 import HamburgerIcon from '@/assets/svgs/btn_hamburger.svg?react';
 
 const TimerPage = () => {
 	const { isSidebarOpen, toggleSidebar } = useToggleSidebar();
+	const { data: todosData, isLoading, error } = useGetTodoList('2024-07-15');
+
+	const todos = todosData?.data.task || [];
+
+	if (isLoading) return <div>Loading...</div>;
+	if (error) return <div>Error loading todos</div>;
 
 	return (
 		<TimerPageTemplates>
@@ -32,7 +40,7 @@ const TimerPage = () => {
 				{isSidebarOpen && (
 					<div className="absolute inset-0 z-10 bg-dim">
 						<div className="absolute inset-y-0 right-0 flex justify-end overflow-hidden">
-							<TimerSideBar toggleSidebar={toggleSidebar} />
+							<TimerSideBar ongoingTodos={todos} completedTodos={todos} toggleSidebar={toggleSidebar} />
 						</div>
 					</div>
 				)}
@@ -40,4 +48,5 @@ const TimerPage = () => {
 		</TimerPageTemplates>
 	);
 };
+
 export default TimerPage;

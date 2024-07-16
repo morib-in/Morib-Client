@@ -6,21 +6,22 @@ import useCloseSidebar from '@/hooks/useCloseSideBar';
 
 import BtnListIcon from '@/assets/svgs/btn_list.svg?react';
 
-import { todoData } from '@/mocks/homeData';
-
 interface Todo {
 	id: number;
-	title: string;
-	date: string;
-	accumulatedTime: number;
+	name: string;
+	startDate: string;
+	endDate: string | null;
+	targetTime: number;
+	isComplete: boolean;
 }
 interface CategoryBoxProps {
-	completedTodos?: Todo[];
-	ongoingTodos?: Todo[];
+	completedTodos: Todo[];
+	ongoingTodos: Todo[];
 	toggleSidebar: () => void;
 }
-const TimerSideBar = ({ ongoingTodos = todoData, completedTodos = todoData, toggleSidebar }: CategoryBoxProps) => {
+const TimerSideBar = ({ ongoingTodos = [], completedTodos = [], toggleSidebar }: CategoryBoxProps) => {
 	const { animate, handleClose } = useCloseSidebar(toggleSidebar);
+
 	return (
 		<div
 			className={`flex h-[108rem] w-[40.2rem] transform flex-col rounded-bl-[16px] rounded-tl-[16px] bg-gray-bg-03 pl-[1.8rem] transition-transform duration-300 ${animate ? 'translate-x-0' : 'translate-x-full'}`}
@@ -33,12 +34,27 @@ const TimerSideBar = ({ ongoingTodos = todoData, completedTodos = todoData, togg
 				</button>
 			</div>
 			<div className="h-[82.6rem] overflow-auto pb-[2rem] pt-[1rem]">
-				{ongoingTodos.map(({ id, title, date, accumulatedTime }) => (
-					<TodoBox key={id} title={title} date={date} accumulatedTime={accumulatedTime} isCompleted={false} />
+				{ongoingTodos.map(({ name, startDate, endDate, targetTime, isComplete }) => (
+					<TodoBox
+						key={name}
+						name={name}
+						startDate={startDate}
+						endDate={endDate}
+						targetTime={targetTime}
+						isComplete={isComplete}
+					/>
 				))}
 				<TodoToggleBtn isCompleted={false} isToggled={false}>
-					{completedTodos.map(({ id, title, date, accumulatedTime }) => (
-						<TodoBox key={id} title={title} date={date} accumulatedTime={accumulatedTime} isCompleted={true} />
+					{completedTodos.map(({ name, startDate, endDate, targetTime, isComplete }) => (
+						<TodoBox
+							// Todo: 서버와 협의 후 id 값을 받아서 지정해주기(name 등은 중복될 수 있음)
+							key={name}
+							name={name}
+							startDate={startDate}
+							endDate={endDate}
+							targetTime={targetTime}
+							isComplete={isComplete}
+						/>
 					))}
 				</TodoToggleBtn>
 			</div>
@@ -49,4 +65,5 @@ const TimerSideBar = ({ ongoingTodos = todoData, completedTodos = todoData, togg
 		</div>
 	);
 };
+
 export default TimerSideBar;
