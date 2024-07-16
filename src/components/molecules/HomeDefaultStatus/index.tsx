@@ -12,8 +12,8 @@ interface HomeDefaultStatusProps {
 
 const HomeDefaultStatus = ({ onClick }: HomeDefaultStatusProps) => {
 	return (
-		<div className="mt-[16.8rem] flex h-[732px] w-[1262px] flex-col items-center">
-			<HomeDefaultIcon />
+		<div className="flex h-[732px] w-[1262px] flex-col items-center">
+			<HomeDefaultIcon className="mt-[16.8rem]" />
 			<p className="title-bold-36 mb-[5.2rem] mt-[2.4rem] text-center text-white">
 				당신의 몰입을 도와줄
 				<br />
