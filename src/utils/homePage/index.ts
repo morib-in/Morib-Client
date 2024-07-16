@@ -17,14 +17,14 @@ export const getDailyCategoryTask = (selectedDate: Dayjs, data: DailyData[]) => 
 };
 
 export const splitTasksByCompletion = (tasks: Task[]) => {
-	const completedTasks: Task[] = [];
-	const ongoingTasks: Task[] = [];
+	let completedTasks: Task[] = [];
+	let ongoingTasks: Task[] = [];
 
 	tasks.forEach((task) => {
 		if (task.isComplete) {
-			[...completedTasks, task];
+			completedTasks = [...completedTasks, task];
 		} else {
-			[...ongoingTasks, task];
+			ongoingTasks = [...ongoingTasks, task];
 		}
 	});
 

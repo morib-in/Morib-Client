@@ -26,8 +26,8 @@ const TodoBox = ({
 	startDate,
 	endDate,
 	targetTime,
-	isComplete,
-	isSelected = true,
+	isComplete = false,
+	isSelected = false,
 	selectedNumber = 1,
 	onClick,
 }: TodoBoxProps) => {
@@ -42,6 +42,8 @@ const TodoBox = ({
 	const timeTextClass = targetTime ? 'text-mint-01' : 'text-gray-04';
 
 	const selectedStyle = isSelected ? ' border-[0.2rem] border-mint-01' : '';
+
+	const duration = formattedendDate ? `${formattedstartDate}~${formattedendDate}` : formattedstartDate;
 
 	return (
 		<div
@@ -61,9 +63,7 @@ const TodoBox = ({
 				<div className="ml-[0.8rem] mt-[0.7rem] flex flex-col gap-[0.2rem]">
 					<button className="flex items-center gap-[0.6rem]">
 						<ButtonCalendarIcon />
-						<p className="detail-reg-12 mt-[0.3rem] text-gray-04">
-							{formattedstartDate}~{formattedendDate}
-						</p>
+						<p className="detail-reg-12 mt-[0.3rem] text-gray-04">{duration}</p>
 					</button>
 
 					<div className="flex items-center gap-[0.6rem]">

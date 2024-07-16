@@ -17,20 +17,16 @@ import HomePageWrapper from '@/components/templates/HomePageWrapper';
 import { useGetAllCategoryTask } from '@/apis/home/queries';
 
 import { getThisWeekRange } from '@/utils/date';
-import { getDailyCategoryTask, splitTasksByCompletion } from '@/utils/home';
+import { getDailyCategoryTask, splitTasksByCompletion } from '@/utils/homePage';
 
 import BellIcon from '@/assets/svgs/bell.svg?react';
 import FriendSettingIcon from '@/assets/svgs/friend_setting.svg?react';
 import LargePlusIcon from '@/assets/svgs/large_plus.svg?react';
 
-import { exampleResponse, todoData } from '@/mocks/homeData';
+import { todoData } from '@/mocks/homeData';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
-
-const isEmptyObject = (obj: object) => {
-	return Object.keys(obj).length === 0 && obj.constructor === Object;
-};
 
 const HomePage = () => {
 	const todayDate = dayjs().tz('Asia/Seoul');
@@ -83,13 +79,13 @@ const HomePage = () => {
 							{dailyCategoryTask.length !== 0 ? (
 								<>
 									{dailyCategoryTask.map(({ category, tasks }) => {
-										// const { completedTasks, ongoingTasks } = splitTasksByCompletion(tasks);
+										const { completedTasks, ongoingTasks } = splitTasksByCompletion(tasks);
 										return (
 											<CategoryBox
 												key={category.id}
 												title={category.name}
-												ongoingTodos={todoData}
-												completedTodos={todoData}
+												ongoingTodos={ongoingTasks}
+												completedTodos={completedTasks}
 											/>
 										);
 									})}
