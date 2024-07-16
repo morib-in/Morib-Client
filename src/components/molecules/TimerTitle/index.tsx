@@ -3,13 +3,14 @@ import TodoTitle from './TodoTitle';
 
 interface titleNameProps {
 	targetName: string;
+	targetCategoryName: string;
 }
 
-const TimerTitle = ({ targetName }: titleNameProps) => {
+const TimerTitle = ({ targetName, targetCategoryName }: titleNameProps) => {
 	return (
 		<div className="mt-[8.6rem] flex flex-col items-center gap-[1rem]">
 			<TodoTitle title={targetName} />
-			<CategoryTitle title="모립 프로젝트" />
+			<CategoryTitle title={targetCategoryName} />
 		</div>
 	);
 };
