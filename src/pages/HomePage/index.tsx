@@ -48,7 +48,6 @@ const HomePage = () => {
 	const categories = categoriesData?.data || [];
 
 	const dailyCategoryTask = getDailyCategoryTask(selectedDate, categories);
-	console.log(dailyCategoryTask);
 
 	if (isError) {
 		console.error(error);
