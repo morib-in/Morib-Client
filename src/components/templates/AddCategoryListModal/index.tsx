@@ -19,6 +19,7 @@ type CategoryListModalProp = {
 	handleDeleteUrlInfo: (url: UrlInfo) => void;
 	// Todo: 발등 이슈로 추후 타입 수정
 	setSelectedInfo: (urlInfo: any) => any;
+	moribSetName: string;
 };
 
 const AddCategoryListModal = ({
@@ -28,6 +29,7 @@ const AddCategoryListModal = ({
 	handleSelectedInfo,
 	handleDeleteUrlInfo,
 	setSelectedInfo,
+	moribSetName,
 }: CategoryListModalProp) => {
 	const { data: categoryData, isLoading, error } = useCategoryLists();
 	const categories = categoryData?.data || [];
@@ -66,6 +68,7 @@ const AddCategoryListModal = ({
 					handleUrlInputChange={(url: string) => handleUrlInputChange(url)}
 					handleDeleteUrlInfo={(url: UrlInfo) => handleDeleteUrlInfo(url)}
 					handleCloseModal={handleCloseModal}
+					moribSetName={moribSetName}
 				/>
 			</div>
 		</dialog>

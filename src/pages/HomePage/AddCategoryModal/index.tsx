@@ -205,6 +205,7 @@ const AddCategoryModal = () => {
 								handleDeleteUrlInfo={(url: UrlInfo) => handleDeleteUrlInfo(url)}
 								setSelectedInfo={setSelectedInfo}
 								urlInfo={urlInfos}
+								moribSetName={name}
 							/>
 							<div>
 								<CategoryMoribContentSet urlInfos={combinedInfos} variant="basic">
