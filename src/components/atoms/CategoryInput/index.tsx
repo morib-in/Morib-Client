@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import AlertIcon from '@/assets/svgs/ic_description.svg?react';
+import ErrorIcon from '@/assets/svgs/description.svg?react';
 
 interface CategoryInputNameProps {
 	onNameChange: (name: string) => void;
@@ -31,8 +31,8 @@ const CategoryInput = ({ onNameChange, isValid, placeholder, errorMessage }: Cat
 				value={value}
 			/>
 			<div className={`flex ${isValid === false ? 'visible' : 'invisible'}`}>
+				<ErrorIcon />
 				<div className="mt-[0.5rem] flex items-center gap-[5px]">
-					<AlertIcon />
 					<div className="detail-reg-14 text-error-01">{errorMessage}</div>
 				</div>
 			</div>

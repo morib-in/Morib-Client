@@ -14,6 +14,7 @@ interface UrlInfo {
 interface CategoryCommonMoribSetProps {
 	onUrlInputChange: (url: string) => void;
 	selectedInfo: UrlInfo[];
+	urlInfo: UrlInfo[];
 	handleSelectedInfo: (urlInfo: UrlInfo) => void;
 	handleDeleteUrlInfo: (url: UrlInfo) => void;
 	setSelectedInfo: (urlInfo: UrlInfo[]) => void;
@@ -25,6 +26,7 @@ const CategoryCommonMoribSet = ({
 	handleSelectedInfo,
 	handleDeleteUrlInfo,
 	setSelectedInfo,
+	urlInfo,
 }: CategoryCommonMoribSetProps) => {
 	const [isOpen, setOpen] = useState(false);
 	const dialogRef = useRef<HTMLDialogElement>(null);
@@ -60,7 +62,7 @@ const CategoryCommonMoribSet = ({
 					setSelectedInfo={setSelectedInfo}
 				/>
 			</div>
-			<CategoryUrlInput variant="basic" onUrlInputChange={(url: string) => onUrlInputChange(url)} />
+			<CategoryUrlInput variant="basic" onUrlInputChange={(url: string) => onUrlInputChange(url)} urlInfo={urlInfo} />
 		</div>
 	);
 };
