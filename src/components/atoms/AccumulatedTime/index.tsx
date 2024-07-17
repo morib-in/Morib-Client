@@ -2,11 +2,11 @@ import useTimerCount from '@/hooks/useTimerCount';
 
 interface AccumulatedTimeProps {
 	isPlaying: boolean;
-	accumulatedTime: number;
+	totalTimeOfToday: number;
 }
 
-const AccumulatedTime = ({ isPlaying, accumulatedTime }: AccumulatedTimeProps) => {
-	const timer = useTimerCount({ isPlaying, previousTime: accumulatedTime });
+const AccumulatedTime = ({ isPlaying, totalTimeOfToday }: AccumulatedTimeProps) => {
+	const timer = useTimerCount({ isPlaying, previousTime: totalTimeOfToday });
 
 	const hours = Math.floor(timer / 3600);
 	const minutes = Math.floor((timer % 3600) / 60);

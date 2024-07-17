@@ -1,12 +1,12 @@
-import dayjs, { Dayjs } from 'dayjs';
+import { Dayjs } from 'dayjs';
 
 import { useState } from 'react';
 
 import { getWeekDates } from '@/utils/date';
 
-export const useDatePicker = (initialDate = dayjs()) => {
-	const [selectedDate, setSelectedDate] = useState(initialDate);
-	const [currentDate, setCurrentDate] = useState(initialDate);
+export const useDatePicker = (todayDate: Dayjs) => {
+	const [currentDate, setCurrentDate] = useState(todayDate);
+	const [dropdownToggle, setDropdownToggle] = useState(false);
 
 	const weekDates = getWeekDates(currentDate);
 
@@ -21,20 +21,37 @@ export const useDatePicker = (initialDate = dayjs()) => {
 	};
 
 	const handleToday = () => {
-		setCurrentDate(initialDate);
+		setCurrentDate(todayDate);
 	};
 
-	const handleDateChange = (date: Dayjs) => {
-		setSelectedDate(date);
+	const handleDropdownToggle = () => {
+		setDropdownToggle((prevToggle) => !prevToggle);
+	};
+
+	const handleYearMonthClick = (yearMonthDate: Dayjs) => {
+		if (yearMonthDate.isSame(todayDate, 'month')) {
+			setCurrentDate(todayDate);
+		} else {
+			setCurrentDate(yearMonthDate);
+		}
+
+		handleDropdownToggle();
+	};
+
+	const handleDropdownClose = () => {
+		setDropdownToggle(false);
 	};
 
 	return {
-		selectedDate,
+		todayDate,
 		currentDate,
 		weekDates,
+		dropdownToggle,
 		handleNextWeek,
 		handlePreviousWeek,
 		handleToday,
-		handleDateChange,
+		handleYearMonthClick,
+		handleDropdownToggle,
+		handleDropdownClose,
 	};
 };

@@ -27,7 +27,7 @@ const TodayTodoBoxAddStatus = ({ selectedTodayTodos, onDisableAddStatus }: Today
 				<ul className="mt-[0.7rem] max-h-[57.5rem] overflow-auto">
 					{selectedTodayTodos.map(({ accumulatedTime, date, title }, index) => (
 						<li key={index}>
-							<TodoBox accumulatedTime={accumulatedTime} date={date} title={title} />
+							<TodoBox targetTime={accumulatedTime} startDate={'2024-07-07'} endDate={'2024-07-21'} name={title} />
 						</li>
 					))}
 				</ul>

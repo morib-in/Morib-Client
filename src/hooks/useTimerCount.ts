@@ -9,6 +9,10 @@ const useTimerCount = ({ isPlaying, previousTime }: UseTimerCountProps) => {
 	const [timer, setTimer] = useState(previousTime);
 
 	useEffect(() => {
+		setTimer(previousTime);
+	}, [previousTime]);
+
+	useEffect(() => {
 		let timerIntervalId: ReturnType<typeof setInterval>;
 
 		if (isPlaying) {

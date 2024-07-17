@@ -9,11 +9,16 @@ import useTimerCount from '@/hooks/useTimerCount';
 
 import InnerCircleIcon from '@/assets/svgs/elipse.svg?react';
 
-const Timer = () => {
+interface TaskTotalTimeProps {
+	totalTimeOfToday: number;
+	targetTime: number;
+}
+
+const Timer = ({ totalTimeOfToday, targetTime }: TaskTotalTimeProps) => {
 	const [isPlaying, setIsPlaying] = useState(false);
-	const previousTime = 20000; //임의로 10000을 넣어 놓음
-	const timer = useTimerCount({ isPlaying, previousTime });
-	const accumulatedTime = 20000; //임의로 30000을 넣어 놓음
+
+	const timer = useTimerCount({ isPlaying, previousTime: targetTime });
+	const accumulatedTime = totalTimeOfToday || 0;
 
 	const handlePlayPauseToggle = () => {
 		setIsPlaying((prevState) => !prevState);
@@ -25,7 +30,7 @@ const Timer = () => {
 			<InnerCircleIcon className="absolute" />
 			<div className="absolute flex h-[22rem] w-[27.1rem] flex-col items-center justify-center">
 				<div className="flex flex-col items-center justify-center">
-					<AccumulatedTime isPlaying={isPlaying} accumulatedTime={accumulatedTime} />
+					<AccumulatedTime isPlaying={isPlaying} totalTimeOfToday={accumulatedTime} />
 					<TaskTime isPlaying={isPlaying} timer={timer} />
 				</div>
 				<div>

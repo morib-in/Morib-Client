@@ -4,23 +4,44 @@ import TodoToggleBtn from '@/components/atoms/TodoToggleBtn';
 
 import useCloseSidebar from '@/hooks/useCloseSideBar';
 
+import { usePatchTaskStatus } from '@/apis/common/queries';
+
+import { Todo } from '@/types/todoData';
+
 import BtnListIcon from '@/assets/svgs/btn_list.svg?react';
 
-import { todoData } from '@/mocks/homeData';
-
-interface Todo {
-	id: number;
-	title: string;
-	date: string;
-	accumulatedTime: number;
-}
 interface CategoryBoxProps {
-	completedTodos?: Todo[];
-	ongoingTodos?: Todo[];
+	completedTodos: Todo[];
+	ongoingTodos: Todo[];
 	toggleSidebar: () => void;
+	setSelectedTodo: (id: number) => void;
+	setTargetTime: (time: number) => void;
+	setTargetName: (name: string) => void;
+	selectedTodo: number | null;
 }
-const TimerSideBar = ({ ongoingTodos = todoData, completedTodos = todoData, toggleSidebar }: CategoryBoxProps) => {
+const TimerSideBar = ({
+	ongoingTodos = [],
+	completedTodos = [],
+	toggleSidebar,
+	setSelectedTodo,
+	setTargetTime,
+	setTargetName,
+	selectedTodo,
+}: CategoryBoxProps) => {
 	const { animate, handleClose } = useCloseSidebar(toggleSidebar);
+
+	const handleTodoClick = (id: number, time: number, name: string) => {
+		setSelectedTodo(id);
+		setTargetTime(time);
+		setTargetName(name);
+	};
+
+	const { mutate, isError, error } = usePatchTaskStatus();
+
+	if (isError) {
+		console.error(error);
+	}
+
 	return (
 		<div
 			className={`flex h-[108rem] w-[40.2rem] transform flex-col rounded-bl-[16px] rounded-tl-[16px] bg-gray-bg-03 pl-[1.8rem] transition-transform duration-300 ${animate ? 'translate-x-0' : 'translate-x-full'}`}
@@ -33,12 +54,24 @@ const TimerSideBar = ({ ongoingTodos = todoData, completedTodos = todoData, togg
 				</button>
 			</div>
 			<div className="h-[82.6rem] overflow-auto pb-[2rem] pt-[1rem]">
-				{ongoingTodos.map(({ id, title, date, accumulatedTime }) => (
-					<TodoBox key={id} title={title} date={date} accumulatedTime={accumulatedTime} isCompleted={false} />
+				{ongoingTodos.map((todo) => (
+					<TodoBox
+						key={todo.id}
+						{...todo}
+						isSelected={todo.id === selectedTodo}
+						onClick={() => handleTodoClick(todo.id, todo.targetTime, todo.name)}
+						onToggleComplete={() => mutate(todo.id)}
+					/>
 				))}
 				<TodoToggleBtn isCompleted={false} isToggled={false}>
-					{completedTodos.map(({ id, title, date, accumulatedTime }) => (
-						<TodoBox key={id} title={title} date={date} accumulatedTime={accumulatedTime} isCompleted={true} />
+					{completedTodos.map((todo) => (
+						<TodoBox
+							key={todo.id}
+							{...todo}
+							isSelected={todo.id === selectedTodo}
+							onClick={() => handleTodoClick(todo.id, todo.targetTime, todo.name)}
+							onToggleComplete={() => mutate(todo.id)}
+						/>
 					))}
 				</TodoToggleBtn>
 			</div>
@@ -49,4 +82,5 @@ const TimerSideBar = ({ ongoingTodos = todoData, completedTodos = todoData, togg
 		</div>
 	);
 };
+
 export default TimerSideBar;

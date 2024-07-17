@@ -1,3 +1,9 @@
+import dayjs, { Dayjs } from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
+
+import { useState } from 'react';
+
 import MoreFriendsBtn from '@/components/atoms/MoreFriendsBtn';
 import SVGBtn from '@/components/atoms/SVGBtn';
 import UserProfile from '@/components/atoms/UserProfile';
@@ -8,13 +14,39 @@ import HomeSideBar from '@/components/molecules/HomeSideBar';
 import TodayTodoBox from '@/components/molecules/TodayTodoBox';
 import HomePageWrapper from '@/components/templates/HomePageWrapper';
 
+import { useGetAllCategoryTask } from '@/apis/home/queries';
+
+import { getThisWeekRange } from '@/utils/date';
+import { getDailyCategoryTask, isTaskExist, splitTasksByCompletion } from '@/utils/homePage';
+
 import BellIcon from '@/assets/svgs/bell.svg?react';
 import FriendSettingIcon from '@/assets/svgs/friend_setting.svg?react';
 import LargePlusIcon from '@/assets/svgs/large_plus.svg?react';
 
-import { todoData } from '@/mocks/homeData';
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const HomePage = () => {
+	const todayDate = dayjs().tz('Asia/Seoul');
+
+	const [selectedDate, setSelectedDate] = useState(todayDate);
+
+	const handleSelectedDateChange = (date: Dayjs) => {
+		setSelectedDate(date);
+	};
+
+	const { startDate, endDate } = getThisWeekRange(selectedDate);
+
+	const { data: categoriesData, isError, error } = useGetAllCategoryTask(startDate, endDate);
+
+	const categories = categoriesData?.data || [];
+
+	const dailyCategoryTask = getDailyCategoryTask(selectedDate, categories);
+
+	if (isError) {
+		console.error(error);
+	}
+
 	return (
 		<HomePageWrapper>
 			<HomeSideBar />
@@ -35,20 +67,45 @@ const HomePage = () => {
 						</ul>
 						<MoreFriendsBtn friendsCount={12} />
 					</div>
-					<DatePicker />
+					<DatePicker
+						todayDate={todayDate}
+						selectedDate={selectedDate}
+						onSelectedDateChange={handleSelectedDateChange}
+					/>
 					<div className="flex">
 						<article className="flex h-[732px] w-[1262px] gap-[2.8rem] overflow-x-auto">
-							{/*Todo: 서버 상태 받아서 map 로직 추가 */}
-							{/* <CategoryBox title={'morib 프로젝트'} ongoingTodos={todoData} completedTodos={todoData} />
-							<CategoryBox title={'morib 프로젝트'} />
-							<CategoryBox title={'morib 프로젝트'} /> */}
-							<HomeDefaultStatus />
+							{dailyCategoryTask.length !== 0 ? (
+								<>
+									{dailyCategoryTask.map(({ category, tasks }) => {
+										const { completedTasks, ongoingTasks } = splitTasksByCompletion(tasks);
+										return (
+											<CategoryBox
+												key={category.id}
+												title={category.name}
+												ongoingTodos={ongoingTasks}
+												completedTodos={completedTasks}
+											/>
+										);
+									})}
+									{dailyCategoryTask.length < 2 && (
+										<div className="ml-[2.2rem] flex flex-col">
+											<SVGBtn className="flex-shrink-0">
+												<LargePlusIcon className="rounded-full bg-gray-bg-03 hover:bg-gray-bg-05" />
+											</SVGBtn>
+										</div>
+									)}
+								</>
+							) : (
+								<HomeDefaultStatus />
+							)}
 						</article>
-						{/* <div className="ml-[2.2rem] flex flex-col">
-							<SVGBtn className="flex-shrink-0">
-								<LargePlusIcon className="rounded-full bg-gray-bg-03 hover:bg-gray-bg-05" />
-							</SVGBtn>
-						</div> */}
+						{dailyCategoryTask.length > 2 && (
+							<div className="ml-[2.2rem] flex flex-col">
+								<SVGBtn className="flex-shrink-0">
+									<LargePlusIcon className="rounded-full bg-gray-bg-03 hover:bg-gray-bg-05" />
+								</SVGBtn>
+							</div>
+						)}
 					</div>
 				</section>
 				<section className="flex items-end justify-end">
@@ -61,7 +118,7 @@ const HomePage = () => {
 								<BellIcon className="rounded-[1.6rem] hover:bg-gray-bg-04 active:bg-gray-bg-05" />
 							</SVGBtn>
 						</div>
-						<TodayTodoBox time={0} selectedTodayTodos={todoData} todos={todoData} />
+						<TodayTodoBox time={0} selectedTodayTodos={[]} hasTodos={isTaskExist(dailyCategoryTask)} />
 					</div>
 				</section>
 			</div>
