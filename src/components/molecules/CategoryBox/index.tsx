@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 
 import SVGBtn from '@/components/atoms/SVGBtn';
 import TodoBox from '@/components/atoms/TodoBox';
@@ -7,6 +7,7 @@ import TodoToggleBtn from '@/components/atoms/TodoToggleBtn';
 
 import { useCalendar } from '@/hooks/useCalendar';
 import useClickOutside from '@/hooks/useClickOutside';
+import { useCreateTodo } from '@/hooks/useCreateTodo';
 
 import { usePostCreateTask } from '@/apis/home/queries';
 
@@ -34,30 +35,21 @@ const format = (date: Date | null) => {
 };
 
 const CategoryBox = ({ id, title, ongoingTodos = [], completedTodos = [] }: CategoryBoxProps) => {
-	const [name, setName] = useState('');
-	const [isAdding, setIsAdding] = useState(false);
-	const [editable, setEditable] = useState(false);
 	const { mutate, isError, error } = usePostCreateTask();
 
-	const handleEditComplete = () => {
-		setEditable(false);
-	};
-
-	const handleInputChange = (name: string) => {
-		setName(name);
-	};
+	const {
+		name,
+		isAdding,
+		editable,
+		handleEditComplete,
+		handleInputChange,
+		startAddingTodo,
+		cancelAddingTodo,
+		setName,
+		setIsAdding,
+	} = useCreateTodo();
 
 	const todoRef = useRef<HTMLDivElement>(null);
-
-	const startAddingTodo = () => {
-		setIsAdding(true);
-		setEditable(true);
-	};
-
-	const cancelAddingTodo = () => {
-		setName('');
-		setIsAdding(false);
-	};
 
 	const handleCreatePost = () => {
 		const dataToPost = {
@@ -86,6 +78,10 @@ const CategoryBox = ({ id, title, ongoingTodos = [], completedTodos = [] }: Cate
 		handleStartDateInput,
 		handleEndDateInput,
 	} = useCalendar();
+
+	if (isError) {
+		console.error(error);
+	}
 
 	return (
 		<div className="flex h-[73.2rem] w-[40.2rem] flex-shrink-0 flex-col rounded-[16px] bg-gray-bg-03 px-[1.8rem] pt-[1.8rem]">
@@ -136,7 +132,7 @@ const CategoryBox = ({ id, title, ongoingTodos = [], completedTodos = [] }: Cate
 							)}
 
 							{ongoingTodos.map(({ id, name, startDate, endDate, targetTime }) => (
-								<TodoBox key={id} name={name} startDate={startDate} endDate={endDate} targetTime={targetTime} />
+								<TodoBox id={id} key={id} name={name} startDate={startDate} endDate={endDate} targetTime={targetTime} />
 							))}
 						</TodoToggleBtn>
 
@@ -144,6 +140,7 @@ const CategoryBox = ({ id, title, ongoingTodos = [], completedTodos = [] }: Cate
 							<TodoToggleBtn isToggled={false}>
 								{completedTodos.map(({ id, name, startDate, endDate, targetTime }) => (
 									<TodoBox
+										id={id}
 										key={id}
 										isComplete
 										name={name}

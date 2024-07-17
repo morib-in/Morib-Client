@@ -19,6 +19,8 @@ import { useGetAllCategoryTask } from '@/apis/home/queries';
 import { getThisWeekRange } from '@/utils/date';
 import { getDailyCategoryTask, isTaskExist, splitTasksByCompletion } from '@/utils/homePage';
 
+import { Task } from '@/types/home';
+
 import BellIcon from '@/assets/svgs/bell.svg?react';
 import FriendSettingIcon from '@/assets/svgs/friend_setting.svg?react';
 import LargePlusIcon from '@/assets/svgs/large_plus.svg?react';
@@ -38,6 +40,12 @@ const HomePage = () => {
 
 	const [addingTodayTodoStatus, setAddingTodayTodoStatus] = useState(false);
 	const addTodayTodoOverlayStyle = addingTodayTodoStatus ? 'opacity-30 pointer-events-none' : '';
+
+	const [selectedTodayTodos, setSelectedTodayTodos] = useState<Task[]>([]);
+
+	const handleAddSelectedTodayTodos = (todo: Task) => {
+		setSelectedTodayTodos((prev) => [...prev, todo]);
+	};
 
 	const disableAddingTodayTodo = () => {
 		setAddingTodayTodoStatus(false);

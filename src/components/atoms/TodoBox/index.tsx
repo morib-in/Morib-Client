@@ -17,7 +17,7 @@ interface TodoBoxProps {
 	startDate: string;
 	endDate: string | null;
 	targetTime: number;
-	isComplete: boolean;
+	isComplete?: boolean;
 	isSelected: boolean;
 	selectedNumber?: number;
 	onClick?: () => void;
