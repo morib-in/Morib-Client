@@ -3,9 +3,10 @@ import CategoryInputTitle from '@/components/atoms/CategoryInputTitle/index';
 
 interface CategoryInputMoribName {
 	onNameChange: (name: string) => void;
+	isValid: boolean;
 }
 
-const CategoryInputMoribName = ({ onNameChange }: CategoryInputMoribName) => {
+const CategoryInputMoribName = ({ onNameChange, isValid }: CategoryInputMoribName) => {
 	return (
 		<div className="flex gap-[4.4rem]">
 			<div className="flex-col">
@@ -15,7 +16,8 @@ const CategoryInputMoribName = ({ onNameChange }: CategoryInputMoribName) => {
 				<CategoryInput
 					onNameChange={onNameChange}
 					placeholder="이름을 10자 이내로 작성해주세요."
-					errorMessage="이미 존재하는 작업 카테고리입니다."
+					errorMessage="이름을 10자 이내로 작성해주세요."
+					isValid={isValid}
 				/>
 			</div>
 		</div>

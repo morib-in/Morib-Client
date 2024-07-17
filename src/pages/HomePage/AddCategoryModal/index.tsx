@@ -27,6 +27,7 @@ interface UrlInfo {
 const AddCategoryModal = () => {
 	const [urlInfos, setUrlInfos] = useState<UrlInfo[]>([]);
 	const [selectedInfo, setSelectedInfo] = useState<UrlInfo[]>([]);
+	const [isValid, setIsValid] = useState(true);
 	const [name, setName] = useState('');
 	const {
 		mutate: postCategory,
@@ -53,7 +54,13 @@ const AddCategoryModal = () => {
 
 	const handleNameChange = (newName: string) => {
 		setName(newName);
+		if (newName.length > 10) {
+			setIsValid(false);
+		} else {
+			setIsValid(true);
+		}
 	};
+
 	const [isDateToggleOn, setIsDateToggleOn] = useState(false);
 	const [isPeriodOn, setIsPeriodOn] = useState(false);
 	const [selectedStartDate, setSelectedStartDate] = useState<Date | null>(null);
@@ -139,7 +146,7 @@ const AddCategoryModal = () => {
 	};
 
 	const isFormValid = () => {
-		if (name && urlInfos.length > 0) {
+		if (name && urlInfos.length > 0 && isValid) {
 			return true;
 		}
 	};
@@ -166,7 +173,7 @@ const AddCategoryModal = () => {
 					<div>
 						<CategoryCommonTitle />
 						<div className="flex-start mt-[1.6rem] inline-flex gap-[4.4rem]">
-							<CategoryInputMoribName onNameChange={handleNameChange} />
+							<CategoryInputMoribName onNameChange={handleNameChange} isValid={isValid} />
 							<div ref={calendarRef}>
 								<div className="ml-[1rem] mt-[1rem] flex items-center gap-[1rem]">
 									<CategoryInputTitle title="날짜" />
