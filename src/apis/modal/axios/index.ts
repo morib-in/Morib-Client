@@ -1,13 +1,13 @@
 import { nonAuthClient } from '@/apis/client';
 
 const CATEGORY_URL = {
-	TAB_NAME: 'api/v1/fetch-title?',
+	TAB_NAME: 'api/v1/fetch-title',
 	CATEGORIES_LIST: 'api/v1/categories',
 	MSETS_FROM_CATEGORY: 'api/v1/mset/categories/',
 };
 
 export const getTabName = async (requestUrl: string) => {
-	const { data } = await nonAuthClient.get(`${CATEGORY_URL.TAB_NAME}requestUrl=${requestUrl}`, {
+	const { data } = await nonAuthClient.get(CATEGORY_URL.TAB_NAME, {
 		params: {
 			requestUrl: requestUrl,
 		},

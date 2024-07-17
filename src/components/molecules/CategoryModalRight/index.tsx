@@ -9,7 +9,7 @@ import MinusBtn from '@/assets/svgs/minus_btn.svg?react';
 
 interface UrlInfo {
 	url: string;
-	domain: string;
+	domain?: string;
 	favicon: string;
 }
 

@@ -13,7 +13,7 @@ import AddBtn from '@/assets/svgs/add_btn.svg?react';
 
 interface UrlInfo {
 	url: string;
-	domain: string;
+	domain?: string;
 	favicon: string;
 }
 
@@ -50,8 +50,9 @@ const CategoryModalLeft = ({ optionData, handleSelectedInfo, handleOptionId, mse
 	const urlInfos = msetsList.map((item) => ({
 		url: item.url,
 		favicon: `https://www.google.com/s2/favicons?domain=${item.url}`,
-		domain: item.name,
 	}));
+
+	console.log('urlInfos', urlInfos);
 
 	return (
 		<div className="h-[80rem] w-[68.8rem] rounded-l-[10px] bg-gray-bg-04 py-[2.8rem] pl-[4.4rem] pr-[4.3rem]">

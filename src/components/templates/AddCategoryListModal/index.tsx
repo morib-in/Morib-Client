@@ -7,7 +7,7 @@ import { useCategoryLists, useGetMsets } from '@/apis/modal/queries';
 
 interface UrlInfo {
 	url: string;
-	domain: string;
+	domain?: string;
 	favicon: string;
 }
 
@@ -24,7 +24,6 @@ const AddCategoryListModal = ({ dialogRef, handleCloseModal }: CategoryListModal
 	const [categoryId, setCategoryId] = useState<number>(0);
 
 	const { data: msets } = useGetMsets(categoryId);
-
 	const msetsList = msets?.data.msetList || [];
 	console.log('msetsList:', msetsList);
 	if (isLoading) return <div>Loading...</div>;
@@ -33,6 +32,7 @@ const AddCategoryListModal = ({ dialogRef, handleCloseModal }: CategoryListModal
 	const handleOptionId = (id: number) => {
 		setCategoryId(id);
 	};
+
 	const handleSelectedInfo = (urlInfo: UrlInfo) => {
 		setSelectedInfo((prevItems) => {
 			if (prevItems.some((prevItem) => prevItem.url === urlInfo.url)) {

@@ -6,7 +6,7 @@ import AlertIcon from '@/assets/svgs/ic_description.svg?react';
 
 interface UrlInfo {
 	url: string;
-	domain: string;
+	domain?: string;
 	favicon: string;
 }
 

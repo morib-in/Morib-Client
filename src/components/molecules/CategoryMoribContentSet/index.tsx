@@ -2,7 +2,7 @@ import React from 'react';
 
 interface UrlInfo {
 	url: string;
-	domain: string;
+	domain?: string;
 	favicon: string;
 }
 

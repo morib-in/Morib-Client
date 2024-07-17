@@ -6,6 +6,7 @@ export const useGetTabName = (requestUrl: string) => {
 	return useQuery({
 		queryKey: ['UrlTabName', requestUrl],
 		queryFn: () => getTabName(requestUrl),
+		enabled: requestUrl !== '',
 	});
 };
 
