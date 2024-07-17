@@ -33,7 +33,7 @@ const CategoryModalRight = ({
 			<div className="mb-[8px] flex w-full flex-row justify-start">
 				<CategoryModalRightTitle msetName="앱잼 와이어프레임" />
 			</div>
-			<div className="mb-[2.8rem] flex w-full flex-col">
+			<div className="flex w-full flex-col">
 				<CategoryUrlInput
 					selectedInfo={selectedInfo}
 					variant="small"
