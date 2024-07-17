@@ -30,9 +30,9 @@ const CategoryInput = ({ onNameChange, isValid, placeholder, errorMessage }: Cat
 				onChange={handleValueChange}
 				value={value}
 			/>
-			<div className={`flex ${isValid === false ? 'visible' : 'invisible'}`}>
+			<div className={`my-[0.4rem] flex gap-[5px] ${isValid === false ? 'visible' : 'invisible'}`}>
 				<ErrorIcon />
-				<div className="mt-[0.5rem] flex items-center gap-[5px]">
+				<div className="flex items-center gap-[5px]">
 					<div className="detail-reg-14 text-error-01">{errorMessage}</div>
 				</div>
 			</div>

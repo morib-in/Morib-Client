@@ -15,7 +15,7 @@ const CalendarInput = ({
 	isPeriodOn,
 }: CalendarInputProps) => {
 	const defaultStyle =
-		'cursor-pointer items-center self-stretch subhead-med-18 h-[4.6rem] w-[34.4rem] rounded-[8px] border-[1px] border-gray-bg-07 bg-gray-bg-03 px-[2rem] py-[0.8rem] mb-[0.9rem] text-white';
+		'cursor-pointer flex items-center self-stretch subhead-med-18 h-[4.6rem] w-[34.4rem] rounded-[8px] border-[1px] border-gray-bg-07 bg-gray-bg-03 px-[2rem] py-[0.8rem] mb-[0.9rem] text-white';
 
 	const formattedDate = formatInputDate(selectedStartDate);
 
