@@ -30,13 +30,13 @@ const TimerPage = () => {
 	const [selectedTodo, setSelectedTodo] = useState<number | null>(null);
 
 	useEffect(() => {
-		if (todos.length > 0) {
+		if (todos.length > 0 && selectedTodo === null) {
 			setTargetTime(todos[0].targetTime);
 			setTargetName(todos[0].name);
 			setTargetCategoryName(todos[0].categoryName);
 			setSelectedTodo(todos[0].id);
 		}
-	}, [todos]);
+	}, [todos, selectedTodo]);
 
 	if (isLoading) return <div>Loading...</div>;
 	if (error) return <div>Error loading todos</div>;
@@ -49,7 +49,11 @@ const TimerPage = () => {
 				</div>
 				<div className="ml-[56.6rem] mt-[-0.8rem]">
 					<TimerTitle targetName={targetName} targetCategoryName={targetCategoryName} />
-					<Timer totalTimeOfToday={tasktotaltime.totalTimeOfToday} targetTime={targetTime} />
+					<Timer
+						selectedTodo={selectedTodo}
+						totalTimeOfToday={tasktotaltime.totalTimeOfToday}
+						targetTime={targetTime}
+					/>
 					<FriendInfoCarousel />
 				</div>
 				<button

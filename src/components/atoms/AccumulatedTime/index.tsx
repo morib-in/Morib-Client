@@ -6,7 +6,7 @@ interface AccumulatedTimeProps {
 }
 
 const AccumulatedTime = ({ isPlaying, totalTimeOfToday }: AccumulatedTimeProps) => {
-	const timer = useTimerCount({ isPlaying, previousTime: totalTimeOfToday });
+	const { timer } = useTimerCount({ isPlaying, previousTime: totalTimeOfToday });
 
 	const hours = Math.floor(timer / 3600);
 	const minutes = Math.floor((timer % 3600) / 60);

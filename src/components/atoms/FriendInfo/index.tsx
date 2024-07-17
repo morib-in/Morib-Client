@@ -13,7 +13,7 @@ interface UserFriendDataProps {
 }
 
 const FriendInfo = ({ image, name, time, categoryname, isPlaying }: UserFriendDataProps) => {
-	const timer = useTimerCount({ isPlaying, previousTime: time });
+	const { timer } = useTimerCount({ isPlaying, previousTime: time });
 	const formattedTime = formatSeconds(timer);
 
 	return (

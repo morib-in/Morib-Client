@@ -7,22 +7,41 @@ import TaskTime from '@/components/atoms/TaskTime';
 
 import useTimerCount from '@/hooks/useTimerCount';
 
+import { usePostTimerStop } from '@/apis/timer/queries';
+
 import InnerCircleIcon from '@/assets/svgs/elipse.svg?react';
 
 interface TaskTotalTimeProps {
 	totalTimeOfToday: number;
 	targetTime: number;
+	selectedTodo: number | null;
 }
 
-const Timer = ({ totalTimeOfToday, targetTime }: TaskTotalTimeProps) => {
+const Timer = ({ totalTimeOfToday, targetTime, selectedTodo }: TaskTotalTimeProps) => {
 	const [isPlaying, setIsPlaying] = useState(false);
 
-	const timer = useTimerCount({ isPlaying, previousTime: targetTime });
+	const { timer, increasedTime } = useTimerCount({ isPlaying, previousTime: targetTime });
 	const accumulatedTime = totalTimeOfToday || 0;
 
+	const { mutate, isError, error } = usePostTimerStop();
+
 	const handlePlayPauseToggle = () => {
-		setIsPlaying((prevState) => !prevState);
+		if (selectedTodo !== null) {
+			if (isPlaying === true) {
+				mutate(
+					{ id: selectedTodo, elapsedTime: increasedTime },
+					{
+						onSuccess: () => {},
+					},
+				);
+			}
+			setIsPlaying((prevState) => !prevState);
+		}
 	};
+
+	if (isError) {
+		console.error(error);
+	}
 
 	return (
 		<div className="mt-[8.2rem] flex items-center justify-center">
