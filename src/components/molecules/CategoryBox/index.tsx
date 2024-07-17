@@ -9,6 +9,7 @@ import { useCalendar } from '@/hooks/useCalendar';
 import useClickOutside from '@/hooks/useClickOutside';
 import { useCreateTodo } from '@/hooks/useCreateTodo';
 
+import { usePatchTaskStatus } from '@/apis/common/queries';
 import { usePostCreateTask } from '@/apis/home/queries';
 
 import { Task } from '@/types/home';
@@ -79,6 +80,8 @@ const CategoryBox = ({ id, title, ongoingTodos = [], completedTodos = [] }: Cate
 		handleEndDateInput,
 	} = useCalendar();
 
+	const { mutate: toggleTodoStatus } = usePatchTaskStatus();
+
 	if (isError) {
 		console.error(error);
 	}
@@ -132,7 +135,15 @@ const CategoryBox = ({ id, title, ongoingTodos = [], completedTodos = [] }: Cate
 							)}
 
 							{ongoingTodos.map(({ id, name, startDate, endDate, targetTime }) => (
-								<TodoBox id={id} key={id} name={name} startDate={startDate} endDate={endDate} targetTime={targetTime} />
+								<TodoBox
+									id={id}
+									key={id}
+									name={name}
+									startDate={startDate}
+									endDate={endDate}
+									targetTime={targetTime}
+									onToggleComplete={() => toggleTodoStatus(id)}
+								/>
 							))}
 						</TodoToggleBtn>
 
@@ -147,6 +158,7 @@ const CategoryBox = ({ id, title, ongoingTodos = [], completedTodos = [] }: Cate
 										startDate={startDate}
 										endDate={endDate}
 										targetTime={targetTime}
+										onToggleComplete={() => toggleTodoStatus(id)}
 									/>
 								))}
 							</TodoToggleBtn>

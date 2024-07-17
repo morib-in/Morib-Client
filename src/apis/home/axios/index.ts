@@ -19,7 +19,5 @@ export const getAllCategoryTask = async (startDate: string, endDate: string) => 
 };
 
 export const postCreateTask = async ({ categoryId, taskData }: PostCreateTaskProps) => {
-	console.log(categoryId, taskData);
-
 	await nonAuthClient.post(HOME_URL.POST_CREATE_CATEGORY(categoryId), taskData);
 };
