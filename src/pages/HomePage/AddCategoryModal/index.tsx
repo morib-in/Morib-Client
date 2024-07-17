@@ -36,18 +36,14 @@ const AddCategoryModal = () => {
 	} = usePostCategory();
 	const { isLoading: isQueryLoading, error: queryError } = useGetTabName('');
 
-	// const { data: tabNames, error, isLoading } = useGetTabName(requestUrl);
-	useEffect(() => {
-		combinedInfos;
-	}, [selectedInfo]);
 	const combinedInfos = [...selectedInfo, ...urlInfos];
 
 	const handleSelectedInfo = (urlInfo: UrlInfo) => {
 		setSelectedInfo((prevItems) => {
 			if (prevItems.some((prevItem) => prevItem.url === urlInfo.url)) {
-				return prevItems; // 이미 존재하면 기존 배열 반환
+				return prevItems;
 			}
-			return [...prevItems, urlInfo]; // 존재하지 않으면 새로운 배열 반환
+			return [...prevItems, urlInfo];
 		});
 	};
 

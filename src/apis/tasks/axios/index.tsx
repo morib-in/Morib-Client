@@ -1,7 +1,7 @@
 import { nonAuthClient } from '@/apis/client';
 
 interface MSet {
-	name: string;
+	name: string | undefined;
 	url: string;
 }
 

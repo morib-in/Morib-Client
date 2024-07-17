@@ -3,7 +3,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { getTabName, postCategory } from '@/apis/tasks/axios/index';
 
 interface MSet {
-	name: string;
+	name: string | undefined;
 	url: string;
 }
 

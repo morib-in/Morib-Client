@@ -17,7 +17,7 @@ type CategoryListModalProp = {
 	selectedInfo: UrlInfo[];
 	handleSelectedInfo: (urlInfo: UrlInfo) => void;
 	handleDeleteUrlInfo: (url: UrlInfo) => void;
-	setSelectedInfo: (urlInfo: UrlInfo[]) => void;
+	setSelectedInfo: (urlInfo: any) => any;
 };
 
 const AddCategoryListModal = ({
@@ -48,7 +48,7 @@ const AddCategoryListModal = ({
 			favicon: `https://www.google.com/s2/favicons?domain=${url}`,
 		};
 
-		setSelectedInfo((prevUrlInfos) => [...prevUrlInfos, newUrlInfo]);
+		setSelectedInfo((prevUrlInfos: any) => [...prevUrlInfos, newUrlInfo]);
 	};
 
 	return (
