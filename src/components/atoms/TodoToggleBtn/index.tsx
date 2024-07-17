@@ -3,11 +3,11 @@ import { ButtonHTMLAttributes, useState } from 'react';
 import TodoToggleIcon from '@/assets/svgs/todo_toggle.svg?react';
 
 interface TodoToggleBtn extends ButtonHTMLAttributes<HTMLButtonElement> {
-	isCompleted: boolean;
+	isCompleted?: boolean;
 	isToggled: boolean;
 }
 
-const TodoToggleBtn = ({ children, isCompleted, isToggled = false }: TodoToggleBtn) => {
+const TodoToggleBtn = ({ children, isCompleted = false, isToggled = false }: TodoToggleBtn) => {
 	const [toggle, setToggle] = useState(isToggled);
 
 	const title = isCompleted ? '할 일 목록' : '완료된 일';

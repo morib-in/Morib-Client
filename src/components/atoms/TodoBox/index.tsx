@@ -47,6 +47,8 @@ const TodoBox = ({
 
 	const selectedStyle = isSelected ? ' border-[0.2rem] border-mint-01' : '';
 
+	const duration = formattedendDate ? `${formattedstartDate}~${formattedendDate}` : formattedstartDate;
+
 	return (
 		<div
 			className={`group relative mt-[1rem] h-[9.6rem] w-[36.6rem] transform rounded-[8px] bg-gray-bg-01 p-[1.4rem] transition-transform duration-300 hover:-translate-y-2 ${selectedStyle}`}
@@ -65,9 +67,7 @@ const TodoBox = ({
 				<div className="ml-[0.8rem] mt-[0.7rem] flex flex-col gap-[0.2rem]">
 					<button className="flex items-center gap-[0.6rem]">
 						<ButtonCalendarIcon />
-						<p className="detail-reg-12 mt-[0.3rem] text-gray-04">
-							{formattedstartDate}~{formattedendDate}
-						</p>
+						<p className="detail-reg-12 mt-[0.3rem] text-gray-04">{duration}</p>
 					</button>
 
 					<div className="flex items-center gap-[0.6rem]">

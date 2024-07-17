@@ -2,9 +2,10 @@ import { formatInputDate } from '@/utils/calendar/index';
 
 interface CalendarInputProps {
 	selectedStartDate: Date;
-	selectedEndDate?: Date;
+	selectedEndDate?: Date | null;
 	isPeriodOn: boolean;
 	onCalendarInputClick: () => void;
+	readOnly?: boolean;
 }
 
 const CalendarInput = ({

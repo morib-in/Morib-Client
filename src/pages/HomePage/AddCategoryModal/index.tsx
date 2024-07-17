@@ -13,7 +13,10 @@ import CategoryMoribContentSet from '@/components/molecules/CategoryMoribContent
 import CategoryMoribSet from '@/components/molecules/CategoryMoribSet';
 import CategoryModal, { CategoryRef } from '@/components/templates/CategoryModal/index';
 
-import { URL_DATA } from '@/mocks/urlData.ts';
+import { getTabName } from '@/apis/tasks/axios/index';
+import { useGetTabName, usePostCategory } from '@/apis/tasks/queries/index';
+
+import { formatCalendarApiDate } from '@/utils/calendar/index';
 
 interface UrlInfo {
 	url: string;
@@ -24,6 +27,13 @@ interface UrlInfo {
 const AddCategoryModal = () => {
 	const [urlInfos, setUrlInfos] = useState<UrlInfo[]>([]);
 	const [name, setName] = useState('');
+	const {
+		mutate: postCategory,
+		isError: isMutateError,
+		isPending: isMutatePending,
+		error: mutateError,
+	} = usePostCategory();
+	const { isLoading: isQueryLoading, error: queryError } = useGetTabName('');
 
 	const handleNameChange = (newName: string) => {
 		setName(newName);
@@ -36,16 +46,17 @@ const AddCategoryModal = () => {
 
 	const defaultDate = new Date();
 
-	const handleUrlInputChange = (url: string) => {
-		const index = urlInfos.length;
-		if (index < URL_DATA.length) {
+	const handleUrlInputChange = async (url: string) => {
+		try {
+			const tabNameData = await getTabName(url);
 			const newUrlInfo: UrlInfo = {
 				url: url,
-				domain: URL_DATA[index].tabName,
-				favicon: `${url}/favicon.ico`,
+				domain: tabNameData.data.tabName,
+				favicon: `https://www.google.com/s2/favicons?domain=${url}`,
 			};
-
 			setUrlInfos((prevUrlInfos) => [...prevUrlInfos, newUrlInfo]);
+		} catch (isQueryError) {
+			console.error(queryError);
 		}
 	};
 
@@ -101,6 +112,31 @@ const AddCategoryModal = () => {
 		}
 	}, [isCalendarOpened, isDateToggleOn]);
 
+	const categoryData = {
+		name,
+		startDate: formatCalendarApiDate(selectedStartDate),
+		endDate: formatCalendarApiDate(selectedEndDate),
+		msets: urlInfos.map((info) => ({
+			name: info.domain,
+			url: info.url,
+		})),
+	};
+
+	const isFormValid = () => {
+		if (name && selectedStartDate && urlInfos.length > 0) {
+			return true;
+		}
+	};
+
+	const handlePostDataClick = () => {
+		postCategory(categoryData);
+		handleCloseDialog();
+		if (isMutatePending) return <div>Loading</div>;
+		if (isMutateError) {
+			console.log(mutateError);
+		}
+	};
+
 	return (
 		<div>
 			<button type="button" onClick={handleOpenDialog}>
@@ -126,8 +162,9 @@ const AddCategoryModal = () => {
 									<CalendarInput
 										isPeriodOn={isPeriodOn}
 										selectedStartDate={selectedStartDate ?? defaultDate}
-										selectedEndDate={selectedEndDate ?? undefined}
+										selectedEndDate={selectedEndDate ?? null}
 										onCalendarInputClick={handleOpenCalendar}
+										readOnly={true}
 									/>
 								)}
 								{isDateToggleOn && (
@@ -165,7 +202,13 @@ const AddCategoryModal = () => {
 							<CategoryCommonBtn variant="취소" onClick={handleCloseModal}>
 								취소
 							</CategoryCommonBtn>
-							<CategoryCommonBtn variant="완료">완료</CategoryCommonBtn>
+							<CategoryCommonBtn
+								variant="완료"
+								handleSubmit={handlePostDataClick}
+								disabled={!isFormValid() && isQueryLoading}
+							>
+								완료
+							</CategoryCommonBtn>
 						</div>
 					</div>
 				)}

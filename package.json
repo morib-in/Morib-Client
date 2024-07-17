@@ -20,7 +20,8 @@
     "react-dom": "^18.3.1",
     "react-lottie": "^1.2.4",
     "react-router-dom": "^6.24.0",
-    "socket.io-client": "^4.7.5"
+    "socket.io-client": "^4.7.5",
+    "timezone": "^1.0.23"
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^5.49.1",
