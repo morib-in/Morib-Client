@@ -3,8 +3,10 @@ import TodoBox from '@/components/atoms/TodoBox';
 import TodoToggleBtn from '@/components/atoms/TodoToggleBtn';
 
 import useCloseSidebar from '@/hooks/useCloseSideBar';
+import useTimerCount from '@/hooks/useTimerCount';
 
 import { usePatchTaskStatus } from '@/apis/common/queries';
+import { usePostTimerStop } from '@/apis/timer/queries';
 
 import { Todo } from '@/types/todoData';
 
@@ -18,7 +20,11 @@ interface CategoryBoxProps {
 	setTargetTime: (time: number) => void;
 	setTargetName: (name: string) => void;
 	selectedTodo: number | null;
+	setIsPlaying: (isPlaying: boolean) => void;
+	isPlaying: boolean;
+	targetTime: number;
 }
+
 const TimerSideBar = ({
 	ongoingTodos = [],
 	completedTodos = [],
@@ -27,16 +33,36 @@ const TimerSideBar = ({
 	setTargetTime,
 	setTargetName,
 	selectedTodo,
+	setIsPlaying,
+	isPlaying,
+	targetTime,
 }: CategoryBoxProps) => {
 	const { animate, handleClose } = useCloseSidebar(toggleSidebar);
 
-	const handleTodoClick = (id: number, time: number, name: string) => {
-		setSelectedTodo(id);
-		setTargetTime(time);
-		setTargetName(name);
-	};
-
 	const { mutate, isError, error } = usePatchTaskStatus();
+	const { mutate: stopTimer } = usePostTimerStop();
+
+	const { increasedTime } = useTimerCount({ isPlaying, previousTime: targetTime });
+
+	const handleTodoClick = (id: number, time: number, name: string) => {
+		if (isPlaying && selectedTodo !== null) {
+			stopTimer(
+				{ id: selectedTodo, elapsedTime: increasedTime },
+				{
+					onSuccess: () => {
+						setSelectedTodo(id);
+						setTargetTime(time);
+						setTargetName(name);
+						setIsPlaying(false);
+					},
+				},
+			);
+		} else {
+			setSelectedTodo(id);
+			setTargetTime(time);
+			setTargetName(name);
+		}
+	};
 
 	if (isError) {
 		console.error(error);

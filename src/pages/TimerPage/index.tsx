@@ -28,6 +28,7 @@ const TimerPage = () => {
 	const [targetName, setTargetName] = useState('');
 	const [targetCategoryName, setTargetCategoryName] = useState('');
 	const [selectedTodo, setSelectedTodo] = useState<number | null>(null);
+	const [isPlaying, setIsPlaying] = useState(false);
 
 	useEffect(() => {
 		if (todos.length > 0 && selectedTodo === null) {
@@ -53,6 +54,8 @@ const TimerPage = () => {
 						selectedTodo={selectedTodo}
 						totalTimeOfToday={tasktotaltime.totalTimeOfToday}
 						targetTime={targetTime}
+						setIsPlaying={setIsPlaying}
+						isPlaying={isPlaying}
 					/>
 					<FriendInfoCarousel />
 				</div>
@@ -66,6 +69,7 @@ const TimerPage = () => {
 					<div className="absolute inset-0 z-10 bg-dim">
 						<div className="absolute inset-y-0 right-0 flex justify-end overflow-hidden">
 							<TimerSideBar
+								targetTime={targetTime}
 								ongoingTodos={ongoingTasks}
 								completedTodos={completedTasks}
 								toggleSidebar={toggleSidebar}
@@ -73,6 +77,8 @@ const TimerPage = () => {
 								setTargetName={setTargetName}
 								setSelectedTodo={setSelectedTodo}
 								selectedTodo={selectedTodo}
+								setIsPlaying={setIsPlaying}
+								isPlaying={isPlaying}
 							/>
 						</div>
 					</div>

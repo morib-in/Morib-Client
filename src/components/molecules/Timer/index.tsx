@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import AccumulatedTime from '@/components/atoms/AccumulatedTime';
 import PlayBtn from '@/components/atoms/PlayBtn';
 import ProgressCircle from '@/components/atoms/ProgressCircle';
@@ -15,11 +13,11 @@ interface TaskTotalTimeProps {
 	totalTimeOfToday: number;
 	targetTime: number;
 	selectedTodo: number | null;
+	setIsPlaying: (isPlaying: boolean) => void;
+	isPlaying: boolean;
 }
 
-const Timer = ({ totalTimeOfToday, targetTime, selectedTodo }: TaskTotalTimeProps) => {
-	const [isPlaying, setIsPlaying] = useState(false);
-
+const Timer = ({ totalTimeOfToday, targetTime, selectedTodo, setIsPlaying, isPlaying }: TaskTotalTimeProps) => {
 	const { timer, increasedTime } = useTimerCount({ isPlaying, previousTime: targetTime });
 	const accumulatedTime = totalTimeOfToday || 0;
 
@@ -27,15 +25,16 @@ const Timer = ({ totalTimeOfToday, targetTime, selectedTodo }: TaskTotalTimeProp
 
 	const handlePlayPauseToggle = () => {
 		if (selectedTodo !== null) {
-			if (isPlaying === true) {
+			if (isPlaying) {
 				mutate(
 					{ id: selectedTodo, elapsedTime: increasedTime },
 					{
-						onSuccess: () => {},
+						onSuccess: () => setIsPlaying(false),
 					},
 				);
+			} else {
+				setIsPlaying(true);
 			}
-			setIsPlaying((prevState) => !prevState);
 		}
 	};
 
