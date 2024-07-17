@@ -48,13 +48,13 @@ const AddCategoryListModal = ({ dialogRef, handleCloseModal }: CategoryListModal
 		if (index < msetsList.length) {
 			const newUrlInfo: UrlInfo = {
 				url: url,
-				//TODO: API로 가져온 tabName 추가 필요
-				domain: '',
+
 				favicon: `https://www.google.com/s2/favicons?domain=${url}`,
 			};
 
 			setSelectedInfo((prevUrlInfos) => [...prevUrlInfos, newUrlInfo]);
 		}
+		console.log('input', selectedInfo);
 	};
 
 	const handleDeleteUrlInfo = (urlInfoToDelete: UrlInfo) => {
