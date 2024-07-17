@@ -30,18 +30,26 @@ const HomePage = () => {
 	const todayDate = dayjs().tz('Asia/Seoul');
 
 	const [selectedDate, setSelectedDate] = useState(todayDate);
+	const { startDate, endDate } = getThisWeekRange(selectedDate);
+
+	const { data: categoriesData, isError, error } = useGetAllCategoryTask(startDate, endDate);
+	const categories = categoriesData?.data || [];
+	const dailyCategoryTask = getDailyCategoryTask(selectedDate, categories);
+
+	const [addingTodayTodoStatus, setAddingTodayTodoStatus] = useState(false);
+	const addTodayTodoOverlayStyle = addingTodayTodoStatus ? 'opacity-30 pointer-events-none' : '';
+
+	const disableAddingTodayTodo = () => {
+		setAddingTodayTodoStatus(false);
+	};
+
+	const enableAddingTodayTodo = () => {
+		setAddingTodayTodoStatus(true);
+	};
 
 	const handleSelectedDateChange = (date: Dayjs) => {
 		setSelectedDate(date);
 	};
-
-	const { startDate, endDate } = getThisWeekRange(selectedDate);
-
-	const { data: categoriesData, isError, error } = useGetAllCategoryTask(startDate, endDate);
-
-	const categories = categoriesData?.data || [];
-
-	const dailyCategoryTask = getDailyCategoryTask(selectedDate, categories);
 
 	if (isError) {
 		console.error(error);
@@ -49,29 +57,33 @@ const HomePage = () => {
 
 	return (
 		<HomePageWrapper>
-			<HomeSideBar />
+			<div className={addTodayTodoOverlayStyle}>
+				<HomeSideBar />
+			</div>
 			<div className="flex h-full w-full justify-between p-[4.2rem]">
 				<section>
-					<div className="flex h-[11rem] items-center gap-[1.8rem] pt-[1.2rem]">
-						<UserProfile isMyProfile />
-						<ul className="flex gap-[1.8rem]">
-							<li>
-								<UserProfile isConnecting />
-							</li>
-							<li>
-								<UserProfile isConnecting />
-							</li>
-							<li>
-								<UserProfile isConnecting />
-							</li>
-						</ul>
-						<MoreFriendsBtn friendsCount={12} />
+					<div className={addTodayTodoOverlayStyle}>
+						<div className="flex h-[11rem] items-center gap-[1.8rem] pt-[1.2rem]">
+							<UserProfile isMyProfile />
+							<ul className="flex gap-[1.8rem]">
+								<li>
+									<UserProfile isConnecting />
+								</li>
+								<li>
+									<UserProfile isConnecting />
+								</li>
+								<li>
+									<UserProfile isConnecting />
+								</li>
+							</ul>
+							<MoreFriendsBtn friendsCount={12} />
+						</div>
+						<DatePicker
+							todayDate={todayDate}
+							selectedDate={selectedDate}
+							onSelectedDateChange={handleSelectedDateChange}
+						/>
 					</div>
-					<DatePicker
-						todayDate={todayDate}
-						selectedDate={selectedDate}
-						onSelectedDateChange={handleSelectedDateChange}
-					/>
 					<div className="flex">
 						<article className="flex h-[732px] w-[1262px] gap-[2.8rem] overflow-x-auto">
 							{dailyCategoryTask.length !== 0 ? (
@@ -111,7 +123,7 @@ const HomePage = () => {
 				</section>
 				<section className="flex items-end justify-end">
 					<div className="flex flex-col">
-						<div className="mb-[4.4rem] flex justify-end">
+						<div className={`mb-[4.4rem] flex justify-end ${addTodayTodoOverlayStyle}`}>
 							<SVGBtn>
 								<FriendSettingIcon className="rounded-[1.6rem] hover:bg-gray-bg-04 active:bg-gray-bg-05" />
 							</SVGBtn>
@@ -119,7 +131,14 @@ const HomePage = () => {
 								<BellIcon className="rounded-[1.6rem] hover:bg-gray-bg-04 active:bg-gray-bg-05" />
 							</SVGBtn>
 						</div>
-						<TodayTodoBox time={0} selectedTodayTodos={[]} hasTodos={isTaskExist(dailyCategoryTask)} />
+						<TodayTodoBox
+							time={0}
+							addingTodayTodoStatus={addingTodayTodoStatus}
+							selectedTodayTodos={[]}
+							hasTodos={isTaskExist(dailyCategoryTask)}
+							enableAddingTodayTodo={enableAddingTodayTodo}
+							disableAddingTodayTodo={disableAddingTodayTodo}
+						/>
 					</div>
 				</section>
 			</div>
