@@ -17,6 +17,7 @@ type CategoryListModalProp = {
 	selectedInfo: UrlInfo[];
 	handleSelectedInfo: (urlInfo: UrlInfo) => void;
 	handleDeleteUrlInfo: (url: UrlInfo) => void;
+	// Todo: 발등 이슈로 추후 타입 수정
 	setSelectedInfo: (urlInfo: any) => any;
 };
 
@@ -47,7 +48,7 @@ const AddCategoryListModal = ({
 			url: url,
 			favicon: `https://www.google.com/s2/favicons?domain=${url}`,
 		};
-
+		// Todo: 발등 이슈로 추후 타입 수정
 		setSelectedInfo((prevUrlInfos: any) => [...prevUrlInfos, newUrlInfo]);
 	};
 
