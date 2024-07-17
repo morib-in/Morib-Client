@@ -7,7 +7,6 @@ import CategoryInputTitle from '@/components/atoms/CategoryInputTitle/index';
 import CategoryMoribContentPage from '@/components/atoms/CategoryMoribContentPage';
 import CategoryMoribContentUrl from '@/components/atoms/CategoryMoribContentUrl';
 import CategoryToggle from '@/components/atoms/CategoryToggle/index';
-
 import Calendar from '@/components/molecules/Calendar/index';
 import CategoryInputMoribName from '@/components/molecules/CategoryInputMoribName/index';
 import CategoryMoribContentSet from '@/components/molecules/CategoryMoribContentSet';
@@ -21,12 +20,13 @@ import { formatCalendarApiDate } from '@/utils/calendar/index';
 
 interface UrlInfo {
 	url: string;
-	domain: string;
+	domain?: string;
 	favicon: string;
 }
 
 const AddCategoryModal = () => {
 	const [urlInfos, setUrlInfos] = useState<UrlInfo[]>([]);
+	const [selectedInfo, setSelectedInfo] = useState<UrlInfo[]>([]);
 	const [name, setName] = useState('');
 	const {
 		mutate: postCategory,
@@ -36,7 +36,20 @@ const AddCategoryModal = () => {
 	} = usePostCategory();
 	const { isLoading: isQueryLoading, error: queryError } = useGetTabName('');
 
-	// const { data: tabNames, error, isLoading } = useGetTabName(requestUrl);
+	const combinedInfos = [...selectedInfo, ...urlInfos];
+
+	const handleSelectedInfo = (urlInfo: UrlInfo) => {
+		setSelectedInfo((prevItems) => {
+			if (prevItems.some((prevItem) => prevItem.url === urlInfo.url)) {
+				return prevItems;
+			}
+			return [...prevItems, urlInfo];
+		});
+	};
+
+	const handleDeleteUrlInfo = (urlInfoToDelete: UrlInfo) => {
+		setSelectedInfo((prevUrlInfos) => prevUrlInfos.filter((urlInfo) => urlInfo.url !== urlInfoToDelete.url));
+	};
 
 	const handleNameChange = (newName: string) => {
 		setName(newName);
@@ -185,10 +198,16 @@ const AddCategoryModal = () => {
 						</div>
 
 						<div className="flex flex-col">
-							<CategoryMoribSet onUrlInputChange={handleUrlInputChange} />
+							<CategoryMoribSet
+								onUrlInputChange={handleUrlInputChange}
+								selectedInfo={selectedInfo}
+								handleSelectedInfo={(urlInfo: UrlInfo) => handleSelectedInfo(urlInfo)}
+								handleDeleteUrlInfo={(url: UrlInfo) => handleDeleteUrlInfo(url)}
+								setSelectedInfo={setSelectedInfo}
+							/>
 							<div>
-								<CategoryMoribContentSet urlInfos={urlInfos} variant="basic">
-									{urlInfos.map((urlInfo, url) => (
+								<CategoryMoribContentSet urlInfos={combinedInfos} variant="basic">
+									{combinedInfos.map((urlInfo, url) => (
 										<tr
 											key={url}
 											className="flex h-[4.6rem] gap-[1.2rem] border-b border-gray-bg-04 px-[0.8rem] hover:bg-gray-bg-06"

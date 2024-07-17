@@ -14,11 +14,21 @@ interface UrlInfo {
 type CategoryListModalProp = {
 	dialogRef: RefObject<HTMLDialogElement>;
 	handleCloseModal: () => void;
+	selectedInfo: UrlInfo[];
+	handleSelectedInfo: (urlInfo: UrlInfo) => void;
+	handleDeleteUrlInfo: (url: UrlInfo) => void;
+	// Todo: 발등 이슈로 추후 타입 수정
+	setSelectedInfo: (urlInfo: any) => any;
 };
 
-const AddCategoryListModal = ({ dialogRef, handleCloseModal }: CategoryListModalProp) => {
-	const [selectedInfo, setSelectedInfo] = useState<UrlInfo[]>([]);
-
+const AddCategoryListModal = ({
+	dialogRef,
+	handleCloseModal,
+	selectedInfo,
+	handleSelectedInfo,
+	handleDeleteUrlInfo,
+	setSelectedInfo,
+}: CategoryListModalProp) => {
 	const { data: categoryData, isLoading, error } = useCategoryLists();
 	const categories = categoryData?.data || [];
 	const [categoryId, setCategoryId] = useState<number>(0);
@@ -33,26 +43,13 @@ const AddCategoryListModal = ({ dialogRef, handleCloseModal }: CategoryListModal
 		setCategoryId(id);
 	};
 
-	const handleSelectedInfo = (urlInfo: UrlInfo) => {
-		setSelectedInfo((prevItems) => {
-			if (prevItems.some((prevItem) => prevItem.url === urlInfo.url)) {
-				return prevItems; // 이미 존재하면 기존 배열 반환
-			}
-			return [...prevItems, urlInfo]; // 존재하지 않으면 새로운 배열 반환
-		});
-	};
-
 	const handleUrlInputChange = (url: string) => {
 		const newUrlInfo: UrlInfo = {
 			url: url,
 			favicon: `https://www.google.com/s2/favicons?domain=${url}`,
 		};
-
-		setSelectedInfo((prevUrlInfos) => [...prevUrlInfos, newUrlInfo]);
-	};
-
-	const handleDeleteUrlInfo = (urlInfoToDelete: UrlInfo) => {
-		setSelectedInfo((prevUrlInfos) => prevUrlInfos.filter((urlInfo) => urlInfo.url !== urlInfoToDelete.url));
+		// Todo: 발등 이슈로 추후 타입 수정
+		setSelectedInfo((prevUrlInfos: any) => [...prevUrlInfos, newUrlInfo]);
 	};
 
 	return (
