@@ -11,6 +11,8 @@ import useToggleSidebar from '@/hooks/useToggleSideBar';
 
 import { useGetTodoList } from '@/apis/timer/queries';
 
+import { splitTasksByCompletion } from '@/utils/timer';
+
 import HamburgerIcon from '@/assets/svgs/btn_hamburger.svg?react';
 
 const TimerPage = () => {
@@ -20,17 +22,19 @@ const TimerPage = () => {
 	const todos = useMemo(() => todosData?.data.task || [], [todosData]);
 	const tasktotaltime = todosData?.data || [];
 
+	const { ongoingTasks, completedTasks } = useMemo(() => splitTasksByCompletion(todos), [todos]);
+
 	const [targetTime, setTargetTime] = useState(0);
 	const [targetName, setTargetName] = useState('');
 	const [targetCategoryName, setTargetCategoryName] = useState('');
-	const [id, setId] = useState(null);
+	const [selectedTodo, setSelectedTodo] = useState<number | null>(null);
 
 	useEffect(() => {
 		if (todos.length > 0) {
 			setTargetTime(todos[0].targetTime);
 			setTargetName(todos[0].name);
 			setTargetCategoryName(todos[0].categoryName);
-			setId(todos[0].id);
+			setSelectedTodo(todos[0].id);
 		}
 	}, [todos]);
 
@@ -58,11 +62,13 @@ const TimerPage = () => {
 					<div className="absolute inset-0 z-10 bg-dim">
 						<div className="absolute inset-y-0 right-0 flex justify-end overflow-hidden">
 							<TimerSideBar
-								ongoingTodos={todos}
-								completedTodos={todos}
+								ongoingTodos={ongoingTasks}
+								completedTodos={completedTasks}
 								toggleSidebar={toggleSidebar}
 								setTargetTime={setTargetTime}
 								setTargetName={setTargetName}
+								setSelectedTodo={setSelectedTodo}
+								selectedTodo={selectedTodo}
 							/>
 						</div>
 					</div>
