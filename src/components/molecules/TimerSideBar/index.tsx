@@ -6,16 +6,10 @@ import useCloseSidebar from '@/hooks/useCloseSideBar';
 
 import { usePatchTaskStatus } from '@/apis/common/queries';
 
+import { Todo } from '@/types/todoData';
+
 import BtnListIcon from '@/assets/svgs/btn_list.svg?react';
 
-interface Todo {
-	id: number;
-	name: string;
-	startDate: string;
-	endDate: string | null;
-	targetTime: number;
-	isComplete: boolean;
-}
 interface CategoryBoxProps {
 	completedTodos: Todo[];
 	ongoingTodos: Todo[];
