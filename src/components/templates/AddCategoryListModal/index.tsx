@@ -25,7 +25,7 @@ const AddCategoryListModal = ({ dialogRef, handleCloseModal }: CategoryListModal
 
 	const { data: msets } = useGetMsets(categoryId);
 	const msetsList = msets?.data.msetList || [];
-	console.log('msetsList:', msetsList);
+
 	if (isLoading) return <div>Loading...</div>;
 	if (error) return <div>Error loading</div>;
 
@@ -43,18 +43,12 @@ const AddCategoryListModal = ({ dialogRef, handleCloseModal }: CategoryListModal
 	};
 
 	const handleUrlInputChange = (url: string) => {
-		const index = selectedInfo.length;
+		const newUrlInfo: UrlInfo = {
+			url: url,
+			favicon: `https://www.google.com/s2/favicons?domain=${url}`,
+		};
 
-		if (index < msetsList.length) {
-			const newUrlInfo: UrlInfo = {
-				url: url,
-
-				favicon: `https://www.google.com/s2/favicons?domain=${url}`,
-			};
-
-			setSelectedInfo((prevUrlInfos) => [...prevUrlInfos, newUrlInfo]);
-		}
-		console.log('input', selectedInfo);
+		setSelectedInfo((prevUrlInfos) => [...prevUrlInfos, newUrlInfo]);
 	};
 
 	const handleDeleteUrlInfo = (urlInfoToDelete: UrlInfo) => {

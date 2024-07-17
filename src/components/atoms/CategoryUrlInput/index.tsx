@@ -50,7 +50,8 @@ const CategoryUrlInput = ({ variant = 'basic', onUrlInputChange, selectedInfo }:
 	};
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setUrl(e.target.value);
+		const userInput = e.target.value;
+		setUrl(userInput);
 		setIsUrlValidated(null);
 		setErrorMessage('');
 	};
