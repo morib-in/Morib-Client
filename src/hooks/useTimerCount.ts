@@ -5,15 +5,20 @@ interface UseTimerCountProps {
 	previousTime: number;
 }
 
-const useTimerCount = ({ isPlaying, previousTime }: UseTimerCountProps) => {
-	const [increasedTime, setTimer] = useState(0);
+interface UseTimerCountReturn {
+	timer: number;
+	increasedTime: number;
+}
+
+const useTimerCount = ({ isPlaying, previousTime }: UseTimerCountProps): UseTimerCountReturn => {
+	const [increasedTime, setIncreasedTime] = useState(0);
 	const timerIntervalId = useRef<ReturnType<typeof setInterval> | null>(null);
 
 	useEffect(() => {
 		if (isPlaying) {
 			if (timerIntervalId.current === null) {
 				timerIntervalId.current = setInterval(() => {
-					setTimer((prevTimer) => prevTimer + 1);
+					setIncreasedTime((prevTime) => prevTime + 1);
 				}, 1000);
 			}
 		} else {

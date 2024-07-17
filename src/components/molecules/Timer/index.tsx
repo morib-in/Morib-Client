@@ -1,3 +1,5 @@
+import { useQueryClient } from '@tanstack/react-query';
+
 import AccumulatedTime from '@/components/atoms/AccumulatedTime';
 import PlayBtn from '@/components/atoms/PlayBtn';
 import ProgressCircle from '@/components/atoms/ProgressCircle';
@@ -5,7 +7,7 @@ import TaskTime from '@/components/atoms/TaskTime';
 
 import useTimerCount from '@/hooks/useTimerCount';
 
-import { usePostTimerStop } from '@/apis/timer/queries';
+import { useGetTodoList, usePostTimerStop } from '@/apis/timer/queries';
 
 import InnerCircleIcon from '@/assets/svgs/elipse.svg?react';
 
@@ -18,10 +20,11 @@ interface TaskTotalTimeProps {
 }
 
 const Timer = ({ totalTimeOfToday, targetTime, selectedTodo, setIsPlaying, isPlaying }: TaskTotalTimeProps) => {
+	const queryClient = useQueryClient();
 	const { timer, increasedTime } = useTimerCount({ isPlaying, previousTime: targetTime });
 	const accumulatedTime = totalTimeOfToday || 0;
-
 	const { mutate, isError, error } = usePostTimerStop();
+	const { data: timerData } = useGetTodoList('2024-07-15');
 
 	const handlePlayPauseToggle = () => {
 		if (selectedTodo !== null) {
@@ -29,7 +32,10 @@ const Timer = ({ totalTimeOfToday, targetTime, selectedTodo, setIsPlaying, isPla
 				mutate(
 					{ id: selectedTodo, elapsedTime: increasedTime },
 					{
-						onSuccess: () => setIsPlaying(false),
+						onSuccess: () => {
+							setIsPlaying(false);
+							queryClient.invalidateQueries({ queryKey: ['todo'] });
+						},
 					},
 				);
 			} else {
@@ -49,7 +55,7 @@ const Timer = ({ totalTimeOfToday, targetTime, selectedTodo, setIsPlaying, isPla
 			<div className="absolute flex h-[22rem] w-[27.1rem] flex-col items-center justify-center">
 				<div className="flex flex-col items-center justify-center">
 					<AccumulatedTime isPlaying={isPlaying} totalTimeOfToday={accumulatedTime} />
-					<TaskTime isPlaying={isPlaying} timer={timer} />
+					<TaskTime isPlaying={isPlaying} timer={timerData?.timer || timer} />
 				</div>
 				<div>
 					<PlayBtn onClick={handlePlayPauseToggle} isPlaying={isPlaying} />

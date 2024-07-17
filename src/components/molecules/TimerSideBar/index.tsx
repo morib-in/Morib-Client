@@ -72,7 +72,17 @@ const TimerSideBar = ({
 	}
 
 	const handleNavigateHome = () => {
-		navigate('/home');
+		if (isPlaying && selectedTodo !== null) {
+			stopTimer(
+				{ id: selectedTodo, elapsedTime: increasedTime },
+				{
+					onSuccess: () => {
+						setIsPlaying(false);
+						navigate('/home');
+					},
+				},
+			);
+		}
 	};
 
 	return (
