@@ -5,11 +5,27 @@ import CategoryUrlInput from '@/components/atoms/CategoryUrlInput/index';
 import GetCategoryBtn from '@/components/atoms/GetCategoryBtn/index';
 import AddCategoryListModal from '@/components/templates/AddCategoryListModal';
 
-interface CategoryCommonMoribSetProps {
-	onUrlInputChange: (url: string) => void;
+interface UrlInfo {
+	url: string;
+	domain?: string;
+	favicon: string;
 }
 
-const CategoryCommonMoribSet = ({ onUrlInputChange }: CategoryCommonMoribSetProps) => {
+interface CategoryCommonMoribSetProps {
+	onUrlInputChange: (url: string) => void;
+	selectedInfo: UrlInfo[];
+	handleSelectedInfo: (urlInfo: UrlInfo) => void;
+	handleDeleteUrlInfo: (url: UrlInfo) => void;
+	setSelectedInfo: (urlInfo: UrlInfo[]) => void;
+}
+
+const CategoryCommonMoribSet = ({
+	onUrlInputChange,
+	selectedInfo,
+	handleSelectedInfo,
+	handleDeleteUrlInfo,
+	setSelectedInfo,
+}: CategoryCommonMoribSetProps) => {
 	const [isOpen, setOpen] = useState(false);
 	const dialogRef = useRef<HTMLDialogElement>(null);
 	const showModal = () => {
@@ -35,7 +51,14 @@ const CategoryCommonMoribSet = ({ onUrlInputChange }: CategoryCommonMoribSetProp
 			<div className="flex justify-between">
 				<CategoryInputTitle title="모립 세트 *" />
 				<GetCategoryBtn onMoveCategoryModal={handleMoveToNextModal} />
-				<AddCategoryListModal dialogRef={dialogRef} handleCloseModal={handleCloseModal} />
+				<AddCategoryListModal
+					dialogRef={dialogRef}
+					handleCloseModal={handleCloseModal}
+					selectedInfo={selectedInfo}
+					handleSelectedInfo={(urlInfo: UrlInfo) => handleSelectedInfo(urlInfo)}
+					handleDeleteUrlInfo={(url: UrlInfo) => handleDeleteUrlInfo(url)}
+					setSelectedInfo={setSelectedInfo}
+				/>
 			</div>
 			<CategoryUrlInput variant="basic" onUrlInputChange={(url: string) => onUrlInputChange(url)} />
 		</div>
