@@ -1,5 +1,6 @@
 import { RefObject, useState } from 'react';
 
+import LoadingUrl from '@/components/atoms/LoadingUrl';
 import CategoryModalLeft from '@/components/molecules/CategoryModalLeft';
 import CategoryModalRight from '@/components/molecules/CategoryModalRight';
 
@@ -36,8 +37,8 @@ const AddCategoryListModal = ({
 	const { data: msets } = useGetMsets(categoryId);
 	const msetsList = msets?.data.msetList || [];
 
-	if (isLoading) return <div>Loading...</div>;
-	if (error) return <div>Error loading</div>;
+	if (isLoading) return <LoadingUrl />;
+	if (error) return <LoadingUrl />;
 
 	const handleOptionId = (id: number) => {
 		setCategoryId(id);

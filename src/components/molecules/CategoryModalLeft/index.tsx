@@ -52,8 +52,6 @@ const CategoryModalLeft = ({ optionData, handleSelectedInfo, handleOptionId, mse
 		favicon: `https://www.google.com/s2/favicons?domain=${item.url}`,
 	}));
 
-	console.log('urlInfos', urlInfos);
-
 	return (
 		<div className="h-[80rem] w-[68.8rem] rounded-l-[10px] bg-gray-bg-04 py-[2.8rem] pl-[4.4rem] pr-[4.3rem]">
 			<div className="mb-[3.3rem]">
@@ -77,7 +75,7 @@ const CategoryModalLeft = ({ optionData, handleSelectedInfo, handleOptionId, mse
 						<CategoryMoribContentUrl urlInfo={urlInfo} variant="smallLeft">
 							<div className="p-[1.25rem]">
 								<button type="button">
-									<AddBtn className="fill-gray-bg-07 hover:fill-mint-02-hover active:fill-mint-02-press" />
+									<AddBtn className="fill-gray-bg-07 group-hover:fill-mint-02-hover group-active:fill-mint-02-press" />
 								</button>
 							</div>
 						</CategoryMoribContentUrl>
