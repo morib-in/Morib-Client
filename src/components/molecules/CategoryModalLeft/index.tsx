@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Key, useState } from 'react';
 
 import CategoryCommonTitle from '@/components/atoms/CategoryCommonTitle';
 import CategoryMoribContentPage from '@/components/atoms/CategoryMoribContentPage';
@@ -11,28 +11,35 @@ import { CATEGORY_MODALTABS } from '@/constants/tabSelections';
 
 import AddBtn from '@/assets/svgs/add_btn.svg?react';
 
-import { CATEGORY_API } from '@/mocks/categoryData';
-
 interface UrlInfo {
 	url: string;
-	domain: string;
+	domain?: string;
 	favicon: string;
 }
+
+interface msetsList {
+	createdAt: string;
+	updatedAt: string;
+	id: number;
+	name: string;
+	url: string;
+}
+
 interface ModalProps {
-	optionData: OptionData[];
+	optionData: Category[];
 	handleSelectedInfo: (url: UrlInfo) => void;
+	handleOptionId: (id: number) => void;
+	msetsList: msetsList[];
 }
 
 interface Category {
 	id: number;
 	name: string;
+	startDate: string;
+	endDate: string;
 }
 
-interface OptionData {
-	category: Category;
-}
-
-const CategoryModalLeft = ({ optionData, handleSelectedInfo }: ModalProps) => {
+const CategoryModalLeft = ({ optionData, handleSelectedInfo, handleOptionId, msetsList }: ModalProps) => {
 	const [isSelectedTab, setSelectedTab] = useState(CATEGORY_MODALTABS[0].id);
 
 	const handleTabChange = (tab: number) => {
@@ -40,11 +47,12 @@ const CategoryModalLeft = ({ optionData, handleSelectedInfo }: ModalProps) => {
 	};
 
 	const disabled = isSelectedTab === 2;
-	const urlInfos = CATEGORY_API[0].msetList.map((item) => ({
+	const urlInfos = msetsList.map((item) => ({
 		url: item.url,
-		favicon: `${item.url}/favicon.ico`,
-		domain: item.name,
+		favicon: `https://www.google.com/s2/favicons?domain=${item.url}`,
 	}));
+
+	console.log('urlInfos', urlInfos);
 
 	return (
 		<div className="h-[80rem] w-[68.8rem] rounded-l-[10px] bg-gray-bg-04 py-[2.8rem] pl-[4.4rem] pr-[4.3rem]">
@@ -56,10 +64,10 @@ const CategoryModalLeft = ({ optionData, handleSelectedInfo }: ModalProps) => {
 			</div>
 
 			<div className="relative mt-[0px]">
-				<CategoryDropdown optionData={optionData} disabled={disabled} />
+				<CategoryDropdown optionData={optionData} disabled={disabled} handleOptionId={handleOptionId} />
 			</div>
 			<CategoryMoribContentSet variant="smallLeft" urlInfos={urlInfos}>
-				{urlInfos.map((urlInfo, url) => (
+				{urlInfos.map((urlInfo: UrlInfo, url: Key | null | undefined) => (
 					<tr
 						key={url}
 						className="group flex h-[4.6rem] w-[100%] gap-[1.2rem] border-b border-gray-bg-04 px-[0.8rem] hover:bg-gray-bg-04"

@@ -1,6 +1,8 @@
+import { useGetTabName } from '@/apis/modal/queries';
+
 interface UrlInfo {
 	url: string;
-	domain: string;
+	domain?: string;
 	favicon: string;
 }
 
@@ -10,6 +12,11 @@ interface CategoryMoribContentProps {
 }
 
 const CategoryMoribContentPage = ({ urlInfo, variant }: CategoryMoribContentProps) => {
+	const { data: tabNames, error, isLoading } = useGetTabName(urlInfo.url);
+	if (isLoading) return <div>Loading...</div>;
+	if (error) return <div>Error loading</div>;
+	const domain = tabNames?.data.tabName;
+
 	const sizeVariant = {
 		basic: {
 			pageWidth: 'w-[22.8rem]',
@@ -24,9 +31,7 @@ const CategoryMoribContentPage = ({ urlInfo, variant }: CategoryMoribContentProp
 		<td className="flex items-center">
 			<div className={`my-[0.1rem] flex h-[2.2rem] items-center`}>
 				<img src={urlInfo.favicon} alt="favicon" className="my-[0.1rem] mr-[1.2rem] h-[2rem] w-[2rem]" />
-				<div className={`body-reg-16 my-[0.05rem] truncate text-white ${sizeVariant[variant].pageWidth}`}>
-					{urlInfo.domain}
-				</div>
+				<div className={`body-reg-16 my-[0.05rem] truncate text-white ${sizeVariant[variant].pageWidth}`}>{domain}</div>
 			</div>
 		</td>
 	);

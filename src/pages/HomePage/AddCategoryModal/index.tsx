@@ -7,6 +7,7 @@ import CategoryInputTitle from '@/components/atoms/CategoryInputTitle/index';
 import CategoryMoribContentPage from '@/components/atoms/CategoryMoribContentPage';
 import CategoryMoribContentUrl from '@/components/atoms/CategoryMoribContentUrl';
 import CategoryToggle from '@/components/atoms/CategoryToggle/index';
+
 import Calendar from '@/components/molecules/Calendar/index';
 import CategoryInputMoribName from '@/components/molecules/CategoryInputMoribName/index';
 import CategoryMoribContentSet from '@/components/molecules/CategoryMoribContentSet';
@@ -34,6 +35,8 @@ const AddCategoryModal = () => {
 		error: mutateError,
 	} = usePostCategory();
 	const { isLoading: isQueryLoading, error: queryError } = useGetTabName('');
+
+	// const { data: tabNames, error, isLoading } = useGetTabName(requestUrl);
 
 	const handleNameChange = (newName: string) => {
 		setName(newName);

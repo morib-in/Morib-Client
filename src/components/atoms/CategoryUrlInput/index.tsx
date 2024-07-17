@@ -6,7 +6,7 @@ import AlertIcon from '@/assets/svgs/ic_description.svg?react';
 
 interface UrlInfo {
 	url: string;
-	domain: string;
+	domain?: string;
 	favicon: string;
 }
 
@@ -50,7 +50,8 @@ const CategoryUrlInput = ({ variant = 'basic', onUrlInputChange, selectedInfo }:
 	};
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setUrl(e.target.value);
+		const userInput = e.target.value;
+		setUrl(userInput);
 		setIsUrlValidated(null);
 		setErrorMessage('');
 	};

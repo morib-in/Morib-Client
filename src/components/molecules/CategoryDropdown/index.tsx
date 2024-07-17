@@ -4,19 +4,18 @@ import CategoryDropdownBtn from '@/components/atoms/CategoryDropdownBtn';
 import DropdownOptionsBtn from '@/components/atoms/DropdownOptionsBtn';
 
 interface DropdownBtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-	optionData: OptionData[];
+	optionData: Category[];
+	handleOptionId: (id: number) => void;
 }
 
 interface Category {
 	id: number;
 	name: string;
+	startDate: string;
+	endDate: string;
 }
 
-interface OptionData {
-	category: Category;
-}
-
-const CategoryDropdown = ({ disabled, optionData }: DropdownBtnProps) => {
+const CategoryDropdown = ({ disabled, handleOptionId, optionData }: DropdownBtnProps) => {
 	const [isClicked, setIsClicked] = useState(false);
 	const [selectedOption, setSelectedOption] = useState('카테고리 추가');
 
@@ -24,6 +23,7 @@ const CategoryDropdown = ({ disabled, optionData }: DropdownBtnProps) => {
 		setSelectedOption(name);
 		setIsClicked(false);
 	};
+
 	const handleBtnClicked = () => {
 		setIsClicked((prev) => !prev);
 	};
@@ -41,15 +41,16 @@ const CategoryDropdown = ({ disabled, optionData }: DropdownBtnProps) => {
 					{optionData?.map((item) => {
 						return (
 							<li
-								key={item.category.id}
+								key={item.id}
 								className="subhead-med-18 flex h-[4.6rem] w-[27.2rem] flex-row items-center border-none"
 							>
 								<DropdownOptionsBtn
 									onClick={() => {
-										handleOptionClick(item.category.name);
+										handleOptionClick(item.name);
+										handleOptionId(item.id);
 									}}
 								>
-									{item.category.name}
+									{item.name}
 								</DropdownOptionsBtn>
 							</li>
 						);
