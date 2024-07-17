@@ -139,7 +139,7 @@ const AddCategoryModal = () => {
 	};
 
 	const isFormValid = () => {
-		if (name && selectedStartDate && urlInfos.length > 0) {
+		if (name && urlInfos.length > 0) {
 			return true;
 		}
 	};
@@ -228,7 +228,7 @@ const AddCategoryModal = () => {
 							<CategoryCommonBtn
 								variant="완료"
 								handleSubmit={handlePostDataClick}
-								disabled={!isFormValid() && isQueryLoading}
+								disabled={!isFormValid() && !isQueryLoading}
 							>
 								완료
 							</CategoryCommonBtn>
