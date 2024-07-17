@@ -1,10 +1,14 @@
+import { useNavigate } from 'react-router-dom';
+
 import TimerTodayTodoBtn from '@/components/atoms/TimerTodayTodoBtn';
 import TodoBox from '@/components/atoms/TodoBox';
 import TodoToggleBtn from '@/components/atoms/TodoToggleBtn';
 
 import useCloseSidebar from '@/hooks/useCloseSideBar';
+import useTimerCount from '@/hooks/useTimerCount';
 
 import { usePatchTaskStatus } from '@/apis/common/queries';
+import { usePostTimerStop } from '@/apis/timer/queries';
 
 import { Todo } from '@/types/todoData';
 
@@ -18,7 +22,11 @@ interface CategoryBoxProps {
 	setTargetTime: (time: number) => void;
 	setTargetName: (name: string) => void;
 	selectedTodo: number | null;
+	setIsPlaying: (isPlaying: boolean) => void;
+	isPlaying: boolean;
+	targetTime: number;
 }
+
 const TimerSideBar = ({
 	ongoingTodos = [],
 	completedTodos = [],
@@ -27,20 +35,55 @@ const TimerSideBar = ({
 	setTargetTime,
 	setTargetName,
 	selectedTodo,
+	setIsPlaying,
+	isPlaying,
+	targetTime,
 }: CategoryBoxProps) => {
 	const { animate, handleClose } = useCloseSidebar(toggleSidebar);
-
-	const handleTodoClick = (id: number, time: number, name: string) => {
-		setSelectedTodo(id);
-		setTargetTime(time);
-		setTargetName(name);
-	};
+	const navigate = useNavigate();
 
 	const { mutate, isError, error } = usePatchTaskStatus();
+	const { mutate: stopTimer } = usePostTimerStop();
+
+	const { increasedTime } = useTimerCount({ isPlaying, previousTime: targetTime });
+
+	const handleTodoClick = (id: number, time: number, name: string) => {
+		if (isPlaying && selectedTodo !== null) {
+			stopTimer(
+				{ id: selectedTodo, elapsedTime: increasedTime },
+				{
+					onSuccess: () => {
+						setSelectedTodo(id);
+						setTargetTime(time);
+						setTargetName(name);
+						setIsPlaying(false);
+					},
+				},
+			);
+		} else {
+			setSelectedTodo(id);
+			setTargetTime(time);
+			setTargetName(name);
+		}
+	};
 
 	if (isError) {
 		console.error(error);
 	}
+
+	const handleNavigateHome = () => {
+		if (isPlaying && selectedTodo !== null) {
+			stopTimer(
+				{ id: selectedTodo, elapsedTime: increasedTime },
+				{
+					onSuccess: () => {
+						setIsPlaying(false);
+						navigate('/home');
+					},
+				},
+			);
+		}
+	};
 
 	return (
 		<div
@@ -77,7 +120,9 @@ const TimerSideBar = ({
 			</div>
 			<div className="flex flex-col items-start gap-[1rem] pb-[2rem]">
 				<TimerTodayTodoBtn variant="할 일 추가">할 일 추가</TimerTodayTodoBtn>
-				<TimerTodayTodoBtn variant="홈으로 나가기">홈으로 나가기</TimerTodayTodoBtn>
+				<TimerTodayTodoBtn variant="홈으로 나가기" onClick={handleNavigateHome}>
+					홈으로 나가기
+				</TimerTodayTodoBtn>{' '}
 			</div>
 		</div>
 	);

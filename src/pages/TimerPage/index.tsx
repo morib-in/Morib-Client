@@ -28,15 +28,16 @@ const TimerPage = () => {
 	const [targetName, setTargetName] = useState('');
 	const [targetCategoryName, setTargetCategoryName] = useState('');
 	const [selectedTodo, setSelectedTodo] = useState<number | null>(null);
+	const [isPlaying, setIsPlaying] = useState(false);
 
 	useEffect(() => {
-		if (todos.length > 0) {
+		if (todos.length > 0 && selectedTodo === null) {
 			setTargetTime(todos[0].targetTime);
 			setTargetName(todos[0].name);
 			setTargetCategoryName(todos[0].categoryName);
 			setSelectedTodo(todos[0].id);
 		}
-	}, [todos]);
+	}, [todos, selectedTodo]);
 
 	if (isLoading) return <div>Loading...</div>;
 	if (error) return <div>Error loading todos</div>;
@@ -49,7 +50,13 @@ const TimerPage = () => {
 				</div>
 				<div className="ml-[56.6rem] mt-[-0.8rem]">
 					<TimerTitle targetName={targetName} targetCategoryName={targetCategoryName} />
-					<Timer totalTimeOfToday={tasktotaltime.totalTimeOfToday} targetTime={targetTime} />
+					<Timer
+						selectedTodo={selectedTodo}
+						totalTimeOfToday={tasktotaltime.totalTimeOfToday}
+						targetTime={targetTime}
+						setIsPlaying={setIsPlaying}
+						isPlaying={isPlaying}
+					/>
 					<FriendInfoCarousel />
 				</div>
 				<button
@@ -62,6 +69,7 @@ const TimerPage = () => {
 					<div className="absolute inset-0 z-10 bg-dim">
 						<div className="absolute inset-y-0 right-0 flex justify-end overflow-hidden">
 							<TimerSideBar
+								targetTime={targetTime}
 								ongoingTodos={ongoingTasks}
 								completedTodos={completedTasks}
 								toggleSidebar={toggleSidebar}
@@ -69,6 +77,8 @@ const TimerPage = () => {
 								setTargetName={setTargetName}
 								setSelectedTodo={setSelectedTodo}
 								selectedTodo={selectedTodo}
+								setIsPlaying={setIsPlaying}
+								isPlaying={isPlaying}
 							/>
 						</div>
 					</div>

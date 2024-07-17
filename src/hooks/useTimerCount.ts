@@ -1,32 +1,43 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface UseTimerCountProps {
 	isPlaying: boolean;
 	previousTime: number;
 }
 
-const useTimerCount = ({ isPlaying, previousTime }: UseTimerCountProps) => {
-	const [timer, setTimer] = useState(previousTime);
+interface UseTimerCountReturn {
+	timer: number;
+	increasedTime: number;
+}
+
+const useTimerCount = ({ isPlaying, previousTime }: UseTimerCountProps): UseTimerCountReturn => {
+	const [increasedTime, setIncreasedTime] = useState(0);
+	const timerIntervalId = useRef<ReturnType<typeof setInterval> | null>(null);
 
 	useEffect(() => {
-		setTimer(previousTime);
-	}, [previousTime]);
-
-	useEffect(() => {
-		let timerIntervalId: ReturnType<typeof setInterval>;
-
 		if (isPlaying) {
-			timerIntervalId = setInterval(() => {
-				setTimer((prevTimer) => prevTimer + 1);
-			}, 1000);
+			if (timerIntervalId.current === null) {
+				timerIntervalId.current = setInterval(() => {
+					setIncreasedTime((prevTime) => prevTime + 1);
+				}, 1000);
+			}
+		} else {
+			if (timerIntervalId.current !== null) {
+				clearInterval(timerIntervalId.current);
+				timerIntervalId.current = null;
+			}
 		}
 
 		return () => {
-			if (timerIntervalId) clearInterval(timerIntervalId);
+			if (timerIntervalId.current !== null) {
+				clearInterval(timerIntervalId.current);
+			}
 		};
 	}, [isPlaying]);
 
-	return timer;
+	const timer = previousTime + increasedTime;
+
+	return { timer, increasedTime };
 };
 
 export default useTimerCount;
