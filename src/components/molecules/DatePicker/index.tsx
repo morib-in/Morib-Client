@@ -42,6 +42,11 @@ const DatePicker = ({ todayDate, selectedDate, onSelectedDateChange }: DatePicke
 
 	useClickOutside(dropdownRef, handleDropdownClose);
 
+	const handleClickTodayBtn = () => {
+		handleToday();
+		onSelectedDateChange(todayDate);
+	};
+
 	return (
 		<header className="mb-[2.8rem]">
 			<section className="relative">
@@ -90,7 +95,7 @@ const DatePicker = ({ todayDate, selectedDate, onSelectedDateChange }: DatePicke
 				</nav>
 				<div className="flex gap-[1rem]">
 					<ArrowSVGBtn direction={Direction.LEFT} onClick={handlePreviousWeek} />
-					<SVGBtn onClick={handleToday}>
+					<SVGBtn onClick={handleClickTodayBtn}>
 						<BtnTodayIcon className="rounded-[37px] bg-gray-bg-03 hover:bg-gray-bg-05" />
 					</SVGBtn>
 					<ArrowSVGBtn direction={Direction.RIGHT} onClick={handleNextWeek} />
