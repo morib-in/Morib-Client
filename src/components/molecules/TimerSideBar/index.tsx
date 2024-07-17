@@ -4,6 +4,8 @@ import TodoToggleBtn from '@/components/atoms/TodoToggleBtn';
 
 import useCloseSidebar from '@/hooks/useCloseSideBar';
 
+import { usePatchTaskStatus } from '@/apis/common/queries';
+
 import BtnListIcon from '@/assets/svgs/btn_list.svg?react';
 
 interface Todo {
@@ -18,17 +20,33 @@ interface CategoryBoxProps {
 	completedTodos: Todo[];
 	ongoingTodos: Todo[];
 	toggleSidebar: () => void;
+	setSelectedTodo: (id: number) => void;
 	setTargetTime: (time: number) => void;
 	setTargetName: (name: string) => void;
+	selectedTodo: number | null;
 }
 const TimerSideBar = ({
 	ongoingTodos = [],
 	completedTodos = [],
 	toggleSidebar,
+	setSelectedTodo,
 	setTargetTime,
 	setTargetName,
+	selectedTodo,
 }: CategoryBoxProps) => {
 	const { animate, handleClose } = useCloseSidebar(toggleSidebar);
+
+	const handleTodoClick = (id: number, time: number, name: string) => {
+		setSelectedTodo(id);
+		setTargetTime(time);
+		setTargetName(name);
+	};
+
+	const { mutate, isError, error } = usePatchTaskStatus();
+
+	if (isError) {
+		console.error(error);
+	}
 
 	return (
 		<div
@@ -46,10 +64,9 @@ const TimerSideBar = ({
 					<TodoBox
 						key={todo.id}
 						{...todo}
-						onClick={() => {
-							setTargetTime(todo.targetTime);
-							setTargetName(todo.name);
-						}}
+						isSelected={todo.id === selectedTodo}
+						onClick={() => handleTodoClick(todo.id, todo.targetTime, todo.name)}
+						onToggleComplete={() => mutate(todo.id)}
 					/>
 				))}
 				<TodoToggleBtn isCompleted={false} isToggled={false}>
@@ -57,10 +74,9 @@ const TimerSideBar = ({
 						<TodoBox
 							key={todo.id}
 							{...todo}
-							onClick={() => {
-								setTargetTime(todo.targetTime);
-								setTargetName(todo.name);
-							}}
+							isSelected={todo.id === selectedTodo}
+							onClick={() => handleTodoClick(todo.id, todo.targetTime, todo.name)}
+							onToggleComplete={() => mutate(todo.id)}
 						/>
 					))}
 				</TodoToggleBtn>

@@ -1,14 +1,13 @@
-import { QueryClient, useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { patchTaskStatus } from '../axios';
 
-const queryClient = new QueryClient();
-
-export const usePatchTaskStatus = (taskId: number) => {
+export const usePatchTaskStatus = () => {
+	const queryClient = useQueryClient();
 	return useMutation({
-		mutationFn: () => patchTaskStatus(taskId),
+		mutationFn: (id: number) => patchTaskStatus(id),
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['status'] });
+			queryClient.invalidateQueries({ queryKey: ['todo'] });
 		},
 	});
 };
