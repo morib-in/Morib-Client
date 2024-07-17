@@ -1,10 +1,21 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { getAllCategoryTask } from '../axios';
+import { getAllCategoryTask, postCreateTask } from '../axios';
 
 export const useGetAllCategoryTask = (startDate: string, endDate: string) => {
 	return useQuery({
-		queryKey: ['home', startDate, endDate],
+		queryKey: ['todo', startDate, endDate],
 		queryFn: () => getAllCategoryTask(startDate, endDate),
+	});
+};
+
+export const usePostCreateTask = () => {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: postCreateTask,
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ['todo'] });
+		},
 	});
 };

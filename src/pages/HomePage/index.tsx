@@ -80,6 +80,7 @@ const HomePage = () => {
 										const { completedTasks, ongoingTasks } = splitTasksByCompletion(tasks);
 										return (
 											<CategoryBox
+												id={category.id}
 												key={category.id}
 												title={category.name}
 												ongoingTodos={ongoingTasks}
