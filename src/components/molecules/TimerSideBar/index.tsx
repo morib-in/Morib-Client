@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom';
+
 import TimerTodayTodoBtn from '@/components/atoms/TimerTodayTodoBtn';
 import TodoBox from '@/components/atoms/TodoBox';
 import TodoToggleBtn from '@/components/atoms/TodoToggleBtn';
@@ -38,6 +40,7 @@ const TimerSideBar = ({
 	targetTime,
 }: CategoryBoxProps) => {
 	const { animate, handleClose } = useCloseSidebar(toggleSidebar);
+	const navigate = useNavigate();
 
 	const { mutate, isError, error } = usePatchTaskStatus();
 	const { mutate: stopTimer } = usePostTimerStop();
@@ -67,6 +70,10 @@ const TimerSideBar = ({
 	if (isError) {
 		console.error(error);
 	}
+
+	const handleNavigateHome = () => {
+		navigate('/home');
+	};
 
 	return (
 		<div
@@ -103,7 +110,9 @@ const TimerSideBar = ({
 			</div>
 			<div className="flex flex-col items-start gap-[1rem] pb-[2rem]">
 				<TimerTodayTodoBtn variant="할 일 추가">할 일 추가</TimerTodayTodoBtn>
-				<TimerTodayTodoBtn variant="홈으로 나가기">홈으로 나가기</TimerTodayTodoBtn>
+				<TimerTodayTodoBtn variant="홈으로 나가기" onClick={handleNavigateHome}>
+					홈으로 나가기
+				</TimerTodayTodoBtn>{' '}
 			</div>
 		</div>
 	);
