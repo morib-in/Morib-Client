@@ -1,3 +1,5 @@
+import LoadingUrl from '@/components/atoms/LoadingUrl';
+
 import { useGetTabName } from '@/apis/modal/queries';
 
 interface UrlInfo {
@@ -13,8 +15,8 @@ interface CategoryMoribContentProps {
 
 const CategoryMoribContentPage = ({ urlInfo, variant }: CategoryMoribContentProps) => {
 	const { data: tabNames, error, isLoading } = useGetTabName(urlInfo.url);
-	if (isLoading) return <div>Loading...</div>;
-	if (error) return <div>Error loading</div>;
+	if (isLoading) return <LoadingUrl />;
+	if (error) return <LoadingUrl />;
 	const domain = tabNames?.data.tabName;
 
 	const sizeVariant = {
