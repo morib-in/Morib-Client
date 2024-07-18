@@ -7,15 +7,21 @@ import TimerSideBox from '@/components/molecules/TimerSideBox';
 import TimerTitle from '@/components/molecules/TimerTitle';
 import TimerPageTemplates from '@/components/templates/TimerPageTemplates';
 
+import useTimerCount from '@/hooks/useTimerCount';
 import useToggleSidebar from '@/hooks/useToggleSideBar';
 
-import { useGetTodoList } from '@/apis/timer/queries';
+import { useGetMoribSet, useGetTodoList, usePostTimerStop } from '@/apis/timer/queries';
 
 import { splitTasksByCompletion } from '@/utils/timer';
 
 import HamburgerIcon from '@/assets/svgs/btn_hamburger.svg?react';
 
+interface MoribSetData {
+	url: string;
+}
+
 const TimerPage = () => {
+	const { mutate: stopTimer } = usePostTimerStop();
 	const { isSidebarOpen, toggleSidebar } = useToggleSidebar();
 	const { data: todosData, isLoading, error } = useGetTodoList('2024-07-15');
 
@@ -30,6 +36,11 @@ const TimerPage = () => {
 	const [selectedTodo, setSelectedTodo] = useState<number | null>(null);
 	const [isPlaying, setIsPlaying] = useState(false);
 
+	const { data: setData } = useGetMoribSet(selectedTodo || 0);
+	const urls = useMemo(() => setData?.data.map((item: MoribSetData) => item.url.trim()) || [], [setData]);
+
+	const { increasedTime } = useTimerCount({ isPlaying, previousTime: targetTime });
+
 	useEffect(() => {
 		if (todos.length > 0 && selectedTodo === null) {
 			setTargetTime(todos[0].targetTime);
@@ -38,6 +49,34 @@ const TimerPage = () => {
 			setSelectedTodo(todos[0].id);
 		}
 	}, [todos, selectedTodo]);
+
+	useEffect(() => {
+		const handleMessage = (event: any) => {
+			if (event.detail.action === 'urlUpdated') {
+				const updatedUrl = event.detail.url.trim();
+
+				// URL이 업데이트된 후에 조건을 확인하여 타이머를 중지합니다.
+				setTimeout(() => {
+					if (isPlaying && selectedTodo !== null && !urls.includes(updatedUrl)) {
+						stopTimer(
+							{ id: selectedTodo, elapsedTime: increasedTime },
+							{
+								onSuccess: () => {
+									setIsPlaying(false);
+								},
+							},
+						);
+					}
+				}, 0); // setTimeout을 사용하여 상태가 업데이트된 후에 조건을 확인합니다.
+			}
+		};
+
+		document.addEventListener('FROM_EXTENSION', handleMessage);
+
+		return () => {
+			document.removeEventListener('FROM_EXTENSION', handleMessage);
+		};
+	}, [increasedTime, isPlaying, selectedTodo, stopTimer, urls]);
 
 	if (isLoading) return <div>Loading...</div>;
 	if (error) return <div>Error loading todos</div>;
