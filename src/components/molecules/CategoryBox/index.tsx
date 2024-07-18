@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 
 import SVGBtn from '@/components/atoms/SVGBtn';
 import TodoBox from '@/components/atoms/TodoBox';
@@ -7,7 +7,9 @@ import TodoToggleBtn from '@/components/atoms/TodoToggleBtn';
 
 import { useCalendar } from '@/hooks/useCalendar';
 import useClickOutside from '@/hooks/useClickOutside';
+import { useCreateTodo } from '@/hooks/useCreateTodo';
 
+import { usePatchTaskStatus } from '@/apis/common/queries';
 import { usePostCreateTask } from '@/apis/home/queries';
 
 import { Task } from '@/types/home';
@@ -23,6 +25,11 @@ interface CategoryBoxProps {
 	title: string;
 	completedTodos: Task[];
 	ongoingTodos: Task[];
+	updateTodayTodos: (todo: Omit<Task, 'isComplete'>) => void;
+	addingTodayTodoStatus: boolean;
+	getSelectedNumber: (id: number) => number;
+	addingComplete: boolean;
+	onDeleteCategory: (categoryId: number) => void;
 }
 
 const format = (date: Date | null) => {
@@ -33,31 +40,46 @@ const format = (date: Date | null) => {
 	return `${year}-${month}-${day}`;
 };
 
-const CategoryBox = ({ id, title, ongoingTodos = [], completedTodos = [] }: CategoryBoxProps) => {
-	const [name, setName] = useState('');
-	const [isAdding, setIsAdding] = useState(false);
-	const [editable, setEditable] = useState(false);
+const CategoryBox = ({
+	id,
+	title,
+	ongoingTodos = [],
+	completedTodos = [],
+	updateTodayTodos,
+	addingTodayTodoStatus,
+	getSelectedNumber,
+	addingComplete,
+	onDeleteCategory,
+}: CategoryBoxProps) => {
 	const { mutate, isError, error } = usePostCreateTask();
 
-	const handleEditComplete = () => {
-		setEditable(false);
-	};
-
-	const handleInputChange = (name: string) => {
-		setName(name);
-	};
+	const {
+		name,
+		isAdding,
+		editable,
+		handleEditComplete,
+		handleInputChange,
+		startAddingTodo,
+		cancelAddingTodo,
+		setName,
+		setIsAdding,
+	} = useCreateTodo();
 
 	const todoRef = useRef<HTMLDivElement>(null);
 
-	const startAddingTodo = () => {
-		setIsAdding(true);
-		setEditable(true);
-	};
+	useClickOutside(todoRef, cancelAddingTodo, isAdding && editable);
 
-	const cancelAddingTodo = () => {
-		setName('');
-		setIsAdding(false);
-	};
+	const {
+		isPeriodOn,
+		selectedStartDate,
+		selectedEndDate,
+		isCalendarOpened,
+		defaultDate,
+		handlePeriodToggle,
+		handleStartDateInput,
+		handleEndDateInput,
+		handlePeriodEnd,
+	} = useCalendar();
 
 	const handleCreatePost = () => {
 		const dataToPost = {
@@ -72,20 +94,16 @@ const CategoryBox = ({ id, title, ongoingTodos = [], completedTodos = [] }: Cate
 
 		setName('');
 		setIsAdding(false);
+		handleStartDateInput(null);
+		handleEndDateInput(null);
+		handlePeriodEnd();
 	};
 
-	useClickOutside(todoRef, cancelAddingTodo, isAdding && editable);
+	const { mutate: toggleTodoStatus } = usePatchTaskStatus();
 
-	const {
-		isPeriodOn,
-		selectedStartDate,
-		selectedEndDate,
-		isCalendarOpened,
-		defaultDate,
-		handlePeriodToggle,
-		handleStartDateInput,
-		handleEndDateInput,
-	} = useCalendar();
+	if (isError) {
+		console.error(error);
+	}
 
 	return (
 		<div className="flex h-[73.2rem] w-[40.2rem] flex-shrink-0 flex-col rounded-[16px] bg-gray-bg-03 px-[1.8rem] pt-[1.8rem]">
@@ -95,7 +113,7 @@ const CategoryBox = ({ id, title, ongoingTodos = [], completedTodos = [] }: Cate
 					<SVGBtn onClick={startAddingTodo} className="rounded-full hover:bg-gray-bg-04 active:bg-gray-bg-05">
 						<ButtonAddIcon />
 					</SVGBtn>
-					<SVGBtn>
+					<SVGBtn onClick={() => onDeleteCategory(id)}>
 						<MeatBallDefault className="rounded-full hover:bg-gray-bg-04 active:bg-gray-bg-05" />
 					</SVGBtn>
 				</div>
@@ -135,21 +153,49 @@ const CategoryBox = ({ id, title, ongoingTodos = [], completedTodos = [] }: Cate
 								</>
 							)}
 
-							{ongoingTodos.map(({ id, name, startDate, endDate, targetTime }) => (
-								<TodoBox key={id} name={name} startDate={startDate} endDate={endDate} targetTime={targetTime} />
-							))}
+							{ongoingTodos.map(({ id, name, startDate, endDate, targetTime }) => {
+								const todo = {
+									id: id,
+									name: name,
+									startDate: startDate,
+									endDate: endDate,
+									targetTime: targetTime,
+								};
+
+								const selectedNumber = getSelectedNumber(id);
+
+								return (
+									<TodoBox
+										id={id}
+										key={id}
+										name={name}
+										startDate={startDate}
+										endDate={endDate}
+										targetTime={targetTime}
+										isSelected={!!selectedNumber}
+										selectedNumber={selectedNumber}
+										onToggleComplete={() => toggleTodoStatus(id)}
+										updateTodayTodos={() => updateTodayTodos(todo)}
+										clickable={addingTodayTodoStatus}
+										addingComplete={addingComplete}
+									/>
+								);
+							})}
 						</TodoToggleBtn>
 
 						{completedTodos.length !== 0 && (
 							<TodoToggleBtn isToggled={false}>
 								{completedTodos.map(({ id, name, startDate, endDate, targetTime }) => (
 									<TodoBox
+										id={id}
 										key={id}
 										isComplete
 										name={name}
 										startDate={startDate}
 										endDate={endDate}
 										targetTime={targetTime}
+										onToggleComplete={() => toggleTodoStatus(id)}
+										clickable={false}
 									/>
 								))}
 							</TodoToggleBtn>

@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { getAllCategoryTask, postCreateTask } from '../axios';
+import { deleteCategory, getAllCategoryTask, getTargetTime, postCreateTask, postCreateTodayTodosProps } from '../axios';
 
 export const useGetAllCategoryTask = (startDate: string, endDate: string) => {
 	return useQuery({
@@ -17,5 +17,28 @@ export const usePostCreateTask = () => {
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['todo'] });
 		},
+	});
+};
+
+export const usePostCreateTodayTodos = () => {
+	return useMutation({
+		mutationFn: postCreateTodayTodosProps,
+	});
+};
+
+export const useDeleteCategory = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: deleteCategory,
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ['todo'] });
+		},
+	});
+};
+
+export const useGetTargetTime = (todayDate: string) => {
+	return useQuery({
+		queryKey: ['todo', todayDate],
+		queryFn: () => getTargetTime(todayDate),
 	});
 };

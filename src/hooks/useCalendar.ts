@@ -4,7 +4,7 @@ export const useCalendar = () => {
 	const defaultDate = new Date();
 
 	const [isPeriodOn, setIsPeriodOn] = useState(false);
-	const [selectedStartDate, setSelectedStartDate] = useState<Date | null>(null);
+	const [selectedStartDate, setSelectedStartDate] = useState<Date | null>(defaultDate);
 	const [selectedEndDate, setSelectedEndDate] = useState<Date | null>(null);
 	const [isCalendarOpened, setIsCalendarOpened] = useState(true);
 
@@ -13,6 +13,10 @@ export const useCalendar = () => {
 			setSelectedEndDate(null);
 		}
 		setIsPeriodOn((prev) => !prev);
+	};
+
+	const handlePeriodEnd = () => {
+		setIsPeriodOn(false);
 	};
 
 	const handleOpenCalendar = () => {
@@ -37,5 +41,6 @@ export const useCalendar = () => {
 		handleOpenCalendar,
 		handleStartDateInput,
 		handleEndDateInput,
+		handlePeriodEnd,
 	};
 };
