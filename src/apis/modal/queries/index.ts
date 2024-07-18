@@ -17,9 +17,10 @@ export const useCategoryLists = () => {
 	});
 };
 
-export const useGetMsets = (categoryId: number | null) => {
+export const useGetMsets = (categoryId: number) => {
 	return useQuery({
 		queryKey: ['msets', categoryId],
 		queryFn: () => getMsets(categoryId),
+		enabled: categoryId !== 0,
 	});
 };

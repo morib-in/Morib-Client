@@ -15,18 +15,8 @@ interface CategoryMoribContentProps {
 
 const CategoryMoribContentPage = ({ urlInfo, variant }: CategoryMoribContentProps) => {
 	const { data: tabNames, error, isLoading } = useGetTabName(urlInfo.url);
-	if (isLoading)
-		return (
-			<>
-				<LoadingUrl />
-			</>
-		);
-	if (error)
-		return (
-			<>
-				<LoadingUrl />
-			</>
-		);
+	if (isLoading) return <LoadingUrl />;
+	if (error) return <LoadingUrl />;
 	const domain = tabNames?.data.tabName;
 
 	const sizeVariant = {
