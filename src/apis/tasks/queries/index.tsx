@@ -9,9 +9,9 @@ interface MSet {
 
 interface CategoryDataProps {
 	name: string;
-	startDate: string;
-	endDate: string;
-	msets: MSet[];
+	startDate?: string;
+	endDate?: string;
+	msets?: MSet[];
 }
 
 export const usePostCategory = () => {
