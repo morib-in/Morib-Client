@@ -230,7 +230,7 @@ const AddCategoryModal = () => {
 						</div>
 
 						<div className="mt-[3rem] flex justify-end gap-[1.6rem]">
-							<CategoryCommonBtn variant="취소" onClick={handleCloseModal}>
+							<CategoryCommonBtn variant="취소" handleCloseModal={handleCloseModal}>
 								취소
 							</CategoryCommonBtn>
 							<CategoryCommonBtn

@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 
 import CategoryInputTitle from '@/components/atoms/CategoryInputTitle/index';
 import CategoryUrlInput from '@/components/atoms/CategoryUrlInput/index';
@@ -30,16 +30,13 @@ const CategoryCommonMoribSet = ({
 	urlInfo,
 	moribSetName,
 }: CategoryCommonMoribSetProps) => {
-	const [isOpen, setOpen] = useState(false);
 	const dialogRef = useRef<HTMLDialogElement>(null);
 	const showModal = () => {
 		dialogRef.current?.showModal();
-		setOpen(true);
 	};
 
 	const closeModal = () => {
 		dialogRef.current?.close();
-		setOpen(false);
 	};
 
 	const handleMoveToNextModal = () => {
