@@ -17,20 +17,28 @@ interface TaskTotalTimeProps {
 	selectedTodo: number | null;
 	setIsPlaying: (isPlaying: boolean) => void;
 	isPlaying: boolean;
+	formattedTodayDate: string;
 }
 
-const Timer = ({ totalTimeOfToday, targetTime, selectedTodo, setIsPlaying, isPlaying }: TaskTotalTimeProps) => {
+const Timer = ({
+	totalTimeOfToday,
+	targetTime,
+	selectedTodo,
+	setIsPlaying,
+	isPlaying,
+	formattedTodayDate,
+}: TaskTotalTimeProps) => {
 	const queryClient = useQueryClient();
 	const { timer, increasedTime } = useTimerCount({ isPlaying, previousTime: targetTime });
 	const accumulatedTime = totalTimeOfToday || 0;
 	const { mutate, isError, error } = usePostTimerStop();
-	const { data: timerData } = useGetTodoList('2024-07-15');
+	const { data: timerData } = useGetTodoList(formattedTodayDate);
 
 	const handlePlayPauseToggle = () => {
 		if (selectedTodo !== null) {
 			if (isPlaying) {
 				mutate(
-					{ id: selectedTodo, elapsedTime: increasedTime },
+					{ id: selectedTodo, elapsedTime: increasedTime, targetDate: formattedTodayDate },
 					{
 						onSuccess: () => {
 							setIsPlaying(false);

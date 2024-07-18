@@ -13,7 +13,8 @@ export const useGetTodoList = (targetDate: string) => {
 
 export const usePostTimerStop = () => {
 	return useMutation({
-		mutationFn: ({ id, elapsedTime }: { id: number; elapsedTime: number }) => postTimerStop(id, elapsedTime),
+		mutationFn: ({ id, elapsedTime, targetDate }: { id: number; elapsedTime: number; targetDate: string }) =>
+			postTimerStop(id, elapsedTime, targetDate),
 	});
 };
 

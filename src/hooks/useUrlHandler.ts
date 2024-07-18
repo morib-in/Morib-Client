@@ -4,10 +4,14 @@ interface UseUrlHandlerProps {
 	isPlaying: boolean;
 	selectedTodo: number | null;
 	baseUrls: string[];
-	stopTimer: (params: { id: number; elapsedTime: number }, options: { onSuccess: () => void }) => void;
+	stopTimer: (
+		params: { id: number; elapsedTime: number; targetDate: string },
+		options: { onSuccess: () => void },
+	) => void;
 	increasedTime: number;
 	setIsPlaying: (isPlaying: boolean) => void;
 	getBaseUrl: (url: string) => string;
+	formattedTodayDate: string;
 }
 
 const useUrlHandler = ({
@@ -18,6 +22,7 @@ const useUrlHandler = ({
 	increasedTime,
 	setIsPlaying,
 	getBaseUrl,
+	formattedTodayDate,
 }: UseUrlHandlerProps) => {
 	useEffect(() => {
 		const handleMessage = (event: any) => {
@@ -28,7 +33,7 @@ const useUrlHandler = ({
 				setTimeout(() => {
 					if (isPlaying && selectedTodo !== null && !baseUrls.includes(updatedBaseUrl)) {
 						stopTimer(
-							{ id: selectedTodo, elapsedTime: increasedTime },
+							{ id: selectedTodo, elapsedTime: increasedTime, targetDate: formattedTodayDate },
 							{
 								onSuccess: () => {
 									setIsPlaying(false);

@@ -1,3 +1,7 @@
+import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
+
 import React, { useEffect, useMemo, useState } from 'react';
 
 import FriendInfoCarousel from '@/components/molecules/FriendInfoCarousel';
@@ -17,6 +21,9 @@ import { splitTasksByCompletion } from '@/utils/timer';
 
 import HamburgerIcon from '@/assets/svgs/btn_hamburger.svg?react';
 
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
 interface MoribSetData {
 	url: string;
 }
@@ -24,7 +31,9 @@ interface MoribSetData {
 const TimerPage: React.FC = () => {
 	const { mutate: stopTimer } = usePostTimerStop();
 	const { isSidebarOpen, toggleSidebar } = useToggleSidebar();
-	const { data: todosData, isLoading, error } = useGetTodoList('2024-07-15');
+	const todayDate = dayjs().tz('Asia/Seoul');
+	const formattedTodayDate = todayDate.format('YYYY-MM-DD');
+	const { data: todosData, isLoading, error } = useGetTodoList(formattedTodayDate);
 
 	const todos = useMemo(() => todosData?.data.task || [], [todosData]);
 	const tasktotaltime = todosData?.data || [];
@@ -58,6 +67,7 @@ const TimerPage: React.FC = () => {
 		selectedTodo,
 		baseUrls,
 		stopTimer,
+		formattedTodayDate,
 		increasedTime,
 		setIsPlaying,
 		getBaseUrl,
@@ -89,6 +99,7 @@ const TimerPage: React.FC = () => {
 						targetTime={targetTime}
 						setIsPlaying={setIsPlaying}
 						isPlaying={isPlaying}
+						formattedTodayDate={formattedTodayDate}
 					/>
 					<FriendInfoCarousel />
 				</div>
