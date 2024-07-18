@@ -15,7 +15,8 @@ import HomeSideBar from '@/components/molecules/HomeSideBar';
 import TodayTodoBox from '@/components/molecules/TodayTodoBox';
 import HomePageWrapper from '@/components/templates/HomePageWrapper';
 
-import { useGetAllCategoryTask, usePostCreateTodayTodos } from '@/apis/home/queries';
+import { deleteCategory } from '@/apis/home/axios';
+import { useDeleteCategory, useGetAllCategoryTask, usePostCreateTodayTodos } from '@/apis/home/queries';
 
 import { getThisWeekRange } from '@/utils/date';
 import { getDailyCategoryTask, isTaskExist, splitTasksByCompletion } from '@/utils/homePage';
@@ -31,6 +32,7 @@ import LargePlusIcon from '@/assets/svgs/large_plus.svg?react';
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
+//Todo: 에러 핸들링 및 로직 분리 리팩토링 필요
 const HomePage = () => {
 	const todayDate = dayjs().tz('Asia/Seoul');
 	const formattedTodayDate = todayDate.format('YYYY-MM-DD');
@@ -49,6 +51,7 @@ const HomePage = () => {
 	const [todayTodos, setTodayTodos] = useState<Omit<Task, 'isComplete'>[]>([]);
 
 	const { mutate: createTodayTodos } = usePostCreateTodayTodos();
+	const { mutate: deleteCategory } = useDeleteCategory();
 
 	const navigate = useNavigate();
 
@@ -105,6 +108,10 @@ const HomePage = () => {
 		});
 	};
 
+	const handleDeleteCategory = (userId: number) => {
+		deleteCategory(userId);
+	};
+
 	if (isError) {
 		console.error(error);
 	}
@@ -155,6 +162,7 @@ const HomePage = () => {
 												addingTodayTodoStatus={addingTodayTodoStatus}
 												getSelectedNumber={getSelectedNumber}
 												addingComplete={addingComplete}
+												onDeleteCategory={handleDeleteCategory}
 											/>
 										);
 									})}

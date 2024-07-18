@@ -52,7 +52,12 @@ const TodoBox = ({
 	const TimeIcon = targetTime ? <TimeFillIcon /> : <TimeLineIcon />;
 	const timeTextClass = targetTime ? 'text-mint-01' : 'text-gray-04';
 
-	const selectedStyle = isSelected && !addingComplete ? ' border-[0.2rem] border-mint-01' : '';
+	const selectedStyle =
+		isSelected && !addingComplete
+			? ' border-[0.2rem] border-mint-01 bg-gray-bg-01'
+			: addingComplete !== clickable
+				? ' bg-gray-bg-02'
+				: ' bg-gray-bg-01';
 
 	const duration = formattedendDate ? `${formattedstartDate}~${formattedendDate}` : formattedstartDate;
 
@@ -67,15 +72,19 @@ const TodoBox = ({
 		}
 	};
 
+	const disableBtnStyle = clickable ? 'pointer-events-none' : '';
+
 	return (
 		<div
-			className={`group relative mt-[1rem] h-[9.6rem] w-[36.6rem] transform rounded-[8px] bg-gray-bg-01 p-[1.4rem] transition-transform duration-300 hover:-translate-y-2 ${selectedStyle} ${clickStyle} ${disableClick}`}
+			className={`group relative mt-[1rem] h-[9.6rem] w-[36.6rem] transform rounded-[8px] bg-gray-bg-01 p-[1.4rem] transition-transform duration-300 hover:-translate-y-2 ${selectedStyle} ${clickStyle} ${disableClick} `}
 			onClick={handleClickTodo}
 		>
 			<div className="flex flex-col justify-center">
 				<div className="flex items-center justify-between">
 					<div className="flex items-center gap-[0.6rem]">
-						<SVGBtn onClick={onToggleComplete}>{CheckBoxIcon}</SVGBtn>
+						<SVGBtn onClick={onToggleComplete} className={disableBtnStyle}>
+							{CheckBoxIcon}
+						</SVGBtn>
 						<h3 className={`body-semibold-16 + mt-[0.42rem] text-white ${nameStyle}`}>{name}</h3>
 					</div>
 					<SVGBtn>

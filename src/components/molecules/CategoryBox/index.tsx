@@ -29,6 +29,7 @@ interface CategoryBoxProps {
 	addingTodayTodoStatus: boolean;
 	getSelectedNumber: (id: number) => number;
 	addingComplete: boolean;
+	onDeleteCategory: (categoryId: number) => void;
 }
 
 const format = (date: Date | null) => {
@@ -48,6 +49,7 @@ const CategoryBox = ({
 	addingTodayTodoStatus,
 	getSelectedNumber,
 	addingComplete,
+	onDeleteCategory,
 }: CategoryBoxProps) => {
 	const { mutate, isError, error } = usePostCreateTask();
 
@@ -65,6 +67,20 @@ const CategoryBox = ({
 
 	const todoRef = useRef<HTMLDivElement>(null);
 
+	useClickOutside(todoRef, cancelAddingTodo, isAdding && editable);
+
+	const {
+		isPeriodOn,
+		selectedStartDate,
+		selectedEndDate,
+		isCalendarOpened,
+		defaultDate,
+		handlePeriodToggle,
+		handleStartDateInput,
+		handleEndDateInput,
+		handlePeriodEnd,
+	} = useCalendar();
+
 	const handleCreatePost = () => {
 		const dataToPost = {
 			categoryId: id,
@@ -78,20 +94,10 @@ const CategoryBox = ({
 
 		setName('');
 		setIsAdding(false);
+		handleStartDateInput(null);
+		handleEndDateInput(null);
+		handlePeriodEnd();
 	};
-
-	useClickOutside(todoRef, cancelAddingTodo, isAdding && editable);
-
-	const {
-		isPeriodOn,
-		selectedStartDate,
-		selectedEndDate,
-		isCalendarOpened,
-		defaultDate,
-		handlePeriodToggle,
-		handleStartDateInput,
-		handleEndDateInput,
-	} = useCalendar();
 
 	const { mutate: toggleTodoStatus } = usePatchTaskStatus();
 
@@ -107,7 +113,7 @@ const CategoryBox = ({
 					<SVGBtn onClick={startAddingTodo} className="rounded-full hover:bg-gray-bg-04 active:bg-gray-bg-05">
 						<ButtonAddIcon />
 					</SVGBtn>
-					<SVGBtn>
+					<SVGBtn onClick={() => onDeleteCategory(id)}>
 						<MeatBallDefault className="rounded-full hover:bg-gray-bg-04 active:bg-gray-bg-05" />
 					</SVGBtn>
 				</div>

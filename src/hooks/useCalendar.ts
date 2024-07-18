@@ -15,6 +15,10 @@ export const useCalendar = () => {
 		setIsPeriodOn((prev) => !prev);
 	};
 
+	const handlePeriodEnd = () => {
+		setIsPeriodOn(false);
+	};
+
 	const handleOpenCalendar = () => {
 		setIsCalendarOpened(true);
 	};
@@ -37,5 +41,6 @@ export const useCalendar = () => {
 		handleOpenCalendar,
 		handleStartDateInput,
 		handleEndDateInput,
+		handlePeriodEnd,
 	};
 };
