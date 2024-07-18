@@ -6,10 +6,11 @@ interface CategoryInputNameProps {
 	onNameChange: (name: string) => void;
 	isValid?: boolean;
 	placeholder: string;
-	errorMessage: string;
+	errorMessage?: string;
+	maxLength?: number | undefined;
 }
 
-const CategoryInput = ({ onNameChange, isValid, placeholder, errorMessage }: CategoryInputNameProps) => {
+const CategoryInput = ({ onNameChange, isValid, placeholder, errorMessage, maxLength }: CategoryInputNameProps) => {
 	const [value, setValue] = useState('');
 
 	const defaultStyle =
@@ -29,6 +30,7 @@ const CategoryInput = ({ onNameChange, isValid, placeholder, errorMessage }: Cat
 				className={`${defaultStyle} + ${optionalStyle}`}
 				onChange={handleValueChange}
 				value={value}
+				maxLength={maxLength}
 			/>
 			<div className={`my-[0.4rem] flex gap-[5px] ${isValid === false ? 'visible' : 'invisible'}`}>
 				<ErrorIcon />

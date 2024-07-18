@@ -27,17 +27,21 @@ interface UrlInfo {
 const AddCategoryModal = () => {
 	const [urlInfos, setUrlInfos] = useState<UrlInfo[]>([]);
 	const [selectedInfo, setSelectedInfo] = useState<UrlInfo[]>([]);
-	const [isValid, setIsValid] = useState(true);
 	const [name, setName] = useState('');
+	const [isDateToggleOn, setIsDateToggleOn] = useState(false);
+	const [isPeriodOn, setIsPeriodOn] = useState(false);
+	const [selectedStartDate, setSelectedStartDate] = useState<Date | null>(null);
+	const [selectedEndDate, setSelectedEndDate] = useState<Date | null>(null);
+	const [isCalendarOpened, setIsCalendarOpened] = useState(false);
+	const combinedInfos = [...selectedInfo, ...urlInfos];
+
 	const {
 		mutate: postCategory,
 		isError: isMutateError,
 		isPending: isMutatePending,
 		error: mutateError,
 	} = usePostCategory();
-	const { isLoading: isQueryLoading, error: queryError } = useGetTabName('');
-
-	const combinedInfos = [...selectedInfo, ...urlInfos];
+	const { error: queryError } = useGetTabName('');
 
 	const handleSelectedInfo = (urlInfo: UrlInfo) => {
 		setSelectedInfo((prevItems) => {
@@ -54,18 +58,7 @@ const AddCategoryModal = () => {
 
 	const handleNameChange = (newName: string) => {
 		setName(newName);
-		if (newName.length > 10) {
-			setIsValid(false);
-		} else {
-			setIsValid(true);
-		}
 	};
-
-	const [isDateToggleOn, setIsDateToggleOn] = useState(false);
-	const [isPeriodOn, setIsPeriodOn] = useState(false);
-	const [selectedStartDate, setSelectedStartDate] = useState<Date | null>(null);
-	const [selectedEndDate, setSelectedEndDate] = useState<Date | null>(null);
-	const [isCalendarOpened, setIsCalendarOpened] = useState(false);
 
 	const defaultDate = new Date();
 
@@ -135,24 +128,36 @@ const AddCategoryModal = () => {
 		}
 	}, [isCalendarOpened, isDateToggleOn]);
 
-	const categoryData = {
-		name,
-		startDate: formatCalendarApiDate(selectedStartDate),
-		endDate: formatCalendarApiDate(selectedEndDate),
-		msets: urlInfos.map((info) => ({
-			name: info.domain,
-			url: info.url,
-		})),
+	const handleCategoryData = () => {
+		if (urlInfos.length === 0) {
+			const categoryData = {
+				name,
+				startDate: formatCalendarApiDate(selectedStartDate),
+				endDate: formatCalendarApiDate(selectedEndDate),
+			};
+			postCategory(categoryData);
+		} else {
+			const categoryData = {
+				name,
+				startDate: formatCalendarApiDate(selectedStartDate),
+				endDate: formatCalendarApiDate(selectedEndDate),
+				msets: urlInfos.map((info) => ({
+					name: info.domain,
+					url: info.url,
+				})),
+			};
+			postCategory(categoryData);
+		}
 	};
 
 	const isFormValid = () => {
-		if (name && urlInfos.length > 0 && isValid) {
+		if (name) {
 			return true;
 		}
 	};
 
 	const handlePostDataClick = () => {
-		postCategory(categoryData);
+		handleCategoryData();
 		handleCloseDialog();
 		if (isMutatePending) return <div>Loading</div>;
 		if (isMutateError) {
@@ -173,7 +178,7 @@ const AddCategoryModal = () => {
 					<div>
 						<CategoryCommonTitle />
 						<div className="flex-start mt-[1.6rem] inline-flex gap-[4.4rem]">
-							<CategoryInputMoribName onNameChange={handleNameChange} isValid={isValid} />
+							<CategoryInputMoribName onNameChange={handleNameChange} />
 							<div ref={calendarRef}>
 								<div className="ml-[1rem] mt-[1rem] flex items-center gap-[1rem]">
 									<CategoryInputTitle title="날짜" />
@@ -233,11 +238,7 @@ const AddCategoryModal = () => {
 							<CategoryCommonBtn variant="취소" handleCloseModal={handleCloseModal}>
 								취소
 							</CategoryCommonBtn>
-							<CategoryCommonBtn
-								variant="완료"
-								handleSubmit={handlePostDataClick}
-								disabled={!isFormValid() && !isQueryLoading}
-							>
+							<CategoryCommonBtn variant="완료" handleSubmit={handlePostDataClick} disabled={!isFormValid()}>
 								완료
 							</CategoryCommonBtn>
 						</div>
