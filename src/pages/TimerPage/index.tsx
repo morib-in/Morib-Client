@@ -112,6 +112,7 @@ const TimerPage: React.FC = () => {
 								selectedTodo={selectedTodo}
 								setIsPlaying={setIsPlaying}
 								isPlaying={isPlaying}
+								formattedTodayDate={formattedTodayDate}
 							/>
 						</div>
 					</div>
