@@ -15,8 +15,12 @@ import HomeSideBar from '@/components/molecules/HomeSideBar';
 import TodayTodoBox from '@/components/molecules/TodayTodoBox';
 import HomePageWrapper from '@/components/templates/HomePageWrapper';
 
-import { deleteCategory } from '@/apis/home/axios';
-import { useDeleteCategory, useGetAllCategoryTask, usePostCreateTodayTodos } from '@/apis/home/queries';
+import {
+	useDeleteCategory,
+	useGetAllCategoryTask,
+	useGetTargetTime,
+	usePostCreateTodayTodos,
+} from '@/apis/home/queries';
 
 import { getThisWeekRange } from '@/utils/date';
 import { getDailyCategoryTask, isTaskExist, splitTasksByCompletion } from '@/utils/homePage';
@@ -60,6 +64,14 @@ const HomePage = () => {
 		if (canAddTask) setTodayTodos((prev) => [...prev, todo]);
 		else setTodayTodos((prev) => prev.filter((prevTodo) => prevTodo.id !== todo.id));
 	};
+
+	const {
+		data: targetTimeData,
+		error: targetTimeError,
+		isError: isTargetTimeError,
+	} = useGetTargetTime(formattedTodayDate);
+
+	const { targetTime } = targetTimeData?.data || 0;
 
 	const deleteTodayTodos = (todo: Omit<Task, 'isComplete'>) => {
 		setTodayTodos((prev) => prev.filter((prevTodo) => prevTodo.id !== todo.id));
@@ -114,6 +126,10 @@ const HomePage = () => {
 
 	if (isError) {
 		console.error(error);
+	}
+
+	if (isTargetTimeError) {
+		console.error(targetTimeError);
 	}
 
 	return (
@@ -198,7 +214,7 @@ const HomePage = () => {
 							</SVGBtn>
 						</div>
 						<TodayTodoBox
-							time={0}
+							time={targetTime}
 							addingTodayTodoStatus={addingTodayTodoStatus}
 							selectedTodayTodos={todayTodos}
 							hasTodos={isTaskExist(dailyCategoryTask)}
