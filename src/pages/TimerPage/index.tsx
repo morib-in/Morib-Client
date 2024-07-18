@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import FriendInfoCarousel from '@/components/molecules/FriendInfoCarousel';
 import Timer from '@/components/molecules/Timer';
@@ -9,6 +9,7 @@ import TimerPageTemplates from '@/components/templates/TimerPageTemplates';
 
 import useTimerCount from '@/hooks/useTimerCount';
 import useToggleSidebar from '@/hooks/useToggleSideBar';
+import useUrlHandler from '@/hooks/useUrlHandler';
 
 import { useGetMoribSet, useGetTodoList, usePostTimerStop } from '@/apis/timer/queries';
 
@@ -20,7 +21,7 @@ interface MoribSetData {
 	url: string;
 }
 
-const TimerPage = () => {
+const TimerPage: React.FC = () => {
 	const { mutate: stopTimer } = usePostTimerStop();
 	const { isSidebarOpen, toggleSidebar } = useToggleSidebar();
 	const { data: todosData, isLoading, error } = useGetTodoList('2024-07-15');
@@ -52,6 +53,16 @@ const TimerPage = () => {
 
 	const { increasedTime } = useTimerCount({ isPlaying, previousTime: targetTime });
 
+	useUrlHandler({
+		isPlaying,
+		selectedTodo,
+		baseUrls,
+		stopTimer,
+		increasedTime,
+		setIsPlaying,
+		getBaseUrl,
+	});
+
 	useEffect(() => {
 		if (todos.length > 0 && selectedTodo === null) {
 			setTargetTime(todos[0].targetTime);
@@ -60,34 +71,6 @@ const TimerPage = () => {
 			setSelectedTodo(todos[0].id);
 		}
 	}, [todos, selectedTodo]);
-
-	useEffect(() => {
-		const handleMessage = (event: any) => {
-			if (event.detail.action === 'urlUpdated') {
-				const updatedUrl = event.detail.url.trim();
-				const updatedBaseUrl = getBaseUrl(updatedUrl);
-
-				setTimeout(() => {
-					if (isPlaying && selectedTodo !== null && !baseUrls.includes(updatedBaseUrl)) {
-						stopTimer(
-							{ id: selectedTodo, elapsedTime: increasedTime },
-							{
-								onSuccess: () => {
-									setIsPlaying(false);
-								},
-							},
-						);
-					}
-				}, 0);
-			}
-		};
-
-		document.addEventListener('FROM_EXTENSION', handleMessage);
-
-		return () => {
-			document.removeEventListener('FROM_EXTENSION', handleMessage);
-		};
-	}, [increasedTime, isPlaying, selectedTodo, stopTimer, baseUrls]);
 
 	if (isLoading) return <div>Loading...</div>;
 	if (error) return <div>Error loading todos</div>;
