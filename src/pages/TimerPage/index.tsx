@@ -39,6 +39,17 @@ const TimerPage = () => {
 	const { data: setData } = useGetMoribSet(selectedTodo || 0);
 	const urls = useMemo(() => setData?.data.map((item: MoribSetData) => item.url.trim()) || [], [setData]);
 
+	const getBaseUrl = (url: string) => {
+		try {
+			const urlObj = new URL(url);
+			return urlObj.origin;
+		} catch (error) {
+			return url;
+		}
+	};
+
+	const baseUrls = useMemo(() => urls.map(getBaseUrl), [urls]);
+
 	const { increasedTime } = useTimerCount({ isPlaying, previousTime: targetTime });
 
 	useEffect(() => {
@@ -54,10 +65,10 @@ const TimerPage = () => {
 		const handleMessage = (event: any) => {
 			if (event.detail.action === 'urlUpdated') {
 				const updatedUrl = event.detail.url.trim();
+				const updatedBaseUrl = getBaseUrl(updatedUrl);
 
-				// URL이 업데이트된 후에 조건을 확인하여 타이머를 중지합니다.
 				setTimeout(() => {
-					if (isPlaying && selectedTodo !== null && !urls.includes(updatedUrl)) {
+					if (isPlaying && selectedTodo !== null && !baseUrls.includes(updatedBaseUrl)) {
 						stopTimer(
 							{ id: selectedTodo, elapsedTime: increasedTime },
 							{
@@ -67,7 +78,7 @@ const TimerPage = () => {
 							},
 						);
 					}
-				}, 0); // setTimeout을 사용하여 상태가 업데이트된 후에 조건을 확인합니다.
+				}, 0);
 			}
 		};
 
@@ -76,7 +87,7 @@ const TimerPage = () => {
 		return () => {
 			document.removeEventListener('FROM_EXTENSION', handleMessage);
 		};
-	}, [increasedTime, isPlaying, selectedTodo, stopTimer, urls]);
+	}, [increasedTime, isPlaying, selectedTodo, stopTimer, baseUrls]);
 
 	if (isLoading) return <div>Loading...</div>;
 	if (error) return <div>Error loading todos</div>;
