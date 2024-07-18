@@ -62,7 +62,7 @@ const CategoryUrlInput = ({ variant = 'basic', onUrlInputChange, selectedInfo, u
 		<div className="mt-[0.4rem]">
 			<input
 				type="text"
-				placeholder="웹사이트 주소를 입력해 주세요."
+				placeholder="허용할 웹사이트 주소를 입력해 주세요."
 				className={`${defaultStyle} ${borderStyle}`}
 				onChange={handleChange}
 				value={url}
