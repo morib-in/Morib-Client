@@ -1,12 +1,13 @@
 import { formatSeconds } from '@/utils/time';
 
+import { Task } from '@/types/home';
+
 import ButtonCalendarIcon from '@/assets/svgs/btn_cal.svg?react';
 import CheckBoxBlankIcon from '@/assets/svgs/check_box_blank.svg?react';
 import CheckBoxFillIcon from '@/assets/svgs/check_box_fill.svg?react';
 import TimeFillIcon from '@/assets/svgs/mingcute_time-fill.svg?react';
 import TimeLineIcon from '@/assets/svgs/mingcute_time-line.svg?react';
-
-/*import NumberIcon from '@/assets/svgs/selected_number_icon.svg?react';*/
+import NumberIcon from '@/assets/svgs/selected_number_icon.svg?react';
 import MeatBall from '@/assets/svgs/todo_meatball_default.svg?react';
 
 import SVGBtn from '../SVGBtn';
@@ -18,22 +19,28 @@ interface TodoBoxProps {
 	endDate: string | null;
 	targetTime: number;
 	isComplete?: boolean;
-	isSelected: boolean;
+	isSelected?: boolean;
 	selectedNumber?: number;
 	onClick?: () => void;
 	onToggleComplete?: () => void;
+	updateTodayTodos?: (todo: Omit<Task, 'isComplete'>) => void;
+	clickable?: boolean;
+	addingComplete?: boolean;
 }
-
 const TodoBox = ({
+	id,
 	name,
 	startDate,
 	endDate,
 	targetTime,
 	isComplete,
 	isSelected,
-	/*selectedNumber = 1,*/
+	selectedNumber,
 	onClick,
 	onToggleComplete,
+	updateTodayTodos,
+	clickable,
+	addingComplete,
 }: TodoBoxProps) => {
 	const formattedTime = formatSeconds(targetTime);
 	const formattedstartDate = startDate.replace(/-/g, '.');
@@ -45,14 +52,25 @@ const TodoBox = ({
 	const TimeIcon = targetTime ? <TimeFillIcon /> : <TimeLineIcon />;
 	const timeTextClass = targetTime ? 'text-mint-01' : 'text-gray-04';
 
-	const selectedStyle = isSelected ? ' border-[0.2rem] border-mint-01' : '';
+	const selectedStyle = isSelected && !addingComplete ? ' border-[0.2rem] border-mint-01' : '';
 
 	const duration = formattedendDate ? `${formattedstartDate}~${formattedendDate}` : formattedstartDate;
 
+	const clickStyle = clickable && !addingComplete ? 'cursor-pointer' : 'cursor-default';
+
+	const disableClick = addingComplete ? 'pointer-events-none' : '';
+
+	const handleClickTodo = () => {
+		if (clickable && updateTodayTodos) updateTodayTodos({ id, name, startDate, endDate, targetTime });
+		else if (onClick) {
+			onClick();
+		}
+	};
+
 	return (
 		<div
-			className={`group relative mt-[1rem] h-[9.6rem] w-[36.6rem] transform rounded-[8px] bg-gray-bg-01 p-[1.4rem] transition-transform duration-300 hover:-translate-y-2 ${selectedStyle}`}
-			onClick={onClick}
+			className={`group relative mt-[1rem] h-[9.6rem] w-[36.6rem] transform rounded-[8px] bg-gray-bg-01 p-[1.4rem] transition-transform duration-300 hover:-translate-y-2 ${selectedStyle} ${clickStyle} ${disableClick}`}
+			onClick={handleClickTodo}
 		>
 			<div className="flex flex-col justify-center">
 				<div className="flex items-center justify-between">
@@ -75,14 +93,14 @@ const TodoBox = ({
 						<p className={`detail-reg-12 mt-[0.3rem] ${timeTextClass}`}>{formattedTime}</p>
 					</div>
 				</div>
-				{/* {isSelected && (
+				{isSelected && selectedNumber && (
 					<div className="absolute bottom-[1.1rem] right-[1.7rem]">
 						<div className="relative h-[2.2rem] w-[2.2rem]">
 							<NumberIcon className="absolute inset-0" />
 							<p className="body-reg-16 absolute inset-0 mt-[0.15rem] text-center">{selectedNumber}</p>
 						</div>
 					</div>
-				)} */}
+				)}
 			</div>
 		</div>
 	);

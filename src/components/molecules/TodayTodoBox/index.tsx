@@ -1,6 +1,6 @@
 import { convertTime } from '@/utils/time';
 
-import { TodoDataTypes } from '@/types/userData';
+import { Task } from '@/types/home';
 
 import TodayTodoBoxDefaultStatus from './TodayTodoBoxAddStatus';
 import TodayTodoBoxAddStatus from './TodayTodoBoxDefaultStatus';
@@ -8,19 +8,31 @@ import TodayTodoBoxAddStatus from './TodayTodoBoxDefaultStatus';
 interface TodayTodoBoxProps {
 	time: number;
 	addingTodayTodoStatus: boolean;
-	selectedTodayTodos: TodoDataTypes[] | [];
+	selectedTodayTodos: Omit<Task, 'isComplete'>[];
 	hasTodos: boolean;
 	enableAddingTodayTodo: () => void;
 	disableAddingTodayTodo: () => void;
+	deleteTodayTodos: (todo: Omit<Task, 'isComplete'>) => void;
+	getSelectedNumber: (id: number) => number;
+	enableComplete: () => void;
+	cancelComplte: () => void;
+	addingComplete: boolean;
+	onCreateTodayTodos: () => void;
 }
 
 const TodayTodoBox = ({
 	addingTodayTodoStatus,
 	time = 0,
-	selectedTodayTodos = [],
+	selectedTodayTodos,
 	hasTodos = false,
 	enableAddingTodayTodo,
 	disableAddingTodayTodo,
+	deleteTodayTodos,
+	getSelectedNumber,
+	enableComplete,
+	cancelComplte,
+	addingComplete,
+	onCreateTodayTodos,
 }: TodayTodoBoxProps) => {
 	const { hours, minutes, seconds } = convertTime(time);
 
@@ -32,7 +44,16 @@ const TodayTodoBox = ({
 			</div>
 			<h3 className="head-bold-24 mt-[3.2rem] text-white">오늘 할 일</h3>
 			{addingTodayTodoStatus ? (
-				<TodayTodoBoxAddStatus selectedTodayTodos={selectedTodayTodos} onDisableAddStatus={disableAddingTodayTodo} />
+				<TodayTodoBoxAddStatus
+					selectedTodayTodos={selectedTodayTodos}
+					onDisableAddStatus={disableAddingTodayTodo}
+					deleteTodayTodos={deleteTodayTodos}
+					getSelectedNumber={getSelectedNumber}
+					enableComplete={enableComplete}
+					cancelComplte={cancelComplte}
+					addingComplete={addingComplete}
+					onCreateTodayTodos={onCreateTodayTodos}
+				/>
 			) : (
 				<TodayTodoBoxDefaultStatus hasTodos={hasTodos} onEnableAddStatus={enableAddingTodayTodo} />
 			)}

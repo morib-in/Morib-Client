@@ -25,6 +25,10 @@ interface CategoryBoxProps {
 	title: string;
 	completedTodos: Task[];
 	ongoingTodos: Task[];
+	updateTodayTodos: (todo: Omit<Task, 'isComplete'>) => void;
+	addingTodayTodoStatus: boolean;
+	getSelectedNumber: (id: number) => number;
+	addingComplete: boolean;
 }
 
 const format = (date: Date | null) => {
@@ -35,7 +39,16 @@ const format = (date: Date | null) => {
 	return `${year}-${month}-${day}`;
 };
 
-const CategoryBox = ({ id, title, ongoingTodos = [], completedTodos = [] }: CategoryBoxProps) => {
+const CategoryBox = ({
+	id,
+	title,
+	ongoingTodos = [],
+	completedTodos = [],
+	updateTodayTodos,
+	addingTodayTodoStatus,
+	getSelectedNumber,
+	addingComplete,
+}: CategoryBoxProps) => {
 	const { mutate, isError, error } = usePostCreateTask();
 
 	const {
@@ -134,17 +147,34 @@ const CategoryBox = ({ id, title, ongoingTodos = [], completedTodos = [] }: Cate
 								</>
 							)}
 
-							{ongoingTodos.map(({ id, name, startDate, endDate, targetTime }) => (
-								<TodoBox
-									id={id}
-									key={id}
-									name={name}
-									startDate={startDate}
-									endDate={endDate}
-									targetTime={targetTime}
-									onToggleComplete={() => toggleTodoStatus(id)}
-								/>
-							))}
+							{ongoingTodos.map(({ id, name, startDate, endDate, targetTime }) => {
+								const todo = {
+									id: id,
+									name: name,
+									startDate: startDate,
+									endDate: endDate,
+									targetTime: targetTime,
+								};
+
+								const selectedNumber = getSelectedNumber(id);
+
+								return (
+									<TodoBox
+										id={id}
+										key={id}
+										name={name}
+										startDate={startDate}
+										endDate={endDate}
+										targetTime={targetTime}
+										isSelected={!!selectedNumber}
+										selectedNumber={selectedNumber}
+										onToggleComplete={() => toggleTodoStatus(id)}
+										updateTodayTodos={() => updateTodayTodos(todo)}
+										clickable={addingTodayTodoStatus}
+										addingComplete={addingComplete}
+									/>
+								);
+							})}
 						</TodoToggleBtn>
 
 						{completedTodos.length !== 0 && (
@@ -159,6 +189,7 @@ const CategoryBox = ({ id, title, ongoingTodos = [], completedTodos = [] }: Cate
 										endDate={endDate}
 										targetTime={targetTime}
 										onToggleComplete={() => toggleTodoStatus(id)}
+										clickable={false}
 									/>
 								))}
 							</TodoToggleBtn>

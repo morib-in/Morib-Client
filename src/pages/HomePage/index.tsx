@@ -3,6 +3,7 @@ import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import MoreFriendsBtn from '@/components/atoms/MoreFriendsBtn';
 import SVGBtn from '@/components/atoms/SVGBtn';
@@ -14,12 +15,14 @@ import HomeSideBar from '@/components/molecules/HomeSideBar';
 import TodayTodoBox from '@/components/molecules/TodayTodoBox';
 import HomePageWrapper from '@/components/templates/HomePageWrapper';
 
-import { useGetAllCategoryTask } from '@/apis/home/queries';
+import { useGetAllCategoryTask, usePostCreateTodayTodos } from '@/apis/home/queries';
 
 import { getThisWeekRange } from '@/utils/date';
 import { getDailyCategoryTask, isTaskExist, splitTasksByCompletion } from '@/utils/homePage';
 
 import { Task } from '@/types/home';
+
+import { ROUTES } from '@/constants/router';
 
 import BellIcon from '@/assets/svgs/bell.svg?react';
 import FriendSettingIcon from '@/assets/svgs/friend_setting.svg?react';
@@ -30,6 +33,7 @@ dayjs.extend(timezone);
 
 const HomePage = () => {
 	const todayDate = dayjs().tz('Asia/Seoul');
+	const formattedTodayDate = todayDate.format('YYYY-MM-DD');
 
 	const [selectedDate, setSelectedDate] = useState(todayDate);
 	const { startDate, endDate } = getThisWeekRange(selectedDate);
@@ -39,15 +43,27 @@ const HomePage = () => {
 	const dailyCategoryTask = getDailyCategoryTask(selectedDate, categories);
 
 	const [addingTodayTodoStatus, setAddingTodayTodoStatus] = useState(false);
-	const addTodayTodoOverlayStyle = addingTodayTodoStatus ? 'opacity-30 pointer-events-none' : '';
+	const [addingComplete, setAddingComplete] = useState(false);
+	const addTodayTodoOverlayStyle = addingTodayTodoStatus && !addingComplete ? 'opacity-30 pointer-events-none' : '';
 
-	const [selectedTodayTodos, setSelectedTodayTodos] = useState<Task[]>([]);
+	const [todayTodos, setTodayTodos] = useState<Omit<Task, 'isComplete'>[]>([]);
 
-	const handleAddSelectedTodayTodos = (todo: Task) => {
-		setSelectedTodayTodos((prev) => [...prev, todo]);
+	const { mutate: createTodayTodos } = usePostCreateTodayTodos();
+
+	const navigate = useNavigate();
+
+	const updateTodayTodos = (todo: Omit<Task, 'isComplete'>) => {
+		const canAddTask = !todayTodos.some((prevTodo) => prevTodo.id === todo.id);
+		if (canAddTask) setTodayTodos((prev) => [...prev, todo]);
+		else setTodayTodos((prev) => prev.filter((prevTodo) => prevTodo.id !== todo.id));
+	};
+
+	const deleteTodayTodos = (todo: Omit<Task, 'isComplete'>) => {
+		setTodayTodos((prev) => prev.filter((prevTodo) => prevTodo.id !== todo.id));
 	};
 
 	const disableAddingTodayTodo = () => {
+		setTodayTodos([]);
 		setAddingTodayTodoStatus(false);
 	};
 
@@ -57,6 +73,36 @@ const HomePage = () => {
 
 	const handleSelectedDateChange = (date: Dayjs) => {
 		setSelectedDate(date);
+	};
+
+	const getSelectedNumber = (id: number) => {
+		const index = todayTodos.findIndex((task) => task.id === id);
+		const todoNumber = index === -1 ? 0 : index + 1;
+		return todoNumber;
+	};
+
+	const enableComplete = () => {
+		setAddingComplete(true);
+	};
+
+	const cancelComplete = () => {
+		setAddingComplete(false);
+	};
+
+	const handleCreateTodayTodos = () => {
+		const todayTodoData = todayTodos.map((todo) => todo.id);
+		const dataToPost = {
+			todayDate: formattedTodayDate,
+			todayTodos: {
+				taskIdList: todayTodoData,
+			},
+		};
+
+		createTodayTodos(dataToPost, {
+			onSuccess: () => {
+				navigate(ROUTES.timer.path);
+			},
+		});
 	};
 
 	if (isError) {
@@ -105,6 +151,10 @@ const HomePage = () => {
 												title={category.name}
 												ongoingTodos={ongoingTasks}
 												completedTodos={completedTasks}
+												updateTodayTodos={updateTodayTodos}
+												addingTodayTodoStatus={addingTodayTodoStatus}
+												getSelectedNumber={getSelectedNumber}
+												addingComplete={addingComplete}
 											/>
 										);
 									})}
@@ -142,10 +192,16 @@ const HomePage = () => {
 						<TodayTodoBox
 							time={0}
 							addingTodayTodoStatus={addingTodayTodoStatus}
-							selectedTodayTodos={[]}
+							selectedTodayTodos={todayTodos}
 							hasTodos={isTaskExist(dailyCategoryTask)}
 							enableAddingTodayTodo={enableAddingTodayTodo}
 							disableAddingTodayTodo={disableAddingTodayTodo}
+							deleteTodayTodos={deleteTodayTodos}
+							getSelectedNumber={getSelectedNumber}
+							enableComplete={enableComplete}
+							cancelComplte={cancelComplete}
+							addingComplete={addingComplete}
+							onCreateTodayTodos={handleCreateTodayTodos}
 						/>
 					</div>
 				</section>
