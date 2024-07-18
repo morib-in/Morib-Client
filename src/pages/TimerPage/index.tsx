@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import FriendInfoCarousel from '@/components/molecules/FriendInfoCarousel';
 import Timer from '@/components/molecules/Timer';
@@ -7,15 +7,22 @@ import TimerSideBox from '@/components/molecules/TimerSideBox';
 import TimerTitle from '@/components/molecules/TimerTitle';
 import TimerPageTemplates from '@/components/templates/TimerPageTemplates';
 
+import useTimerCount from '@/hooks/useTimerCount';
 import useToggleSidebar from '@/hooks/useToggleSideBar';
+import useUrlHandler from '@/hooks/useUrlHandler';
 
-import { useGetTodoList } from '@/apis/timer/queries';
+import { useGetMoribSet, useGetTodoList, usePostTimerStop } from '@/apis/timer/queries';
 
 import { splitTasksByCompletion } from '@/utils/timer';
 
 import HamburgerIcon from '@/assets/svgs/btn_hamburger.svg?react';
 
-const TimerPage = () => {
+interface MoribSetData {
+	url: string;
+}
+
+const TimerPage: React.FC = () => {
+	const { mutate: stopTimer } = usePostTimerStop();
 	const { isSidebarOpen, toggleSidebar } = useToggleSidebar();
 	const { data: todosData, isLoading, error } = useGetTodoList('2024-07-15');
 
@@ -29,6 +36,32 @@ const TimerPage = () => {
 	const [targetCategoryName, setTargetCategoryName] = useState('');
 	const [selectedTodo, setSelectedTodo] = useState<number | null>(null);
 	const [isPlaying, setIsPlaying] = useState(false);
+
+	const { data: setData } = useGetMoribSet(selectedTodo || 0);
+	const urls = useMemo(() => setData?.data.map((item: MoribSetData) => item.url.trim()) || [], [setData]);
+
+	const getBaseUrl = (url: string) => {
+		try {
+			const urlObj = new URL(url);
+			return urlObj.origin;
+		} catch (error) {
+			return url;
+		}
+	};
+
+	const baseUrls = useMemo(() => urls.map(getBaseUrl), [urls]);
+
+	const { increasedTime } = useTimerCount({ isPlaying, previousTime: targetTime });
+
+	useUrlHandler({
+		isPlaying,
+		selectedTodo,
+		baseUrls,
+		stopTimer,
+		increasedTime,
+		setIsPlaying,
+		getBaseUrl,
+	});
 
 	useEffect(() => {
 		if (todos.length > 0 && selectedTodo === null) {
