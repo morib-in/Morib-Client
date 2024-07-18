@@ -1,5 +1,7 @@
 import { ReactNode, forwardRef, useImperativeHandle, useRef } from 'react';
 
+import './dialog.css';
+
 interface CategoryProps {
 	children: (handleCloseModal: () => void) => ReactNode;
 }
@@ -28,7 +30,7 @@ const CategoryModal = forwardRef<CategoryRef, CategoryProps>(function CategoryMo
 	return (
 		<dialog
 			ref={dialogRef}
-			className="h-[80rem] w-[81.6rem] rounded-[14px] bg-gray-01 px-[4.4rem] pb-[3rem] pt-[2.8rem]"
+			className="custom-dialog h-[80rem] w-[81.6rem] rounded-[14px] bg-gray-bg-03 px-[4.4rem] pb-[3rem] pt-[2.8rem]"
 		>
 			{children(handleCloseModal)}
 		</dialog>

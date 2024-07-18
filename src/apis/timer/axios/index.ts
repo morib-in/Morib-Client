@@ -18,9 +18,9 @@ export const getMoribSet = async (taskId: number) => {
 	return data;
 };
 
-export const postTimerStop = async (id: number, elapsedTime: number) => {
+export const postTimerStop = async (id: number, elapsedTime: number, targetDate: string) => {
 	const { data } = await nonAuthClient.post(TIMER_URL.POST_TIMERSTOP(id), {
-		targetDate: '2024-07-15',
+		targetDate: targetDate,
 		elapsedTime: elapsedTime,
 	});
 	return data;

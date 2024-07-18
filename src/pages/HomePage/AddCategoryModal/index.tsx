@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
+import { useQueryClient } from '@tanstack/react-query';
+
 import CalendarInput from '@/components/atoms/CalendarInput/index';
 import CategoryCommonBtn from '@/components/atoms/CategoryCommonBtn/index';
 import CategoryCommonTitle from '@/components/atoms/CategoryCommonTitle/index';
@@ -11,7 +13,6 @@ import Calendar from '@/components/molecules/Calendar/index';
 import CategoryInputMoribName from '@/components/molecules/CategoryInputMoribName/index';
 import CategoryMoribContentSet from '@/components/molecules/CategoryMoribContentSet';
 import CategoryMoribSet from '@/components/molecules/CategoryMoribSet';
-import CategoryModal, { CategoryRef } from '@/components/templates/CategoryModal/index';
 
 import { getTabName } from '@/apis/tasks/axios/index';
 import { useGetTabName, usePostCategory } from '@/apis/tasks/queries/index';
@@ -24,7 +25,11 @@ interface UrlInfo {
 	favicon: string;
 }
 
-const AddCategoryModal = () => {
+interface AddCategoryModalProps {
+	handleCloseModal: () => void;
+}
+
+const AddCategoryModal = ({ handleCloseModal }: AddCategoryModalProps) => {
 	const [urlInfos, setUrlInfos] = useState<UrlInfo[]>([]);
 	const [selectedInfo, setSelectedInfo] = useState<UrlInfo[]>([]);
 	const [name, setName] = useState('');
@@ -34,6 +39,7 @@ const AddCategoryModal = () => {
 	const [selectedEndDate, setSelectedEndDate] = useState<Date | null>(null);
 	const [isCalendarOpened, setIsCalendarOpened] = useState(false);
 	const combinedInfos = [...selectedInfo, ...urlInfos];
+	const queryClient = useQueryClient();
 
 	const {
 		mutate: postCategory,
@@ -74,16 +80,6 @@ const AddCategoryModal = () => {
 		} catch (isQueryError) {
 			console.error(queryError);
 		}
-	};
-
-	const categoryRef = useRef<CategoryRef>(null);
-
-	const handleOpenDialog = () => {
-		categoryRef.current?.open();
-	};
-
-	const handleCloseDialog = () => {
-		categoryRef.current?.close();
 	};
 
 	const handleDateToggle = () => {
@@ -135,7 +131,11 @@ const AddCategoryModal = () => {
 				startDate: formatCalendarApiDate(selectedStartDate),
 				endDate: formatCalendarApiDate(selectedEndDate),
 			};
-			postCategory(categoryData);
+			postCategory(categoryData, {
+				onSuccess: () => {
+					queryClient.invalidateQueries({ queryKey: ['todo'] });
+				},
+			});
 		} else {
 			const categoryData = {
 				name,
@@ -146,7 +146,11 @@ const AddCategoryModal = () => {
 					url: info.url,
 				})),
 			};
-			postCategory(categoryData);
+			postCategory(categoryData, {
+				onSuccess: () => {
+					queryClient.invalidateQueries({ queryKey: ['todo'] });
+				},
+			});
 		}
 	};
 
@@ -158,93 +162,81 @@ const AddCategoryModal = () => {
 
 	const handlePostDataClick = () => {
 		handleCategoryData();
-		handleCloseDialog();
+		handleCloseModal();
 		if (isMutatePending) return <div>Loading</div>;
 		if (isMutateError) {
-			console.log(mutateError);
+			console.error(mutateError);
 		}
 	};
 
 	return (
-		<div>
-			<button type="button" onClick={handleOpenDialog}>
-				Open Dialog
-			</button>
-			<button type="button" onClick={handleCloseDialog}>
-				Close Dialog
-			</button>
-			<CategoryModal ref={categoryRef}>
-				{(handleCloseModal) => (
-					<div>
-						<CategoryCommonTitle />
-						<div className="flex-start mt-[1.6rem] inline-flex gap-[4.4rem]">
-							<CategoryInputMoribName onNameChange={handleNameChange} />
-							<div ref={calendarRef}>
-								<div className="ml-[1rem] mt-[1rem] flex items-center gap-[1rem]">
-									<CategoryInputTitle title="날짜" />
-									<div className="mb-[0.6rem]">
-										<CategoryToggle isToggleOn={isDateToggleOn} onToggle={handleDateToggle} />
-									</div>
-								</div>
-								{isDateToggleOn && (
-									<CalendarInput
-										isPeriodOn={isPeriodOn}
-										selectedStartDate={selectedStartDate ?? defaultDate}
-										selectedEndDate={selectedEndDate ?? null}
-										onCalendarInputClick={handleOpenCalendar}
-										readOnly={true}
-									/>
-								)}
-								{isDateToggleOn && (
-									<Calendar
-										isPeriodOn={isPeriodOn}
-										selectedStartDate={selectedStartDate ?? defaultDate}
-										selectedEndDate={selectedEndDate ?? null}
-										onStartDateInput={handleStartDateInput}
-										onEndDateInput={handleEndDateInput}
-										isCalendarOpened={isCalendarOpened}
-										onPeriodToggle={handlePeriodToggle}
-									/>
-								)}
-							</div>
-						</div>
-
-						<div className="flex flex-col">
-							<CategoryMoribSet
-								onUrlInputChange={handleUrlInputChange}
-								selectedInfo={selectedInfo}
-								handleSelectedInfo={(urlInfo: UrlInfo) => handleSelectedInfo(urlInfo)}
-								handleDeleteUrlInfo={(url: UrlInfo) => handleDeleteUrlInfo(url)}
-								setSelectedInfo={setSelectedInfo}
-								urlInfo={urlInfos}
-								moribSetName={name}
-							/>
-							<div>
-								<CategoryMoribContentSet urlInfos={combinedInfos} variant="basic">
-									{combinedInfos.map((urlInfo, url) => (
-										<tr
-											key={url}
-											className="flex h-[4.6rem] gap-[1.2rem] border-b border-gray-bg-04 px-[0.8rem] hover:bg-gray-bg-06"
-										>
-											<CategoryMoribContentPage urlInfo={urlInfo} variant="basic" />
-											<CategoryMoribContentUrl urlInfo={urlInfo} variant="basic" />
-										</tr>
-									))}
-								</CategoryMoribContentSet>
-							</div>
-						</div>
-
-						<div className="mt-[3rem] flex justify-end gap-[1.6rem]">
-							<CategoryCommonBtn variant="취소" handleCloseModal={handleCloseModal}>
-								취소
-							</CategoryCommonBtn>
-							<CategoryCommonBtn variant="완료" handleSubmit={handlePostDataClick} disabled={!isFormValid()}>
-								완료
-							</CategoryCommonBtn>
+		<div className="">
+			<CategoryCommonTitle />
+			<div className="flex-start mt-[1.6rem] inline-flex gap-[4.4rem]">
+				<CategoryInputMoribName onNameChange={handleNameChange} />
+				<div ref={calendarRef}>
+					<div className="ml-[1rem] mt-[1rem] flex items-center gap-[1rem]">
+						<CategoryInputTitle title="날짜" />
+						<div className="mb-[0.6rem]">
+							<CategoryToggle isToggleOn={isDateToggleOn} onToggle={handleDateToggle} />
 						</div>
 					</div>
-				)}
-			</CategoryModal>
+					{isDateToggleOn && (
+						<CalendarInput
+							isPeriodOn={isPeriodOn}
+							selectedStartDate={selectedStartDate ?? defaultDate}
+							selectedEndDate={selectedEndDate ?? null}
+							onCalendarInputClick={handleOpenCalendar}
+							readOnly={true}
+						/>
+					)}
+					{isDateToggleOn && (
+						<Calendar
+							isPeriodOn={isPeriodOn}
+							selectedStartDate={selectedStartDate ?? defaultDate}
+							selectedEndDate={selectedEndDate ?? null}
+							onStartDateInput={handleStartDateInput}
+							onEndDateInput={handleEndDateInput}
+							isCalendarOpened={isCalendarOpened}
+							onPeriodToggle={handlePeriodToggle}
+						/>
+					)}
+				</div>
+			</div>
+
+			<div className="flex flex-col">
+				<CategoryMoribSet
+					onUrlInputChange={handleUrlInputChange}
+					selectedInfo={selectedInfo}
+					handleSelectedInfo={(urlInfo: UrlInfo) => handleSelectedInfo(urlInfo)}
+					handleDeleteUrlInfo={(url: UrlInfo) => handleDeleteUrlInfo(url)}
+					setSelectedInfo={setSelectedInfo}
+					urlInfo={urlInfos}
+					moribSetName={name}
+				/>
+				<div>
+					<CategoryMoribContentSet urlInfos={combinedInfos} variant="basic">
+						{combinedInfos.map((urlInfo, url) => (
+							<tr
+								key={url}
+								className="flex h-[4.6rem] gap-[1.2rem] border-b border-gray-bg-04 px-[0.8rem] hover:bg-gray-bg-06"
+							>
+								<CategoryMoribContentPage urlInfo={urlInfo} variant="basic" />
+								<CategoryMoribContentUrl urlInfo={urlInfo} variant="basic" />
+							</tr>
+						))}
+					</CategoryMoribContentSet>
+				</div>
+			</div>
+
+			<div className="mt-[3rem] flex justify-end gap-[1.6rem]">
+				<CategoryCommonBtn variant="취소" handleCloseModal={handleCloseModal}>
+					취소
+				</CategoryCommonBtn>
+				<CategoryCommonBtn variant="완료" handleSubmit={handlePostDataClick} disabled={!isFormValid()}>
+					완료
+				</CategoryCommonBtn>
+			</div>
 		</div>
 	);
 };

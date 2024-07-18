@@ -27,7 +27,7 @@ const ProgressCircle = ({ timer }: ProgressCircleProps) => {
 				strokeDashoffset={offset}
 				strokeLinecap="round"
 				style={{
-					transition: 'stroke-dashoffset 360ms linear',
+					transition: 'stroke-dashoffset 100ms linear',
 					transform: 'rotate(-90deg)',
 					transformOrigin: '50% 50%',
 				}}

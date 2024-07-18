@@ -2,7 +2,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import MoreFriendsBtn from '@/components/atoms/MoreFriendsBtn';
@@ -13,6 +13,7 @@ import DatePicker from '@/components/molecules/DatePicker';
 import HomeDefaultStatus from '@/components/molecules/HomeDefaultStatus';
 import HomeSideBar from '@/components/molecules/HomeSideBar';
 import TodayTodoBox from '@/components/molecules/TodayTodoBox';
+import CategoryModal, { CategoryRef } from '@/components/templates/CategoryModal';
 import HomePageWrapper from '@/components/templates/HomePageWrapper';
 
 import {
@@ -33,6 +34,8 @@ import BellIcon from '@/assets/svgs/bell.svg?react';
 import FriendSettingIcon from '@/assets/svgs/friend_setting.svg?react';
 import LargePlusIcon from '@/assets/svgs/large_plus.svg?react';
 
+import AddCategoryModal from './AddCategoryModal';
+
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -40,6 +43,8 @@ dayjs.extend(timezone);
 const HomePage = () => {
 	const todayDate = dayjs().tz('Asia/Seoul');
 	const formattedTodayDate = todayDate.format('YYYY-MM-DD');
+
+	const modalRef = useRef<CategoryRef>(null);
 
 	const [selectedDate, setSelectedDate] = useState(todayDate);
 	const { startDate, endDate } = getThisWeekRange(selectedDate);
@@ -72,6 +77,10 @@ const HomePage = () => {
 	} = useGetTargetTime(formattedTodayDate);
 
 	const { targetTime } = targetTimeData?.data || 0;
+
+	const handleOpenModal = () => {
+		modalRef.current?.open();
+	};
 
 	const deleteTodayTodos = (todo: Omit<Task, 'isComplete'>) => {
 		setTodayTodos((prev) => prev.filter((prevTodo) => prevTodo.id !== todo.id));
@@ -182,21 +191,21 @@ const HomePage = () => {
 											/>
 										);
 									})}
-									{dailyCategoryTask.length < 2 && (
-										<div className="ml-[2.2rem] flex flex-col">
-											<SVGBtn className="flex-shrink-0">
+									{dailyCategoryTask.length <= 2 && (
+										<div className="flex flex-col">
+											<SVGBtn className="flex-shrink-0" onClick={handleOpenModal}>
 												<LargePlusIcon className="rounded-full bg-gray-bg-03 hover:bg-gray-bg-05" />
 											</SVGBtn>
 										</div>
 									)}
 								</>
 							) : (
-								<HomeDefaultStatus />
+								<HomeDefaultStatus onClick={handleOpenModal} />
 							)}
 						</article>
 						{dailyCategoryTask.length > 2 && (
 							<div className="ml-[2.2rem] flex flex-col">
-								<SVGBtn className="flex-shrink-0">
+								<SVGBtn className="flex-shrink-0" onClick={handleOpenModal}>
 									<LargePlusIcon className="rounded-full bg-gray-bg-03 hover:bg-gray-bg-05" />
 								</SVGBtn>
 							</div>
@@ -230,6 +239,9 @@ const HomePage = () => {
 					</div>
 				</section>
 			</div>
+			<CategoryModal ref={modalRef}>
+				{(handleCloseModal) => <AddCategoryModal handleCloseModal={handleCloseModal} />}
+			</CategoryModal>
 		</HomePageWrapper>
 	);
 };

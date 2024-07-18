@@ -56,7 +56,7 @@ const AddCategoryListModal = ({
 	};
 
 	return (
-		<dialog ref={dialogRef}>
+		<dialog ref={dialogRef} className="rounded-[10px]">
 			<div className="flex">
 				<CategoryModalLeft
 					optionData={categories}

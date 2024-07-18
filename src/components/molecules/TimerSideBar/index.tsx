@@ -25,6 +25,7 @@ interface CategoryBoxProps {
 	setIsPlaying: (isPlaying: boolean) => void;
 	isPlaying: boolean;
 	targetTime: number;
+	formattedTodayDate: string;
 }
 
 const TimerSideBar = ({
@@ -38,6 +39,7 @@ const TimerSideBar = ({
 	setIsPlaying,
 	isPlaying,
 	targetTime,
+	formattedTodayDate,
 }: CategoryBoxProps) => {
 	const { animate, handleClose } = useCloseSidebar(toggleSidebar);
 	const navigate = useNavigate();
@@ -50,7 +52,7 @@ const TimerSideBar = ({
 	const handleTodoClick = (id: number, time: number, name: string) => {
 		if (isPlaying && selectedTodo !== null) {
 			stopTimer(
-				{ id: selectedTodo, elapsedTime: increasedTime },
+				{ id: selectedTodo, elapsedTime: increasedTime, targetDate: formattedTodayDate },
 				{
 					onSuccess: () => {
 						setSelectedTodo(id);
@@ -74,7 +76,7 @@ const TimerSideBar = ({
 	const handleNavigateHome = () => {
 		if (isPlaying && selectedTodo !== null) {
 			stopTimer(
-				{ id: selectedTodo, elapsedTime: increasedTime },
+				{ id: selectedTodo, elapsedTime: increasedTime, targetDate: formattedTodayDate },
 				{
 					onSuccess: () => {
 						setIsPlaying(false);
