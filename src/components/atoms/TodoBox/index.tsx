@@ -63,20 +63,21 @@ const TodoBox = ({
 
 	const clickStyle = clickable && !addingComplete ? 'cursor-pointer' : 'cursor-default';
 
-	const disableClick = addingComplete ? 'pointer-events-none' : '';
-
 	const handleClickTodo = () => {
+		if (addingComplete) return;
+
 		if (clickable && updateTodayTodos) updateTodayTodos({ id, name, startDate, endDate, targetTime });
 		else if (onClick) {
 			onClick();
 		}
 	};
 
-	const disableBtnStyle = clickable ? 'pointer-events-none' : '';
+	const disableBtnStyle = clickable !== addingComplete ? 'pointer-events-none' : '';
+	console.log(clickable, addingComplete);
 
 	return (
 		<div
-			className={`group relative mt-[1rem] h-[9.6rem] w-[36.6rem] transform rounded-[8px] bg-gray-bg-01 p-[1.4rem] transition-transform duration-300 hover:-translate-y-2 ${selectedStyle} ${clickStyle} ${disableClick} `}
+			className={`group relative mt-[1rem] h-[9.6rem] w-[36.6rem] transform rounded-[8px] bg-gray-bg-01 p-[1.4rem] transition-transform duration-300 hover:-translate-y-2 ${selectedStyle} ${clickStyle} `}
 			onClick={handleClickTodo}
 		>
 			<div className="flex flex-col justify-center">

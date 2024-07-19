@@ -195,7 +195,8 @@ const CategoryBox = ({
 										endDate={endDate}
 										targetTime={targetTime}
 										onToggleComplete={() => toggleTodoStatus(id)}
-										clickable={false}
+										clickable={addingTodayTodoStatus}
+										addingComplete={addingComplete}
 									/>
 								))}
 							</TodoToggleBtn>
