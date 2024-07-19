@@ -5,4 +5,5 @@ export interface Todo {
 	endDate: string | null;
 	targetTime: number;
 	isComplete: boolean;
+	categoryName: string;
 }

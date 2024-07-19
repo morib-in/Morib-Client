@@ -76,11 +76,16 @@ const TimerPage: React.FC = () => {
 		}
 	}, [todos, selectedTodo]);
 
+	console.log(todos);
+
 	const { data: setData } = useGetMoribSet(selectedTodo || 0);
 
 	const urls = useMemo(() => setData?.data.map((item: MoribSetData) => item.url.trim()) || [], [setData]);
 
-	const baseUrls = useMemo(() => urls.map(getBaseUrl), [urls]);
+	const baseUrls = useMemo(() => {
+		const mappedUrls = urls.map(getBaseUrl);
+		return [...mappedUrls, 'chrome://newtab'];
+	}, [urls]);
 
 	useUrlHandler({
 		isPlaying,
@@ -95,6 +100,8 @@ const TimerPage: React.FC = () => {
 
 	if (isLoading) return <div>Loading...</div>;
 	if (error) return <div>Error loading todos</div>;
+
+	console.log(targetCategoryName);
 
 	return (
 		<TimerPageTemplates>
@@ -133,6 +140,7 @@ const TimerPage: React.FC = () => {
 								toggleSidebar={toggleSidebar}
 								setTargetTime={setTargetTime}
 								setTargetName={setTargetName}
+								setTargetCategoryName={setTargetCategoryName}
 								setSelectedTodo={setSelectedTodo}
 								selectedTodo={selectedTodo}
 								setIsPlaying={setIsPlaying}

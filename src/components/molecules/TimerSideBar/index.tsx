@@ -24,6 +24,7 @@ interface CategoryBoxProps {
 	setTargetName: (name: string) => void;
 	selectedTodo: number | null;
 	setIsPlaying: (isPlaying: boolean) => void;
+	setTargetCategoryName: (name: string) => void;
 	isPlaying: boolean;
 	targetTime: number;
 	formattedTodayDate: string;
@@ -47,6 +48,7 @@ const TimerSideBar = ({
 	resetTimerIncreasedTime,
 	timerIncreasedTime,
 	increasedSideBarTime,
+	setTargetCategoryName,
 	resetIncreasedSideBarTime,
 }: CategoryBoxProps) => {
 	const { animate, handleClose } = useCloseSidebar(toggleSidebar);
@@ -56,7 +58,7 @@ const TimerSideBar = ({
 	const { mutate, isError, error } = usePatchTaskStatus();
 	const { mutate: stopTimer } = usePostTimerStop();
 
-	const handleTodoClick = (id: number, time: number, name: string) => {
+	const handleTodoClick = (id: number, time: number, name: string, categoryName: string) => {
 		if (isPlaying) {
 			if (selectedTodo !== null) {
 				stopTimer(
@@ -75,6 +77,7 @@ const TimerSideBar = ({
 		setSelectedTodo(id);
 		setTargetTime(time);
 		setTargetName(name);
+		setTargetCategoryName(categoryName);
 	};
 
 	if (isError) {
@@ -113,7 +116,7 @@ const TimerSideBar = ({
 						key={todo.id}
 						{...todo}
 						isSelected={todo.id === selectedTodo}
-						onClick={() => handleTodoClick(todo.id, todo.targetTime, todo.name)}
+						onClick={() => handleTodoClick(todo.id, todo.targetTime, todo.name, todo.categoryName)}
 						onToggleComplete={() => mutate(todo.id)}
 					/>
 				))}

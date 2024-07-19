@@ -32,7 +32,6 @@ const TodoBox = ({
 	name,
 	startDate,
 	endDate,
-	targetTime,
 	isComplete,
 	isSelected,
 	selectedNumber,
@@ -40,6 +39,7 @@ const TodoBox = ({
 	onToggleComplete,
 	updateTodayTodos,
 	clickable,
+	targetTime,
 	addingComplete,
 }: TodoBoxProps) => {
 	const formattedTime = formatSeconds(targetTime);
@@ -73,7 +73,6 @@ const TodoBox = ({
 	};
 
 	const disableBtnStyle = clickable !== addingComplete ? 'pointer-events-none' : '';
-	console.log(clickable, addingComplete);
 
 	return (
 		<div
