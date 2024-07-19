@@ -49,6 +49,14 @@ const AddCategoryModal = ({ handleCloseModal }: AddCategoryModalProps) => {
 	} = usePostCategory();
 	const { error: queryError } = useGetTabName('');
 
+	const handleClearData = () => {
+		setName('');
+		setUrlInfos([]);
+		setSelectedInfo([]);
+		setSelectedStartDate(null);
+		setSelectedEndDate(null);
+	};
+
 	const handleSelectedInfo = (urlInfo: UrlInfo) => {
 		setSelectedInfo((prevItems) => {
 			if (prevItems.some((prevItem) => prevItem.url === urlInfo.url)) {
@@ -62,8 +70,8 @@ const AddCategoryModal = ({ handleCloseModal }: AddCategoryModalProps) => {
 		setSelectedInfo((prevUrlInfos) => prevUrlInfos.filter((urlInfo) => urlInfo.url !== urlInfoToDelete.url));
 	};
 
-	const handleNameChange = (newName: string) => {
-		setName(newName);
+	const handleNameChange = (name: string) => {
+		setName(name);
 	};
 
 	const defaultDate = new Date();
@@ -83,7 +91,11 @@ const AddCategoryModal = ({ handleCloseModal }: AddCategoryModalProps) => {
 	};
 
 	const handleDateToggle = () => {
-		if (!isDateToggleOn) setIsCalendarOpened(true);
+		if (!isDateToggleOn) {
+			setIsCalendarOpened(true);
+			setSelectedStartDate(null);
+			setSelectedEndDate(null);
+		}
 		setIsDateToggleOn((prev) => !prev);
 	};
 
@@ -161,6 +173,7 @@ const AddCategoryModal = ({ handleCloseModal }: AddCategoryModalProps) => {
 	};
 
 	const handlePostDataClick = () => {
+		handleClearData();
 		handleCategoryData();
 		handleCloseModal();
 		if (isMutatePending) return <div>Loading</div>;
@@ -175,7 +188,7 @@ const AddCategoryModal = ({ handleCloseModal }: AddCategoryModalProps) => {
 			<div className="flex-start mt-[1.6rem] inline-flex gap-[4.4rem]">
 				<CategoryInputMoribName onNameChange={handleNameChange} />
 				<div ref={calendarRef}>
-					<div className="ml-[1rem] mt-[1rem] flex items-center gap-[1rem]">
+					<div className="mt-[1rem] flex items-center gap-[1rem]">
 						<CategoryInputTitle title="날짜" />
 						<div className="mb-[0.6rem]">
 							<CategoryToggle isToggleOn={isDateToggleOn} onToggle={handleDateToggle} />
@@ -191,15 +204,17 @@ const AddCategoryModal = ({ handleCloseModal }: AddCategoryModalProps) => {
 						/>
 					)}
 					{isDateToggleOn && (
-						<Calendar
-							isPeriodOn={isPeriodOn}
-							selectedStartDate={selectedStartDate ?? defaultDate}
-							selectedEndDate={selectedEndDate ?? null}
-							onStartDateInput={handleStartDateInput}
-							onEndDateInput={handleEndDateInput}
-							isCalendarOpened={isCalendarOpened}
-							onPeriodToggle={handlePeriodToggle}
-						/>
+						<div>
+							<Calendar
+								isPeriodOn={isPeriodOn}
+								selectedStartDate={selectedStartDate ?? defaultDate}
+								selectedEndDate={selectedEndDate ?? null}
+								onStartDateInput={handleStartDateInput}
+								onEndDateInput={handleEndDateInput}
+								isCalendarOpened={isCalendarOpened}
+								onPeriodToggle={handlePeriodToggle}
+							/>
+						</div>
 					)}
 				</div>
 			</div>
@@ -217,10 +232,7 @@ const AddCategoryModal = ({ handleCloseModal }: AddCategoryModalProps) => {
 				<div>
 					<CategoryMoribContentSet urlInfos={combinedInfos} variant="basic">
 						{combinedInfos.map((urlInfo, url) => (
-							<tr
-								key={url}
-								className="flex h-[4.6rem] gap-[1.2rem] border-b border-gray-bg-04 px-[0.8rem] hover:bg-gray-bg-06"
-							>
+							<tr key={url} className="flex h-[4.6rem] gap-[1.2rem] border-b border-gray-bg-04 px-[0.8rem]">
 								<CategoryMoribContentPage urlInfo={urlInfo} variant="basic" />
 								<CategoryMoribContentUrl urlInfo={urlInfo} variant="basic" />
 							</tr>
