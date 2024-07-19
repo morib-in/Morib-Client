@@ -162,7 +162,7 @@ const AddCategoryModal = ({ handleCloseModal }: AddCategoryModalProps) => {
 	}, [isCalendarOpened, isDateToggleOn]);
 
 	const handleCategoryData = () => {
-		if (urlInfos.length === 0) {
+		if (combinedInfos.length === 0) {
 			const categoryData = {
 				name,
 				startDate: formatCalendarApiDate(selectedStartDate),
