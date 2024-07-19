@@ -4,6 +4,7 @@ import LoadingUrl from '@/components/atoms/LoadingUrl';
 import CategoryModalLeft from '@/components/molecules/CategoryModalLeft';
 import CategoryModalRight from '@/components/molecules/CategoryModalRight';
 
+import { getTabName } from '@/apis/modal/axios';
 import { useCategoryLists, useGetMsets } from '@/apis/modal/queries';
 
 interface UrlInfo {
@@ -21,6 +22,13 @@ type CategoryListModalProp = {
 	// Todo: 발등 이슈로 추후 타입 수정
 	setSelectedInfo: (urlInfo: any) => any;
 	moribSetName: string;
+	urlData: UrlInfo[];
+	setUrlData: any;
+	isClicked: boolean;
+	setIsClicked: any;
+	selectedOption: string;
+	setSelectedOption: any;
+	handleClearModalData: () => void;
 };
 
 const AddCategoryListModal = ({
@@ -31,6 +39,13 @@ const AddCategoryListModal = ({
 	handleDeleteUrlInfo,
 	setSelectedInfo,
 	moribSetName,
+	urlData,
+	setUrlData,
+	isClicked,
+	setIsClicked,
+	selectedOption,
+	setSelectedOption,
+	handleClearModalData,
 }: CategoryListModalProp) => {
 	const { data: categoryData, isLoading, error } = useCategoryLists();
 	const categories = categoryData?.data || [];
@@ -46,13 +61,19 @@ const AddCategoryListModal = ({
 		setCategoryId(id);
 	};
 
-	const handleUrlInputChange = (url: string) => {
-		const newUrlInfo: UrlInfo = {
-			url: url,
-			favicon: `https://www.google.com/s2/favicons?domain=${url}`,
-		};
-		// Todo: 발등 이슈로 추후 타입 수정
-		setSelectedInfo((prevUrlInfos: any) => [...prevUrlInfos, newUrlInfo]);
+	const handleUrlInputChange = async (url: string) => {
+		try {
+			const tabNameData = await getTabName(url);
+			const newUrlInfo: UrlInfo = {
+				url: url,
+				domain: tabNameData.data.tabName,
+				favicon: `https://www.google.com/s2/favicons?domain=${url}`,
+			};
+			// Todo: 발등 이슈로 추후 타입 수정
+			setSelectedInfo((prevUrlInfos: any) => [...prevUrlInfos, newUrlInfo]);
+		} catch (isQueryError) {
+			console.error(isQueryError);
+		}
 	};
 
 	return (
@@ -63,6 +84,12 @@ const AddCategoryListModal = ({
 					handleSelectedInfo={(urlInfo: UrlInfo) => handleSelectedInfo(urlInfo)}
 					handleOptionId={handleOptionId}
 					msetsList={msetsList}
+					urlInfos={urlData}
+					setUrlData={setUrlData}
+					setIsClicked={setIsClicked}
+					setSelectedOption={setSelectedOption}
+					isClicked={isClicked}
+					selectedOption={selectedOption}
 				/>
 				<CategoryModalRight
 					selectedInfo={selectedInfo}
@@ -70,6 +97,9 @@ const AddCategoryListModal = ({
 					handleDeleteUrlInfo={(url: UrlInfo) => handleDeleteUrlInfo(url)}
 					handleCloseModal={handleCloseModal}
 					moribSetName={moribSetName}
+					handleClearModalData={handleClearModalData}
+					setSelectedOption={setSelectedOption}
+					setIsClicked={setIsClicked}
 				/>
 			</div>
 		</dialog>

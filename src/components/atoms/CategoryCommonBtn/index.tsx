@@ -5,6 +5,7 @@ interface CategoryBtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	children: ReactNode;
 	handleCloseModal?: () => void;
 	handleSubmit?: () => void;
+	handleClearModalData?: () => void;
 }
 
 const CategoryCommonBtn = ({
@@ -13,6 +14,7 @@ const CategoryCommonBtn = ({
 	children,
 	handleCloseModal,
 	handleSubmit,
+	handleClearModalData,
 	...props
 }: CategoryBtnProps) => {
 	const btnVariant = {
@@ -33,7 +35,15 @@ const CategoryCommonBtn = ({
 		}
 	};
 	return (
-		<button className={`${styledBtn} ${commonStyle}`} disabled={disabled} {...props} onClick={handleClick}>
+		<button
+			className={`${styledBtn} ${commonStyle}`}
+			disabled={disabled}
+			{...props}
+			onClick={() => {
+				handleClick();
+				handleClearModalData?.();
+			}}
+		>
 			{children}
 		</button>
 	);

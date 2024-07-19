@@ -41,6 +41,14 @@ const AddCategoryModal = ({ handleCloseModal }: AddCategoryModalProps) => {
 	const combinedInfos = [...selectedInfo, ...urlInfos];
 	const queryClient = useQueryClient();
 
+	const [urlData, setUrlData] = useState<UrlInfo[]>([]);
+	const [isClicked, setIsClicked] = useState(false);
+	const [selectedOption, setSelectedOption] = useState('카테고리 추가');
+
+	const handleUrlInfos = () => {
+		setUrlData([]);
+	};
+
 	const {
 		mutate: postCategory,
 		isError: isMutateError,
@@ -169,6 +177,12 @@ const AddCategoryModal = ({ handleCloseModal }: AddCategoryModalProps) => {
 		}
 	};
 
+	const handleClearModalData = () => {
+		handleUrlInfos();
+		setIsClicked(false);
+		setSelectedOption('카테고리 추가');
+	};
+
 	return (
 		<div className="">
 			<CategoryCommonTitle />
@@ -213,6 +227,13 @@ const AddCategoryModal = ({ handleCloseModal }: AddCategoryModalProps) => {
 					setSelectedInfo={setSelectedInfo}
 					urlInfo={urlInfos}
 					moribSetName={name}
+					urlData={urlData}
+					setUrlData={setUrlData}
+					isClicked={isClicked}
+					setIsClicked={setIsClicked}
+					selectedOption={selectedOption}
+					setSelectedOption={setSelectedOption}
+					handleClearModalData={handleClearModalData}
 				/>
 				<div>
 					<CategoryMoribContentSet urlInfos={combinedInfos} variant="basic">
