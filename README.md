@@ -13,6 +13,23 @@
 <br/>
 <hr/>
 
+<h3> ☺️ Morib Flow </h3>
+
+![image](https://github.com/user-attachments/assets/3d7cdb3f-f89a-44ac-b380-59c755723ff5)
+![image](https://github.com/user-attachments/assets/af9759dc-8335-4b6c-b566-ef32037ff2d0)
+![image](https://github.com/user-attachments/assets/45f0fd71-099b-47f4-b884-11f0de281b63)
+![image](https://github.com/user-attachments/assets/1b54ee57-65b4-4efc-a90b-f5a5172931f7)
+![image](https://github.com/user-attachments/assets/2d40661b-93e1-4852-8f23-d36cd6813af5)
+![image](https://github.com/user-attachments/assets/432852ab-d6bd-4e61-86d8-fbd5cc3b0dff)
+![image](https://github.com/user-attachments/assets/38005488-99b7-4f49-ae36-2b66a63aa378)
+![image](https://github.com/user-attachments/assets/b26ed23b-3af4-47d6-97b4-168438fc0f61)
+![image](https://github.com/user-attachments/assets/df7128d5-f5c3-4fa5-8f76-b67c8f4b8256)
+
+
+
+<br/>
+<hr/>
+
 <h2>👩🏻‍💻🧑🏻‍💻 Morib Web Developers </h2>
 <br/>
 
@@ -318,6 +335,6 @@ type과 콜론 후 한칸 띄고 subject
 
 ### 🎱 모리비들의 고민 아카이빙
 
-| 🪄 짜미들의 아티클 | 💥 짜미들의 트러블 슈팅 |
+| 🪄 모리비들의 아티클 | 💥 모리비들의 트러블 슈팅 |
 | ---------------------- | ---------------------- |
 | <ul><li>[대원이의 react-query 도입 근거와 간단 사용법](https://www.notion.so/react-query-65fabe9ea57f4891ad317663c38588e5)</li> <li>[건휘의 Polling vs WebSocket](https://velog.io/@geonhwi1014/실시간-통신-Polling-vs-WebSocket)</li> <li>[상아의 tailwind CSS](https://decisive-pruner-c9c.notion.site/Tailwind-CSS-2add170319e841a8b2130b87cc53f0af)</li> <li>[건휘의 Socket.IO 정리](https://www.notion.so/Socket-IO-ae0464c96f3f46a7adcf9ee518de139c)</li> <li>[한서의 초기세팅 -ESLint, Prettier, tsconfig](https://www.notion.so/ESLint-Prettier-tsconfig-e95ac5e4901248ff93b12b556d580b50)</li> | <ul><li>[Typescript Complier가 JSX 구문 인식 못하는 오류](https://www.notion.so/Typescript-Complier-JSX-32207ab179b3443dbd2e5b3ea14a5abc)</li> <li>[pnpm router type을 추론을 못하는 문제](https://www.notion.so/pnpm-router-type-355ef8594b974ef59e1f7598d9830f97)</li> <li>[prettier 플러그인 로딩순서에 따라 적용이 안되는 문제](https://www.notion.so/prettier-fa21babb4cf64c7d96cd7965816d62f6)</li> <li>[운영체제간 차이로 git pull / push 가 안 받아진다?!](https://www.notion.so/git-pull-push-98c1cf03ab854ec4b977ac53fa5ce657)</li> <li>[datepicker 라이브러리에서 날짜 사이 간격에 배경색 적용이 되지 않을 때](https://www.notion.so/datepicker-1840dc3fa8274629ab8103be2c1513f8)</li> <li>[animation 사이드바가 영역 바깥쪽에서 등장하고 닫히는 문제](https://www.notion.so/animation-f22495fc3a8a4aed8aa8dd0210648122)</li> <li>[useQuery 계속해서 쿼리가 불러와지는 이슈 발생](https://www.notion.so/useQuery-7109cd5ab17f4cffb6d4c49ea366d609)</li> <li>[SVG가 화면에 안 뜨는 이슈… ](https://www.notion.so/SVG-a812c41b8a2641a294b479206ae0c47f)</li> <li>[svg 호버 색 변경하는 법](https://www.notion.so/svg-1101c544250e4228bab6efbe45ca2e80)</li> <li>[tailwind css로 부모 속성 hover시 부모 속성과 자식 속성 동시에 다른 효과 주기](https://www.notion.so/tailwind-css-hover-86c60be4c08a4abe9bc73ba29ee009df)</li> 
