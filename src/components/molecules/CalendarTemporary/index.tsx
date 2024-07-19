@@ -41,7 +41,7 @@ const CalendarTemporary = ({
 
 	const defaultToggleStyle = 'flex justify-between px-[1.75rem]';
 	const calendarStyle =
-		'detail-reg-14 shadow-[0_3px_30px_0_rgba(0, 0, 0, 0.40)] w-[30.3rem] flex-col gap-[2.1rem] rounded-[8px] bg-gray-bg-02 p-[1.4rem] absolute z-50';
+		' drop-shadow-calendarDrop detail-reg-14 shadow-[0_3px_30px_0_rgba(0, 0, 0, 0.40)] w-[30.3rem] flex-col gap-[2.1rem] rounded-[8px] bg-gray-bg-02 p-[1.4rem] absolute z-50';
 	const inputStyle = 'body-med-16 h-[3.2rem] w-[27.5rem] rounded-[3px] border-[1px] px-[1rem] py-[0.5rem] ';
 	const calendarInputStyle =
 		'body-med-16 h-[3.2rem] w-[13.2rem] rounded-[3px] border-[1px]  px-[1rem] py-[0.5rem]  bg-gray-bg-02 ';

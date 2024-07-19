@@ -3,6 +3,9 @@ export default {
 	content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
 	theme: {
 		extend: {
+			dropShadow: {
+				calendarDrop: '0 3px 30px rgba(0, 0, 0, 0.40)',
+			},
 			fontFamily: {
 				pretendard: ['Pretendard'],
 			},
