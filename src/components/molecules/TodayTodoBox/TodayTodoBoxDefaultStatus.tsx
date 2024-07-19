@@ -76,7 +76,7 @@ const TodayTodoBoxAddStatus = ({
 					<HomeSmallBtn onClick={onDisableAddStatus}>{SMALL_BTN_TEXT.CANCEL}</HomeSmallBtn>
 				)}
 				<div className={clickable}>
-					<HomeLargeBtn variant={HomeLargeBtnVariant.LARGE} disabled={!hasTodayTodos} onClick={onCreateTodayTodos}>
+					<HomeLargeBtn variant={HomeLargeBtnVariant.LARGE} disabled={!addingComplete} onClick={onCreateTodayTodos}>
 						{LARGE_BTN_TEXT.START_TIMER}
 					</HomeLargeBtn>
 				</div>

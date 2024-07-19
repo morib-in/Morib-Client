@@ -50,6 +50,7 @@ const HomePage = () => {
 	const { startDate, endDate } = getThisWeekRange(selectedDate);
 
 	const { data: categoriesData, isError, error } = useGetAllCategoryTask(startDate, endDate);
+
 	const categories = categoriesData?.data || [];
 	const dailyCategoryTask = getDailyCategoryTask(selectedDate, categories);
 
