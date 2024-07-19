@@ -29,6 +29,7 @@ type CategoryListModalProp = {
 	selectedOption: string;
 	setSelectedOption: any;
 	handleClearModalData: () => void;
+	addInfos: (selectedInfo: UrlInfo[]) => void;
 };
 
 const AddCategoryListModal = ({
@@ -46,6 +47,7 @@ const AddCategoryListModal = ({
 	selectedOption,
 	setSelectedOption,
 	handleClearModalData,
+	addInfos,
 }: CategoryListModalProp) => {
 	const { data: categoryData, isLoading, error } = useCategoryLists();
 	const categories = categoryData?.data || [];
@@ -100,6 +102,7 @@ const AddCategoryListModal = ({
 					handleClearModalData={handleClearModalData}
 					setSelectedOption={setSelectedOption}
 					setIsClicked={setIsClicked}
+					addInfos={addInfos}
 				/>
 			</div>
 		</dialog>

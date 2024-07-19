@@ -26,6 +26,8 @@ interface CategoryCommonMoribSetProps {
 	selectedOption: string;
 	setSelectedOption: (category: string) => void;
 	handleClearModalData: () => void;
+	handleUrlInfos: () => void;
+	addInfos: (selectedInfo: UrlInfo[]) => void;
 }
 
 const CategoryCommonMoribSet = ({
@@ -43,9 +45,12 @@ const CategoryCommonMoribSet = ({
 	selectedOption,
 	setSelectedOption,
 	handleClearModalData,
+	handleUrlInfos,
+	addInfos,
 }: CategoryCommonMoribSetProps) => {
 	const dialogRef = useRef<HTMLDialogElement>(null);
 	const showModal = () => {
+		handleUrlInfos();
 		dialogRef.current?.showModal();
 	};
 
@@ -60,6 +65,7 @@ const CategoryCommonMoribSet = ({
 	};
 
 	const handleCloseModal = () => {
+		addInfos(selectedInfo);
 		closeModal();
 	};
 
@@ -83,6 +89,7 @@ const CategoryCommonMoribSet = ({
 					selectedOption={selectedOption}
 					setSelectedOption={setSelectedOption}
 					handleClearModalData={handleClearModalData}
+					addInfos={addInfos}
 				/>
 			</div>
 			<CategoryUrlInput variant="basic" onUrlInputChange={(url: string) => onUrlInputChange(url)} urlInfo={urlInfo} />
