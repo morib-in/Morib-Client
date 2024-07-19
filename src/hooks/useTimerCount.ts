@@ -8,6 +8,7 @@ interface UseTimerCountProps {
 interface UseTimerCountReturn {
 	timer: number;
 	increasedTime: number;
+	resetIncreasedTime: () => void;
 }
 
 const useTimerCount = ({ isPlaying, previousTime }: UseTimerCountProps): UseTimerCountReturn => {
@@ -35,9 +36,13 @@ const useTimerCount = ({ isPlaying, previousTime }: UseTimerCountProps): UseTime
 		};
 	}, [isPlaying]);
 
+	const resetIncreasedTime = () => {
+		setIncreasedTime(0);
+	};
+
 	const timer = previousTime + increasedTime;
 
-	return { timer, increasedTime };
+	return { timer, increasedTime, resetIncreasedTime };
 };
 
 export default useTimerCount;
