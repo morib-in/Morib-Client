@@ -16,8 +16,8 @@ const CategoryCommonBtn = ({
 	...props
 }: CategoryBtnProps) => {
 	const btnVariant = {
-		취소: 'text-white bg-gray-bg-06',
-		완료: 'text-gray-bg-01 bg-mint-02',
+		취소: 'text-white bg-gray-bg-06 hover:bg-gray-bg-04 active:bg-gray-bg-05',
+		완료: 'text-gray-bg-01 bg-mint-02 hover:bg-mint-02-hover active:bg-mint-02-press',
 	};
 	const disabledBtn = 'bg-gray-bg-05 text-gray-04';
 
