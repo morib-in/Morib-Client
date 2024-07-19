@@ -1,4 +1,6 @@
-import { ButtonHTMLAttributes, useState } from 'react';
+import { ButtonHTMLAttributes } from 'react';
+
+import { useQueryClient } from '@tanstack/react-query';
 
 import CategoryDropdownBtn from '@/components/atoms/CategoryDropdownBtn';
 import DropdownOptionsBtn from '@/components/atoms/DropdownOptionsBtn';
@@ -6,6 +8,10 @@ import DropdownOptionsBtn from '@/components/atoms/DropdownOptionsBtn';
 interface DropdownBtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	optionData: Category[];
 	handleOptionId: (id: number) => void;
+	setIsClicked: (is: any) => void;
+	setSelectedOption: (name: string) => void;
+	isClicked: boolean;
+	selectedOption: string;
 }
 
 interface Category {
@@ -15,9 +21,16 @@ interface Category {
 	endDate: string;
 }
 
-const CategoryDropdown = ({ disabled, handleOptionId, optionData }: DropdownBtnProps) => {
-	const [isClicked, setIsClicked] = useState(false);
-	const [selectedOption, setSelectedOption] = useState('카테고리 추가');
+const CategoryDropdown = ({
+	disabled,
+	handleOptionId,
+	optionData,
+	setIsClicked,
+	setSelectedOption,
+	isClicked,
+	selectedOption,
+}: DropdownBtnProps) => {
+	const queryClient = useQueryClient();
 
 	const handleOptionClick = (name: string) => {
 		setSelectedOption(name);
@@ -25,7 +38,10 @@ const CategoryDropdown = ({ disabled, handleOptionId, optionData }: DropdownBtnP
 	};
 
 	const handleBtnClicked = () => {
-		setIsClicked((prev) => !prev);
+		queryClient.invalidateQueries({ queryKey: ['categories'] });
+
+		//Todo: 추후 타입 수정
+		setIsClicked((prev: any) => !prev);
 	};
 
 	return (

@@ -19,6 +19,13 @@ interface CategoryCommonMoribSetProps {
 	handleDeleteUrlInfo: (url: UrlInfo) => void;
 	setSelectedInfo: (urlInfo: UrlInfo[]) => void;
 	moribSetName: string;
+	urlData: UrlInfo[];
+	setUrlData: any;
+	isClicked: boolean;
+	setIsClicked: (is: any) => void;
+	selectedOption: string;
+	setSelectedOption: (category: string) => void;
+	handleClearModalData: () => void;
 }
 
 const CategoryCommonMoribSet = ({
@@ -29,6 +36,13 @@ const CategoryCommonMoribSet = ({
 	setSelectedInfo,
 	urlInfo,
 	moribSetName,
+	urlData,
+	setUrlData,
+	isClicked,
+	setIsClicked,
+	selectedOption,
+	setSelectedOption,
+	handleClearModalData,
 }: CategoryCommonMoribSetProps) => {
 	const dialogRef = useRef<HTMLDialogElement>(null);
 	const showModal = () => {
@@ -40,6 +54,8 @@ const CategoryCommonMoribSet = ({
 	};
 
 	const handleMoveToNextModal = () => {
+		setSelectedInfo([]);
+
 		showModal();
 	};
 
@@ -60,6 +76,13 @@ const CategoryCommonMoribSet = ({
 					handleDeleteUrlInfo={(url: UrlInfo) => handleDeleteUrlInfo(url)}
 					setSelectedInfo={setSelectedInfo}
 					moribSetName={moribSetName}
+					urlData={urlData}
+					setUrlData={setUrlData}
+					isClicked={isClicked}
+					setIsClicked={setIsClicked}
+					selectedOption={selectedOption}
+					setSelectedOption={setSelectedOption}
+					handleClearModalData={handleClearModalData}
 				/>
 			</div>
 			<CategoryUrlInput variant="basic" onUrlInputChange={(url: string) => onUrlInputChange(url)} urlInfo={urlInfo} />

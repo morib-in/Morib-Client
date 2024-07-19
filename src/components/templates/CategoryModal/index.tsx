@@ -1,5 +1,7 @@
 import { ReactNode, forwardRef, useImperativeHandle, useRef } from 'react';
 
+import { useQueryClient } from '@tanstack/react-query';
+
 import './dialog.css';
 
 interface CategoryProps {
@@ -12,6 +14,7 @@ export interface CategoryRef {
 }
 
 const CategoryModal = forwardRef<CategoryRef, CategoryProps>(function CategoryModal({ children }: CategoryProps, ref) {
+	const queryClient = useQueryClient();
 	const dialogRef = useRef<HTMLDialogElement>(null);
 
 	const handleOpenModal = () => {
@@ -20,6 +23,8 @@ const CategoryModal = forwardRef<CategoryRef, CategoryProps>(function CategoryMo
 
 	const handleCloseModal = () => {
 		dialogRef.current?.close();
+		queryClient.invalidateQueries({ queryKey: ['categories'] });
+		queryClient.invalidateQueries({ queryKey: ['msets'] });
 	};
 
 	useImperativeHandle(ref, () => ({

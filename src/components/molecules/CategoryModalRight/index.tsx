@@ -15,10 +15,13 @@ interface UrlInfo {
 
 interface ModalRightProps {
 	selectedInfo: UrlInfo[];
+	setIsClicked: (is: any) => void;
+	setSelectedOption: (name: string) => void;
 	handleUrlInputChange: (url: string) => void;
 	handleDeleteUrlInfo: (url: UrlInfo) => void;
 	handleCloseModal: () => void;
 	moribSetName: string;
+	handleClearModalData: () => void;
 }
 
 const CategoryModalRight = ({
@@ -27,6 +30,7 @@ const CategoryModalRight = ({
 	handleDeleteUrlInfo,
 	handleCloseModal,
 	moribSetName,
+	handleClearModalData,
 }: ModalRightProps) => {
 	return (
 		<div className="flex h-[80rem] w-[61.2rem] flex-col items-end justify-between rounded-r-[1rem] bg-gray-bg-03 pb-[3rem] pl-[3rem] pr-[4.3rem] pt-[9.7rem]">
@@ -57,10 +61,18 @@ const CategoryModalRight = ({
 			</CategoryMoribContentSet>
 
 			<div className="mt-[3rem] flex gap-[16px]">
-				<CategoryCommonBtn variant="취소" handleCloseModal={handleCloseModal}>
+				<CategoryCommonBtn
+					variant="취소"
+					handleCloseModal={handleCloseModal}
+					handleClearModalData={handleClearModalData}
+				>
 					취소
 				</CategoryCommonBtn>
-				<CategoryCommonBtn variant="완료" handleCloseModal={handleCloseModal}>
+				<CategoryCommonBtn
+					variant="완료"
+					handleCloseModal={handleCloseModal}
+					handleClearModalData={handleClearModalData}
+				>
 					완료
 				</CategoryCommonBtn>
 			</div>
