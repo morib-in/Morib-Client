@@ -52,7 +52,9 @@ const AddCategoryModal = ({ handleCloseModal }: AddCategoryModalProps) => {
 	const handleClearData = () => {
 		setName('');
 		setUrlInfos([]);
-		handleDateToggle();
+		setSelectedStartDate(null);
+		setSelectedEndDate(null);
+		setIsDateToggleOn(false);
 		setSelectedInfo([]);
 	};
 
