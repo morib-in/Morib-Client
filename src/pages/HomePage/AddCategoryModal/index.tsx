@@ -52,9 +52,8 @@ const AddCategoryModal = ({ handleCloseModal }: AddCategoryModalProps) => {
 	const handleClearData = () => {
 		setName('');
 		setUrlInfos([]);
+		handleDateToggle();
 		setSelectedInfo([]);
-		setSelectedStartDate(null);
-		setSelectedEndDate(null);
 	};
 
 	const handleSelectedInfo = (urlInfo: UrlInfo) => {
@@ -93,6 +92,7 @@ const AddCategoryModal = ({ handleCloseModal }: AddCategoryModalProps) => {
 	const handleDateToggle = () => {
 		if (!isDateToggleOn) {
 			setIsCalendarOpened(true);
+		} else {
 			setSelectedStartDate(null);
 			setSelectedEndDate(null);
 		}
@@ -153,7 +153,7 @@ const AddCategoryModal = ({ handleCloseModal }: AddCategoryModalProps) => {
 				name,
 				startDate: formatCalendarApiDate(selectedStartDate),
 				endDate: formatCalendarApiDate(selectedEndDate),
-				msets: urlInfos.map((info) => ({
+				msets: combinedInfos.map((info) => ({
 					name: info.domain,
 					url: info.url,
 				})),
@@ -172,6 +172,11 @@ const AddCategoryModal = ({ handleCloseModal }: AddCategoryModalProps) => {
 		}
 	};
 
+	const handleClose = () => {
+		handleClearData();
+		handleCloseModal();
+	};
+
 	const handlePostDataClick = () => {
 		handleClearData();
 		handleCategoryData();
@@ -186,7 +191,7 @@ const AddCategoryModal = ({ handleCloseModal }: AddCategoryModalProps) => {
 		<div className="">
 			<CategoryCommonTitle />
 			<div className="flex-start mt-[1.6rem] inline-flex gap-[4.4rem]">
-				<CategoryInputMoribName onNameChange={handleNameChange} />
+				<CategoryInputMoribName name={name} onNameChange={handleNameChange} />
 				<div ref={calendarRef}>
 					<div className="mt-[1rem] flex items-center gap-[1rem]">
 						<CategoryInputTitle title="날짜" />
@@ -242,7 +247,7 @@ const AddCategoryModal = ({ handleCloseModal }: AddCategoryModalProps) => {
 			</div>
 
 			<div className="mt-[3rem] flex justify-end gap-[1.6rem]">
-				<CategoryCommonBtn variant="취소" handleCloseModal={handleCloseModal}>
+				<CategoryCommonBtn variant="취소" handleCloseModal={handleClose}>
 					취소
 				</CategoryCommonBtn>
 				<CategoryCommonBtn variant="완료" handleSubmit={handlePostDataClick} disabled={!isFormValid()}>
