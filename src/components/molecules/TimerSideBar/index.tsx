@@ -1,11 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 
+import { useQueryClient } from '@tanstack/react-query';
+
 import TimerTodayTodoBtn from '@/components/atoms/TimerTodayTodoBtn';
 import TodoBox from '@/components/atoms/TodoBox';
 import TodoToggleBtn from '@/components/atoms/TodoToggleBtn';
 
 import useCloseSidebar from '@/hooks/useCloseSideBar';
-import useTimerCount from '@/hooks/useTimerCount';
 
 import { usePatchTaskStatus } from '@/apis/common/queries';
 import { usePostTimerStop } from '@/apis/timer/queries';
@@ -26,6 +27,10 @@ interface CategoryBoxProps {
 	isPlaying: boolean;
 	targetTime: number;
 	formattedTodayDate: string;
+	resetTimerIncreasedTime: () => void;
+	timerIncreasedTime: number;
+	increasedSideBarTime: number;
+	resetIncreasedSideBarTime: () => void;
 }
 
 const TimerSideBar = ({
@@ -38,35 +43,38 @@ const TimerSideBar = ({
 	selectedTodo,
 	setIsPlaying,
 	isPlaying,
-	targetTime,
 	formattedTodayDate,
+	resetTimerIncreasedTime,
+	timerIncreasedTime,
+	increasedSideBarTime,
+	resetIncreasedSideBarTime,
 }: CategoryBoxProps) => {
 	const { animate, handleClose } = useCloseSidebar(toggleSidebar);
 	const navigate = useNavigate();
+	const queryClient = useQueryClient();
 
 	const { mutate, isError, error } = usePatchTaskStatus();
 	const { mutate: stopTimer } = usePostTimerStop();
 
-	const { increasedTime } = useTimerCount({ isPlaying, previousTime: targetTime });
-
 	const handleTodoClick = (id: number, time: number, name: string) => {
-		if (isPlaying && selectedTodo !== null) {
-			stopTimer(
-				{ id: selectedTodo, elapsedTime: increasedTime, targetDate: formattedTodayDate },
-				{
-					onSuccess: () => {
-						setSelectedTodo(id);
-						setTargetTime(time);
-						setTargetName(name);
-						setIsPlaying(false);
+		if (isPlaying) {
+			if (selectedTodo !== null) {
+				stopTimer(
+					{ id: selectedTodo, elapsedTime: timerIncreasedTime, targetDate: formattedTodayDate },
+					{
+						onSuccess: () => {
+							setIsPlaying(false);
+							queryClient.invalidateQueries({ queryKey: ['todo', formattedTodayDate] });
+							resetIncreasedSideBarTime();
+						},
 					},
-				},
-			);
-		} else {
-			setSelectedTodo(id);
-			setTargetTime(time);
-			setTargetName(name);
+				);
+			}
 		}
+		resetTimerIncreasedTime();
+		setSelectedTodo(id);
+		setTargetTime(time);
+		setTargetName(name);
 	};
 
 	if (isError) {
@@ -76,7 +84,7 @@ const TimerSideBar = ({
 	const handleNavigateHome = () => {
 		if (isPlaying && selectedTodo !== null) {
 			stopTimer(
-				{ id: selectedTodo, elapsedTime: increasedTime, targetDate: formattedTodayDate },
+				{ id: selectedTodo, elapsedTime: increasedSideBarTime, targetDate: formattedTodayDate },
 				{
 					onSuccess: () => {
 						setIsPlaying(false);
@@ -115,7 +123,6 @@ const TimerSideBar = ({
 							key={todo.id}
 							{...todo}
 							isSelected={todo.id === selectedTodo}
-							onClick={() => handleTodoClick(todo.id, todo.targetTime, todo.name)}
 							onToggleComplete={() => mutate(todo.id)}
 						/>
 					))}
@@ -125,7 +132,7 @@ const TimerSideBar = ({
 				<TimerTodayTodoBtn variant="할 일 추가">할 일 추가</TimerTodayTodoBtn>
 				<TimerTodayTodoBtn variant="홈으로 나가기" onClick={handleNavigateHome}>
 					홈으로 나가기
-				</TimerTodayTodoBtn>{' '}
+				</TimerTodayTodoBtn>
 			</div>
 		</div>
 	);

@@ -47,6 +47,7 @@ const TimerPage: React.FC = () => {
 	const [isPlaying, setIsPlaying] = useState(false);
 
 	const { data: setData } = useGetMoribSet(selectedTodo || 0);
+
 	const urls = useMemo(() => setData?.data.map((item: MoribSetData) => item.url.trim()) || [], [setData]);
 
 	const getBaseUrl = (url: string) => {
@@ -61,6 +62,16 @@ const TimerPage: React.FC = () => {
 	const baseUrls = useMemo(() => urls.map(getBaseUrl), [urls]);
 
 	const { increasedTime } = useTimerCount({ isPlaying, previousTime: targetTime });
+	const {
+		timer: timerTime,
+		increasedTime: timerIncreasedTime,
+		resetIncreasedTime: resetTimerIncreasedTime,
+	} = useTimerCount({ isPlaying, previousTime: targetTime });
+
+	const { increasedTime: increasedSidebarTime, resetIncreasedTime: resetIncreasedSideBarTime } = useTimerCount({
+		isPlaying,
+		previousTime: targetTime,
+	});
 
 	useUrlHandler({
 		isPlaying,
@@ -100,6 +111,9 @@ const TimerPage: React.FC = () => {
 						setIsPlaying={setIsPlaying}
 						isPlaying={isPlaying}
 						formattedTodayDate={formattedTodayDate}
+						timerTime={timerTime}
+						timerIncreasedTime={timerIncreasedTime}
+						resetIncreasedSideBarTime={resetIncreasedSideBarTime}
 					/>
 					<FriendInfoCarousel />
 				</div>
@@ -124,6 +138,10 @@ const TimerPage: React.FC = () => {
 								setIsPlaying={setIsPlaying}
 								isPlaying={isPlaying}
 								formattedTodayDate={formattedTodayDate}
+								resetTimerIncreasedTime={resetTimerIncreasedTime}
+								timerIncreasedTime={timerIncreasedTime}
+								increasedSideBarTime={increasedSidebarTime}
+								resetIncreasedSideBarTime={resetIncreasedSideBarTime}
 							/>
 						</div>
 					</div>
