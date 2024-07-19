@@ -49,6 +49,15 @@ const AddCategoryModal = ({ handleCloseModal }: AddCategoryModalProps) => {
 	} = usePostCategory();
 	const { error: queryError } = useGetTabName('');
 
+	const handleClearData = () => {
+		setName('');
+		setUrlInfos([]);
+		setSelectedStartDate(null);
+		setSelectedEndDate(null);
+		setIsDateToggleOn(false);
+		setSelectedInfo([]);
+	};
+
 	const handleSelectedInfo = (urlInfo: UrlInfo) => {
 		setSelectedInfo((prevItems) => {
 			if (prevItems.some((prevItem) => prevItem.url === urlInfo.url)) {
@@ -62,8 +71,8 @@ const AddCategoryModal = ({ handleCloseModal }: AddCategoryModalProps) => {
 		setSelectedInfo((prevUrlInfos) => prevUrlInfos.filter((urlInfo) => urlInfo.url !== urlInfoToDelete.url));
 	};
 
-	const handleNameChange = (newName: string) => {
-		setName(newName);
+	const handleNameChange = (name: string) => {
+		setName(name);
 	};
 
 	const defaultDate = new Date();
@@ -83,7 +92,12 @@ const AddCategoryModal = ({ handleCloseModal }: AddCategoryModalProps) => {
 	};
 
 	const handleDateToggle = () => {
-		if (!isDateToggleOn) setIsCalendarOpened(true);
+		if (!isDateToggleOn) {
+			setIsCalendarOpened(true);
+		} else {
+			setSelectedStartDate(null);
+			setSelectedEndDate(null);
+		}
 		setIsDateToggleOn((prev) => !prev);
 	};
 
@@ -141,7 +155,7 @@ const AddCategoryModal = ({ handleCloseModal }: AddCategoryModalProps) => {
 				name,
 				startDate: formatCalendarApiDate(selectedStartDate),
 				endDate: formatCalendarApiDate(selectedEndDate),
-				msets: urlInfos.map((info) => ({
+				msets: combinedInfos.map((info) => ({
 					name: info.domain,
 					url: info.url,
 				})),
@@ -160,7 +174,13 @@ const AddCategoryModal = ({ handleCloseModal }: AddCategoryModalProps) => {
 		}
 	};
 
+	const handleClose = () => {
+		handleClearData();
+		handleCloseModal();
+	};
+
 	const handlePostDataClick = () => {
+		handleClearData();
 		handleCategoryData();
 		handleCloseModal();
 		if (isMutatePending) return <div>Loading</div>;
@@ -173,9 +193,9 @@ const AddCategoryModal = ({ handleCloseModal }: AddCategoryModalProps) => {
 		<div className="">
 			<CategoryCommonTitle />
 			<div className="flex-start mt-[1.6rem] inline-flex gap-[4.4rem]">
-				<CategoryInputMoribName onNameChange={handleNameChange} />
+				<CategoryInputMoribName name={name} onNameChange={handleNameChange} />
 				<div ref={calendarRef}>
-					<div className="ml-[1rem] mt-[1rem] flex items-center gap-[1rem]">
+					<div className="mt-[1rem] flex items-center gap-[1rem]">
 						<CategoryInputTitle title="날짜" />
 						<div className="mb-[0.6rem]">
 							<CategoryToggle isToggleOn={isDateToggleOn} onToggle={handleDateToggle} />
@@ -191,15 +211,17 @@ const AddCategoryModal = ({ handleCloseModal }: AddCategoryModalProps) => {
 						/>
 					)}
 					{isDateToggleOn && (
-						<Calendar
-							isPeriodOn={isPeriodOn}
-							selectedStartDate={selectedStartDate ?? defaultDate}
-							selectedEndDate={selectedEndDate ?? null}
-							onStartDateInput={handleStartDateInput}
-							onEndDateInput={handleEndDateInput}
-							isCalendarOpened={isCalendarOpened}
-							onPeriodToggle={handlePeriodToggle}
-						/>
+						<div>
+							<Calendar
+								isPeriodOn={isPeriodOn}
+								selectedStartDate={selectedStartDate ?? defaultDate}
+								selectedEndDate={selectedEndDate ?? null}
+								onStartDateInput={handleStartDateInput}
+								onEndDateInput={handleEndDateInput}
+								isCalendarOpened={isCalendarOpened}
+								onPeriodToggle={handlePeriodToggle}
+							/>
+						</div>
 					)}
 				</div>
 			</div>
@@ -217,10 +239,7 @@ const AddCategoryModal = ({ handleCloseModal }: AddCategoryModalProps) => {
 				<div>
 					<CategoryMoribContentSet urlInfos={combinedInfos} variant="basic">
 						{combinedInfos.map((urlInfo, url) => (
-							<tr
-								key={url}
-								className="flex h-[4.6rem] gap-[1.2rem] border-b border-gray-bg-04 px-[0.8rem] hover:bg-gray-bg-06"
-							>
+							<tr key={url} className="flex h-[4.6rem] gap-[1.2rem] border-b border-gray-bg-04 px-[0.8rem]">
 								<CategoryMoribContentPage urlInfo={urlInfo} variant="basic" />
 								<CategoryMoribContentUrl urlInfo={urlInfo} variant="basic" />
 							</tr>
@@ -230,7 +249,7 @@ const AddCategoryModal = ({ handleCloseModal }: AddCategoryModalProps) => {
 			</div>
 
 			<div className="mt-[3rem] flex justify-end gap-[1.6rem]">
-				<CategoryCommonBtn variant="취소" handleCloseModal={handleCloseModal}>
+				<CategoryCommonBtn variant="취소" handleCloseModal={handleClose}>
 					취소
 				</CategoryCommonBtn>
 				<CategoryCommonBtn variant="완료" handleSubmit={handlePostDataClick} disabled={!isFormValid()}>

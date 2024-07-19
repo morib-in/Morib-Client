@@ -50,7 +50,7 @@ const CategoryCommonMoribSet = ({
 	return (
 		<div>
 			<div className="flex justify-between">
-				<CategoryInputTitle title="모립 세트 *" />
+				<CategoryInputTitle title="모립 세트" />
 				<GetCategoryBtn onMoveCategoryModal={handleMoveToNextModal} />
 				<AddCategoryListModal
 					dialogRef={dialogRef}
