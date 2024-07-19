@@ -49,16 +49,13 @@ const DatePicker = ({ todayDate, selectedDate, onSelectedDateChange }: DatePicke
 
 	return (
 		<header className="mb-[2.8rem]">
-			<section className="relative">
+			<section ref={dropdownRef} className="relative">
 				<button type="button" className="flex items-center gap-[2rem]" onClick={handleDropdownToggle}>
 					<YearMonthTitle selectedDate={currentDate} />
 					<ButtonArrowIcon className={'rounded-full bg-gray-bg-03 hover:bg-gray-bg-05'} />
 				</button>
 				{dropdownToggle && (
-					<ul
-						ref={dropdownRef}
-						className="absolute top-[5.4rem] z-50 max-h-[41.4rem] w-[22.5rem] flex-col overflow-scroll rounded-[5px] shadow-[0_3px_30px_0_rgba(0,0,0,0.40)]"
-					>
+					<ul className="absolute top-[5.4rem] z-50 max-h-[41.4rem] w-[22.5rem] flex-col overflow-scroll rounded-[5px] shadow-[0_3px_30px_0_rgba(0,0,0,0.40)]">
 						{homeDropdownData.map((item) => {
 							return (
 								<li
