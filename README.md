@@ -2,6 +2,9 @@
 
 <h3> ☺️ 서비스 이름 및 소개 </h3>
 
+![image](https://github.com/user-attachments/assets/c8c8b0cc-91e1-4248-a89b-c38fbb904a91)
+
+
 ```
 마음 먹은 사람들을 위한 집중 공간, 모립 Morib
 작업에 필요한 서비스를 등록하고 타이머를 설정하며, 등록하지 않은 서비스에 접근할 경우 경고 알림 및 타이머를 중지합니다. 친구를 추가하고 서로의 집중현황을 보며 함께 동기부여 받는 것을 목표로 합니다.
@@ -143,48 +146,109 @@ type과 콜론 후 한칸 띄고 subject
 |-- 📁 public
 |-- 📁 src
     |-- 📁 assets
-	      |-- 📁 svgs
-	      |-- 📁 images
-	  |-- 📁 apis
-			  |-- 📁user
-            |-- 📁axios
-            |-- 📁queries
-        |-- client.ts
+	  |   |-- 📁 svgs
+	  |   |-- 📁 images
+    |-- 📁 apis
+	  |   |-- 📁 auth
+	  |   |   |-- 📁axios
+          |   |   |-- 📁queries
+	  |   |-- 📁 common
+	  |   |-- 📁 home
+	  |   |-- 📁 modal
+	  |   |-- 📁 tasks
+	  |   |-- 📁 timer
+              |-- client.ts
     |-- 📁 components
-	      |-- 📁 atoms (button , input 등 재사용의 가장 작은 요소)
-			      |-- 📁 userButton
-					      |-- index.tsx
-				|-- 📁 molecules (atom을 모아 만든 카드, 리스트, 썸네일 등의 요소)
-			      |-- 📁 userModal
-					      |-- index.tsx
-			  |-- 📁 templates 
-				    |-- 📁 pageTemplate (페이지를 만들기 위한 템플릿 - 페이지에서 요소들을 감싸서 사용)
-						      |-- index.tsx
-    |-- 📁 hooks (커스텀 훅을 담아두는 폴더)
-    	      |-- useFunnel.tsx
+	  |   |-- 📁 atoms (button , input 등 재사용의 가장 작은 요소)
+	  |   |   |-- 📁 XXXBtn
+	  |   |   |-- 📁 CalendarXXX
+	  |   |   |-- 📁 CategoryXXX
+	  |   |   |-- 📁 CategoryCommonXXX
+	  |   |   |-- 📁 HomeXXX
+	  |   |   |-- 📁 TimerXXX
+	  |   |   |-- 📁 TodoXXX
+	  |   |-- 📁 molecules (atom을 모아 만든 카드, 리스트, 썸네일 등의 요소)
+	  |   |   |-- 📁 Calendar
+	  |   |   |-- 📁 CategoryXXX
+	  |   |   |-- 📁 CategoryModalXXX
+	  |   |   |-- 📁 Datepicker
+	  |   |   |-- 📁 FriendInfoCarousel
+	  |   |   |-- 📁 HomeXXX
+	  |   |   |-- 📁 TimerXXX
+	  |   |   |-- 📁 TodoXXX
+	  |   |-- 📁 templates (페이지를 만들기 위한 템플릿 - 페이지에서 요소들을 감싸서 사용)
+	  |   |   |-- 📁 AddCategoryListModal
+	  |   |   |-- 📁 CategoryModal
+	  |   |   |-- 📁 HomePageWrapper
+	  |   |   |-- 📁 LoginPageWrapper
+	  |   |   |-- 📁 TimerPageTemplates
     |-- 📁 pages
-   	    |-- 📁Task
-            |-- 📁hooks
-            |-- 📁utils
-            |-- 📁types
-            |-- index.tsx
-            |-- index.d.ts
-								          
-	  |-- 📁 stores
-	  |-- 📁 types
-	  |-- 📁 utils ( 재사용이 높은 함수모음 폴더 )
-	  |-- Router.tsx (라우터 파일)
-|-- App.tsx
-|-- main.tsx
-|-- index.css
-|-- .eslintrc.json
+	  |   |-- 📁 HomePage
+	  |   |-- 📁 LoginPage
+	  |   |-- 📁 RedirectPage
+	  |   |-- 📁 TimerPage
+    |-- 📁 constants
+	  |   |-- btnText.ts
+	  |   |-- router.ts
+	  |   |-- tabSelection.ts
+    |-- 📁 hocs 
+	  |   |-- withAuthProtection.ts
+    |-- 📁 hooks (커스텀 훅을 담아두는 폴더)
+	  |   |-- useCalendar.ts
+	  |   |-- useCarouselTimer.ts
+	  |   |-- useClickOutside.ts
+	  |   |-- useCloseSideBar.ts
+	  |   |-- useCreateTodo.ts
+	  |   |-- useDatePicker.ts
+	  |   |-- useFriendInfoCarousel.ts
+	  |   |-- useFunnel.ts
+	  |   |-- useLottieAnimation.ts
+	  |   |-- useTimerCount.ts
+	  |   |-- useToggleSideBar.ts
+	  |   |-- useUrlHandler.ts
+    |-- 📁 mocks
+	  |   |-- categoryData.ts
+	  |   |-- faviconData.ts
+	  |   |-- homeData.ts
+	  |   |-- urlData.ts
+	  |   |-- userData.ts
+	  |   |-- userFriendData.ts
+    |-- 📁 stores
+	  |   |-- 📁 actions
+	  |   |-- 📁 atoms
+    |-- 📁 types
+	  |   |-- 📁 common
+	  |   |-- 📁 home
+	  |   |-- global.ts
+	  |   |-- todoData.ts
+	  |   |-- userData.ts
+    |-- 📁 utils ( 재사용이 높은 함수모음 폴더 )
+	  |   |-- 📁 calendar
+	  |   |-- 📁 date
+	  |   |-- 📁 homePage
+	  |   |-- 📁 isUrlValid
+	  |   |-- 📁 time
+	  |   |-- 📁 timer
+	  |   |-- 📁 token
+    |-- Router.tsx (라우터 파일)
+    |-- App.tsx
+    |-- index.css
+    |-- main.tsx
+    |--vite-env.d.ts
+|-- .eslintrc.cjs
 |-- .gitignore
 |-- .prettierrc
-|-- README.md 
+|-- README.md
+|-- index.html 
 |-- package.json 
-|-- tsconfig.json
+|-- pnpm-lock.yaml
+|-- postcss.config.js
 |-- tailwind.config.js
-|-- yarn.lock
+|-- tsconfig.app.json
+|-- tsconfig.json
+|-- tsconfig.node.json
+|-- vercel.json
+|-- vite.config.ts
 ...
 ```
 
