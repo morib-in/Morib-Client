@@ -107,7 +107,7 @@ const TimerSideBar = ({
 					<BtnListIcon />
 				</button>
 			</div>
-			<div className="h-[82.6rem] overflow-auto pb-[2rem] pt-[1rem]">
+			<div className="h-[82.6rem] overflow-auto pb-[2rem]">
 				{ongoingTodos.map((todo) => (
 					<TodoBox
 						key={todo.id}
@@ -128,7 +128,7 @@ const TimerSideBar = ({
 					))}
 				</TodoToggleBtn>
 			</div>
-			<div className="flex flex-col items-start gap-[1rem] pb-[2rem]">
+			<div className="flex flex-col items-start gap-[1rem] pb-[2rem] pt-[4rem]">
 				<TimerTodayTodoBtn variant="할 일 추가">할 일 추가</TimerTodayTodoBtn>
 				<TimerTodayTodoBtn variant="홈으로 나가기" onClick={handleNavigateHome}>
 					홈으로 나가기
