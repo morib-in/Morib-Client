@@ -27,7 +27,7 @@ const useUrlHandler = ({
 	useEffect(() => {
 		const handleMessage = (event: any) => {
 			if (event.detail.action === 'urlUpdated') {
-				const updatedUrl = event.detail.url.trim();
+				const updatedUrl = event.detail.url.trim() + '/';
 				const updatedBaseUrl = getBaseUrl(updatedUrl);
 
 				setTimeout(() => {
@@ -50,7 +50,7 @@ const useUrlHandler = ({
 		return () => {
 			document.removeEventListener('FROM_EXTENSION', handleMessage);
 		};
-	}, [increasedTime, isPlaying, selectedTodo, stopTimer, baseUrls, getBaseUrl, setIsPlaying]);
+	}, [increasedTime, isPlaying, selectedTodo, stopTimer, baseUrls, getBaseUrl, formattedTodayDate, setIsPlaying]);
 };
 
 export default useUrlHandler;

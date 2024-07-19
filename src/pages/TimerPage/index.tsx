@@ -46,10 +46,6 @@ const TimerPage: React.FC = () => {
 	const [selectedTodo, setSelectedTodo] = useState<number | null>(null);
 	const [isPlaying, setIsPlaying] = useState(false);
 
-	const { data: setData } = useGetMoribSet(selectedTodo || 0);
-
-	const urls = useMemo(() => setData?.data.map((item: MoribSetData) => item.url.trim()) || [], [setData]);
-
 	const getBaseUrl = (url: string) => {
 		try {
 			const urlObj = new URL(url);
@@ -58,8 +54,6 @@ const TimerPage: React.FC = () => {
 			return url;
 		}
 	};
-
-	const baseUrls = useMemo(() => urls.map(getBaseUrl), [urls]);
 
 	const { increasedTime } = useTimerCount({ isPlaying, previousTime: targetTime });
 	const {
@@ -73,6 +67,21 @@ const TimerPage: React.FC = () => {
 		previousTime: targetTime,
 	});
 
+	useEffect(() => {
+		if (todos.length > 0 && selectedTodo === null) {
+			setTargetTime(todos[0].targetTime);
+			setTargetName(todos[0].name);
+			setTargetCategoryName(todos[0].categoryName);
+			setSelectedTodo(todos[0].id);
+		}
+	}, [todos, selectedTodo]);
+
+	const { data: setData } = useGetMoribSet(selectedTodo || 0);
+
+	const urls = useMemo(() => setData?.data.map((item: MoribSetData) => item.url.trim()) || [], [setData]);
+
+	const baseUrls = useMemo(() => urls.map(getBaseUrl), [urls]);
+
 	useUrlHandler({
 		isPlaying,
 		selectedTodo,
@@ -83,15 +92,6 @@ const TimerPage: React.FC = () => {
 		setIsPlaying,
 		getBaseUrl,
 	});
-
-	useEffect(() => {
-		if (todos.length > 0 && selectedTodo === null) {
-			setTargetTime(todos[0].targetTime);
-			setTargetName(todos[0].name);
-			setTargetCategoryName(todos[0].categoryName);
-			setSelectedTodo(todos[0].id);
-		}
-	}, [todos, selectedTodo]);
 
 	if (isLoading) return <div>Loading...</div>;
 	if (error) return <div>Error loading todos</div>;

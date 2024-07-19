@@ -22,5 +22,6 @@ export const useGetMoribSet = (taskId: number) => {
 	return useQuery({
 		queryKey: ['set', taskId],
 		queryFn: () => getMoribSet(taskId),
+		enabled: taskId !== 0,
 	});
 };
