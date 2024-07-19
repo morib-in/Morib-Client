@@ -38,7 +38,8 @@ const AddCategoryModal = ({ handleCloseModal }: AddCategoryModalProps) => {
 	const [selectedStartDate, setSelectedStartDate] = useState<Date | null>(null);
 	const [selectedEndDate, setSelectedEndDate] = useState<Date | null>(null);
 	const [isCalendarOpened, setIsCalendarOpened] = useState(false);
-	const combinedInfos = [...selectedInfo, ...urlInfos];
+	const [combinedInfos, setCombinedInfos] = useState<UrlInfo[]>(urlInfos);
+
 	const queryClient = useQueryClient();
 
 	const [urlData, setUrlData] = useState<UrlInfo[]>([]);
@@ -46,7 +47,19 @@ const AddCategoryModal = ({ handleCloseModal }: AddCategoryModalProps) => {
 	const [selectedOption, setSelectedOption] = useState('카테고리 추가');
 
 	const handleUrlInfos = () => {
-		setUrlData([]);
+		setSelectedInfo([]);
+	};
+
+	//Todo: any 타입 수정
+	const addInfos = (selectedInfos: any) => {
+		//setCombinedInfos((prev) => [...prev, ...selectedInfos]);
+
+		setCombinedInfos((prevItems) => {
+			if (prevItems.some((prevItem) => prevItem.url === selectedInfos.url)) {
+				return prevItems;
+			}
+			return [...prevItems, ...selectedInfos];
+		});
 	};
 
 	const {
@@ -64,6 +77,7 @@ const AddCategoryModal = ({ handleCloseModal }: AddCategoryModalProps) => {
 		setSelectedEndDate(null);
 		setIsDateToggleOn(false);
 		setSelectedInfo([]);
+		setCombinedInfos([]);
 	};
 
 	const handleSelectedInfo = (urlInfo: UrlInfo) => {
@@ -94,6 +108,7 @@ const AddCategoryModal = ({ handleCloseModal }: AddCategoryModalProps) => {
 				favicon: `https://www.google.com/s2/favicons?domain=${url}`,
 			};
 			setUrlInfos((prevUrlInfos) => [...prevUrlInfos, newUrlInfo]);
+			setCombinedInfos((prev) => [...prev, newUrlInfo]);
 		} catch (isQueryError) {
 			console.error(queryError);
 		}
@@ -198,9 +213,9 @@ const AddCategoryModal = ({ handleCloseModal }: AddCategoryModalProps) => {
 	};
 
 	const handleClearModalData = () => {
-		handleUrlInfos();
 		setIsClicked(false);
 		setSelectedOption('카테고리 추가');
+		setUrlData([]);
 	};
 
 	return (
@@ -256,6 +271,8 @@ const AddCategoryModal = ({ handleCloseModal }: AddCategoryModalProps) => {
 					selectedOption={selectedOption}
 					setSelectedOption={setSelectedOption}
 					handleClearModalData={handleClearModalData}
+					handleUrlInfos={handleUrlInfos}
+					addInfos={addInfos}
 				/>
 				<div>
 					<CategoryMoribContentSet urlInfos={combinedInfos} variant="basic">

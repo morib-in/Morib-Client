@@ -22,6 +22,7 @@ interface ModalRightProps {
 	handleCloseModal: () => void;
 	moribSetName: string;
 	handleClearModalData: () => void;
+	addInfos: (selectedInfo: UrlInfo[]) => void;
 }
 
 const CategoryModalRight = ({

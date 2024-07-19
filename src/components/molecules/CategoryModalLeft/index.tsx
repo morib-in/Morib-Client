@@ -1,3 +1,5 @@
+import debounce from 'lodash/debounce';
+
 import { useEffect, useState } from 'react';
 
 import CategoryCommonTitle from '@/components/atoms/CategoryCommonTitle';
@@ -66,32 +68,38 @@ const CategoryModalLeft = ({
 	};
 
 	const disabled = isSelectedTab === 2;
-	useEffect(() => {
-		const fetchUrlInfos = async () => {
-			const infos = await Promise.all(
-				msetsList.map(async (item) => {
-					let newUrlInfo: UrlInfo = {
-						url: '',
-						domain: '',
-						favicon: '',
-					};
-					try {
-						const tabNameData = await getTabName(item.url);
-						newUrlInfo = {
-							url: item.url,
-							domain: tabNameData.data.tabName,
-							favicon: `https://www.google.com/s2/favicons?domain=${item.url}`,
-						};
-					} catch (isQueryError) {
-						console.error(isQueryError);
-					}
-					return newUrlInfo;
-				}),
-			);
-			setUrlData(infos);
-		};
 
-		fetchUrlInfos();
+	const fetchUrlInfos = async (msetsList: msetsList[], setUrlData: any) => {
+		const infos = await Promise.all(
+			msetsList.map(async (item: msetsList) => {
+				let newUrlInfo: UrlInfo = {
+					url: '',
+					domain: '',
+					favicon: '',
+				};
+				try {
+					const tabNameData = await getTabName(item.url);
+					newUrlInfo = {
+						url: item.url,
+						domain: tabNameData.data.tabName,
+						favicon: `https://www.google.com/s2/favicons?domain=${item.url}`,
+					};
+				} catch (isQueryError) {
+					console.error(isQueryError);
+				}
+				return newUrlInfo;
+			}),
+		);
+		setUrlData(infos);
+	};
+
+	useEffect(() => {
+		const debouncedFetchUrlInfos = debounce(() => fetchUrlInfos(msetsList, setUrlData), 300);
+		debouncedFetchUrlInfos();
+
+		return () => {
+			debouncedFetchUrlInfos.cancel();
+		};
 	}, [msetsList]);
 
 	return (
