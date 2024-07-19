@@ -53,6 +53,7 @@ const Timer = ({
 				setIsPlaying(true);
 			}
 		}
+		resetIncreasedSideBarTime();
 	};
 
 	if (isError) {
