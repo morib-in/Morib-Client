@@ -4,22 +4,22 @@ import utc from 'dayjs/plugin/utc';
 
 import React, { useEffect, useMemo, useState } from 'react';
 
+import useTimerCount from '@/shared/hooks/useTimerCount';
+import useToggleSidebar from '@/shared/hooks/useToggleSideBar';
+import useUrlHandler from '@/shared/hooks/useUrlHandler';
+
+import { useGetMoribSet, useGetTodoList, usePostTimerStop } from '@/shared/apis/timer/queries';
+
+import { splitTasksByCompletion } from '@/shared/utils/timer';
+
+import HamburgerIcon from '@/shared/assets/svgs/btn_hamburger.svg?react';
+
 import FriendInfoCarousel from '@/components/molecules/FriendInfoCarousel';
 import Timer from '@/components/molecules/Timer';
 import TimerSideBar from '@/components/molecules/TimerSideBar';
 import TimerSideBox from '@/components/molecules/TimerSideBoxTemporary';
 import TimerTitle from '@/components/molecules/TimerTitle';
 import TimerPageTemplates from '@/components/templates/TimerPageTemplates';
-
-import useTimerCount from '@/hooks/useTimerCount';
-import useToggleSidebar from '@/hooks/useToggleSideBar';
-import useUrlHandler from '@/hooks/useUrlHandler';
-
-import { useGetMoribSet, useGetTodoList, usePostTimerStop } from '@/apis/timer/queries';
-
-import { splitTasksByCompletion } from '@/utils/timer';
-
-import HamburgerIcon from '@/assets/svgs/btn_hamburger.svg?react';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -105,7 +105,7 @@ const TimerPage: React.FC = () => {
 
 	return (
 		<TimerPageTemplates>
-			<div className="relative flex h-[108rem] w-[192rem] bg-[url('@/assets/images/img_timer_bg.png')]">
+			<div className="relative flex h-[108rem] w-[192rem] bg-[url('@/shared/assets/images/img_timer_bg.png')]">
 				<div className="absolute left-0">
 					<TimerSideBox />
 				</div>

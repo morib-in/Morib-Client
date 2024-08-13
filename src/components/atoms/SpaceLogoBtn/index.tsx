@@ -1,6 +1,6 @@
 import { ButtonHTMLAttributes, ReactElement } from 'react';
 
-import IconBar from '@/assets/svgs/icon_bar.svg?react';
+import IconBar from '@/shared/assets/svgs/icon_bar.svg?react';
 
 interface SpaceLogoBtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	children: ReactElement<SVGAElement>;

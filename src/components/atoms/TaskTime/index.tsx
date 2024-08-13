@@ -1,4 +1,4 @@
-import { formatSeconds } from '@/utils/time';
+import { formatSeconds } from '@/shared/utils/time';
 
 interface TaskTimeProps {
 	isPlaying: boolean;

@@ -1,7 +1,7 @@
-import PauseIcon from '@/assets/svgs/defaultpause.svg?react';
-import PlayIcon from '@/assets/svgs/defaultplay.svg?react';
-import HoverPauseIcon from '@/assets/svgs/hoverpause.svg?react';
-import HoverPlayIcon from '@/assets/svgs/hoverplay.svg?react';
+import PauseIcon from '@/shared/assets/svgs/defaultpause.svg?react';
+import PlayIcon from '@/shared/assets/svgs/defaultplay.svg?react';
+import HoverPauseIcon from '@/shared/assets/svgs/hoverpause.svg?react';
+import HoverPlayIcon from '@/shared/assets/svgs/hoverplay.svg?react';
 
 interface PlayBtnProps {
 	onClick: () => void;

@@ -5,9 +5,8 @@ import PlayBtn from '@/components/atoms/PlayBtn';
 import ProgressCircle from '@/components/atoms/ProgressCircle';
 import TaskTime from '@/components/atoms/TaskTime';
 
-import { useGetTodoList, usePostTimerStop } from '@/apis/timer/queries';
-
-import InnerCircleIcon from '@/assets/svgs/elipse.svg?react';
+import { useGetTodoList, usePostTimerStop } from '@/shared/apis/timer/queries';
+import InnerCircleIcon from '@/shared/assets/svgs/elipse.svg?react';
 
 interface TaskTotalTimeProps {
 	totalTimeOfToday: number;

@@ -1,8 +1,8 @@
 import { ButtonHTMLAttributes } from 'react';
 
-import DisabledDropIcon from '@/assets/svgs/disabled_dropdown.svg?react';
-import DropIcon from '@/assets/svgs/dropIcon.svg?react';
-import UpIcon from '@/assets/svgs/upIcon.svg?react';
+import DisabledDropIcon from '@/shared/assets/svgs/disabled_dropdown.svg?react';
+import DropIcon from '@/shared/assets/svgs/dropIcon.svg?react';
+import UpIcon from '@/shared/assets/svgs/upIcon.svg?react';
 
 interface CategoryBtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	isClicked: boolean;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ErrorIcon from '@/assets/svgs/description.svg?react';
+import ErrorIcon from '@/shared/assets/svgs/description.svg?react';
 
 interface CategoryInputNameProps {
 	value: string;

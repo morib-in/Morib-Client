@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import LoginBackground from '@/assets/images/login_background.png';
+import LoginBackground from '@/shared/assets/images/login_background.png';
 
 interface LoginPageWrapperProps {
 	children: ReactNode;

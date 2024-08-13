@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { formatCalendarTitle } from '@/utils/calendar/index';
-
-import ArrownIcon from '@/assets/svgs/btn_arrow_bgNone.svg?react';
+import ArrownIcon from '@/shared/assets/svgs/btn_arrow_bgNone.svg?react';
+import { formatCalendarTitle } from '@/shared/utils/calendar/index';
 
 const weekDays = ['일', '월', '화', '수', '목', '금', '토'];
 
