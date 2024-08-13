@@ -1,9 +1,8 @@
 import SideBox from '@/components/atoms/SideBox';
 import TimerFavicon from '@/components/atoms/TimerFavicon';
 
-import AddBtnIcon from '@/assets/svgs/btn_add.svg?react';
-
-import { Favicon_DATA } from '@/mocks/faviconData';
+import AddBtnIcon from '@/shared/assets/svgs/btn_add.svg?react';
+import { Favicon_DATA } from '@/shared/mocks/faviconData';
 
 const TimerSideBox = () => {
 	return (

@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 
-import { isUrlValid } from '@/utils/isUrlValid/index';
-
-//import ErrorIcon from '@/assets/svgs/description.svg?react';
-import ErrorIcon from '@/assets/svgs/description.svg?react';
+import ErrorIcon from '@/shared/assets/svgs/description.svg?react';
+import { isUrlValid } from '@/shared/utils/isUrlValid/index';
 
 interface UrlInfo {
 	url: string;

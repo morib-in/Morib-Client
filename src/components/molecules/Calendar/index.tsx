@@ -5,7 +5,7 @@ import CalendarCustomHeader from '@/components/atoms/CalendarCustomHeader/index'
 import CategoryRoutine from '@/components/atoms/CategoryRoutine/index';
 import CategoryToggle from '@/components/atoms/CategoryToggle';
 
-import { formatCalendarDate } from '@/utils/calendar/index';
+import { formatCalendarDate } from '@/shared/utils/calendar/index';
 
 import './tailwind-datepicker.css';
 

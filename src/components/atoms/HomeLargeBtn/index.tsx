@@ -1,6 +1,6 @@
 import { ButtonHTMLAttributes, ReactNode } from 'react';
 
-import { HomeLargeBtnVariant } from '@/types/global';
+import { HomeLargeBtnVariant } from '@/shared/types/global';
 
 interface HomeLargeBtn extends ButtonHTMLAttributes<HTMLButtonElement> {
 	variant: HomeLargeBtnVariant;

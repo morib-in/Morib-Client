@@ -14,10 +14,9 @@ import CategoryInputMoribName from '@/components/molecules/CategoryInputMoribNam
 import CategoryMoribContentSet from '@/components/molecules/CategoryMoribContentSet';
 import CategoryMoribSet from '@/components/molecules/CategoryMoribSet';
 
-import { getTabName } from '@/apis/tasks/axios/index';
-import { useGetTabName, usePostCategory } from '@/apis/tasks/queries/index';
-
-import { formatCalendarApiDate } from '@/utils/calendar/index';
+import { getTabName } from '@/shared/apis/tasks/axios/index';
+import { useGetTabName, usePostCategory } from '@/shared/apis/tasks/queries/index';
+import { formatCalendarApiDate } from '@/shared/utils/calendar/index';
 
 interface UrlInfo {
 	url: string;

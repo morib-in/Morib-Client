@@ -1,4 +1,4 @@
-import ArrowCircleUpRight from '@/assets/svgs/arrow_circle_up_right.svg?react';
+import ArrowCircleUpRight from '@/shared/assets/svgs/arrow_circle_up_right.svg?react';
 
 interface GetCategoryBtnProps {
 	onMoveCategoryModal: () => void;

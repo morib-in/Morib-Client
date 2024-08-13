@@ -9,11 +9,9 @@ import CategoryDropdown from '@/components/molecules/CategoryDropdown';
 import CategoryMoribContentSet from '@/components/molecules/CategoryMoribContentSet';
 import CategoryTabSelect from '@/components/molecules/CategoryTabSelect';
 
-import { getTabName } from '@/apis/modal/axios';
-
-import { CATEGORY_MODALTABS } from '@/constants/tabSelections';
-
-import AddBtn from '@/assets/svgs/add_btn.svg?react';
+import { getTabName } from '@/shared/apis/modal/axios';
+import AddBtn from '@/shared/assets/svgs/add_btn.svg?react';
+import { CATEGORY_MODALTABS } from '@/shared/constants/tabSelections';
 
 interface UrlInfo {
 	url: string;

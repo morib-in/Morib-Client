@@ -2,13 +2,13 @@ import type { Router } from '@remix-run/router';
 
 import { createBrowserRouter } from 'react-router-dom';
 
-import HomePage from '@/pages/HomePage';
+import HomePage from '@/pages/HomePage/HomePage';
 import LoginPage from '@/pages/LoginPage';
 import TimerPage from '@/pages/TimerPage';
 
-import { ROUTES } from './constants/router';
-import withAuthProtection from './hocs/withAuthProtection';
 import RedirectPage from './pages/RedirectPage';
+import { ROUTES } from './shared/constants/router';
+import withAuthProtection from './shared/hocs/withAuthProtection';
 
 const ProtectedHomePage = withAuthProtection(HomePage);
 const ProtectedTimerPage = withAuthProtection(TimerPage);

@@ -1,4 +1,4 @@
-import useTimerCount from '@/hooks/useTimerCount';
+import useTimerCount from '@/shared/hooks/useTimerCount';
 
 interface AccumulatedTimeProps {
 	isPlaying: boolean;

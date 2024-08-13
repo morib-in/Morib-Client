@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // import { useLocation } from 'react-router-dom';
-// import { useSignUp } from '@/apis/auth/queries';
-import { ROUTES } from '@/constants/router';
+// import { useSignUp } from '@/shared/apis/auth/queries';
+import { ROUTES } from '@/shared/constants/router';
 
 const RedirectPage = () => {
 	//Todo: 서버 이슈로 로그인 관련 로직 앱잼 끝나고 사용

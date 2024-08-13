@@ -5,7 +5,7 @@ import CategoryMoribContentUrl from '@/components/atoms/CategoryMoribContentUrl'
 import CategoryUrlInput from '@/components/atoms/CategoryUrlInput';
 import CategoryMoribContentSet from '@/components/molecules/CategoryMoribContentSet';
 
-import MinusBtn from '@/assets/svgs/minus_btn.svg?react';
+import MinusBtn from '@/shared/assets/svgs/minus_btn.svg?react';
 
 interface UrlInfo {
 	url: string;

@@ -1,12 +1,13 @@
 import Lottie from 'react-lottie';
 
-import SVGBtn from '@/components/atoms/SVGBtn';
+import ButtonSVG from '@/shared/components/ButtonSVG';
+
+import { useLottieAnimation } from '@/shared/hooks/useLottieAnimation';
+
+import LottieData from '@/shared/assets/lotties/morib_logo_motion.json';
+import GoogleLoginIcon from '@/shared/assets/svgs/google_login.svg?react';
+
 import LoginPageWrapper from '@/components/templates/LoginPageWrapper';
-
-import { useLottieAnimation } from '@/hooks/useLottieAnimation';
-
-import LottieData from '@/assets/lotties/morib_logo_motion.json';
-import GoogleLoginIcon from '@/assets/svgs/google_login.svg?react';
 
 const defaultOptions = {
 	autoplay: true,
@@ -42,12 +43,12 @@ const LoginPage = () => {
 					]}
 				/>
 				{/* Todo: 추후 로그인 로직 추가 */}
-				<SVGBtn
+				<ButtonSVG
 					onClick={handleClick}
 					className={`ml-[12rem] transition-opacity duration-300 ${isAnimationComplete ? 'opacity-100' : 'opacity-0'}`}
 				>
 					<GoogleLoginIcon />
-				</SVGBtn>
+				</ButtonSVG>
 			</div>
 		</LoginPageWrapper>
 	);

@@ -4,8 +4,8 @@ import LoadingUrl from '@/components/atoms/LoadingUrl';
 import CategoryModalLeft from '@/components/molecules/CategoryModalLeft';
 import CategoryModalRight from '@/components/molecules/CategoryModalRight';
 
-import { getTabName } from '@/apis/modal/axios';
-import { useCategoryLists, useGetMsets } from '@/apis/modal/queries';
+import { getTabName } from '@/shared/apis/modal/axios';
+import { useCategoryLists, useGetMsets } from '@/shared/apis/modal/queries';
 
 interface UrlInfo {
 	url: string;

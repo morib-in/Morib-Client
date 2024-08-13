@@ -1,4 +1,4 @@
-import LogoIcon from '@/assets/svgs/logo_icon.svg?react';
+import LogoIcon from '@/shared/assets/svgs/logo_icon.svg?react';
 
 const LoadingUrl = () => {
 	return (

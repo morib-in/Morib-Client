@@ -1,4 +1,4 @@
-import { formatInputDate } from '@/utils/calendar/index';
+import { formatInputDate } from '@/shared/utils/calendar/index';
 
 interface CalendarInputProps {
 	selectedStartDate: Date;

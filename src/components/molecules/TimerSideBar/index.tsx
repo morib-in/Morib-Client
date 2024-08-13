@@ -2,18 +2,18 @@ import { useNavigate } from 'react-router-dom';
 
 import { useQueryClient } from '@tanstack/react-query';
 
+import useCloseSidebar from '@/shared/hooks/useCloseSideBar';
+
+import { usePatchTaskStatus } from '@/shared/apis/common/queries';
+import { usePostTimerStop } from '@/shared/apis/timer/queries';
+
+import { Todo } from '@/shared/types/todoData';
+
+import BtnListIcon from '@/shared/assets/svgs/btn_list.svg?react';
+
 import TimerTodayTodoBtn from '@/components/atoms/TimerTodayTodoBtn';
-import TodoBox from '@/components/atoms/TodoBox';
-import TodoToggleBtn from '@/components/atoms/TodoToggleBtn';
-
-import useCloseSidebar from '@/hooks/useCloseSideBar';
-
-import { usePatchTaskStatus } from '@/apis/common/queries';
-import { usePostTimerStop } from '@/apis/timer/queries';
-
-import { Todo } from '@/types/todoData';
-
-import BtnListIcon from '@/assets/svgs/btn_list.svg?react';
+import BoxTodo from '@/pages/HomePage/components/BoxTodo';
+import ButtonTodoToggle from '@/pages/HomePage/components/ButtonTodoToggle';
 
 interface CategoryBoxProps {
 	completedTodos: Todo[];
@@ -112,7 +112,7 @@ const TimerSideBar = ({
 			</div>
 			<div className="h-[82.6rem] overflow-auto pb-[2rem]">
 				{ongoingTodos.map((todo) => (
-					<TodoBox
+					<BoxTodo
 						key={todo.id}
 						{...todo}
 						isSelected={todo.id === selectedTodo}
@@ -120,16 +120,16 @@ const TimerSideBar = ({
 						onToggleComplete={() => mutate(todo.id)}
 					/>
 				))}
-				<TodoToggleBtn isCompleted={false} isToggled={false}>
+				<ButtonTodoToggle isCompleted={false} isToggled={false}>
 					{completedTodos.map((todo) => (
-						<TodoBox
+						<BoxTodo
 							key={todo.id}
 							{...todo}
 							isSelected={todo.id === selectedTodo}
 							onToggleComplete={() => mutate(todo.id)}
 						/>
 					))}
-				</TodoToggleBtn>
+				</ButtonTodoToggle>
 			</div>
 			<div className="flex flex-col items-start gap-[1rem] pb-[2rem] pt-[4rem]">
 				<TimerTodayTodoBtn variant="할 일 추가">할 일 추가</TimerTodayTodoBtn>
