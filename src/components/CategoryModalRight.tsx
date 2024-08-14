@@ -1,11 +1,11 @@
-import CategoryCommonBtn from '@/components/atoms/CategoryCommonBtn';
-import CategoryModalRightTitle from '@/components/atoms/CategoryModalRightTitle';
+import MinusBtn from '@/shared/assets/svgs/minus_btn.svg?react';
+
+import CategoryCommonBtn from '@/components/CategoryCommonBtn';
+import CategoryModalRightTitle from '@/components/CategoryModalRightTitle';
 import CategoryMoribContentPage from '@/components/atoms/CategoryMoribContentPage';
 import CategoryMoribContentUrl from '@/components/atoms/CategoryMoribContentUrl';
 import CategoryUrlInput from '@/components/atoms/CategoryUrlInput';
 import CategoryMoribContentSet from '@/components/molecules/CategoryMoribContentSet';
-
-import MinusBtn from '@/shared/assets/svgs/minus_btn.svg?react';
 
 interface UrlInfo {
 	url: string;

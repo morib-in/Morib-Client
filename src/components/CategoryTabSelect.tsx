@@ -1,4 +1,4 @@
-import CategoryTabBtn from '@/components/atoms/CategoryTabBtn';
+import CategoryTabBtn from '@/components/CategoryTabBtn';
 
 interface Tabs {
 	id: number;

@@ -2,9 +2,14 @@ import { useEffect, useRef, useState } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
 
+import { getTabName } from '@/shared/apis/tasks/axios/index';
+import { useGetTabName, usePostCategory } from '@/shared/apis/tasks/queries/index';
+
+import { formatCalendarApiDate } from '@/shared/utils/calendar/index';
+
+import CategoryCommonBtn from '@/components/CategoryCommonBtn';
+import CategoryCommonTitle from '@/components/CategoryCommonTitle';
 import CalendarInput from '@/components/atoms/CalendarInput/index';
-import CategoryCommonBtn from '@/components/atoms/CategoryCommonBtn/index';
-import CategoryCommonTitle from '@/components/atoms/CategoryCommonTitle/index';
 import CategoryInputTitle from '@/components/atoms/CategoryInputTitle/index';
 import CategoryMoribContentPage from '@/components/atoms/CategoryMoribContentPage';
 import CategoryMoribContentUrl from '@/components/atoms/CategoryMoribContentUrl';
@@ -13,10 +18,6 @@ import Calendar from '@/components/molecules/Calendar/index';
 import CategoryInputMoribName from '@/components/molecules/CategoryInputMoribName/index';
 import CategoryMoribContentSet from '@/components/molecules/CategoryMoribContentSet';
 import CategoryMoribSet from '@/components/molecules/CategoryMoribSet';
-
-import { getTabName } from '@/shared/apis/tasks/axios/index';
-import { useGetTabName, usePostCategory } from '@/shared/apis/tasks/queries/index';
-import { formatCalendarApiDate } from '@/shared/utils/calendar/index';
 
 interface UrlInfo {
 	url: string;

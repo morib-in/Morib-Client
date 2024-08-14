@@ -2,16 +2,18 @@ import debounce from 'lodash/debounce';
 
 import { useEffect, useState } from 'react';
 
-import CategoryCommonTitle from '@/components/atoms/CategoryCommonTitle';
+import { getTabName } from '@/shared/apis/modal/axios';
+
+import { CATEGORY_MODALTABS } from '@/shared/constants/tabSelections';
+
+import AddBtn from '@/shared/assets/svgs/add_btn.svg?react';
+
+import CategoryCommonTitle from '@/components/CategoryCommonTitle';
+import CategoryDropdown from '@/components/CategoryDropdown';
+import CategoryTabSelect from '@/components/CategoryTabSelect';
 import CategoryMoribContentPage from '@/components/atoms/CategoryMoribContentPage';
 import CategoryMoribContentUrl from '@/components/atoms/CategoryMoribContentUrl';
-import CategoryDropdown from '@/components/molecules/CategoryDropdown';
 import CategoryMoribContentSet from '@/components/molecules/CategoryMoribContentSet';
-import CategoryTabSelect from '@/components/molecules/CategoryTabSelect';
-
-import { getTabName } from '@/shared/apis/modal/axios';
-import AddBtn from '@/shared/assets/svgs/add_btn.svg?react';
-import { CATEGORY_MODALTABS } from '@/shared/constants/tabSelections';
 
 interface UrlInfo {
 	url: string;
