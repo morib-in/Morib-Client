@@ -23,16 +23,16 @@ import BellIcon from '@/shared/assets/svgs/bell.svg?react';
 import FriendSettingIcon from '@/shared/assets/svgs/friend_setting.svg?react';
 import LargePlusIcon from '@/shared/assets/svgs/large_plus.svg?react';
 
-import CategoryModal, { CategoryRef } from '@/components/templates/CategoryModal';
+import CategoryModal, { CategoryRef } from '@/components/CategoryModal';
 import HomePageWrapper from '@/components/templates/HomePageWrapper';
 
 import ButtonSVG from '../../shared/components/ButtonSVG';
-import AddCategoryModal from './AddCategoryModal';
 import BoxCategory from './components/BoxCategory';
 import BoxTodayTodo from './components/BoxTodayTodo';
 import ButtonMoreFriends from './components/ButtonMoreFriends';
 import ButtonUserProfile from './components/ButtonUserProfile';
 import DatePicker from './components/DatePicker';
+import ModalAddCategory from './components/ModalAddCategory';
 import SideBarHome from './components/SideBarHome';
 import StatusDefaultHome from './components/StatusDefaultHome';
 
@@ -241,7 +241,7 @@ const HomePage = () => {
 				</section>
 			</div>
 			<CategoryModal ref={modalRef}>
-				{(handleCloseModal) => <AddCategoryModal handleCloseModal={handleCloseModal} />}
+				{(handleCloseModal) => <ModalAddCategory handleCloseModal={handleCloseModal} />}
 			</CategoryModal>
 		</HomePageWrapper>
 	);

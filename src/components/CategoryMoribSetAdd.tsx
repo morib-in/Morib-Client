@@ -1,8 +1,8 @@
 import { useRef } from 'react';
 
-import CategoryInputTitle from '@/components/atoms/CategoryInputTitle/index';
-import CategoryUrlInput from '@/components/atoms/CategoryUrlInput/index';
-import GetCategoryBtn from '@/components/atoms/GetCategoryBtn/index';
+import ButtonGetCategoryRapidly from '@/components/ButtonGetCategoryRapidly';
+import CategoryInputUrl from '@/components/CategoryInputUrl';
+import CategoryTitle from '@/components/CategoryTitle';
 import AddCategoryListModal from '@/components/templates/AddCategoryListModal';
 
 interface UrlInfo {
@@ -11,7 +11,7 @@ interface UrlInfo {
 	favicon: string;
 }
 
-interface CategoryCommonMoribSetProps {
+interface CategoryMoribSetAddProps {
 	onUrlInputChange: (url: string) => void;
 	selectedInfo: UrlInfo[];
 	urlInfo: UrlInfo[];
@@ -30,7 +30,7 @@ interface CategoryCommonMoribSetProps {
 	addInfos: (selectedInfo: UrlInfo[]) => void;
 }
 
-const CategoryCommonMoribSet = ({
+const CategoryMoribSetAdd = ({
 	onUrlInputChange,
 	selectedInfo,
 	handleSelectedInfo,
@@ -47,7 +47,7 @@ const CategoryCommonMoribSet = ({
 	handleClearModalData,
 	handleUrlInfos,
 	addInfos,
-}: CategoryCommonMoribSetProps) => {
+}: CategoryMoribSetAddProps) => {
 	const dialogRef = useRef<HTMLDialogElement>(null);
 	const showModal = () => {
 		handleUrlInfos();
@@ -72,8 +72,8 @@ const CategoryCommonMoribSet = ({
 	return (
 		<div>
 			<div className="flex justify-between">
-				<CategoryInputTitle title="모립 세트" />
-				<GetCategoryBtn onMoveCategoryModal={handleMoveToNextModal} />
+				<CategoryTitle title="모립 세트" />
+				<ButtonGetCategoryRapidly onMoveCategoryModal={handleMoveToNextModal} />
 				<AddCategoryListModal
 					dialogRef={dialogRef}
 					handleCloseModal={handleCloseModal}
@@ -92,9 +92,9 @@ const CategoryCommonMoribSet = ({
 					addInfos={addInfos}
 				/>
 			</div>
-			<CategoryUrlInput variant="basic" onUrlInputChange={(url: string) => onUrlInputChange(url)} urlInfo={urlInfo} />
+			<CategoryInputUrl variant="basic" onUrlInputChange={(url: string) => onUrlInputChange(url)} urlInfo={urlInfo} />
 		</div>
 	);
 };
 
-export default CategoryCommonMoribSet;
+export default CategoryMoribSetAdd;

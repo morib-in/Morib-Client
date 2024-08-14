@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import DatePicker from 'react-datepicker';
 
-import CalendarCustomHeader from '@/components/atoms/CalendarCustomHeader/index';
-import CategoryRoutine from '@/components/atoms/CategoryRoutine/index';
-import CategoryToggle from '@/components/atoms/CategoryToggle';
-
 import { formatCalendarDate } from '@/shared/utils/calendar/index';
 
-import './tailwind-datepicker.css';
+import ButtonStatusToggle from '@/components/ButtonStatusToggle';
+import CalendarAddRoutine from '@/components/CalendarAddRoutine';
+import CalendarHeader from '@/components/CalendarHeader';
+
+import './calendar.css';
 
 interface CalendarProps {
 	onStartDateInput: (date: Date | null) => void;
@@ -67,7 +67,7 @@ const Calendar = ({
 	};
 
 	const commonDatePickerProps = {
-		renderCustomHeader: (props: any) => <CalendarCustomHeader {...props} />,
+		renderCustomHeader: (props: any) => <CalendarHeader {...props} />,
 		formatWeekDay: formatWeekDay,
 		dateFormat: 'yyyy년 M월 dd일',
 		inline: true,
@@ -139,16 +139,16 @@ const Calendar = ({
 						<hr className={divideLineStyle} />
 						<div className={`${defaultToggleStyle}`}>
 							<div className={toggleTxtStyle}>종료 날짜</div>
-							<CategoryToggle isToggleOn={isPeriodOn} onToggle={onPeriodToggle} />
+							<ButtonStatusToggle isToggleOn={isPeriodOn} onToggle={onPeriodToggle} />
 						</div>
 						<hr className={divideLineStyle} />
 
 						<div className="flex-col gap-[1.2rem]">
 							<div className={`${defaultToggleStyle}`}>
 								<div className={toggleTxtStyle}>루틴 생성</div>
-								<CategoryToggle isToggleOn={isRoutineOn} onToggle={handleRoutineToggle} />
+								<ButtonStatusToggle isToggleOn={isRoutineOn} onToggle={handleRoutineToggle} />
 							</div>
-							{isRoutineOn && <CategoryRoutine />}
+							{isRoutineOn && <CalendarAddRoutine />}
 						</div>
 					</div>
 				</>

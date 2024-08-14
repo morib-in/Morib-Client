@@ -1,9 +1,9 @@
-interface CategoryToggleProps {
+interface ButtonStatusToggleProps {
 	isToggleOn: boolean;
 	onToggle: () => void;
 }
 
-const CategoryToggle = ({ isToggleOn, onToggle }: CategoryToggleProps) => {
+const ButtonStatusToggle = ({ isToggleOn, onToggle }: ButtonStatusToggleProps) => {
 	return (
 		<div className="relative cursor-pointer" onClick={onToggle}>
 			<div
@@ -16,4 +16,4 @@ const CategoryToggle = ({ isToggleOn, onToggle }: CategoryToggleProps) => {
 	);
 };
 
-export default CategoryToggle;
+export default ButtonStatusToggle;

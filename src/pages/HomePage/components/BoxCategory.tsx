@@ -14,7 +14,7 @@ import { Task } from '@/shared/types/home';
 import ButtonAddIcon from '@/shared/assets/svgs/btn_task_add.svg?react';
 import MeatBallDefault from '@/shared/assets/svgs/todo_meatball_default.svg?react';
 
-import CalendarTemporary from '@/components/molecules/CalendarTemporary';
+import CalendarTemporary from '@/components/CalendarTemporary';
 
 import BoxTodo from './BoxTodo';
 import BoxTodoInput from './BoxTodoInput';

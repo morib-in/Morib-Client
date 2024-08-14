@@ -2,16 +2,18 @@ import debounce from 'lodash/debounce';
 
 import { useEffect, useState } from 'react';
 
-import CategoryCommonTitle from '@/components/atoms/CategoryCommonTitle';
-import CategoryMoribContentPage from '@/components/atoms/CategoryMoribContentPage';
-import CategoryMoribContentUrl from '@/components/atoms/CategoryMoribContentUrl';
-import CategoryDropdown from '@/components/molecules/CategoryDropdown';
-import CategoryMoribContentSet from '@/components/molecules/CategoryMoribContentSet';
-import CategoryTabSelect from '@/components/molecules/CategoryTabSelect';
-
 import { getTabName } from '@/shared/apis/modal/axios';
-import AddBtn from '@/shared/assets/svgs/add_btn.svg?react';
+
 import { CATEGORY_MODALTABS } from '@/shared/constants/tabSelections';
+
+import AddBtn from '@/shared/assets/svgs/add_btn.svg?react';
+
+import CategoryCommonMoribSet from '@/components/CategoryCommonMoribSet';
+import CategoryMoribPageInfo from '@/components/CategoryMoribPageInfo';
+import CategoryMoribUrlInfo from '@/components/CategoryMoribUrlInfo';
+import CategoryCommonTitle from '@/components/atoms/CategoryCommonTitle';
+import CategoryDropdown from '@/components/molecules/CategoryDropdown';
+import CategoryTabSelect from '@/components/molecules/CategoryTabSelect';
 
 interface UrlInfo {
 	url: string;
@@ -120,7 +122,7 @@ const CategoryModalLeft = ({
 					selectedOption={selectedOption}
 				/>
 			</div>
-			<CategoryMoribContentSet variant="smallLeft" urlInfos={urlInfos}>
+			<CategoryCommonMoribSet variant="smallLeft" urlInfos={urlInfos}>
 				{isSelectedTab !== 2 &&
 					urlInfos.map((urlInfo: UrlInfo) => (
 						<tr
@@ -128,17 +130,17 @@ const CategoryModalLeft = ({
 							className="group flex h-[4.6rem] w-[100%] gap-[1.2rem] border-b border-gray-bg-04 px-[0.8rem] hover:bg-gray-bg-04"
 							onClick={() => handleSelectedInfo(urlInfo)}
 						>
-							<CategoryMoribContentPage urlInfo={urlInfo} variant="smallLeft" />
-							<CategoryMoribContentUrl urlInfo={urlInfo} variant="smallLeft">
+							<CategoryMoribPageInfo urlInfo={urlInfo} variant="smallLeft" />
+							<CategoryMoribUrlInfo urlInfo={urlInfo} variant="smallLeft">
 								<div className="p-[1.25rem]">
 									<button type="button">
 										<AddBtn className="fill-gray-bg-07 group-hover:fill-mint-02-hover group-active:fill-mint-02-press" />
 									</button>
 								</div>
-							</CategoryMoribContentUrl>
+							</CategoryMoribUrlInfo>
 						</tr>
 					))}
-			</CategoryMoribContentSet>
+			</CategoryCommonMoribSet>
 		</div>
 	);
 };
