@@ -1,12 +1,13 @@
 import { useQueryClient } from '@tanstack/react-query';
 
-import AccumulatedTime from '@/components/atoms/AccumulatedTime';
-import PlayBtn from '@/components/atoms/PlayBtn';
-import ProgressCircle from '@/components/atoms/ProgressCircle';
-import TaskTime from '@/components/atoms/TaskTime';
-
 import { useGetTodoList, usePostTimerStop } from '@/shared/apis/timer/queries';
+
 import InnerCircleIcon from '@/shared/assets/svgs/elipse.svg?react';
+
+import AccumulatedTime from '@/pages/TimerPage/components/TimerAccumulatedTime';
+import PlayBtn from '@/pages/TimerPage/components/TimerPlayBtn';
+import ProgressCircle from '@/pages/TimerPage/components/TimerProgressCircle';
+import TaskTime from '@/pages/TimerPage/components/TimerTaskTime';
 
 interface TaskTotalTimeProps {
 	totalTimeOfToday: number;

@@ -1,5 +1,5 @@
-import CategoryTitle from './CategoryTitle';
-import TodoTitle from './TodoTitle';
+import CategoryTitle from './TimerCategoryTitle';
+import TodoTitle from './TimerTodoTitle';
 
 interface titleNameProps {
 	targetName: string;

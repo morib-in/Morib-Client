@@ -11,9 +11,9 @@ import { Todo } from '@/shared/types/todoData';
 
 import BtnListIcon from '@/shared/assets/svgs/btn_list.svg?react';
 
-import TimerTodayTodoBtn from '@/components/atoms/TimerTodayTodoBtn';
 import BoxTodo from '@/pages/HomePage/components/BoxTodo';
 import ButtonTodoToggle from '@/pages/HomePage/components/ButtonTodoToggle';
+import TimerTodayTodoBtn from '@/pages/TimerPage/components/ButtonTimerTodo';
 
 interface CategoryBoxProps {
 	completedTodos: Todo[];

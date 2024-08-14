@@ -1,6 +1,8 @@
-import ClockIcon from '@/shared/assets/svgs/icon_clock.svg?react';
 import useCarouselTimer from '@/shared/hooks/useCarouselTimer';
+
 import { formatSeconds } from '@/shared/utils/time';
+
+import ClockIcon from '@/shared/assets/svgs/icon_clock.svg?react';
 
 interface UserFriendDataProps {
 	image: string;
