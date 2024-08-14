@@ -13,7 +13,7 @@ import BtnListIcon from '@/shared/assets/svgs/btn_list.svg?react';
 
 import BoxTodo from '@/pages/HomePage/components/BoxTodo';
 import ButtonTodoToggle from '@/pages/HomePage/components/ButtonTodoToggle';
-import TimerTodayTodoBtn from '@/pages/TimerPage/components/ButtonTimerTodo';
+import ButtonTimerTodo from '@/pages/TimerPage/components/ButtonTimerTodo';
 
 interface CategoryBoxProps {
 	completedTodos: Todo[];
@@ -132,10 +132,10 @@ const TimerSideBar = ({
 				</ButtonTodoToggle>
 			</div>
 			<div className="flex flex-col items-start gap-[1rem] pb-[2rem] pt-[4rem]">
-				<TimerTodayTodoBtn variant="할 일 추가">할 일 추가</TimerTodayTodoBtn>
-				<TimerTodayTodoBtn variant="홈으로 나가기" onClick={handleNavigateHome}>
+				<ButtonTimerTodo variant="할 일 추가">할 일 추가</ButtonTimerTodo>
+				<ButtonTimerTodo variant="홈으로 나가기" onClick={handleNavigateHome}>
 					홈으로 나가기
-				</TimerTodayTodoBtn>
+				</ButtonTimerTodo>
 			</div>
 		</div>
 	);
