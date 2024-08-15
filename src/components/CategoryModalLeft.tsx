@@ -8,9 +8,9 @@ import { CATEGORY_MODALTABS } from '@/shared/constants/tabSelections';
 
 import AddBtn from '@/shared/assets/svgs/add_btn.svg?react';
 
-import CategoryCommonTitle from '@/components/CategoryCommonTitle';
-import CategoryDropdown from '@/components/CategoryDropdown';
 import CategoryTabSelect from '@/components/CategoryTabSelect';
+import DropdownCategory from '@/components/DropdownCategory';
+import TitleCategoryCommon from '@/components/TitleCategoryCommon';
 import CategoryMoribContentPage from '@/components/atoms/CategoryMoribContentPage';
 import CategoryMoribContentUrl from '@/components/atoms/CategoryMoribContentUrl';
 import CategoryMoribContentSet from '@/components/molecules/CategoryMoribContentSet';
@@ -105,14 +105,14 @@ const CategoryModalLeft = ({
 	return (
 		<div className="h-[80rem] w-[68.8rem] rounded-l-[10px] bg-gray-bg-04 py-[2.8rem] pl-[4.4rem] pr-[4.3rem]">
 			<div className="mb-[3.3rem]">
-				<CategoryCommonTitle />
+				<TitleCategoryCommon />
 			</div>
 			<div className="mb-[8px]">
 				<CategoryTabSelect tabs={CATEGORY_MODALTABS} handleTabChange={handleTabChange} isSelectedTab={isSelectedTab} />
 			</div>
 
 			<div className="relative mt-[0px]">
-				<CategoryDropdown
+				<DropdownCategory
 					optionData={optionData}
 					disabled={disabled}
 					handleOptionId={handleOptionId}

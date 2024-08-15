@@ -7,8 +7,8 @@ import { useGetTabName, usePostCategory } from '@/shared/apis/tasks/queries/inde
 
 import { formatCalendarApiDate } from '@/shared/utils/calendar/index';
 
-import CategoryCommonBtn from '@/components/CategoryCommonBtn';
-import CategoryCommonTitle from '@/components/CategoryCommonTitle';
+import ButtonCategoryCommon from '@/components/ButtonCategoryCommon';
+import TitleCategoryCommon from '@/components/TitleCategoryCommon';
 import CalendarInput from '@/components/atoms/CalendarInput/index';
 import CategoryInputTitle from '@/components/atoms/CategoryInputTitle/index';
 import CategoryMoribContentPage from '@/components/atoms/CategoryMoribContentPage';
@@ -220,7 +220,7 @@ const AddCategoryModal = ({ handleCloseModal }: AddCategoryModalProps) => {
 
 	return (
 		<div className="">
-			<CategoryCommonTitle />
+			<TitleCategoryCommon />
 			<div className="flex-start mt-[1.6rem] inline-flex gap-[4.4rem]">
 				<CategoryInputMoribName name={name} onNameChange={handleNameChange} />
 				<div ref={calendarRef}>
@@ -287,12 +287,12 @@ const AddCategoryModal = ({ handleCloseModal }: AddCategoryModalProps) => {
 			</div>
 
 			<div className="mt-[3rem] flex justify-end gap-[1.6rem]">
-				<CategoryCommonBtn variant="취소" handleCloseModal={handleClose}>
+				<ButtonCategoryCommon variant="취소" handleCloseModal={handleClose}>
 					취소
-				</CategoryCommonBtn>
-				<CategoryCommonBtn variant="완료" handleSubmit={handlePostDataClick} disabled={!isFormValid()}>
+				</ButtonCategoryCommon>
+				<ButtonCategoryCommon variant="완료" handleSubmit={handlePostDataClick} disabled={!isFormValid()}>
 					완료
-				</CategoryCommonBtn>
+				</ButtonCategoryCommon>
 			</div>
 		</div>
 	);

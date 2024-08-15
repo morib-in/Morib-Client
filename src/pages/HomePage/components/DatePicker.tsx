@@ -12,7 +12,7 @@ import { Direction } from '@/shared/types/global';
 import ButtonArrowIcon from '@/shared/assets/svgs/btn_arrow.svg?react';
 import ButtonTodayIcon from '@/shared/assets/svgs/btn_today.svg?react';
 
-import DropdownOptionsBtn from '@/components/DropdownOptionsBtn';
+import ButtonDropdownOptions from '@/components/ButtonDropdownOptions';
 import ArrowSVGBtn from '@/components/atoms/ArrowSVGBtn';
 import DateBtn from '@/components/atoms/DateBtn';
 
@@ -62,9 +62,9 @@ const DatePicker = ({ todayDate, selectedDate, onSelectedDateChange }: DatePicke
 									key={item.format('YYYY년 MM월')}
 									className="flex h-[4.6rem] w-full flex-row items-center justify-center border-none bg-mint-01"
 								>
-									<DropdownOptionsBtn onClick={() => handleYearMonthClick(item)}>
+									<ButtonDropdownOptions onClick={() => handleYearMonthClick(item)}>
 										{item.format('YYYY년 MM월')}
-									</DropdownOptionsBtn>
+									</ButtonDropdownOptions>
 								</li>
 							);
 						})}

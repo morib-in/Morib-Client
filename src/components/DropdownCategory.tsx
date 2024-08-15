@@ -2,8 +2,8 @@ import { ButtonHTMLAttributes } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
 
-import CategoryDropdownBtn from '@/components/CategoryDropdownBtn';
-import DropdownOptionsBtn from '@/components/DropdownOptionsBtn';
+import ButtonCategoryDropdown from '@/components/ButtonCategoryDropdown';
+import ButtonDropdownOptions from '@/components/ButtonDropdownOptions';
 
 interface DropdownBtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	optionData: Category[];
@@ -46,7 +46,7 @@ const CategoryDropdown = ({
 
 	return (
 		<>
-			<CategoryDropdownBtn
+			<ButtonCategoryDropdown
 				isClicked={isClicked}
 				disabled={disabled}
 				handleClicked={handleBtnClicked}
@@ -60,14 +60,14 @@ const CategoryDropdown = ({
 								key={item.id}
 								className="subhead-med-18 flex h-[4.6rem] w-[27.2rem] flex-row items-center border-none"
 							>
-								<DropdownOptionsBtn
+								<ButtonDropdownOptions
 									onClick={() => {
 										handleOptionClick(item.name);
 										handleOptionId(item.id);
 									}}
 								>
 									{item.name}
-								</DropdownOptionsBtn>
+								</ButtonDropdownOptions>
 							</li>
 						);
 					})}
