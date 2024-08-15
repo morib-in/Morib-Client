@@ -3,12 +3,12 @@ import PlayIcon from '@/shared/assets/svgs/defaultplay.svg?react';
 import HoverPauseIcon from '@/shared/assets/svgs/hoverpause.svg?react';
 import HoverPlayIcon from '@/shared/assets/svgs/hoverplay.svg?react';
 
-interface PlayBtnProps {
+interface ButtonTimerPlayProps {
 	onClick: () => void;
 	isPlaying: boolean;
 }
 
-const PlayBtn = ({ onClick, isPlaying }: PlayBtnProps) => {
+const ButtonTimerPlay = ({ onClick, isPlaying }: ButtonTimerPlayProps) => {
 	const IconComponent = isPlaying ? PauseIcon : PlayIcon;
 	const HoverIconComponent = isPlaying ? HoverPauseIcon : HoverPlayIcon;
 
@@ -20,4 +20,4 @@ const PlayBtn = ({ onClick, isPlaying }: PlayBtnProps) => {
 	);
 };
 
-export default PlayBtn;
+export default ButtonTimerPlay;

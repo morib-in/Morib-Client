@@ -1,12 +1,12 @@
 import AddBtnIcon from '@/shared/assets/svgs/btn_add.svg?react';
 
-import TimerFavicon from '@/pages/TimerPage/components/TimerFavicon';
-import SideBox from '@/pages/TimerPage/components/TimerSideBox';
+import FaviconSideBox from '@/pages/TimerPage/components/FaviconSideBox';
+import SideBoxTimer from '@/pages/TimerPage/components/SideBoxTimer';
 import { Favicon_DATA } from '@/shared/mocks/faviconData';
 
-const TimerSideBox = () => {
+const SideBoxTemporary = () => {
 	return (
-		<SideBox>
+		<SideBoxTimer>
 			<div className="flex w-[5.4rem] flex-col items-start bg-gray-bg-02">
 				<p className="detail-semibold-14 border-b-[0.1rem] border-b-gray-bg-05 py-[1.7rem] pl-[0.3rem] text-gray-04">
 					모립세트
@@ -16,7 +16,7 @@ const TimerSideBox = () => {
 					<ul>
 						{Favicon_DATA.map((item) => (
 							<li key={item.id} className="rounded-[1.6rem] px-[1.1rem] py-[1.1rem] hover:bg-gray-bg-04">
-								<TimerFavicon {...item} />
+								<FaviconSideBox {...item} />
 							</li>
 						))}
 					</ul>
@@ -27,8 +27,8 @@ const TimerSideBox = () => {
 				</p>
 				<AddBtnIcon />
 			</div>
-		</SideBox>
+		</SideBoxTimer>
 	);
 };
 
-export default TimerSideBox;
+export default SideBoxTemporary;

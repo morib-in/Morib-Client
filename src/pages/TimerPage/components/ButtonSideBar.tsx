@@ -5,7 +5,7 @@ interface CategoryBtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	children: ReactNode;
 }
 
-const ButtonTimerTodo = ({ variant, children, ...props }: CategoryBtnProps) => {
+const ButtonSideBar = ({ variant, children, ...props }: CategoryBtnProps) => {
 	const btnVariant = {
 		'할 일 추가': 'text-white bg-gray-bg-04',
 		'홈으로 나가기': 'text-gray-bg-01 bg-main-gra-01',
@@ -22,4 +22,4 @@ const ButtonTimerTodo = ({ variant, children, ...props }: CategoryBtnProps) => {
 	);
 };
 
-export default ButtonTimerTodo;
+export default ButtonSideBar;

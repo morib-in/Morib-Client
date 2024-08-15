@@ -4,10 +4,10 @@ import { useGetTodoList, usePostTimerStop } from '@/shared/apis/timer/queries';
 
 import InnerCircleIcon from '@/shared/assets/svgs/elipse.svg?react';
 
-import AccumulatedTime from '@/pages/TimerPage/components/TimerAccumulatedTime';
-import PlayBtn from '@/pages/TimerPage/components/TimerPlayBtn';
-import ProgressCircle from '@/pages/TimerPage/components/TimerProgressCircle';
-import TaskTime from '@/pages/TimerPage/components/TimerTaskTime';
+import AccumulatedTime from '@/pages/TimerPage/components/AccumulatedTime';
+import ButtonTimerPlay from '@/pages/TimerPage/components/ButtonTimerPlay';
+import ProgressCircle from '@/pages/TimerPage/components/ProgressCircle';
+import TaskTime from '@/pages/TimerPage/components/TaskTime';
 
 interface TaskTotalTimeProps {
 	totalTimeOfToday: number;
@@ -70,7 +70,7 @@ const Timer = ({
 					<TaskTime isPlaying={isPlaying} timer={timerData?.timer || timerTime} />
 				</div>
 				<div>
-					<PlayBtn onClick={handlePlayPauseToggle} isPlaying={isPlaying} />
+					<ButtonTimerPlay onClick={handlePlayPauseToggle} isPlaying={isPlaying} />
 				</div>
 			</div>
 		</div>

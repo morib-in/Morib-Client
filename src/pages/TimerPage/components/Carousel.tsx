@@ -3,9 +3,9 @@ import useFriendInfoCarousel from '@/shared/hooks/useFriendInfoCarousel';
 import { Direction } from '@/shared/types/global';
 
 import ArrowSVGBtn from '@/components/atoms/ArrowSVGBtn';
-import FriendInfo from '@/pages/TimerPage/components/FreindInfo';
+import FriendInfo from '@/pages/TimerPage/components/CarouselContainer';
 
-const FriendInfoCarousel = () => {
+const Carousel = () => {
 	const { handlePrevClick, handleNextClick, visibleFriends } = useFriendInfoCarousel();
 
 	return (
@@ -28,4 +28,4 @@ const FriendInfoCarousel = () => {
 	);
 };
 
-export default FriendInfoCarousel;
+export default Carousel;
