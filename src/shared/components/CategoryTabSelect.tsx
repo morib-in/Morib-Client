@@ -1,4 +1,4 @@
-import ButtonCategoryTab from '@/components/ButtonCategoryTab';
+import ButtonCategoryTab from '@/shared/components/ButtonCategoryTab';
 
 interface Tabs {
 	id: number;

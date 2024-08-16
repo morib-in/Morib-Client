@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 
-import AddCategoryListModal from '@/components/AddCategoryListModal';
+import AddCategoryListModal from '@/shared/components/AddCategoryListModal';
+
 import CategoryInputTitle from '@/components/atoms/CategoryInputTitle/index';
 import CategoryUrlInput from '@/components/atoms/CategoryUrlInput/index';
 import GetCategoryBtn from '@/components/atoms/GetCategoryBtn/index';

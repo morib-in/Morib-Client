@@ -1,11 +1,11 @@
 import { RefObject, useState } from 'react';
 
+import CategoryModalLeft from '@/shared/components/CategoryModalLeft';
+import CategoryModalRight from '@/shared/components/CategoryModalRight';
+import LoadingUrl from '@/shared/components/LoadingUrl';
+
 import { getTabName } from '@/shared/apis/modal/axios';
 import { useCategoryLists, useGetMsets } from '@/shared/apis/modal/queries';
-
-import CategoryModalLeft from '@/components/CategoryModalLeft';
-import CategoryModalRight from '@/components/CategoryModalRight';
-import LoadingUrl from '@/components/LoadingUrl';
 
 interface UrlInfo {
 	url: string;

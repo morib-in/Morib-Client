@@ -2,6 +2,8 @@ import { Dayjs } from 'dayjs';
 
 import { useRef } from 'react';
 
+import ButtonDropdownOptions from '@/shared/components/ButtonDropdownOptions';
+
 import useClickOutside from '@/shared/hooks/useClickOutside';
 import { useDatePicker } from '@/shared/hooks/useDatePicker';
 
@@ -12,7 +14,6 @@ import { Direction } from '@/shared/types/global';
 import ButtonArrowIcon from '@/shared/assets/svgs/btn_arrow.svg?react';
 import ButtonTodayIcon from '@/shared/assets/svgs/btn_today.svg?react';
 
-import ButtonDropdownOptions from '@/components/ButtonDropdownOptions';
 import ArrowSVGBtn from '@/components/atoms/ArrowSVGBtn';
 import DateBtn from '@/components/atoms/DateBtn';
 

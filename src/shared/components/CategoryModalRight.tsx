@@ -1,7 +1,8 @@
+import ButtonCategoryCommon from '@/shared/components/ButtonCategoryCommon';
+import TitleCategoryModalRight from '@/shared/components/TitleCategoryModalRight';
+
 import MinusBtn from '@/shared/assets/svgs/minus_btn.svg?react';
 
-import ButtonCategoryCommon from '@/components/ButtonCategoryCommon';
-import TitleCategoryModalRight from '@/components/TitleCategoryModalRight';
 import CategoryMoribContentPage from '@/components/atoms/CategoryMoribContentPage';
 import CategoryMoribContentUrl from '@/components/atoms/CategoryMoribContentUrl';
 import CategoryUrlInput from '@/components/atoms/CategoryUrlInput';

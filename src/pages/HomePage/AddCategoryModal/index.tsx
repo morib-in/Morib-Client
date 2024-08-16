@@ -2,13 +2,14 @@ import { useEffect, useRef, useState } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
 
+import ButtonCategoryCommon from '@/shared/components/ButtonCategoryCommon';
+import TitleCategoryCommon from '@/shared/components/TitleCategoryCommon';
+
 import { getTabName } from '@/shared/apis/tasks/axios/index';
 import { useGetTabName, usePostCategory } from '@/shared/apis/tasks/queries/index';
 
 import { formatCalendarApiDate } from '@/shared/utils/calendar/index';
 
-import ButtonCategoryCommon from '@/components/ButtonCategoryCommon';
-import TitleCategoryCommon from '@/components/TitleCategoryCommon';
 import CalendarInput from '@/components/atoms/CalendarInput/index';
 import CategoryInputTitle from '@/components/atoms/CategoryInputTitle/index';
 import CategoryMoribContentPage from '@/components/atoms/CategoryMoribContentPage';

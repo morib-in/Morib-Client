@@ -2,8 +2,8 @@ import { ButtonHTMLAttributes } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
 
-import ButtonCategoryDropdown from '@/components/ButtonCategoryDropdown';
-import ButtonDropdownOptions from '@/components/ButtonDropdownOptions';
+import ButtonCategoryDropdown from '@/shared/components/ButtonCategoryDropdown';
+import ButtonDropdownOptions from '@/shared/components/ButtonDropdownOptions';
 
 interface DropdownBtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	optionData: Category[];
