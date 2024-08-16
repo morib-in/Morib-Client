@@ -1,5 +1,5 @@
-import CategoryMoribNameInput from '@/components/CategoryMoribNameInput';
-import CategoryTitle from '@/components/CategoryTitle';
+import InputCategoryMoribName from '@/shared/components/InputCategoryMoribName';
+import TitleCategory from '@/shared/components/TitleCategory';
 
 interface CategoryMoribNameProps {
 	onNameChange: (name: string) => void;
@@ -11,9 +11,9 @@ const CategoryMoribName = ({ name, onNameChange }: CategoryMoribNameProps) => {
 		<div className="flex gap-[4.4rem]">
 			<div className="flex-col">
 				<div className="pt-[1rem]">
-					<CategoryTitle title="이름 *" />
+					<TitleCategory title="이름 *" />
 				</div>
-				<CategoryMoribNameInput
+				<InputCategoryMoribName
 					value={name}
 					onNameChange={onNameChange}
 					placeholder="이름을 20자 이내로 작성해주세요."

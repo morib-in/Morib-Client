@@ -5,6 +5,8 @@ import utc from 'dayjs/plugin/utc';
 import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import ModalCategory, { CategoryRef } from '@/shared/components/ModalCategory';
+
 import {
 	useDeleteCategory,
 	useGetAllCategoryTask,
@@ -23,7 +25,6 @@ import BellIcon from '@/shared/assets/svgs/bell.svg?react';
 import FriendSettingIcon from '@/shared/assets/svgs/friend_setting.svg?react';
 import LargePlusIcon from '@/shared/assets/svgs/large_plus.svg?react';
 
-import CategoryModal, { CategoryRef } from '@/components/CategoryModal';
 import HomePageWrapper from '@/components/templates/HomePageWrapper';
 
 import ButtonSVG from '../../shared/components/ButtonSVG';
@@ -240,9 +241,9 @@ const HomePage = () => {
 					</div>
 				</section>
 			</div>
-			<CategoryModal ref={modalRef}>
+			<ModalCategory ref={modalRef}>
 				{(handleCloseModal) => <ModalAddCategory handleCloseModal={handleCloseModal} />}
-			</CategoryModal>
+			</ModalCategory>
 		</HomePageWrapper>
 	);
 };

@@ -2,20 +2,21 @@ import { useEffect, useRef, useState } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
 
+import ButtonStatusToggle from '@/shared/components/ButtonStatusToggle';
+import Calendar from '@/shared/components/Calendar';
+import CalendarSelectedDate from '@/shared/components/CalendarSelectedDate';
+import CategoryCommonMoribSet from '@/shared/components/CategoryCommonMoribSet';
+import CategoryMoribName from '@/shared/components/CategoryMoribName';
+import CategoryMoribPageInfo from '@/shared/components/CategoryMoribPageInfo';
+import CategoryMoribSetAdd from '@/shared/components/CategoryMoribSetAdd';
+import CategoryMoribUrlInfo from '@/shared/components/CategoryMoribUrlInfo';
+import TitleCategory from '@/shared/components/TitleCategory';
+
 import { getTabName } from '@/shared/apis/tasks/axios/index';
 import { useGetTabName, usePostCategory } from '@/shared/apis/tasks/queries/index';
 
 import { formatCalendarApiDate } from '@/shared/utils/calendar/index';
 
-import ButtonStatusToggle from '@/components/ButtonStatusToggle';
-import Calendar from '@/components/Calendar';
-import CalendarSelectedDate from '@/components/CalendarSelectedDate';
-import CategoryCommonMoribSet from '@/components/CategoryCommonMoribSet';
-import CategoryMoribName from '@/components/CategoryMoribName';
-import CategoryMoribPageInfo from '@/components/CategoryMoribPageInfo';
-import CategoryMoribSetAdd from '@/components/CategoryMoribSetAdd';
-import CategoryMoribUrlInfo from '@/components/CategoryMoribUrlInfo';
-import CategoryTitle from '@/components/CategoryTitle';
 import CategoryCommonBtn from '@/components/atoms/CategoryCommonBtn/index';
 import CategoryCommonTitle from '@/components/atoms/CategoryCommonTitle/index';
 
@@ -225,7 +226,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 				<CategoryMoribName name={name} onNameChange={handleNameChange} />
 				<div ref={calendarRef}>
 					<div className="mt-[1rem] flex items-center gap-[1rem]">
-						<CategoryTitle title="날짜" />
+						<TitleCategory title="날짜" />
 						<div className="mb-[0.6rem]">
 							<ButtonStatusToggle isToggleOn={isDateToggleOn} onToggle={handleDateToggle} />
 						</div>

@@ -1,17 +1,15 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import DatePicker from 'react-datepicker';
 
-import useClickOutside from '@/shared/hooks/useClickOutside';
+import ButtonCalendarAddRoutine from '@/shared/components/ButtonCalendarAddRoutine';
+import ButtonStatusToggle from '@/shared/components/ButtonStatusToggle';
+import HeaderCalendar from '@/shared/components/HeaderCalendar';
 
 import { formatCalendarDate } from '@/shared/utils/calendar/index';
 
-import ButtonStatusToggle from '@/components/ButtonStatusToggle';
-import CalendarAddRoutine from '@/components/CalendarAddRoutine';
-import CalendarHeader from '@/components/CalendarHeader';
+import './calendar.css';
 
-import './calendar-temporary.css';
-
-interface CalendarTemporaryProps {
+interface CalendarProps {
 	onStartDateInput: (date: Date | null) => void;
 	onEndDateInput: (date: Date | null) => void;
 	selectedStartDate: Date | null;
@@ -19,12 +17,11 @@ interface CalendarTemporaryProps {
 	isPeriodOn: boolean;
 	isCalendarOpened: boolean;
 	onPeriodToggle: () => void;
-	clickOutSideCallback: () => void;
 }
 
 const weekDays: string[] = ['일', '월', '화', '수', '목', '금', '토'];
 
-const CalendarTemporary = ({
+const Calendar = ({
 	onStartDateInput,
 	onEndDateInput,
 	selectedStartDate,
@@ -32,16 +29,14 @@ const CalendarTemporary = ({
 	isPeriodOn,
 	isCalendarOpened,
 	onPeriodToggle,
-	clickOutSideCallback,
-}: CalendarTemporaryProps) => {
+}: CalendarProps) => {
 	const [isRoutineOn, setIsRoutineOn] = useState(false);
-	const calendarRef = useRef<HTMLDivElement>(null);
 
 	const defaultDate = new Date();
 
 	const defaultToggleStyle = 'flex justify-between px-[1.75rem]';
 	const calendarStyle =
-		' drop-shadow-calendarDrop detail-reg-14 shadow-[0_3px_30px_0_rgba(0, 0, 0, 0.40)] w-[30.3rem] flex-col gap-[2.1rem] rounded-[8px] bg-gray-bg-02 p-[1.4rem] absolute z-50';
+		'detail-reg-14  drop-shadow-calendarDrop w-[30.3rem] flex-col gap-[2.1rem] rounded-[8px] bg-gray-bg-02 p-[1.4rem] absolute z-50';
 	const inputStyle = 'body-med-16 h-[3.2rem] w-[27.5rem] rounded-[3px] border-[1px] px-[1rem] py-[0.5rem] ';
 	const calendarInputStyle =
 		'body-med-16 h-[3.2rem] w-[13.2rem] rounded-[3px] border-[1px]  px-[1rem] py-[0.5rem]  bg-gray-bg-02 ';
@@ -72,7 +67,7 @@ const CalendarTemporary = ({
 	};
 
 	const commonDatePickerProps = {
-		renderCustomHeader: (props: any) => <CalendarHeader {...props} />,
+		renderCustomHeader: (props: any) => <HeaderCalendar {...props} />,
 		formatWeekDay: formatWeekDay,
 		dateFormat: 'yyyy년 M월 dd일',
 		inline: true,
@@ -85,7 +80,7 @@ const CalendarTemporary = ({
 
 	const handlePeriodChange = (dates: (Date | null)[]) => {
 		if (dates && dates.length === 2) {
-			onStartDateInput(dates[0] as Date);
+			onStartDateInput(dates[0]);
 			onEndDateInput(dates[1]);
 		} else {
 			onEndDateInput(null);
@@ -96,13 +91,11 @@ const CalendarTemporary = ({
 		setIsRoutineOn((prev) => !prev);
 	};
 
-	useClickOutside(calendarRef, clickOutSideCallback);
-
 	return (
 		<>
 			{isCalendarOpened && (
 				<>
-					<div className={`${calendarStyle}`} ref={calendarRef}>
+					<div className={`${calendarStyle}`}>
 						{!isPeriodOn ? (
 							<>
 								<input
@@ -155,7 +148,7 @@ const CalendarTemporary = ({
 								<div className={toggleTxtStyle}>루틴 생성</div>
 								<ButtonStatusToggle isToggleOn={isRoutineOn} onToggle={handleRoutineToggle} />
 							</div>
-							{isRoutineOn && <CalendarAddRoutine />}
+							{isRoutineOn && <ButtonCalendarAddRoutine />}
 						</div>
 					</div>
 				</>
@@ -164,4 +157,4 @@ const CalendarTemporary = ({
 	);
 };
 
-export default CalendarTemporary;
+export default Calendar;

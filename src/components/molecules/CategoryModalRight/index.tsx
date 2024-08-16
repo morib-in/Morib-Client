@@ -1,9 +1,10 @@
+import CategoryCommonMoribSet from '@/shared/components/CategoryCommonMoribSet';
+import CategoryMoribPageInfo from '@/shared/components/CategoryMoribPageInfo';
+import CategoryMoribUrlInfo from '@/shared/components/CategoryMoribUrlInfo';
+import InputCategoryUrl from '@/shared/components/InputCategoryUrl';
+
 import MinusBtn from '@/shared/assets/svgs/minus_btn.svg?react';
 
-import CategoryCommonMoribSet from '@/components/CategoryCommonMoribSet';
-import CategoryInputUrl from '@/components/CategoryInputUrl';
-import CategoryMoribPageInfo from '@/components/CategoryMoribPageInfo';
-import CategoryMoribUrlInfo from '@/components/CategoryMoribUrlInfo';
 import CategoryCommonBtn from '@/components/atoms/CategoryCommonBtn';
 import CategoryModalRightTitle from '@/components/atoms/CategoryModalRightTitle';
 
@@ -39,7 +40,7 @@ const CategoryModalRight = ({
 				<CategoryModalRightTitle msetName={moribSetName} />
 			</div>
 			<div className="flex w-full flex-col">
-				<CategoryInputUrl
+				<InputCategoryUrl
 					selectedInfo={selectedInfo}
 					variant="small"
 					onUrlInputChange={(url: string) => handleUrlInputChange(url)}

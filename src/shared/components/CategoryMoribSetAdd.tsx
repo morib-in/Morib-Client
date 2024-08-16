@@ -1,8 +1,9 @@
 import { useRef } from 'react';
 
-import ButtonGetCategoryRapidly from '@/components/ButtonGetCategoryRapidly';
-import CategoryInputUrl from '@/components/CategoryInputUrl';
-import CategoryTitle from '@/components/CategoryTitle';
+import ButtonGetCategoryRapidly from '@/shared/components/ButtonGetCategoryRapidly';
+import InputCategoryUrl from '@/shared/components/InputCategoryUrl';
+import TitleCategory from '@/shared/components/TitleCategory';
+
 import AddCategoryListModal from '@/components/templates/AddCategoryListModal';
 
 interface UrlInfo {
@@ -72,7 +73,7 @@ const CategoryMoribSetAdd = ({
 	return (
 		<div>
 			<div className="flex justify-between">
-				<CategoryTitle title="모립 세트" />
+				<TitleCategory title="모립 세트" />
 				<ButtonGetCategoryRapidly onMoveCategoryModal={handleMoveToNextModal} />
 				<AddCategoryListModal
 					dialogRef={dialogRef}
@@ -92,7 +93,7 @@ const CategoryMoribSetAdd = ({
 					addInfos={addInfos}
 				/>
 			</div>
-			<CategoryInputUrl variant="basic" onUrlInputChange={(url: string) => onUrlInputChange(url)} urlInfo={urlInfo} />
+			<InputCategoryUrl variant="basic" onUrlInputChange={(url: string) => onUrlInputChange(url)} urlInfo={urlInfo} />
 		</div>
 	);
 };

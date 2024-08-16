@@ -10,14 +10,14 @@ interface UrlInfo {
 	favicon: string;
 }
 
-interface CategoryInputUrlProps {
+interface InputCategoryUrlProps {
 	variant?: 'basic' | 'small';
 	onUrlInputChange: (url: string) => void;
 	selectedInfo?: UrlInfo[];
 	urlInfo?: UrlInfo[];
 }
 
-const CategoryInputUrl = ({ variant = 'basic', onUrlInputChange, selectedInfo, urlInfo }: CategoryInputUrlProps) => {
+const InputCategoryUrl = ({ variant = 'basic', onUrlInputChange, selectedInfo, urlInfo }: InputCategoryUrlProps) => {
 	const [url, setUrl] = useState('');
 	const [isUrlValidated, setIsUrlValidated] = useState<boolean | null>(null);
 	const [errorMessage, setErrorMessage] = useState<string>('');
@@ -75,4 +75,4 @@ const CategoryInputUrl = ({ variant = 'basic', onUrlInputChange, selectedInfo, u
 	);
 };
 
-export default CategoryInputUrl;
+export default InputCategoryUrl;

@@ -14,7 +14,7 @@ interface CustomHeaderProps {
 	nextMonthButtonDisabled: boolean;
 }
 
-const CalendarHeader: React.FC<CustomHeaderProps> = ({
+const HeaderCalendar: React.FC<CustomHeaderProps> = ({
 	date,
 	decreaseMonth,
 	increaseMonth,
@@ -42,4 +42,4 @@ const CalendarHeader: React.FC<CustomHeaderProps> = ({
 		</div>
 	);
 };
-export default CalendarHeader;
+export default HeaderCalendar;

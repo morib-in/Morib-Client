@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 
 import ButtonSVG from '@/shared/components/ButtonSVG';
+import CalendarTemporary from '@/shared/components/CalendarTemporary';
 
 import { useCalendar } from '@/shared/hooks/useCalendar';
 import useClickOutside from '@/shared/hooks/useClickOutside';
@@ -13,8 +14,6 @@ import { Task } from '@/shared/types/home';
 
 import ButtonAddIcon from '@/shared/assets/svgs/btn_task_add.svg?react';
 import MeatBallDefault from '@/shared/assets/svgs/todo_meatball_default.svg?react';
-
-import CalendarTemporary from '@/components/CalendarTemporary';
 
 import BoxTodo from './BoxTodo';
 import BoxTodoInput from './BoxTodoInput';

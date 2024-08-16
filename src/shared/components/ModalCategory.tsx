@@ -13,7 +13,7 @@ export interface CategoryRef {
 	close: () => void;
 }
 
-const CategoryModal = forwardRef<CategoryRef, CategoryProps>(function CategoryModal({ children }: CategoryProps, ref) {
+const ModalCategory = forwardRef<CategoryRef, CategoryProps>(function CategoryModal({ children }: CategoryProps, ref) {
 	const queryClient = useQueryClient();
 	const dialogRef = useRef<HTMLDialogElement>(null);
 
@@ -42,4 +42,4 @@ const CategoryModal = forwardRef<CategoryRef, CategoryProps>(function CategoryMo
 	);
 });
 
-export default CategoryModal;
+export default ModalCategory;

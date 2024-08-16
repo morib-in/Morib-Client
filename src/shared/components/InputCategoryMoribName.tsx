@@ -2,7 +2,7 @@ import React from 'react';
 
 import ErrorIcon from '@/shared/assets/svgs/description.svg?react';
 
-interface CategoryMoribNameInputProps {
+interface InputCategoryMoribNameProps {
 	value: string;
 	onNameChange: (value: string) => void;
 	isValid?: boolean;
@@ -11,14 +11,14 @@ interface CategoryMoribNameInputProps {
 	maxLength?: number | undefined;
 }
 
-const CategoryMoribNameInput = ({
+const InputCategoryMoribName = ({
 	value,
 	onNameChange,
 	isValid,
 	placeholder,
 	errorMessage,
 	maxLength,
-}: CategoryMoribNameInputProps) => {
+}: InputCategoryMoribNameProps) => {
 	const defaultStyle =
 		'subhead-med-18 h-[4.6rem] w-[34rem] rounded-[8px] border-[1px] bg-gray-bg-03 px-[2rem] py-[1rem] text-white placeholder-gray-03 focus:outline-none';
 	const optionalStyle = isValid === false ? 'border-error-01' : 'border-gray-bg-07';
@@ -47,4 +47,4 @@ const CategoryMoribNameInput = ({
 	);
 };
 
-export default CategoryMoribNameInput;
+export default InputCategoryMoribName;
