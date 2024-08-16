@@ -4,7 +4,7 @@ import { createBrowserRouter } from 'react-router-dom';
 
 import HomePage from '@/pages/HomePage/HomePage';
 import LoginPage from '@/pages/LoginPage';
-import TimerPage from '@/pages/TimerPage';
+import TimerPage from '@/pages/TimerPage/TimerPage';
 
 import RedirectPage from './pages/RedirectPage';
 import { ROUTES } from './shared/constants/router';

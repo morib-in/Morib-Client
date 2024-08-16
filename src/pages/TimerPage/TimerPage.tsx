@@ -14,12 +14,13 @@ import { splitTasksByCompletion } from '@/shared/utils/timer';
 
 import HamburgerIcon from '@/shared/assets/svgs/btn_hamburger.svg?react';
 
-import FriendInfoCarousel from '@/components/molecules/FriendInfoCarousel';
-import Timer from '@/components/molecules/Timer';
-import TimerSideBar from '@/components/molecules/TimerSideBar';
-import TimerSideBox from '@/components/molecules/TimerSideBoxTemporary';
-import TimerTitle from '@/components/molecules/TimerTitle';
 import TimerPageTemplates from '@/components/templates/TimerPageTemplates';
+
+import Carousel from './components/Carousel';
+import SideBarTimer from './components/SideBarTimer';
+import SideBoxTemporary from './components/SideBoxTemporary';
+import Timer from './components/Timer';
+import TitleTimer from './components/TitleTimer';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -76,8 +77,6 @@ const TimerPage: React.FC = () => {
 		}
 	}, [todos, selectedTodo]);
 
-	console.log(todos);
-
 	const { data: setData } = useGetMoribSet(selectedTodo || 0);
 
 	const urls = useMemo(() => setData?.data.map((item: MoribSetData) => item.url.trim()) || [], [setData]);
@@ -101,16 +100,14 @@ const TimerPage: React.FC = () => {
 	if (isLoading) return <div>Loading...</div>;
 	if (error) return <div>Error loading todos</div>;
 
-	console.log(targetCategoryName);
-
 	return (
 		<TimerPageTemplates>
 			<div className="relative flex h-[108rem] w-[192rem] bg-[url('@/shared/assets/images/img_timer_bg.png')]">
 				<div className="absolute left-0">
-					<TimerSideBox />
+					<SideBoxTemporary />
 				</div>
 				<div className="ml-[56.6rem] mt-[-0.8rem]">
-					<TimerTitle targetName={targetName} targetCategoryName={targetCategoryName} />
+					<TitleTimer targetName={targetName} targetCategoryName={targetCategoryName} />
 					<Timer
 						selectedTodo={selectedTodo}
 						totalTimeOfToday={tasktotaltime.totalTimeOfToday}
@@ -122,7 +119,7 @@ const TimerPage: React.FC = () => {
 						timerIncreasedTime={timerIncreasedTime}
 						resetIncreasedSideBarTime={resetIncreasedSideBarTime}
 					/>
-					<FriendInfoCarousel />
+					<Carousel />
 				</div>
 				<button
 					onClick={toggleSidebar}
@@ -133,7 +130,7 @@ const TimerPage: React.FC = () => {
 				{isSidebarOpen && (
 					<div className="absolute inset-0 z-10 bg-dim">
 						<div className="absolute inset-y-0 right-0 flex justify-end overflow-hidden">
-							<TimerSideBar
+							<SideBarTimer
 								targetTime={targetTime}
 								ongoingTodos={ongoingTasks}
 								completedTodos={completedTasks}

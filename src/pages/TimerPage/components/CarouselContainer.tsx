@@ -1,8 +1,10 @@
-import ClockIcon from '@/shared/assets/svgs/icon_clock.svg?react';
 import useCarouselTimer from '@/shared/hooks/useCarouselTimer';
+
 import { formatSeconds } from '@/shared/utils/time';
 
-interface UserFriendDataProps {
+import ClockIcon from '@/shared/assets/svgs/icon_clock.svg?react';
+
+interface CarouselContainerProps {
 	image: string;
 	name: string;
 	time: number;
@@ -10,7 +12,7 @@ interface UserFriendDataProps {
 	isPlaying: boolean;
 }
 
-const FriendInfo = ({ image, name, time, categoryname, isPlaying }: UserFriendDataProps) => {
+const CarouselContainer = ({ image, name, time, categoryname, isPlaying }: CarouselContainerProps) => {
 	const timer = useCarouselTimer({ isPlaying, previousTime: time });
 	const formattedTime = formatSeconds(timer);
 
@@ -27,4 +29,4 @@ const FriendInfo = ({ image, name, time, categoryname, isPlaying }: UserFriendDa
 	);
 };
 
-export default FriendInfo;
+export default CarouselContainer;
