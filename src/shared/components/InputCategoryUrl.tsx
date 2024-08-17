@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 
-import ErrorIcon from '@/shared/assets/svgs/description.svg?react';
 import { isUrlValid } from '@/shared/utils/isUrlValid/index';
+
+import ErrorIcon from '@/shared/assets/svgs/description.svg?react';
 
 interface UrlInfo {
 	url: string;
@@ -9,14 +10,14 @@ interface UrlInfo {
 	favicon: string;
 }
 
-interface CategoryUrlInputProps {
+interface InputCategoryUrlProps {
 	variant?: 'basic' | 'small';
 	onUrlInputChange: (url: string) => void;
 	selectedInfo?: UrlInfo[];
 	urlInfo?: UrlInfo[];
 }
 
-const CategoryUrlInput = ({ variant = 'basic', onUrlInputChange, selectedInfo, urlInfo }: CategoryUrlInputProps) => {
+const InputCategoryUrl = ({ variant = 'basic', onUrlInputChange, selectedInfo, urlInfo }: InputCategoryUrlProps) => {
 	const [url, setUrl] = useState('');
 	const [isUrlValidated, setIsUrlValidated] = useState<boolean | null>(null);
 	const [errorMessage, setErrorMessage] = useState<string>('');
@@ -74,4 +75,4 @@ const CategoryUrlInput = ({ variant = 'basic', onUrlInputChange, selectedInfo, u
 	);
 };
 
-export default CategoryUrlInput;
+export default InputCategoryUrl;

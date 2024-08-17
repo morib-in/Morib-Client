@@ -2,21 +2,23 @@ import { useEffect, useRef, useState } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
 
-import CalendarInput from '@/components/atoms/CalendarInput/index';
-import CategoryCommonBtn from '@/components/atoms/CategoryCommonBtn/index';
-import CategoryCommonTitle from '@/components/atoms/CategoryCommonTitle/index';
-import CategoryInputTitle from '@/components/atoms/CategoryInputTitle/index';
-import CategoryMoribContentPage from '@/components/atoms/CategoryMoribContentPage';
-import CategoryMoribContentUrl from '@/components/atoms/CategoryMoribContentUrl';
-import CategoryToggle from '@/components/atoms/CategoryToggle/index';
-import Calendar from '@/components/molecules/Calendar/index';
-import CategoryInputMoribName from '@/components/molecules/CategoryInputMoribName/index';
-import CategoryMoribContentSet from '@/components/molecules/CategoryMoribContentSet';
-import CategoryMoribSet from '@/components/molecules/CategoryMoribSet';
+import ButtonStatusToggle from '@/shared/components/ButtonStatusToggle';
+import Calendar from '@/shared/components/Calendar';
+import CalendarSelectedDate from '@/shared/components/CalendarSelectedDate';
+import CategoryCommonMoribSet from '@/shared/components/CategoryCommonMoribSet';
+import CategoryMoribName from '@/shared/components/CategoryMoribName';
+import CategoryMoribPageInfo from '@/shared/components/CategoryMoribPageInfo';
+import CategoryMoribSetAdd from '@/shared/components/CategoryMoribSetAdd';
+import CategoryMoribUrlInfo from '@/shared/components/CategoryMoribUrlInfo';
+import TitleCategory from '@/shared/components/TitleCategory';
 
 import { getTabName } from '@/shared/apis/tasks/axios/index';
 import { useGetTabName, usePostCategory } from '@/shared/apis/tasks/queries/index';
+
 import { formatCalendarApiDate } from '@/shared/utils/calendar/index';
+
+import CategoryCommonBtn from '@/components/atoms/CategoryCommonBtn/index';
+import CategoryCommonTitle from '@/components/atoms/CategoryCommonTitle/index';
 
 interface UrlInfo {
 	url: string;
@@ -24,11 +26,11 @@ interface UrlInfo {
 	favicon: string;
 }
 
-interface AddCategoryModalProps {
+interface ModalAddCategoryProps {
 	handleCloseModal: () => void;
 }
 
-const AddCategoryModal = ({ handleCloseModal }: AddCategoryModalProps) => {
+const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 	const [urlInfos, setUrlInfos] = useState<UrlInfo[]>([]);
 	const [selectedInfo, setSelectedInfo] = useState<UrlInfo[]>([]);
 	const [name, setName] = useState('');
@@ -221,16 +223,16 @@ const AddCategoryModal = ({ handleCloseModal }: AddCategoryModalProps) => {
 		<div className="">
 			<CategoryCommonTitle />
 			<div className="flex-start mt-[1.6rem] inline-flex gap-[4.4rem]">
-				<CategoryInputMoribName name={name} onNameChange={handleNameChange} />
+				<CategoryMoribName name={name} onNameChange={handleNameChange} />
 				<div ref={calendarRef}>
 					<div className="mt-[1rem] flex items-center gap-[1rem]">
-						<CategoryInputTitle title="날짜" />
+						<TitleCategory title="날짜" />
 						<div className="mb-[0.6rem]">
-							<CategoryToggle isToggleOn={isDateToggleOn} onToggle={handleDateToggle} />
+							<ButtonStatusToggle isToggleOn={isDateToggleOn} onToggle={handleDateToggle} />
 						</div>
 					</div>
 					{isDateToggleOn && (
-						<CalendarInput
+						<CalendarSelectedDate
 							isPeriodOn={isPeriodOn}
 							selectedStartDate={selectedStartDate ?? defaultDate}
 							selectedEndDate={selectedEndDate ?? null}
@@ -255,7 +257,7 @@ const AddCategoryModal = ({ handleCloseModal }: AddCategoryModalProps) => {
 			</div>
 
 			<div className="flex flex-col">
-				<CategoryMoribSet
+				<CategoryMoribSetAdd
 					onUrlInputChange={handleUrlInputChange}
 					selectedInfo={selectedInfo}
 					handleSelectedInfo={(urlInfo: UrlInfo) => handleSelectedInfo(urlInfo)}
@@ -274,14 +276,14 @@ const AddCategoryModal = ({ handleCloseModal }: AddCategoryModalProps) => {
 					addInfos={addInfos}
 				/>
 				<div>
-					<CategoryMoribContentSet urlInfos={combinedInfos} variant="basic">
+					<CategoryCommonMoribSet urlInfos={combinedInfos} variant="basic">
 						{combinedInfos.map((urlInfo, url) => (
 							<tr key={url} className="flex h-[4.6rem] gap-[1.2rem] border-b border-gray-bg-04 px-[0.8rem]">
-								<CategoryMoribContentPage urlInfo={urlInfo} variant="basic" />
-								<CategoryMoribContentUrl urlInfo={urlInfo} variant="basic" />
+								<CategoryMoribPageInfo urlInfo={urlInfo} variant="basic" />
+								<CategoryMoribUrlInfo urlInfo={urlInfo} variant="basic" />
 							</tr>
 						))}
-					</CategoryMoribContentSet>
+					</CategoryCommonMoribSet>
 				</div>
 			</div>
 
@@ -297,4 +299,4 @@ const AddCategoryModal = ({ handleCloseModal }: AddCategoryModalProps) => {
 	);
 };
 
-export default AddCategoryModal;
+export default ModalAddCategory;

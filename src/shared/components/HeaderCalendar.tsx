@@ -1,7 +1,8 @@
 import React from 'react';
 
-import ArrownIcon from '@/shared/assets/svgs/btn_arrow_bgNone.svg?react';
 import { formatCalendarTitle } from '@/shared/utils/calendar/index';
+
+import ArrowIcon from '@/shared/assets/svgs/btn_arrow_bgNone.svg?react';
 
 const weekDays = ['일', '월', '화', '수', '목', '금', '토'];
 
@@ -12,7 +13,8 @@ interface CustomHeaderProps {
 	prevMonthButtonDisabled: boolean;
 	nextMonthButtonDisabled: boolean;
 }
-const CalendarCustomHeader: React.FC<CustomHeaderProps> = ({
+
+const HeaderCalendar: React.FC<CustomHeaderProps> = ({
 	date,
 	decreaseMonth,
 	increaseMonth,
@@ -24,10 +26,10 @@ const CalendarCustomHeader: React.FC<CustomHeaderProps> = ({
 			<div className="mb-[1.3rem] flex">
 				<p className="body-med-16 ml-[1.5rem] mr-[0.8rem] text-white">{formatCalendarTitle(date)}</p>
 				<button onClick={decreaseMonth} disabled={prevMonthButtonDisabled} aria-label="Previous Month">
-					<ArrownIcon />
+					<ArrowIcon />
 				</button>
 				<button onClick={increaseMonth} disabled={nextMonthButtonDisabled} aria-label="Next Month">
-					<ArrownIcon className="rotate-180" />
+					<ArrowIcon className="rotate-180" />
 				</button>
 			</div>
 			<div className="p-[1rem]">
@@ -40,4 +42,4 @@ const CalendarCustomHeader: React.FC<CustomHeaderProps> = ({
 		</div>
 	);
 };
-export default CalendarCustomHeader;
+export default HeaderCalendar;

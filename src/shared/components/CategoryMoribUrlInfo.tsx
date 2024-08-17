@@ -6,13 +6,13 @@ interface UrlInfo {
 	favicon: string;
 }
 
-interface CategoryMoribContentProps {
+interface CategoryMoribUrlInfoProps {
 	urlInfo: UrlInfo;
 	variant: 'basic' | 'smallLeft' | 'smallRight';
 	children?: React.ReactNode;
 }
 
-const CategoryMoribContentUrl = ({ urlInfo, variant, children }: CategoryMoribContentProps) => {
+const CategoryMoribUrlInfo = ({ urlInfo, variant, children }: CategoryMoribUrlInfoProps) => {
 	const sizeVariant = {
 		basic: {
 			urlWidth: 'w-[39.2rem]',
@@ -34,4 +34,4 @@ const CategoryMoribContentUrl = ({ urlInfo, variant, children }: CategoryMoribCo
 	);
 };
 
-export default CategoryMoribContentUrl;
+export default CategoryMoribUrlInfo;

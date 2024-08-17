@@ -4,12 +4,12 @@ interface UrlInfo {
 	favicon: string;
 }
 
-interface CategoryMoribContentProps {
+interface CategoryMoribPageInfoProps {
 	urlInfo: UrlInfo;
 	variant: 'basic' | 'smallLeft' | 'smallRight';
 }
 
-const CategoryMoribContentPage = ({ urlInfo, variant }: CategoryMoribContentProps) => {
+const CategoryMoribPageInfo = ({ urlInfo, variant }: CategoryMoribPageInfoProps) => {
 	const sizeVariant = {
 		basic: {
 			pageWidth: 'w-[22.8rem]',
@@ -32,4 +32,4 @@ const CategoryMoribContentPage = ({ urlInfo, variant }: CategoryMoribContentProp
 	);
 };
 
-export default CategoryMoribContentPage;
+export default CategoryMoribPageInfo;

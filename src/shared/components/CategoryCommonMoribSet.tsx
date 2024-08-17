@@ -6,13 +6,13 @@ interface UrlInfo {
 	favicon: string;
 }
 
-interface CategoryMoribContentProps {
+interface CategoryCommonMoribSetProps {
 	variant: 'basic' | 'smallLeft' | 'smallRight';
 	urlInfos: UrlInfo[];
 	children?: React.ReactNode;
 }
 
-const CategoryMoribContentSet = ({ variant, urlInfos, children }: CategoryMoribContentProps) => {
+const CategoryCommonMoribSet = ({ variant, urlInfos, children }: CategoryCommonMoribSetProps) => {
 	const sizeVariant = {
 		basic: {
 			height: 'h-[36.8rem]',
@@ -81,4 +81,4 @@ const CategoryMoribContentSet = ({ variant, urlInfos, children }: CategoryMoribC
 	);
 };
 
-export default CategoryMoribContentSet;
+export default CategoryCommonMoribSet;

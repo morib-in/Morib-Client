@@ -1,10 +1,10 @@
 import ArrowCircleUpRight from '@/shared/assets/svgs/arrow_circle_up_right.svg?react';
 
-interface GetCategoryBtnProps {
+interface ButtonGetCategoryRapidlyProps {
 	onMoveCategoryModal: () => void;
 }
 
-const GetCategoryBtn = ({ onMoveCategoryModal }: GetCategoryBtnProps) => {
+const ButtonGetCategoryRapidly = ({ onMoveCategoryModal }: ButtonGetCategoryRapidlyProps) => {
 	return (
 		<button
 			className="mb-[0.6rem] flex items-center gap-[0.8rem] rounded-[5px] bg-gray-bg-04 px-[1.2rem] py-[0.8rem]"
@@ -16,4 +16,4 @@ const GetCategoryBtn = ({ onMoveCategoryModal }: GetCategoryBtnProps) => {
 	);
 };
 
-export default GetCategoryBtn;
+export default ButtonGetCategoryRapidly;
