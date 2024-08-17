@@ -1,12 +1,12 @@
-import CategoryCommonMoribSet from '@/shared/components/CategoryCommonMoribSet';
-import CategoryMoribPageInfo from '@/shared/components/CategoryMoribPageInfo';
-import CategoryMoribUrlInfo from '@/shared/components/CategoryMoribUrlInfo';
-import InputCategoryUrl from '@/shared/components/InputCategoryUrl';
+import ButtonCategoryCommon from '@/shared/components/ButtonCategoryCommon';
+import TitleCategoryModalRight from '@/shared/components/TitleCategoryModalRight';
 
 import MinusBtn from '@/shared/assets/svgs/minus_btn.svg?react';
 
-import CategoryCommonBtn from '@/components/atoms/CategoryCommonBtn';
-import CategoryModalRightTitle from '@/components/atoms/CategoryModalRightTitle';
+import CategoryMoribContentPage from '@/components/atoms/CategoryMoribContentPage';
+import CategoryMoribContentUrl from '@/components/atoms/CategoryMoribContentUrl';
+import CategoryUrlInput from '@/components/atoms/CategoryUrlInput';
+import CategoryMoribContentSet from '@/components/molecules/CategoryMoribContentSet';
 
 interface UrlInfo {
 	url: string;
@@ -37,7 +37,7 @@ const CategoryModalRight = ({
 	return (
 		<div className="flex h-[80rem] w-[61.2rem] flex-col items-end justify-between rounded-r-[1rem] bg-gray-bg-03 pb-[3rem] pl-[3rem] pr-[4.3rem] pt-[9.7rem]">
 			<div className="mb-[8px] flex w-full flex-row justify-start">
-				<CategoryModalRightTitle msetName={moribSetName} />
+				<TitleCategoryModalRight msetName={moribSetName} />
 			</div>
 			<div className="flex w-full flex-col">
 				<InputCategoryUrl
@@ -63,20 +63,20 @@ const CategoryModalRight = ({
 			</CategoryCommonMoribSet>
 
 			<div className="mt-[3rem] flex gap-[16px]">
-				<CategoryCommonBtn
+				<ButtonCategoryCommon
 					variant="취소"
 					handleCloseModal={handleCloseModal}
 					handleClearModalData={handleClearModalData}
 				>
 					취소
-				</CategoryCommonBtn>
-				<CategoryCommonBtn
+				</ButtonCategoryCommon>
+				<ButtonCategoryCommon
 					variant="완료"
 					handleCloseModal={handleCloseModal}
 					handleClearModalData={handleClearModalData}
 				>
 					완료
-				</CategoryCommonBtn>
+				</ButtonCategoryCommon>
 			</div>
 		</div>
 	);

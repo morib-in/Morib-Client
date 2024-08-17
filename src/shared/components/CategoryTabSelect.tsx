@@ -1,4 +1,4 @@
-import CategoryTabBtn from '@/components/atoms/CategoryTabBtn';
+import ButtonCategoryTab from '@/shared/components/ButtonCategoryTab';
 
 interface Tabs {
 	id: number;
@@ -15,7 +15,7 @@ const CategoryTabSelect = ({ tabs, handleTabChange, isSelectedTab }: TabSelectPr
 	return (
 		<>
 			{tabs.map((tab) => (
-				<CategoryTabBtn
+				<ButtonCategoryTab
 					tabId={tab.id}
 					key={tab.id}
 					onClick={() => {
@@ -24,7 +24,7 @@ const CategoryTabSelect = ({ tabs, handleTabChange, isSelectedTab }: TabSelectPr
 					activeTab={isSelectedTab}
 				>
 					{tab.name}
-				</CategoryTabBtn>
+				</ButtonCategoryTab>
 			))}
 		</>
 	);
