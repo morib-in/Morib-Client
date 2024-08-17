@@ -123,7 +123,7 @@ const CategoryModalLeft = ({
 					selectedOption={selectedOption}
 				/>
 			</div>
-			<CategoryMoribContentSet variant="smallLeft" urlInfos={urlInfos}>
+			<CategoryCommonMoribSet variant="smallLeft" urlInfos={urlInfos}>
 				{isSelectedTab !== 2 &&
 					urlInfos.map((urlInfo: UrlInfo) => (
 						<tr
@@ -131,17 +131,17 @@ const CategoryModalLeft = ({
 							className="group flex h-[4.6rem] w-[100%] gap-[1.2rem] border-b border-gray-bg-04 px-[0.8rem] hover:bg-gray-bg-04"
 							onClick={() => handleSelectedInfo(urlInfo)}
 						>
-							<CategoryMoribContentPage urlInfo={urlInfo} variant="smallLeft" />
-							<CategoryMoribContentUrl urlInfo={urlInfo} variant="smallLeft">
+							<CategoryMoribPageInfo urlInfo={urlInfo} variant="smallLeft" />
+							<CategoryMoribUrlInfo urlInfo={urlInfo} variant="smallLeft">
 								<div className="p-[1.25rem]">
 									<button type="button">
 										<AddBtn className="fill-gray-bg-07 group-hover:fill-mint-02-hover group-active:fill-mint-02-press" />
 									</button>
 								</div>
-							</CategoryMoribContentUrl>
+							</CategoryMoribUrlInfo>
 						</tr>
 					))}
-			</CategoryMoribContentSet>
+			</CategoryCommonMoribSet>
 		</div>
 	);
 };
