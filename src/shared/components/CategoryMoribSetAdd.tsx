@@ -4,7 +4,7 @@ import ButtonGetCategoryRapidly from '@/shared/components/ButtonGetCategoryRapid
 import InputCategoryUrl from '@/shared/components/InputCategoryUrl';
 import TitleCategory from '@/shared/components/TitleCategory';
 
-import AddCategoryListModal from '@/components/templates/AddCategoryListModal';
+import AddCategoryListModal from './AddCategoryListModal';
 
 interface UrlInfo {
 	url: string;
