@@ -21,15 +21,23 @@ const ProtectedRoute = () => {
 
 const router: Router = createBrowserRouter([
 	{
-		path: ROUTES_CONFIG.login.path,
-		element: <LoginPage />,
-	},
-	{
-		path: ROUTES_CONFIG.redirect.path,
-		element: <RedirectPage />,
+		//public 라우트들
+		path: '/',
+		element: <Outlet />,
+		children: [
+			{
+				path: ROUTES_CONFIG.login.path,
+				element: <LoginPage />,
+			},
+			{
+				path: ROUTES_CONFIG.redirect.path,
+				element: <RedirectPage />,
+			},
+		],
 	},
 
 	{
+		//권한이 있어야 접근 가능한 라우트들
 		path: '/',
 		element: <ProtectedRoute />,
 		children: [
@@ -42,6 +50,12 @@ const router: Router = createBrowserRouter([
 				element: <TimerPage />,
 			},
 		],
+	},
+
+	{
+		//404 페이지
+		path: '*',
+		element: <div className="text-3xl">잘못 찾아오셨어요!</div>,
 	},
 ]);
 
