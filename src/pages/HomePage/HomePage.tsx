@@ -25,8 +25,9 @@ import BellIcon from '@/shared/assets/svgs/bell.svg?react';
 import FriendSettingIcon from '@/shared/assets/svgs/friend_setting.svg?react';
 import LargePlusIcon from '@/shared/assets/svgs/large_plus.svg?react';
 
-import HomePageWrapper from '@/components/templates/HomePageWrapper';
 import { ROUTES_CONFIG } from '@/router/routesConfig';
+
+import HomePageWrapper from '@/components/templates/HomePageWrapper';
 
 import ButtonSVG from '../../shared/components/ButtonSVG';
 import BoxCategory from './components/BoxCategory';
