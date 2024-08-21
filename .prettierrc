@@ -27,6 +27,7 @@
     "^@/shared/types/(.*)$",
     "^@/shared/constants/(.*)$",
     "^@/shared/assets/(.*)$",
+    "^@/router/(.*)$",
     "^@/(.*)$",
     "^[./]"
   ],
