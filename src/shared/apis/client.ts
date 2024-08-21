@@ -1,7 +1,8 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
-import { ROUTES } from '@/shared/constants/router';
 import { getAccessTotken } from '@/shared/utils/token';
+
+import { ROUTES_CONFIG } from '@/router/routesConfig';
 
 // import { reissueToken } from './auth/axios';
 
@@ -29,7 +30,7 @@ const addAuthInterceptor = (axiosClient: AxiosInstance) => {
 	axiosClient.interceptors.request.use(async (config) => {
 		const accessToken = getAccessTotken();
 		if (!accessToken) {
-			window.location.href = ROUTES.login.path;
+			window.location.href = ROUTES_CONFIG.login.path;
 		}
 
 		config.headers.Authorization = `Bearer ${accessToken}`;
@@ -47,7 +48,7 @@ const addAuthInterceptor = (axiosClient: AxiosInstance) => {
 	// 			try {
 	// 				reissueToken();
 	// 			} catch (reissueError) {
-	// 				window.location.href = ROUTES.login.path;
+	// 				window.location.href = ROUTES_CONFIG.login.path;
 	// 			}
 	// 		}
 	// 		return Promise.reject(e);

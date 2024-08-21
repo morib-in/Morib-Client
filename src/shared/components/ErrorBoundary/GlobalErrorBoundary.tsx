@@ -2,7 +2,7 @@ import { Component, ReactNode } from 'react';
 
 import { AxiosError } from 'axios';
 
-import { ERROR_CODES } from '@/shared/constants/error';
+// import { ERROR_CODES } from '@/shared/constants/error';
 
 interface GlobalErrorBoundaryProps {
 	children: ReactNode;
@@ -44,6 +44,7 @@ class GlobalErrorBoundary extends Component<GlobalErrorBoundaryProps, GlobalErro
 			return this.props.children;
 		}
 
+		// Todo: 실제 UI가 나오면 fallback에 적용하기
 		// // 네트워크 에러 처리
 		// if (
 		// 	error instanceof AxiosError &&
@@ -62,8 +63,15 @@ class GlobalErrorBoundary extends Component<GlobalErrorBoundaryProps, GlobalErro
 		// 	return <Maintenance />;
 		// }
 
-		// // 알 수 없는 에러 처리
+		// 알 수 없는 에러 처리
 		// return <UnknownError onClickRetry={this.resetError} />;
+
+		if (error)
+			return (
+				<button onClick={this.resetError} className="text-3xl">
+					글로벌 에러 발생했어요~
+				</button>
+			);
 	}
 }
 
