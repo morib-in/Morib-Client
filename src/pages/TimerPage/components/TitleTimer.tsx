@@ -1,6 +1,3 @@
-import TitleCategory from './TitleCategory';
-import TitleTodo from './TitleTodo';
-
 interface titleNameProps {
 	targetName: string;
 	targetCategoryName: string;
@@ -9,8 +6,8 @@ interface titleNameProps {
 const TitleTimer = ({ targetName, targetCategoryName }: titleNameProps) => {
 	return (
 		<div className="mt-[8.6rem] flex flex-col items-center gap-[1rem]">
-			<TitleTodo title={targetName} />
-			<TitleCategory title={targetCategoryName} />
+			<h1 className="title-semibold-64 text-white">{targetName}</h1>;
+			<h2 className="title-med-32 text-gray-04">{targetCategoryName}</h2>;
 		</div>
 	);
 };
