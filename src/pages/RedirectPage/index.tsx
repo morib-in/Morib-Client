@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 // import { useLocation } from 'react-router-dom';
 // import { useSignUp } from '@/shared/apis/auth/queries';
-import { ROUTES } from '@/shared/constants/router';
+import { ROUTES_CONFIG } from '@/router/routesConfig';
 
 const RedirectPage = () => {
 	//Todo: 서버 이슈로 로그인 관련 로직 앱잼 끝나고 사용
@@ -29,7 +29,7 @@ const RedirectPage = () => {
 	// }, [error, navigate, data]);
 
 	useEffect(() => {
-		navigate(ROUTES.home.path, { replace: true });
+		navigate(ROUTES_CONFIG.home.path, { replace: true });
 	}, [navigate]);
 
 	return <div>RedirectPage</div>;

@@ -19,13 +19,12 @@ import { getDailyCategoryTask, isTaskExist, splitTasksByCompletion } from '@/sha
 
 import { Task } from '@/shared/types/home';
 
-import { ROUTES } from '@/shared/constants/router';
-
 import BellIcon from '@/shared/assets/svgs/bell.svg?react';
 import FriendSettingIcon from '@/shared/assets/svgs/friend_setting.svg?react';
 import LargePlusIcon from '@/shared/assets/svgs/large_plus.svg?react';
 
 import HomePageWrapper from '@/components/templates/HomePageWrapper';
+import { ROUTES_CONFIG } from '@/router/routesConfig';
 
 import ButtonSVG from '../../shared/components/ButtonSVG';
 import BoxCategory from './components/BoxCategory';
@@ -126,7 +125,7 @@ const HomePage = () => {
 
 		createTodayTodos(dataToPost, {
 			onSuccess: () => {
-				navigate(ROUTES.timer.path);
+				navigate(ROUTES_CONFIG.timer.path);
 			},
 		});
 	};
