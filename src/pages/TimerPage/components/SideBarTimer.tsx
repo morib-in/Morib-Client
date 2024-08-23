@@ -19,12 +19,9 @@ interface CategoryBoxProps {
 	completedTodos: Todo[];
 	ongoingTodos: Todo[];
 	toggleSidebar: () => void;
-	setSelectedTodo: (id: number) => void;
-	setTargetTime: (time: number) => void;
-	setTargetName: (name: string) => void;
+	handleTodoSelection: (id: number, time: number, name: string, categoryName: string) => void;
 	selectedTodo: number | null;
-	setIsPlaying: (isPlaying: boolean) => void;
-	setTargetCategoryName: (name: string) => void;
+	handlePlayToggle: (isPlaying: boolean) => void;
 	isPlaying: boolean;
 	targetTime: number;
 	formattedTodayDate: string;
@@ -38,17 +35,14 @@ const TimerSideBar = ({
 	ongoingTodos = [],
 	completedTodos = [],
 	toggleSidebar,
-	setSelectedTodo,
-	setTargetTime,
-	setTargetName,
+	handleTodoSelection,
 	selectedTodo,
-	setIsPlaying,
+	handlePlayToggle,
 	isPlaying,
 	formattedTodayDate,
 	resetTimerIncreasedTime,
 	timerIncreasedTime,
 	increasedSideBarTime,
-	setTargetCategoryName,
 	resetIncreasedSideBarTime,
 }: CategoryBoxProps) => {
 	const { animate, handleClose } = useCloseSidebar(toggleSidebar);
@@ -65,7 +59,7 @@ const TimerSideBar = ({
 					{ id: selectedTodo, elapsedTime: timerIncreasedTime, targetDate: formattedTodayDate },
 					{
 						onSuccess: () => {
-							setIsPlaying(false);
+							handlePlayToggle(false);
 							queryClient.invalidateQueries({ queryKey: ['todo', formattedTodayDate] });
 							resetIncreasedSideBarTime();
 						},
@@ -74,10 +68,7 @@ const TimerSideBar = ({
 			}
 		}
 		resetTimerIncreasedTime();
-		setSelectedTodo(id);
-		setTargetTime(time);
-		setTargetName(name);
-		setTargetCategoryName(categoryName);
+		handleTodoSelection(id, time, name, categoryName);
 	};
 
 	if (isError) {
@@ -90,7 +81,7 @@ const TimerSideBar = ({
 				{ id: selectedTodo, elapsedTime: increasedSideBarTime, targetDate: formattedTodayDate },
 				{
 					onSuccess: () => {
-						setIsPlaying(false);
+						handlePlayToggle(false);
 						navigate('/home');
 					},
 				},

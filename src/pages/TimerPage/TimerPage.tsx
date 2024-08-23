@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import useTimerCount from '@/shared/hooks/useTimerCount';
 import useToggleSidebar from '@/shared/hooks/useToggleSideBar';
@@ -29,15 +29,15 @@ interface MoribSetData {
 	url: string;
 }
 
-const TimerPage: React.FC = () => {
+const TimerPage = () => {
 	const { mutate: stopTimer } = usePostTimerStop();
 	const { isSidebarOpen, toggleSidebar } = useToggleSidebar();
 	const todayDate = dayjs().tz('Asia/Seoul');
 	const formattedTodayDate = todayDate.format('YYYY-MM-DD');
+
 	const { data: todosData, isLoading, error } = useGetTodoList(formattedTodayDate);
 
-	const todos = useMemo(() => todosData?.data.task || [], [todosData]);
-	const tasktotaltime = todosData?.data || [];
+	const { task: todos = [], totalTimeOfToday = 0 } = todosData?.data || {};
 
 	const { ongoingTasks, completedTasks } = useMemo(() => splitTasksByCompletion(todos), [todos]);
 
@@ -79,7 +79,7 @@ const TimerPage: React.FC = () => {
 
 	const { data: setData } = useGetMoribSet(selectedTodo || 0);
 
-	const urls = useMemo(() => setData?.data.map((item: MoribSetData) => item.url.trim()) || [], [setData]);
+	const urls = useMemo(() => setData?.data.map(({ url }: MoribSetData) => url.trim()) || [], [setData]);
 
 	const baseUrls = useMemo(() => {
 		const mappedUrls = urls.map(getBaseUrl);
@@ -97,6 +97,17 @@ const TimerPage: React.FC = () => {
 		getBaseUrl,
 	});
 
+	const handleTodoSelection = (id: number, time: number, name: string, categoryName: string) => {
+		setSelectedTodo(id);
+		setTargetTime(time);
+		setTargetName(name);
+		setTargetCategoryName(categoryName);
+	};
+
+	const handlePlayToggle = (isPlaying: boolean) => {
+		setIsPlaying(isPlaying);
+	};
+
 	if (isLoading) return <div>Loading...</div>;
 	if (error) return <div>Error loading todos</div>;
 
@@ -110,9 +121,9 @@ const TimerPage: React.FC = () => {
 					<TitleTimer targetName={targetName} targetCategoryName={targetCategoryName} />
 					<Timer
 						selectedTodo={selectedTodo}
-						totalTimeOfToday={tasktotaltime.totalTimeOfToday}
+						totalTimeOfToday={totalTimeOfToday}
 						targetTime={targetTime}
-						setIsPlaying={setIsPlaying}
+						handlePlayToggle={handlePlayToggle}
 						isPlaying={isPlaying}
 						formattedTodayDate={formattedTodayDate}
 						timerTime={timerTime}
@@ -135,12 +146,9 @@ const TimerPage: React.FC = () => {
 								ongoingTodos={ongoingTasks}
 								completedTodos={completedTasks}
 								toggleSidebar={toggleSidebar}
-								setTargetTime={setTargetTime}
-								setTargetName={setTargetName}
-								setTargetCategoryName={setTargetCategoryName}
-								setSelectedTodo={setSelectedTodo}
+								handleTodoSelection={handleTodoSelection}
 								selectedTodo={selectedTodo}
-								setIsPlaying={setIsPlaying}
+								handlePlayToggle={handlePlayToggle}
 								isPlaying={isPlaying}
 								formattedTodayDate={formattedTodayDate}
 								resetTimerIncreasedTime={resetTimerIncreasedTime}

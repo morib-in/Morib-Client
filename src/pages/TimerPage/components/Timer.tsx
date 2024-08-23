@@ -13,7 +13,7 @@ interface TaskTotalTimeProps {
 	totalTimeOfToday: number;
 	targetTime: number;
 	selectedTodo: number | null;
-	setIsPlaying: (isPlaying: boolean) => void;
+	handlePlayToggle: (isPlaying: boolean) => void;
 	isPlaying: boolean;
 	formattedTodayDate: string;
 	timerTime: number;
@@ -24,7 +24,7 @@ interface TaskTotalTimeProps {
 const Timer = ({
 	totalTimeOfToday,
 	selectedTodo,
-	setIsPlaying,
+	handlePlayToggle,
 	isPlaying,
 	formattedTodayDate,
 	timerTime,
@@ -43,14 +43,14 @@ const Timer = ({
 					{ id: selectedTodo, elapsedTime: timerIncreasedTime, targetDate: formattedTodayDate },
 					{
 						onSuccess: () => {
-							setIsPlaying(false);
+							handlePlayToggle(false);
 							queryClient.invalidateQueries({ queryKey: ['todo', formattedTodayDate] });
 							resetIncreasedSideBarTime();
 						},
 					},
 				);
 			} else {
-				setIsPlaying(true);
+				handlePlayToggle(true);
 			}
 		}
 		resetIncreasedSideBarTime();
