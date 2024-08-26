@@ -12,6 +12,7 @@ import useUrlHandler from '@/shared/hooks/useUrlHandler';
 import { useGetMoribSet, useGetTodoList, usePostTimerStop } from '@/shared/apis/timer/queries';
 
 import { splitTasksByCompletion } from '@/shared/utils/timer';
+import { getBaseUrl } from '@/shared/utils/url';
 
 import HamburgerIcon from '@/shared/assets/svgs/btn_hamburger.svg?react';
 
@@ -52,15 +53,6 @@ const TimerPage = () => {
 
 	const { data: setData } = useGetMoribSet(selectedTodo || 0);
 	const urls = useMemo(() => setData?.data.map(({ url }: MoribSetData) => url.trim()) || [], [setData]);
-
-	const getBaseUrl = (url: string) => {
-		try {
-			const urlObj = new URL(url);
-			return urlObj.origin;
-		} catch (error) {
-			return url;
-		}
-	};
 
 	const baseUrls = useMemo(() => {
 		const mappedUrls = urls.map(getBaseUrl);
