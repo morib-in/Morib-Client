@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 
 import CategoryTabSelect from '@/shared/components/CategoryTabSelect';
 import DropdownCategory from '@/shared/components/DropdownCategory';
-import TitleCategoryCommon from '@/shared/components/TitleCategoryCommon';
 
 import { getTabName } from '@/shared/apis/modal/axios';
 
@@ -106,7 +105,9 @@ const CategoryModalLeft = ({
 	return (
 		<div className="h-[80rem] w-[68.8rem] rounded-l-[10px] bg-gray-bg-04 py-[2.8rem] pl-[4.4rem] pr-[4.3rem]">
 			<div className="mb-[3.3rem]">
-				<TitleCategoryCommon />
+				<header>
+					<h1 className="head-bold-24 text-gray-04">카테고리 추가</h1>
+				</header>
 			</div>
 			<div className="mb-[8px]">
 				<CategoryTabSelect tabs={CATEGORY_MODALTABS} handleTabChange={handleTabChange} isSelectedTab={isSelectedTab} />

@@ -1,23 +1,23 @@
-import { useEffect, useRef, useState } from 'react';
+import { React, useEffect, useRef, useState } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
 
+import AddCategoryListModal from '@/shared/components/AddCategoryListModal';
 import ButtonCategoryCommon from '@/shared/components/ButtonCategoryCommon';
 import ButtonStatusToggle from '@/shared/components/ButtonStatusToggle';
 import Calendar from '@/shared/components/Calendar';
 import CalendarSelectedDate from '@/shared/components/CalendarSelectedDate';
 import CategoryCommonMoribSet from '@/shared/components/CategoryCommonMoribSet';
-import CategoryMoribName from '@/shared/components/CategoryMoribName';
 import CategoryMoribPageInfo from '@/shared/components/CategoryMoribPageInfo';
-import CategoryMoribSetAdd from '@/shared/components/CategoryMoribSetAdd';
 import CategoryMoribUrlInfo from '@/shared/components/CategoryMoribUrlInfo';
-import TitleCategory from '@/shared/components/TitleCategory';
-import TitleCategoryCommon from '@/shared/components/TitleCategoryCommon';
+import InputCategoryUrl from '@/shared/components/InputCategoryUrl';
 
 import { getTabName } from '@/shared/apis/tasks/axios/index';
 import { useGetTabName, usePostCategory } from '@/shared/apis/tasks/queries/index';
 
 import { formatCalendarApiDate } from '@/shared/utils/calendar/index';
+
+import ArrowCircleUpRight from '@/shared/assets/svgs/arrow_circle_up_right.svg?react';
 
 interface UrlInfo {
 	url: string;
@@ -91,10 +91,6 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 
 	const handleDeleteUrlInfo = (urlInfoToDelete: UrlInfo) => {
 		setSelectedInfo((prevUrlInfos) => prevUrlInfos.filter((urlInfo) => urlInfo.url !== urlInfoToDelete.url));
-	};
-
-	const handleNameChange = (name: string) => {
-		setName(name);
 	};
 
 	const defaultDate = new Date();
@@ -217,15 +213,54 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 		setSelectedOption('카테고리 추가');
 		setUrlData([]);
 	};
+	const nameInputDefaultStyle =
+		'subhead-med-18 h-[4.6rem] w-[34rem] rounded-[8px] border-[1px] bg-gray-bg-03 px-[2rem] py-[1rem] text-white placeholder-gray-03 focus:outline-none';
+	const handleValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setName(event.target.value);
+	};
+
+	const dialogRef = useRef<HTMLDialogElement>(null);
+	const showModal = () => {
+		handleUrlInfos();
+		dialogRef.current?.showModal();
+	};
+
+	const closeModal = () => {
+		dialogRef.current?.close();
+	};
+
+	const handleMoveToNextModal = () => {
+		setSelectedInfo([]);
+
+		showModal();
+	};
+
+	const handleCloseAddModal = () => {
+		addInfos(selectedInfo);
+		closeModal();
+	};
 
 	return (
-		<div className="">
-			<TitleCategoryCommon />
-			<div className="flex-start mt-[1.6rem] inline-flex gap-[4.4rem]">
-				<CategoryMoribName name={name} onNameChange={handleNameChange} />
+		<>
+			<header>
+				<h1 className="head-bold-24 text-gray-04">카테고리 추가</h1>
+			</header>
+			<section className="flex-start my-[2rem] mt-[1.6rem] inline-flex gap-[4.4rem]">
+				<section className="flex-col">
+					<h2 className="subhead-bold-22 pb-[1rem] pt-[1rem] text-white">이름 *</h2>
+					<input
+						type="text"
+						placeholder={'이름을 20자 이내로 작성해주세요.'}
+						className={nameInputDefaultStyle}
+						onChange={handleValueChange}
+						maxLength={20}
+						value={name}
+					/>
+				</section>
+
 				<div ref={calendarRef}>
 					<div className="mt-[1rem] flex items-center gap-[1rem]">
-						<TitleCategory title="날짜" />
+						<h2 className="subhead-bold-22 pb-[1rem] text-white">날짜</h2>
 						<div className="mb-[0.6rem]">
 							<ButtonStatusToggle isToggleOn={isDateToggleOn} onToggle={handleDateToggle} />
 						</div>
@@ -253,38 +288,54 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 						</div>
 					)}
 				</div>
-			</div>
+			</section>
 
-			<div className="flex flex-col">
-				<CategoryMoribSetAdd
-					onUrlInputChange={handleUrlInputChange}
-					selectedInfo={selectedInfo}
-					handleSelectedInfo={(urlInfo: UrlInfo) => handleSelectedInfo(urlInfo)}
-					handleDeleteUrlInfo={(url: UrlInfo) => handleDeleteUrlInfo(url)}
-					setSelectedInfo={setSelectedInfo}
-					urlInfo={urlInfos}
-					moribSetName={name}
-					urlData={urlData}
-					setUrlData={setUrlData}
-					isClicked={isClicked}
-					setIsClicked={setIsClicked}
-					selectedOption={selectedOption}
-					setSelectedOption={setSelectedOption}
-					handleClearModalData={handleClearModalData}
-					handleUrlInfos={handleUrlInfos}
-					addInfos={addInfos}
-				/>
-				<div>
-					<CategoryCommonMoribSet urlInfos={combinedInfos} variant="basic">
-						{combinedInfos.map((urlInfo, url) => (
-							<tr key={url} className="flex h-[4.6rem] gap-[1.2rem] border-b border-gray-bg-04 px-[0.8rem]">
-								<CategoryMoribPageInfo urlInfo={urlInfo} variant="basic" />
-								<CategoryMoribUrlInfo urlInfo={urlInfo} variant="basic" />
-							</tr>
-						))}
-					</CategoryCommonMoribSet>
-				</div>
-			</div>
+			<main className="flex flex-col">
+				<section>
+					<div className="flex justify-between">
+						<h2 className="subhead-bold-22 pb-[1rem] text-white">모립세트</h2>
+						<button
+							className="mb-[0.6rem] flex items-center gap-[0.8rem] rounded-[5px] bg-gray-bg-04 px-[1.2rem] py-[0.8rem]"
+							onClick={handleMoveToNextModal}
+							type="button"
+						>
+							<p className="pretendard my-[0.15rem] text-[1.4rem] font-normal leading-120 text-white">빠른 불러오기</p>
+							<ArrowCircleUpRight className="h-[2rem] w-[2rem]" />
+						</button>
+						<AddCategoryListModal
+							dialogRef={dialogRef}
+							handleCloseModal={handleCloseAddModal}
+							selectedInfo={selectedInfo}
+							handleSelectedInfo={(urlInfo: UrlInfo) => handleSelectedInfo(urlInfo)}
+							handleDeleteUrlInfo={(url: UrlInfo) => handleDeleteUrlInfo(url)}
+							setSelectedInfo={setSelectedInfo}
+							moribSetName={name}
+							urlData={urlData}
+							setUrlData={setUrlData}
+							isClicked={isClicked}
+							setIsClicked={setIsClicked}
+							selectedOption={selectedOption}
+							setSelectedOption={setSelectedOption}
+							handleClearModalData={handleClearModalData}
+							addInfos={addInfos}
+						/>
+					</div>
+					<InputCategoryUrl
+						variant="basic"
+						onUrlInputChange={(url: string) => handleUrlInputChange(url)}
+						urlInfo={urlInfos}
+					/>
+				</section>
+
+				<CategoryCommonMoribSet urlInfos={combinedInfos} variant="basic">
+					{combinedInfos.map((urlInfo, url) => (
+						<tr key={url} className="flex h-[4.6rem] gap-[1.2rem] border-b border-gray-bg-04 px-[0.8rem]">
+							<CategoryMoribPageInfo urlInfo={urlInfo} variant="basic" />
+							<CategoryMoribUrlInfo urlInfo={urlInfo} variant="basic" />
+						</tr>
+					))}
+				</CategoryCommonMoribSet>
+			</main>
 
 			<div className="mt-[3rem] flex justify-end gap-[1.6rem]">
 				<ButtonCategoryCommon variant="취소" handleCloseModal={handleClose}>
@@ -294,7 +345,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 					완료
 				</ButtonCategoryCommon>
 			</div>
-		</div>
+		</>
 	);
 };
 

@@ -21,7 +21,7 @@ interface Category {
 	endDate: string;
 }
 
-const CategoryDropdown = ({
+const DropdownCategory = ({
 	disabled,
 	handleOptionId,
 	optionData,
@@ -77,4 +77,4 @@ const CategoryDropdown = ({
 	);
 };
 
-export default CategoryDropdown;
+export default DropdownCategory;

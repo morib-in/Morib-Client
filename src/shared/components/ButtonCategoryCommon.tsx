@@ -8,7 +8,7 @@ interface CategoryBtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	handleClearModalData?: () => void;
 }
 
-const CategoryCommonBtn = ({
+const ButtonCategoryCommon = ({
 	disabled,
 	variant,
 	children,
@@ -49,4 +49,4 @@ const CategoryCommonBtn = ({
 	);
 };
 
-export default CategoryCommonBtn;
+export default ButtonCategoryCommon;
