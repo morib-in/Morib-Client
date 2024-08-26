@@ -46,7 +46,7 @@ const TimerPage = () => {
 
 	const { data: todosData, isLoading, error } = useGetTodoList(formattedTodayDate);
 	const { task: todos = [], totalTimeOfToday = 0 } = todosData?.data || {};
-	const { ongoingTasks, completedTasks } = useMemo(() => splitTasksByCompletion(todos), [todos]);
+	const { ongoingTasks, completedTasks } = splitTasksByCompletion(todos);
 
 	const [selectedTodo, setSelectedTodo] = useSelectedTodo(todos);
 	const [isPlaying, setIsPlaying] = useState(false);
@@ -65,6 +65,7 @@ const TimerPage = () => {
 	const targetCategoryTitle = selectedTodoData?.categoryName || '';
 
 	const { increasedTime } = useTimerCount({ isPlaying, previousTime: targetTime });
+
 	const {
 		timer: timerTime,
 		increasedTime: timerIncreasedTime,
@@ -95,8 +96,9 @@ const TimerPage = () => {
 		setIsPlaying(isPlaying);
 	};
 
-	if (isLoading) return <div>Loading...</div>;
-	if (error) return <div>Error loading todos</div>;
+	if (isLoading || error) {
+		return <div>{isLoading ? 'Loading...' : 'Error loading todos'}</div>;
+	}
 
 	return (
 		<TimerPageTemplates>
