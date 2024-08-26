@@ -2,8 +2,9 @@ import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 
+import { useSelectedTodo } from '@/shared/hooks/useSelectedTodo';
 import useTimerCount from '@/shared/hooks/useTimerCount';
 import useToggleSidebar from '@/shared/hooks/useToggleSideBar';
 import useUrlHandler from '@/shared/hooks/useUrlHandler';
@@ -46,14 +47,8 @@ const TimerPage = () => {
 	const { task: todos = [], totalTimeOfToday = 0 } = todosData?.data || {};
 	const { ongoingTasks, completedTasks } = useMemo(() => splitTasksByCompletion(todos), [todos]);
 
-	const [selectedTodo, setSelectedTodo] = useState<number | null>(null);
+	const [selectedTodo, setSelectedTodo] = useSelectedTodo(todos);
 	const [isPlaying, setIsPlaying] = useState(false);
-
-	useEffect(() => {
-		if (todos.length > 0 && selectedTodo === null) {
-			setSelectedTodo(todos[0].id);
-		}
-	}, [todos, selectedTodo]);
 
 	const { data: setData } = useGetMoribSet(selectedTodo || 0);
 	const urls = useMemo(() => setData?.data.map(({ url }: MoribSetData) => url.trim()) || [], [setData]);
