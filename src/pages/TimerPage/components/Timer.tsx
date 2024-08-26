@@ -18,6 +18,7 @@ interface TaskTotalTimeProps {
 	timerTime: number;
 	timerIncreasedTime: number;
 	resetIncreasedSideBarTime: () => void;
+	resetTimerIncreasedTime: () => void;
 }
 
 const Timer = ({
@@ -29,6 +30,7 @@ const Timer = ({
 	timerTime,
 	timerIncreasedTime,
 	resetIncreasedSideBarTime,
+	resetTimerIncreasedTime,
 }: TaskTotalTimeProps) => {
 	const queryClient = useQueryClient();
 	const accumulatedTime = totalTimeOfToday || 0;
@@ -43,8 +45,9 @@ const Timer = ({
 					{
 						onSuccess: () => {
 							handlePlayToggle(false);
-							queryClient.invalidateQueries({ queryKey: ['todo', formattedTodayDate] });
 							resetIncreasedSideBarTime();
+							resetTimerIncreasedTime();
+							queryClient.invalidateQueries({ queryKey: ['todo', formattedTodayDate] });
 						},
 					},
 				);
@@ -52,7 +55,6 @@ const Timer = ({
 				handlePlayToggle(true);
 			}
 		}
-		resetIncreasedSideBarTime();
 	};
 
 	if (isError) {

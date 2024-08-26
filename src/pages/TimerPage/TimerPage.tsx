@@ -29,6 +29,13 @@ interface MoribSetData {
 	url: string;
 }
 
+interface Todo {
+	id: number;
+	name: string;
+	targetTime: string;
+	categoryName: string;
+}
+
 const TimerPage = () => {
 	const { mutate: stopTimer } = usePostTimerStop();
 	const { isSidebarOpen, toggleSidebar } = useToggleSidebar();
@@ -36,16 +43,20 @@ const TimerPage = () => {
 	const formattedTodayDate = todayDate.format('YYYY-MM-DD');
 
 	const { data: todosData, isLoading, error } = useGetTodoList(formattedTodayDate);
-
 	const { task: todos = [], totalTimeOfToday = 0 } = todosData?.data || {};
-
 	const { ongoingTasks, completedTasks } = useMemo(() => splitTasksByCompletion(todos), [todos]);
 
-	const [targetTime, setTargetTime] = useState(0);
-	const [targetName, setTargetName] = useState('');
-	const [targetCategoryName, setTargetCategoryName] = useState('');
 	const [selectedTodo, setSelectedTodo] = useState<number | null>(null);
 	const [isPlaying, setIsPlaying] = useState(false);
+
+	useEffect(() => {
+		if (todos.length > 0 && selectedTodo === null) {
+			setSelectedTodo(todos[0].id);
+		}
+	}, [todos, selectedTodo]);
+
+	const { data: setData } = useGetMoribSet(selectedTodo || 0);
+	const urls = useMemo(() => setData?.data.map(({ url }: MoribSetData) => url.trim()) || [], [setData]);
 
 	const getBaseUrl = (url: string) => {
 		try {
@@ -55,6 +66,16 @@ const TimerPage = () => {
 			return url;
 		}
 	};
+
+	const baseUrls = useMemo(() => {
+		const mappedUrls = urls.map(getBaseUrl);
+		return [...mappedUrls, 'chrome://newtab'];
+	}, [urls]);
+
+	const selectedTodoData = todos.find((todo: Todo) => todo.id === selectedTodo);
+	const targetTime = selectedTodoData?.targetTime || '';
+	const targetTodoTitle = selectedTodoData?.name || '';
+	const targetCategoryTitle = selectedTodoData?.categoryName || '';
 
 	const { increasedTime } = useTimerCount({ isPlaying, previousTime: targetTime });
 	const {
@@ -68,24 +89,6 @@ const TimerPage = () => {
 		previousTime: targetTime,
 	});
 
-	useEffect(() => {
-		if (todos.length > 0 && selectedTodo === null) {
-			setTargetTime(todos[0].targetTime);
-			setTargetName(todos[0].name);
-			setTargetCategoryName(todos[0].categoryName);
-			setSelectedTodo(todos[0].id);
-		}
-	}, [todos, selectedTodo]);
-
-	const { data: setData } = useGetMoribSet(selectedTodo || 0);
-
-	const urls = useMemo(() => setData?.data.map(({ url }: MoribSetData) => url.trim()) || [], [setData]);
-
-	const baseUrls = useMemo(() => {
-		const mappedUrls = urls.map(getBaseUrl);
-		return [...mappedUrls, 'chrome://newtab'];
-	}, [urls]);
-
 	useUrlHandler({
 		isPlaying,
 		selectedTodo,
@@ -97,11 +100,8 @@ const TimerPage = () => {
 		getBaseUrl,
 	});
 
-	const handleTodoSelection = (id: number, time: number, name: string, categoryName: string) => {
+	const handleTodoSelection = (id: number) => {
 		setSelectedTodo(id);
-		setTargetTime(time);
-		setTargetName(name);
-		setTargetCategoryName(categoryName);
 	};
 
 	const handlePlayToggle = (isPlaying: boolean) => {
@@ -118,7 +118,7 @@ const TimerPage = () => {
 					<SideBoxTemporary />
 				</div>
 				<div className="ml-[56.6rem] mt-[-0.8rem]">
-					<TitleTimer targetName={targetName} targetCategoryName={targetCategoryName} />
+					<TitleTimer targetTodoTitle={targetTodoTitle} targetCategoryTitle={targetCategoryTitle} />
 					<Timer
 						selectedTodo={selectedTodo}
 						totalTimeOfToday={totalTimeOfToday}
@@ -128,6 +128,7 @@ const TimerPage = () => {
 						timerTime={timerTime}
 						timerIncreasedTime={timerIncreasedTime}
 						resetIncreasedSideBarTime={resetIncreasedSideBarTime}
+						resetTimerIncreasedTime={resetTimerIncreasedTime}
 					/>
 					<Carousel />
 				</div>

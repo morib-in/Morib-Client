@@ -12,9 +12,9 @@ import { CATEGORY_MODALTABS } from '@/shared/constants/tabSelections';
 
 import AddBtn from '@/shared/assets/svgs/add_btn.svg?react';
 
-import CategoryMoribContentPage from '@/components/atoms/CategoryMoribContentPage';
-import CategoryMoribContentUrl from '@/components/atoms/CategoryMoribContentUrl';
-import CategoryMoribContentSet from '@/components/molecules/CategoryMoribContentSet';
+import CategoryCommonMoribSet from './CategoryCommonMoribSet';
+import CategoryMoribPageInfo from './CategoryMoribPageInfo';
+import CategoryMoribUrlInfo from './CategoryMoribUrlInfo';
 
 interface UrlInfo {
 	url: string;

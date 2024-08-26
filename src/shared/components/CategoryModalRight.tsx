@@ -3,10 +3,10 @@ import TitleCategoryModalRight from '@/shared/components/TitleCategoryModalRight
 
 import MinusBtn from '@/shared/assets/svgs/minus_btn.svg?react';
 
-import CategoryMoribContentPage from '@/components/atoms/CategoryMoribContentPage';
-import CategoryMoribContentUrl from '@/components/atoms/CategoryMoribContentUrl';
-import CategoryUrlInput from '@/components/atoms/CategoryUrlInput';
-import CategoryMoribContentSet from '@/components/molecules/CategoryMoribContentSet';
+import CategoryCommonMoribSet from './CategoryCommonMoribSet';
+import CategoryMoribPageInfo from './CategoryMoribPageInfo';
+import CategoryMoribUrlInfo from './CategoryMoribUrlInfo';
+import InputCategoryUrl from './InputCategoryUrl';
 
 interface UrlInfo {
 	url: string;
