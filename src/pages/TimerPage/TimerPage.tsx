@@ -14,6 +14,8 @@ import { useGetMoribSet, useGetTodoList, usePostTimerStop } from '@/shared/apis/
 import { splitTasksByCompletion } from '@/shared/utils/timer';
 import { getBaseUrl } from '@/shared/utils/url';
 
+import { DATE_FORMAT, DEFAULT_URL, TIMEZONE } from '@/shared/constants/timerPageText';
+
 import HamburgerIcon from '@/shared/assets/svgs/btn_hamburger.svg?react';
 
 import TimerPageTemplates from '@/components/templates/TimerPageTemplates';
@@ -41,8 +43,8 @@ interface Todo {
 const TimerPage = () => {
 	const { mutate: stopTimer } = usePostTimerStop();
 	const { isSidebarOpen, toggleSidebar } = useToggleSidebar();
-	const todayDate = dayjs().tz('Asia/Seoul');
-	const formattedTodayDate = todayDate.format('YYYY-MM-DD');
+	const todayDate = dayjs().tz(TIMEZONE);
+	const formattedTodayDate = todayDate.format(DATE_FORMAT);
 
 	const { data: todosData, isLoading, error } = useGetTodoList(formattedTodayDate);
 	const { task: todos = [], totalTimeOfToday = 0 } = todosData?.data || {};
@@ -56,7 +58,7 @@ const TimerPage = () => {
 
 	const baseUrls = useMemo(() => {
 		const mappedUrls = urls.map(getBaseUrl);
-		return [...mappedUrls, 'chrome://newtab'];
+		return [...mappedUrls, DEFAULT_URL];
 	}, [urls]);
 
 	const selectedTodoData = todos.find((todo: Todo) => todo.id === selectedTodo);
