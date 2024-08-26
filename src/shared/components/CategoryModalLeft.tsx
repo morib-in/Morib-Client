@@ -6,6 +6,7 @@ import CategoryTabSelect from '@/shared/components/CategoryTabSelect';
 import DropdownCategory from '@/shared/components/DropdownCategory';
 
 import { getTabName } from '@/shared/apis/modal/axios';
+import { useCategoryLists, useGetMsets } from '@/shared/apis/modal/queries';
 
 import { CATEGORY_MODALTABS } from '@/shared/constants/tabSelections';
 
@@ -30,10 +31,8 @@ interface msetsList {
 }
 
 interface ModalProps {
-	optionData: Category[];
 	handleSelectedInfo: (url: UrlInfo) => void;
-	handleOptionId: (id: number) => void;
-	msetsList: msetsList[];
+
 	urlInfos: UrlInfo[];
 	setUrlData: (infos: UrlInfo[]) => void;
 	setIsClicked: (is: any) => void;
@@ -42,18 +41,9 @@ interface ModalProps {
 	selectedOption: string;
 }
 
-interface Category {
-	id: number;
-	name: string;
-	startDate: string;
-	endDate: string;
-}
-
 const CategoryModalLeft = ({
-	optionData,
 	handleSelectedInfo,
-	handleOptionId,
-	msetsList,
+
 	urlInfos,
 	setUrlData,
 	setIsClicked,
@@ -62,6 +52,17 @@ const CategoryModalLeft = ({
 	selectedOption,
 }: ModalProps) => {
 	const [isSelectedTab, setSelectedTab] = useState(CATEGORY_MODALTABS[0].id);
+
+	const { data: categoryData } = useCategoryLists();
+	const categories = categoryData?.data || [];
+	const [categoryId, setCategoryId] = useState<number>(0);
+
+	const { data: msets } = useGetMsets(categoryId);
+	const msetsList = msets?.data.msetList || [];
+
+	const handleOptionId = (id: number) => {
+		setCategoryId(id);
+	};
 
 	const handleTabChange = (tab: number) => {
 		setSelectedTab(tab);
@@ -104,26 +105,24 @@ const CategoryModalLeft = ({
 
 	return (
 		<div className="h-[80rem] w-[68.8rem] rounded-l-[10px] bg-gray-bg-04 py-[2.8rem] pl-[4.4rem] pr-[4.3rem]">
-			<div className="mb-[3.3rem]">
-				<header>
-					<h1 className="head-bold-24 text-gray-04">카테고리 추가</h1>
-				</header>
-			</div>
-			<div className="mb-[8px]">
+			<header className="mb-[3.3rem]">
+				<h1 className="head-bold-24 text-gray-04">카테고리 추가</h1>
+			</header>
+			<aside className="mb-[8px]">
 				<CategoryTabSelect tabs={CATEGORY_MODALTABS} handleTabChange={handleTabChange} isSelectedTab={isSelectedTab} />
-			</div>
 
-			<div className="relative mt-[0px]">
-				<DropdownCategory
-					optionData={optionData}
-					disabled={disabled}
-					handleOptionId={handleOptionId}
-					setIsClicked={setIsClicked}
-					setSelectedOption={setSelectedOption}
-					isClicked={isClicked}
-					selectedOption={selectedOption}
-				/>
-			</div>
+				<div className="relative mt-[0px]">
+					<DropdownCategory
+						optionData={categories}
+						disabled={disabled}
+						handleOptionId={handleOptionId}
+						setIsClicked={setIsClicked}
+						setSelectedOption={setSelectedOption}
+						isClicked={isClicked}
+						selectedOption={selectedOption}
+					/>
+				</div>
+			</aside>
 
 			<CategoryCommonMoribSet variant="smallLeft" urlInfos={urlInfos}>
 				{isSelectedTab !== 2 &&

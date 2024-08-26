@@ -1,5 +1,4 @@
 import ButtonCategoryCommon from '@/shared/components/ButtonCategoryCommon';
-import TitleCategoryModalRight from '@/shared/components/TitleCategoryModalRight';
 
 import MinusBtn from '@/shared/assets/svgs/minus_btn.svg?react';
 
@@ -16,14 +15,12 @@ interface UrlInfo {
 
 interface ModalRightProps {
 	selectedInfo: UrlInfo[];
-	setIsClicked: (is: any) => void;
-	setSelectedOption: (name: string) => void;
 	handleUrlInputChange: (url: string) => void;
 	handleDeleteUrlInfo: (url: UrlInfo) => void;
 	handleCloseModal: () => void;
 	moribSetName: string;
 	handleClearModalData: () => void;
-	addInfos: (selectedInfo: UrlInfo[]) => void;
+	handleClose: () => void;
 }
 
 const CategoryModalRight = ({
@@ -31,22 +28,32 @@ const CategoryModalRight = ({
 	handleUrlInputChange,
 	handleDeleteUrlInfo,
 	handleCloseModal,
+	handleClose,
 	moribSetName,
 	handleClearModalData,
 }: ModalRightProps) => {
 	return (
 		<div className="flex h-[80rem] w-[61.2rem] flex-col items-end justify-between rounded-r-[1rem] bg-gray-bg-03 pb-[3rem] pl-[3rem] pr-[4.3rem] pt-[9.7rem]">
-			<div className="mb-[8px] flex w-full flex-row justify-start">
-				<TitleCategoryModalRight msetName={moribSetName} />
-			</div>
-			<div className="flex w-full flex-col">
+			<header className="subhead-bold-22 mb-[8px] flex w-full flex-row justify-start p-[1rem]">
+				<h1 className="text-mint-01">
+					{moribSetName.length > 0 ? (
+						moribSetName
+					) : (
+						<>
+							<span className="pr-[1rem]" /> _______ <span className="pr-[0.5rem]" />
+						</>
+					)}
+				</h1>
+				<p className="text-white">의 모립세트</p>
+			</header>
+
+			<section className="flex w-full">
 				<InputCategoryUrl
 					selectedInfo={selectedInfo}
 					variant="small"
 					onUrlInputChange={(url: string) => handleUrlInputChange(url)}
 				/>
-			</div>
-			<div className="flex w-full" />
+			</section>
 			<CategoryCommonMoribSet urlInfos={selectedInfo} variant="smallRight">
 				{selectedInfo.map((urlInfo, url) => (
 					<tr key={url} className="flex h-[4.6rem] gap-[2rem] border-b border-gray-bg-04 px-[0.8rem]">
@@ -62,12 +69,8 @@ const CategoryModalRight = ({
 				))}
 			</CategoryCommonMoribSet>
 
-			<div className="mt-[3rem] flex gap-[16px]">
-				<ButtonCategoryCommon
-					variant="취소"
-					handleCloseModal={handleCloseModal}
-					handleClearModalData={handleClearModalData}
-				>
+			<footer className="mt-[3rem] flex gap-[16px]">
+				<ButtonCategoryCommon variant="취소" handleCloseModal={handleClose} handleClearModalData={handleClearModalData}>
 					취소
 				</ButtonCategoryCommon>
 				<ButtonCategoryCommon
@@ -77,7 +80,7 @@ const CategoryModalRight = ({
 				>
 					완료
 				</ButtonCategoryCommon>
-			</div>
+			</footer>
 		</div>
 	);
 };

@@ -2,10 +2,8 @@ import { RefObject, useState } from 'react';
 
 import CategoryModalLeft from '@/shared/components/CategoryModalLeft';
 import CategoryModalRight from '@/shared/components/CategoryModalRight';
-import LoadingUrl from '@/shared/components/LoadingUrl';
 
 import { getTabName } from '@/shared/apis/modal/axios';
-import { useCategoryLists, useGetMsets } from '@/shared/apis/modal/queries';
 
 interface UrlInfo {
 	url: string;
@@ -19,49 +17,23 @@ type CategoryListModalProp = {
 	selectedInfo: UrlInfo[];
 	handleSelectedInfo: (urlInfo: UrlInfo) => void;
 	handleDeleteUrlInfo: (url: UrlInfo) => void;
-	// Todo: 발등 이슈로 추후 타입 수정
-	setSelectedInfo: (urlInfo: any) => any;
 	moribSetName: string;
-	urlData: UrlInfo[];
-	setUrlData: any;
-	isClicked: boolean;
-	setIsClicked: any;
-	selectedOption: string;
-	setSelectedOption: any;
-	handleClearModalData: () => void;
-	addInfos: (selectedInfo: UrlInfo[]) => void;
+	handleClose: () => void;
 };
 
 const AddCategoryListModal = ({
 	dialogRef,
 	handleCloseModal,
+	handleClose,
 	selectedInfo,
 	handleSelectedInfo,
 	handleDeleteUrlInfo,
-	setSelectedInfo,
+
 	moribSetName,
-	urlData,
-	setUrlData,
-	isClicked,
-	setIsClicked,
-	selectedOption,
-	setSelectedOption,
-	handleClearModalData,
-	addInfos,
 }: CategoryListModalProp) => {
-	const { data: categoryData, isLoading, error } = useCategoryLists();
-	const categories = categoryData?.data || [];
-	const [categoryId, setCategoryId] = useState<number>(0);
-
-	const { data: msets } = useGetMsets(categoryId);
-	const msetsList = msets?.data.msetList || [];
-
-	if (isLoading) return <LoadingUrl />;
-	if (error) return <LoadingUrl />;
-
-	const handleOptionId = (id: number) => {
-		setCategoryId(id);
-	};
+	const [urlData, setUrlData] = useState<UrlInfo[]>([]); // 선택한 카테고리의 모립세트 url 상태
+	const [isClicked, setIsClicked] = useState(false);
+	const [selectedOption, setSelectedOption] = useState('카테고리 추가');
 
 	const handleUrlInputChange = async (url: string) => {
 		try {
@@ -71,21 +43,22 @@ const AddCategoryListModal = ({
 				domain: tabNameData.data.tabName,
 				favicon: `https://www.google.com/s2/favicons?domain=${url}`,
 			};
-			// Todo: 발등 이슈로 추후 타입 수정
-			setSelectedInfo((prevUrlInfos: any) => [...prevUrlInfos, newUrlInfo]);
+			handleSelectedInfo(newUrlInfo);
 		} catch (isQueryError) {
 			console.error(isQueryError);
 		}
 	};
 
+	const handleClearModalData = () => {
+		setIsClicked(false);
+		setSelectedOption('카테고리 추가');
+		setUrlData([]);
+	};
 	return (
 		<dialog ref={dialogRef} className="rounded-[10px]">
 			<div className="flex">
 				<CategoryModalLeft
-					optionData={categories}
 					handleSelectedInfo={(urlInfo: UrlInfo) => handleSelectedInfo(urlInfo)}
-					handleOptionId={handleOptionId}
-					msetsList={msetsList}
 					urlInfos={urlData}
 					setUrlData={setUrlData}
 					setIsClicked={setIsClicked}
@@ -97,12 +70,10 @@ const AddCategoryListModal = ({
 					selectedInfo={selectedInfo}
 					handleUrlInputChange={(url: string) => handleUrlInputChange(url)}
 					handleDeleteUrlInfo={(url: UrlInfo) => handleDeleteUrlInfo(url)}
+					handleClose={handleClose}
 					handleCloseModal={handleCloseModal}
 					moribSetName={moribSetName}
 					handleClearModalData={handleClearModalData}
-					setSelectedOption={setSelectedOption}
-					setIsClicked={setIsClicked}
-					addInfos={addInfos}
 				/>
 			</div>
 		</dialog>

@@ -30,35 +30,39 @@ interface ModalAddCategoryProps {
 }
 
 const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
-	const [urlInfos, setUrlInfos] = useState<UrlInfo[]>([]);
-	const [selectedInfo, setSelectedInfo] = useState<UrlInfo[]>([]);
+	const [inputUrl, setInputUrl] = useState<UrlInfo[]>([]); // input창에 입력되어 추가된 url
+	const [selectedInfo, setSelectedInfo] = useState<UrlInfo[]>([]); // 클릭하여 선택한 url
+	const [combinedInfos, setCombinedInfos] = useState<UrlInfo[]>(inputUrl); // 최종으로 추가된 url
 	const [name, setName] = useState('');
 	const [isDateToggleOn, setIsDateToggleOn] = useState(false);
 	const [isPeriodOn, setIsPeriodOn] = useState(false);
 	const [selectedStartDate, setSelectedStartDate] = useState<Date | null>(null);
 	const [selectedEndDate, setSelectedEndDate] = useState<Date | null>(null);
 	const [isCalendarOpened, setIsCalendarOpened] = useState(false);
-	const [combinedInfos, setCombinedInfos] = useState<UrlInfo[]>(urlInfos);
 
 	const queryClient = useQueryClient();
-
-	const [urlData, setUrlData] = useState<UrlInfo[]>([]);
-	const [isClicked, setIsClicked] = useState(false);
-	const [selectedOption, setSelectedOption] = useState('카테고리 추가');
 
 	const handleUrlInfos = () => {
 		setSelectedInfo([]);
 	};
 
-	//Todo: any 타입 수정
-	const addInfos = (selectedInfos: any) => {
-		//setCombinedInfos((prev) => [...prev, ...selectedInfos]);
-
+	// 최종으로 선택, 입력된 url 추가하는 함수
+	const handleAddUrl = (selectedInfo: any) => {
 		setCombinedInfos((prevItems) => {
-			if (prevItems.some((prevItem) => prevItem.url === selectedInfos.url)) {
+			if (prevItems.some((prevItem) => prevItem.url === selectedInfo.url)) {
 				return prevItems;
 			}
-			return [...prevItems, ...selectedInfos];
+			return [...prevItems, ...selectedInfo];
+		});
+	};
+
+	// 빠른 불러오기 모달에서 url 추가하는 함수
+	const handleSelectedInfo = (urlInfo: UrlInfo) => {
+		setSelectedInfo((prevItems) => {
+			if (prevItems.some((prevItem) => prevItem.url === urlInfo.url)) {
+				return prevItems;
+			}
+			return [...prevItems, urlInfo];
 		});
 	};
 
@@ -72,21 +76,12 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 
 	const handleClearData = () => {
 		setName('');
-		setUrlInfos([]);
+		setInputUrl([]);
 		setSelectedStartDate(null);
 		setSelectedEndDate(null);
 		setIsDateToggleOn(false);
 		setSelectedInfo([]);
 		setCombinedInfos([]);
-	};
-
-	const handleSelectedInfo = (urlInfo: UrlInfo) => {
-		setSelectedInfo((prevItems) => {
-			if (prevItems.some((prevItem) => prevItem.url === urlInfo.url)) {
-				return prevItems;
-			}
-			return [...prevItems, urlInfo];
-		});
 	};
 
 	const handleDeleteUrlInfo = (urlInfoToDelete: UrlInfo) => {
@@ -103,7 +98,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 				domain: tabNameData.data.tabName,
 				favicon: `https://www.google.com/s2/favicons?domain=${url}`,
 			};
-			setUrlInfos((prevUrlInfos) => [...prevUrlInfos, newUrlInfo]);
+			setInputUrl((prevUrlInfos) => [...prevUrlInfos, newUrlInfo]);
 			setCombinedInfos((prev) => [...prev, newUrlInfo]);
 		} catch (isQueryError) {
 			console.error(queryError);
@@ -193,26 +188,6 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 		}
 	};
 
-	const handleClose = () => {
-		handleClearData();
-		handleCloseModal();
-	};
-
-	const handlePostDataClick = () => {
-		handleClearData();
-		handleCategoryData();
-		handleCloseModal();
-		if (isMutatePending) return <div>Loading</div>;
-		if (isMutateError) {
-			console.error(mutateError);
-		}
-	};
-
-	const handleClearModalData = () => {
-		setIsClicked(false);
-		setSelectedOption('카테고리 추가');
-		setUrlData([]);
-	};
 	const nameInputDefaultStyle =
 		'subhead-med-18 h-[4.6rem] w-[34rem] rounded-[8px] border-[1px] bg-gray-bg-03 px-[2rem] py-[1rem] text-white placeholder-gray-03 focus:outline-none';
 	const handleValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -231,12 +206,35 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 
 	const handleMoveToNextModal = () => {
 		setSelectedInfo([]);
-
 		showModal();
 	};
 
+	// 카테고리 추가 모달 취소 버튼 함수
+	const handleClose = () => {
+		handleClearData();
+		handleCloseModal();
+	};
+
+	// 빠른 불러오기 모달 취소 버튼 함수
+	const handleCategoryModalClose = () => {
+		handleClearData();
+		closeModal();
+	};
+
+	// 카테고리 추가 모달 완료 버튼 함수
+	const handlePostDataClick = () => {
+		handleClearData();
+		handleCategoryData();
+		handleCloseModal();
+		if (isMutatePending) return <div>Loading</div>;
+		if (isMutateError) {
+			console.error(mutateError);
+		}
+	};
+
+	// 빠른 불러오기 모달 완료 버튼 함수
 	const handleCloseAddModal = () => {
-		addInfos(selectedInfo);
+		handleAddUrl(selectedInfo);
 		closeModal();
 	};
 
@@ -303,27 +301,19 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 							<ArrowCircleUpRight className="h-[2rem] w-[2rem]" />
 						</button>
 						<AddCategoryListModal
-							dialogRef={dialogRef}
 							handleCloseModal={handleCloseAddModal}
+							handleClose={handleCategoryModalClose}
+							dialogRef={dialogRef}
 							selectedInfo={selectedInfo}
 							handleSelectedInfo={(urlInfo: UrlInfo) => handleSelectedInfo(urlInfo)}
 							handleDeleteUrlInfo={(url: UrlInfo) => handleDeleteUrlInfo(url)}
-							setSelectedInfo={setSelectedInfo}
 							moribSetName={name}
-							urlData={urlData}
-							setUrlData={setUrlData}
-							isClicked={isClicked}
-							setIsClicked={setIsClicked}
-							selectedOption={selectedOption}
-							setSelectedOption={setSelectedOption}
-							handleClearModalData={handleClearModalData}
-							addInfos={addInfos}
 						/>
 					</div>
 					<InputCategoryUrl
 						variant="basic"
 						onUrlInputChange={(url: string) => handleUrlInputChange(url)}
-						urlInfo={urlInfos}
+						urlInfo={inputUrl}
 					/>
 				</section>
 
@@ -337,14 +327,14 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 				</CategoryCommonMoribSet>
 			</main>
 
-			<div className="mt-[3rem] flex justify-end gap-[1.6rem]">
+			<footer className="mt-[3rem] flex justify-end gap-[1.6rem]">
 				<ButtonCategoryCommon variant="취소" handleCloseModal={handleClose}>
 					취소
 				</ButtonCategoryCommon>
 				<ButtonCategoryCommon variant="완료" handleSubmit={handlePostDataClick} disabled={!isFormValid()}>
 					완료
 				</ButtonCategoryCommon>
-			</div>
+			</footer>
 		</>
 	);
 };
