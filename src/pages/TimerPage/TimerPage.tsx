@@ -122,7 +122,6 @@ const TimerPage = () => {
 					<Timer
 						selectedTodo={selectedTodo}
 						totalTimeOfToday={totalTimeOfToday}
-						targetTime={targetTime}
 						handlePlayToggle={handlePlayToggle}
 						isPlaying={isPlaying}
 						formattedTodayDate={formattedTodayDate}

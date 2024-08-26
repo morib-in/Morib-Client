@@ -11,7 +11,6 @@ import TaskTime from '@/pages/TimerPage/components/TaskTime';
 
 interface TaskTotalTimeProps {
 	totalTimeOfToday: number;
-	targetTime: number;
 	selectedTodo: number | null;
 	handlePlayToggle: (isPlaying: boolean) => void;
 	isPlaying: boolean;
