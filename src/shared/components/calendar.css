@@ -36,6 +36,7 @@
 
 /* 호버된 날짜 스타일 설정 */
 .react-datepicker__day:hover {
+  cursor: default;
   @apply bg-gray-bg-04 rounded-full;
 }
 
