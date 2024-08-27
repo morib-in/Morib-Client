@@ -31,7 +31,7 @@ interface CategoryBoxProps {
 	resetIncreasedSideBarTime: () => void;
 }
 
-const TimerSideBar = ({
+const SideBarTimer = ({
 	ongoingTodos = [],
 	completedTodos = [],
 	toggleSidebar,
@@ -45,7 +45,7 @@ const TimerSideBar = ({
 	sideBarIncreasedTime,
 	resetIncreasedSideBarTime,
 }: CategoryBoxProps) => {
-	const { animate, handleClose } = useCloseSidebar(toggleSidebar);
+	const { animate, handleClose, sidebarRef } = useCloseSidebar(toggleSidebar);
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
 
@@ -93,6 +93,7 @@ const TimerSideBar = ({
 
 	return (
 		<div
+			ref={sidebarRef}
 			className={`flex h-[108rem] w-[40.2rem] transform flex-col rounded-bl-[16px] rounded-tl-[16px] bg-gray-bg-03 pl-[1.8rem] transition-transform duration-300 ${animate ? 'translate-x-0' : 'translate-x-full'}`}
 		>
 			<div className="flex h-[5.4rem] w-[36.6rem] items-center justify-between pl-[0.2rem] pt-[2rem]">
@@ -132,4 +133,4 @@ const TimerSideBar = ({
 	);
 };
 
-export default TimerSideBar;
+export default SideBarTimer;
