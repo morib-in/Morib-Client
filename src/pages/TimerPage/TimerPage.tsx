@@ -48,7 +48,7 @@ const TimerPage = () => {
 
 	const { data: todosData, isLoading, error } = useGetTodoList(formattedTodayDate);
 	const { task: todos = [], totalTimeOfToday = 0 } = todosData?.data || {};
-	const { ongoingTasks, completedTasks } = splitTasksByCompletion(todos);
+	const { ongoingTodos, completedTodos } = splitTasksByCompletion(todos);
 
 	const [selectedTodo, setSelectedTodo] = useSelectedTodo(todos);
 	const [isPlaying, setIsPlaying] = useState(false);
@@ -74,7 +74,7 @@ const TimerPage = () => {
 		resetIncreasedTime: resetTimerIncreasedTime,
 	} = useTimerCount({ isPlaying, previousTime: targetTime });
 
-	const { increasedTime: increasedSidebarTime, resetIncreasedTime: resetIncreasedSideBarTime } = useTimerCount({
+	const { increasedTime: sideBarIncreasedTime, resetIncreasedTime: resetIncreasedSideBarTime } = useTimerCount({
 		isPlaying,
 		previousTime: targetTime,
 	});
@@ -99,7 +99,7 @@ const TimerPage = () => {
 	};
 
 	if (isLoading || error) {
-		return <div>{isLoading ? 'Loading...' : 'Error loading todos'}</div>;
+		return <div>{isLoading ? 'Loading...' : 'Error...'}</div>;
 	}
 
 	return (
@@ -134,8 +134,8 @@ const TimerPage = () => {
 						<div className="absolute inset-y-0 right-0 flex justify-end overflow-hidden">
 							<SideBarTimer
 								targetTime={targetTime}
-								ongoingTodos={ongoingTasks}
-								completedTodos={completedTasks}
+								ongoingTodos={ongoingTodos}
+								completedTodos={completedTodos}
 								toggleSidebar={toggleSidebar}
 								handleTodoSelection={handleTodoSelection}
 								selectedTodo={selectedTodo}
@@ -144,7 +144,7 @@ const TimerPage = () => {
 								formattedTodayDate={formattedTodayDate}
 								resetTimerIncreasedTime={resetTimerIncreasedTime}
 								timerIncreasedTime={timerIncreasedTime}
-								increasedSideBarTime={increasedSidebarTime}
+								sideBarIncreasedTime={sideBarIncreasedTime}
 								resetIncreasedSideBarTime={resetIncreasedSideBarTime}
 							/>
 						</div>

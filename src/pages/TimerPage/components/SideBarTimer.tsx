@@ -27,7 +27,7 @@ interface CategoryBoxProps {
 	formattedTodayDate: string;
 	resetTimerIncreasedTime: () => void;
 	timerIncreasedTime: number;
-	increasedSideBarTime: number;
+	sideBarIncreasedTime: number;
 	resetIncreasedSideBarTime: () => void;
 }
 
@@ -42,7 +42,7 @@ const TimerSideBar = ({
 	formattedTodayDate,
 	resetTimerIncreasedTime,
 	timerIncreasedTime,
-	increasedSideBarTime,
+	sideBarIncreasedTime,
 	resetIncreasedSideBarTime,
 }: CategoryBoxProps) => {
 	const { animate, handleClose } = useCloseSidebar(toggleSidebar);
@@ -71,14 +71,10 @@ const TimerSideBar = ({
 		handleTodoSelection(id, time, name, categoryName);
 	};
 
-	if (isError) {
-		console.error(error);
-	}
-
 	const handleNavigateHome = () => {
 		if (isPlaying && selectedTodo !== null) {
 			stopTimer(
-				{ id: selectedTodo, elapsedTime: increasedSideBarTime, targetDate: formattedTodayDate },
+				{ id: selectedTodo, elapsedTime: sideBarIncreasedTime, targetDate: formattedTodayDate },
 				{
 					onSuccess: () => {
 						handlePlayToggle(false);
@@ -90,6 +86,10 @@ const TimerSideBar = ({
 			navigate('/home');
 		}
 	};
+
+	if (isError) {
+		console.error(error);
+	}
 
 	return (
 		<div
