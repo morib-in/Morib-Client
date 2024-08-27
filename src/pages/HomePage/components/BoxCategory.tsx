@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 
 import ButtonSVG from '@/shared/components/ButtonSVG';
-import CalendarTemporary from '@/shared/components/CalendarTemporary';
+import Calendar from '@/shared/components/Calendar';
 
 import { useCalendar } from '@/shared/hooks/useCalendar';
 import useClickOutside from '@/shared/hooks/useClickOutside';
@@ -138,7 +138,7 @@ const BoxCategory = ({
 
 									{!editable && (
 										<div className="absolute left-[7.25rem] top-[9.5rem]">
-											<CalendarTemporary
+											<Calendar
 												isPeriodOn={isPeriodOn}
 												selectedStartDate={selectedStartDate ?? defaultDate}
 												selectedEndDate={selectedEndDate ?? null}

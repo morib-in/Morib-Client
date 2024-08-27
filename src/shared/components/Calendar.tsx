@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import DatePicker from 'react-datepicker';
 
 import ButtonCalendarAddRoutine from '@/shared/components/ButtonCalendarAddRoutine';
 import ButtonStatusToggle from '@/shared/components/ButtonStatusToggle';
 import HeaderCalendar from '@/shared/components/HeaderCalendar';
+
+import useClickOutside from '@/shared/hooks/useClickOutside';
 
 import { formatCalendarDate } from '@/shared/utils/calendar/index';
 
@@ -17,6 +19,7 @@ interface CalendarProps {
 	isPeriodOn: boolean;
 	isCalendarOpened: boolean;
 	onPeriodToggle: () => void;
+	clickOutSideCallback: () => void;
 }
 
 const weekDays: string[] = ['일', '월', '화', '수', '목', '금', '토'];
@@ -29,9 +32,10 @@ const Calendar = ({
 	isPeriodOn,
 	isCalendarOpened,
 	onPeriodToggle,
+	clickOutSideCallback,
 }: CalendarProps) => {
 	const [isRoutineOn, setIsRoutineOn] = useState(false);
-
+	const calendarRef = useRef<HTMLDivElement>(null);
 	const defaultDate = new Date();
 
 	const defaultToggleStyle = 'flex justify-between px-[1.75rem]';
@@ -62,14 +66,13 @@ const Calendar = ({
 	const toggleTxtStyle = 'detail-reg-12 text-white';
 
 	const formatWeekDay = (date: string): string => {
-		const dayOfWeek = new Date(date).getDay();
+		const dayOfWeek = new Date(date).getDay(); 
 		return weekDays[dayOfWeek];
 	};
 
 	const commonDatePickerProps = {
 		renderCustomHeader: (props: any) => <HeaderCalendar {...props} />,
 		formatWeekDay: formatWeekDay,
-		dateFormat: 'yyyy년 M월 dd일',
 		inline: true,
 		disabledKeyboardNavigation: true,
 	};
@@ -80,7 +83,7 @@ const Calendar = ({
 
 	const handlePeriodChange = (dates: (Date | null)[]) => {
 		if (dates && dates.length === 2) {
-			onStartDateInput(dates[0]);
+			onStartDateInput(dates[0] as Date);
 			onEndDateInput(dates[1]);
 		} else {
 			onEndDateInput(null);
@@ -91,11 +94,13 @@ const Calendar = ({
 		setIsRoutineOn((prev) => !prev);
 	};
 
+	useClickOutside(calendarRef, clickOutSideCallback);
+
 	return (
 		<>
 			{isCalendarOpened && (
 				<>
-					<div className={`${calendarStyle}`}>
+					<div className={`${calendarStyle}`} ref={calendarRef}>
 						{!isPeriodOn ? (
 							<>
 								<input
@@ -141,8 +146,8 @@ const Calendar = ({
 							<div className={toggleTxtStyle}>종료 날짜</div>
 							<ButtonStatusToggle isToggleOn={isPeriodOn} onToggle={onPeriodToggle} />
 						</div>
-						<hr className={divideLineStyle} />
 
+						<hr className={divideLineStyle} />
 						<div className="flex-col gap-[1.2rem]">
 							<div className={`${defaultToggleStyle}`}>
 								<div className={toggleTxtStyle}>루틴 생성</div>

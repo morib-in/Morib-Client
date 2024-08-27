@@ -11,7 +11,7 @@
 
 /* 달 셀 크기 설정 */
 .react-datepicker__month {
-  @apply flex-col w-[25.5rem] h-[19.2rem] mx-[1rem] mb-[0.5rem] items-start self-stretch;
+  @apply flex-col w-[25.5rem] mx-[1rem] mb-[0.5rem] items-start self-stretch;
 }
 
 /* days (week)의 각 행을 가로로 나란히 배치 */
