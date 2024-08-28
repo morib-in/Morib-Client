@@ -8,8 +8,8 @@ import ButtonDropdownOptions from '@/shared/components/ButtonDropdownOptions';
 interface DropdownBtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	optionData: Category[];
 	handleOptionId: (id: number) => void;
-	setIsClicked: (is: any) => void;
-	setSelectedOption: (name: string) => void;
+	handleClickButton: (is: any) => void;
+	handleSelectOption: (name: string) => void;
 	isClicked: boolean;
 	selectedOption: string;
 }
@@ -25,23 +25,23 @@ const DropdownCategory = ({
 	disabled,
 	handleOptionId,
 	optionData,
-	setIsClicked,
-	setSelectedOption,
+	handleClickButton,
+	handleSelectOption,
 	isClicked,
 	selectedOption,
 }: DropdownBtnProps) => {
 	const queryClient = useQueryClient();
 
 	const handleOptionClick = (name: string) => {
-		setSelectedOption(name);
-		setIsClicked(false);
+		handleSelectOption(name);
+		handleClickButton(false);
 	};
 
 	const handleBtnClicked = () => {
 		queryClient.invalidateQueries({ queryKey: ['categories'] });
 
 		//Todo: 추후 타입 수정
-		setIsClicked((prev: any) => !prev);
+		handleClickButton((prev: boolean) => !prev);
 	};
 
 	return (

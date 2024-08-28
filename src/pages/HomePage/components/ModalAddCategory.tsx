@@ -45,7 +45,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 		setSelectedInfo([]);
 	};
 
-	// 최종으로 선택, 입력된 url 추가하는 함수
+	// 최종으로 선택 또는 입력된 url 추가하는 함수
 	const handleAddUrl = (selectedInfo: any) => {
 		setCombinedInfos((prevItems) => {
 			if (prevItems.some((prevItem) => prevItem.url === selectedInfo.url)) {
@@ -232,7 +232,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 	};
 
 	// 빠른 불러오기 모달 완료 버튼 함수
-	const handleCloseAddModal = () => {
+	const handleMsetSubmit = () => {
 		handleAddUrl(selectedInfo);
 		closeModal();
 	};
@@ -300,7 +300,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 							<ArrowCircleUpRight className="h-[2rem] w-[2rem]" />
 						</button>
 						<AddCategoryListModal
-							handleCloseModal={handleCloseAddModal}
+							handleSubmitModal={handleMsetSubmit}
 							handleClose={handleCategoryModalClose}
 							dialogRef={dialogRef}
 							selectedInfo={selectedInfo}
@@ -310,7 +310,6 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 						/>
 					</div>
 					<InputCategoryUrl
-						handleInputUrlInfo={handleInputUrlInfo}
 						variant="basic"
 						onUrlInputChange={(url: string) => handleUrlInputChange(url)}
 						urlInfo={inputUrl}

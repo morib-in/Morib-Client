@@ -13,7 +13,7 @@ interface UrlInfo {
 
 type CategoryListModalProp = {
 	dialogRef: RefObject<HTMLDialogElement>;
-	handleCloseModal: () => void;
+	handleSubmitModal: () => void;
 	selectedInfo: UrlInfo[];
 	handleSelectedInfo: (urlInfo: UrlInfo) => void;
 	handleDeleteUrlInfo: (url: UrlInfo) => void;
@@ -23,15 +23,14 @@ type CategoryListModalProp = {
 
 const AddCategoryListModal = ({
 	dialogRef,
-	handleCloseModal,
+	handleSubmitModal,
 	handleClose,
 	selectedInfo,
 	handleSelectedInfo,
 	handleDeleteUrlInfo,
-
 	moribSetName,
 }: CategoryListModalProp) => {
-	const [urlData, setUrlData] = useState<UrlInfo[]>([]); // 선택한 카테고리의 모립세트 url 상태
+	const [categoryUrlData, setCategoryUrlData] = useState<UrlInfo[]>([]); // 선택한 카테고리의 모립세트 url 상태
 	const [isClicked, setIsClicked] = useState(false);
 	const [selectedOption, setSelectedOption] = useState('카테고리 추가');
 
@@ -49,20 +48,32 @@ const AddCategoryListModal = ({
 		}
 	};
 
+	const handleCategoryUrlData = (addFavicon: UrlInfo[]) => {
+		setCategoryUrlData(addFavicon);
+	};
+
+	const handleClickButton = (isClicked: boolean) => {
+		setIsClicked(isClicked);
+	};
+
+	const handleSelectOption = (name: string) => {
+		setSelectedOption(name);
+	};
+
 	const handleClearModalData = () => {
 		setIsClicked(false);
 		setSelectedOption('카테고리 추가');
-		setUrlData([]);
+		setCategoryUrlData([]);
 	};
 	return (
 		<dialog ref={dialogRef} className="rounded-[10px]">
 			<div className="flex">
 				<CategoryModalLeft
 					handleSelectedInfo={(urlInfo: UrlInfo) => handleSelectedInfo(urlInfo)}
-					urlInfos={urlData}
-					setUrlData={setUrlData}
-					setIsClicked={setIsClicked}
-					setSelectedOption={setSelectedOption}
+					categoryUrlData={categoryUrlData}
+					handleCategoryUrlData={handleCategoryUrlData}
+					handleClickButton={handleClickButton}
+					handleSelectOption={handleSelectOption}
 					isClicked={isClicked}
 					selectedOption={selectedOption}
 				/>
@@ -71,7 +82,7 @@ const AddCategoryListModal = ({
 					handleUrlInputChange={(url: string) => handleUrlInputChange(url)}
 					handleDeleteUrlInfo={(url: UrlInfo) => handleDeleteUrlInfo(url)}
 					handleClose={handleClose}
-					handleCloseModal={handleCloseModal}
+					handleSubmitModal={handleSubmitModal}
 					moribSetName={moribSetName}
 					handleClearModalData={handleClearModalData}
 				/>

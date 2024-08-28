@@ -16,7 +16,7 @@ interface ModalRightProps {
 	selectedInfo: UrlInfo[];
 	handleUrlInputChange: (url: string) => void;
 	handleDeleteUrlInfo: (url: UrlInfo) => void;
-	handleCloseModal: () => void;
+	handleSubmitModal: () => void;
 	moribSetName: string;
 	handleClearModalData: () => void;
 	handleClose: () => void;
@@ -26,7 +26,7 @@ const CategoryModalRight = ({
 	selectedInfo,
 	handleUrlInputChange,
 	handleDeleteUrlInfo,
-	handleCloseModal,
+	handleSubmitModal,
 	handleClose,
 	moribSetName,
 	handleClearModalData,
@@ -73,7 +73,7 @@ const CategoryModalRight = ({
 				</ButtonCategoryCommon>
 				<ButtonCategoryCommon
 					variant="완료"
-					handleCloseModal={handleCloseModal}
+					handleCloseModal={handleSubmitModal}
 					handleClearModalData={handleClearModalData}
 				>
 					완료

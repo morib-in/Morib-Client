@@ -28,22 +28,20 @@ interface msetsList {
 
 interface ModalProps {
 	handleSelectedInfo: (url: UrlInfo) => void;
-
-	urlInfos: UrlInfo[];
-	setUrlData: (infos: UrlInfo[]) => void;
-	setIsClicked: (is: any) => void;
-	setSelectedOption: (name: string) => void;
+	categoryUrlData: UrlInfo[];
+	handleCategoryUrlData: (infos: UrlInfo[]) => void;
+	handleClickButton: (is: any) => void;
+	handleSelectOption: (name: string) => void;
 	isClicked: boolean;
 	selectedOption: string;
 }
 
 const CategoryModalLeft = ({
 	handleSelectedInfo,
-
-	urlInfos,
-	setUrlData,
-	setIsClicked,
-	setSelectedOption,
+	categoryUrlData,
+	handleCategoryUrlData,
+	handleClickButton,
+	handleSelectOption,
 	isClicked,
 	selectedOption,
 }: ModalProps) => {
@@ -74,9 +72,9 @@ const CategoryModalLeft = ({
 				url: item.url,
 			}));
 
-			setUrlData(addFavicon);
+			handleCategoryUrlData(addFavicon);
 		}
-	}, [msetsList, setUrlData]);
+	}, [msetsList, handleCategoryUrlData]);
 
 	return (
 		<div className="h-[80rem] w-[68.8rem] rounded-l-[10px] bg-gray-bg-04 py-[2.8rem] pl-[4.4rem] pr-[4.3rem]">
@@ -91,17 +89,17 @@ const CategoryModalLeft = ({
 						optionData={categories}
 						disabled={disabled}
 						handleOptionId={handleOptionId}
-						setIsClicked={setIsClicked}
-						setSelectedOption={setSelectedOption}
+						handleClickButton={handleClickButton}
+						handleSelectOption={handleSelectOption}
 						isClicked={isClicked}
 						selectedOption={selectedOption}
 					/>
 				</div>
 			</aside>
 
-			<CategoryCommonMoribSet variant="smallLeft" urlInfos={urlInfos}>
+			<CategoryCommonMoribSet variant="smallLeft" urlInfos={categoryUrlData}>
 				{isSelectedTab !== 2 &&
-					urlInfos.map((urlInfo: UrlInfo) => (
+					categoryUrlData.map((urlInfo: UrlInfo) => (
 						<div
 							key={urlInfo.url}
 							className="group flex h-[4.6rem] w-[100%] gap-[1.2rem] border-b border-gray-bg-04 px-[0.8rem] hover:bg-gray-bg-04"

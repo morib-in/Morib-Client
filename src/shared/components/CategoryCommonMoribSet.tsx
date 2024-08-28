@@ -27,7 +27,7 @@ const CategoryCommonMoribSet = ({ variant, urlInfos, children }: CategoryCommonM
 			height: 'h-[46rem]',
 			maxHeight: 'max-h-[46rem]',
 			width: 'w-[100%]',
-			pageHeadWidth: 'w-[24.9rem]',
+			pageHeadWidth: 'w-[23.2rem]',
 			urlHeadWidth: 'w-[32.5rem]',
 			bgColor: ' bg-gray-bg-03',
 			rowCounts: 9,
