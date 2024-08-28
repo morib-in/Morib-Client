@@ -310,6 +310,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 						/>
 					</div>
 					<InputCategoryUrl
+						handleInputUrlInfo={handleInputUrlInfo}
 						variant="basic"
 						onUrlInputChange={(url: string) => handleUrlInputChange(url)}
 						urlInfo={inputUrl}

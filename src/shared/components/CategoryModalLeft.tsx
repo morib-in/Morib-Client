@@ -1,12 +1,9 @@
-import debounce from 'lodash/debounce';
-
 import { useEffect, useState } from 'react';
 
 import CategoryMsetUrlInfo from '@/shared/components/CategoryMsetUrlInfo';
 import CategoryTabSelect from '@/shared/components/CategoryTabSelect';
 import DropdownCategory from '@/shared/components/DropdownCategory';
 
-import { getTabName } from '@/shared/apis/modal/axios';
 import { useCategoryLists, useGetMsets } from '@/shared/apis/modal/queries';
 
 import { CATEGORY_MODALTABS } from '@/shared/constants/tabSelections';
@@ -68,39 +65,18 @@ const CategoryModalLeft = ({
 	};
 
 	const disabled = isSelectedTab === 2;
-
-	const fetchUrlInfos = async (msetsList: msetsList[], setUrlData: any) => {
-		const infos = await Promise.all(
-			msetsList.map(async (item: msetsList) => {
-				let newUrlInfo: UrlInfo = {
-					url: '',
-					domain: '',
-					favicon: '',
-				};
-				try {
-					const tabNameData = await getTabName(item.url);
-					newUrlInfo = {
-						url: item.url,
-						domain: tabNameData.data.tabName,
-						favicon: `https://www.google.com/s2/favicons?domain=${item.url}`,
-					};
-				} catch (isQueryError) {
-					console.error(isQueryError);
-				}
-				return newUrlInfo;
-			}),
-		);
-		setUrlData(infos);
-	};
-
 	useEffect(() => {
-		const debouncedFetchUrlInfos = debounce(() => fetchUrlInfos(msetsList, setUrlData), 300);
-		debouncedFetchUrlInfos();
+		// 서버에서 msetList 데이터를 받아온 후 urlData로 변환
+		if (msetsList.length > 0) {
+			const addFavicon = msetsList.map((item: msetsList) => ({
+				domain: item.name,
+				favicon: `https://www.google.com/s2/favicons?domain=${item.url}`,
+				url: item.url,
+			}));
 
-		return () => {
-			debouncedFetchUrlInfos.cancel();
-		};
-	}, [msetsList]);
+			setUrlData(addFavicon);
+		}
+	}, [msetsList, setUrlData]);
 
 	return (
 		<div className="h-[80rem] w-[68.8rem] rounded-l-[10px] bg-gray-bg-04 py-[2.8rem] pl-[4.4rem] pr-[4.3rem]">
