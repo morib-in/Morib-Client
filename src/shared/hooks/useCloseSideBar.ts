@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+import useClickOutside from './useClickOutside';
+
 const useCloseSidebar = (toggleSidebar: () => void) => {
 	const [animate, setAnimate] = useState(false);
 	const sidebarRef = useRef<HTMLDivElement>(null);
@@ -13,19 +15,9 @@ const useCloseSidebar = (toggleSidebar: () => void) => {
 
 	useEffect(() => {
 		setAnimate(true);
+	}, []);
 
-		const handleClickOutside = (event: MouseEvent) => {
-			if (sidebarRef.current && !sidebarRef.current.contains(event.target as Node)) {
-				handleClose();
-			}
-		};
-
-		document.addEventListener('mousedown', handleClickOutside);
-
-		return () => {
-			document.removeEventListener('mousedown', handleClickOutside);
-		};
-	}, [handleClose]);
+	useClickOutside(sidebarRef, handleClose);
 
 	return { animate, handleClose, sidebarRef };
 };
