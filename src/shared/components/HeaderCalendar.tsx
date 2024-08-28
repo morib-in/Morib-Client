@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { formatCalendarTitle } from '@/shared/utils/calendar/index';
+import { getDateInfo } from '@/shared/utils/calendar/index';
 
 import ArrowIcon from '@/shared/assets/svgs/btn_arrow_bgNone.svg?react';
 
@@ -21,10 +21,13 @@ const HeaderCalendar: React.FC<CustomHeaderProps> = ({
 	prevMonthButtonDisabled,
 	nextMonthButtonDisabled,
 }) => {
+	const { year, month } = getDateInfo(date);
 	return (
 		<div className="mt-[2.1rem] flex flex-col">
 			<div className="mb-[1.3rem] flex">
-				<p className="body-med-16 ml-[1.5rem] mr-[0.8rem] text-white">{formatCalendarTitle(date)}</p>
+				<p className="body-med-16 ml-[1.5rem] mr-[0.8rem] text-white">
+					{year}년 {month}월
+				</p>
 				<button onClick={decreaseMonth} disabled={prevMonthButtonDisabled} aria-label="Previous Month">
 					<ArrowIcon />
 				</button>

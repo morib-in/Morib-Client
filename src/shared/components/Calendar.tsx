@@ -7,7 +7,7 @@ import HeaderCalendar from '@/shared/components/HeaderCalendar';
 
 import useClickOutside from '@/shared/hooks/useClickOutside';
 
-import { formatCalendarDate } from '@/shared/utils/calendar/index';
+import { getFullDateInfo } from '@/shared/utils/calendar/index';
 
 import './calendar.css';
 
@@ -36,7 +36,16 @@ const Calendar = ({
 }: CalendarProps) => {
 	const [isRoutineOn, setIsRoutineOn] = useState(false);
 	const calendarRef = useRef<HTMLDivElement>(null);
-	const defaultDate = new Date();
+
+	const { year: startYear, month: startMonth, day: startDay } = getFullDateInfo(selectedStartDate);
+	const {
+		year: endYear,
+		month: endMonth,
+		day: endDay,
+	} = selectedEndDate ? getFullDateInfo(selectedEndDate) : { year: '', month: '', day: '' };
+
+	const isDateSelected = !!selectedStartDate;
+	const isEndDateSelected = !!selectedEndDate;
 
 	const defaultToggleStyle = 'flex justify-between px-[1.75rem]';
 	const calendarStyle =
@@ -44,9 +53,6 @@ const Calendar = ({
 	const inputStyle = 'body-med-16 h-[3.2rem] w-[27.5rem] rounded-[3px] border-[1px] px-[1rem] py-[0.5rem] ';
 	const calendarInputStyle =
 		'body-med-16 h-[3.2rem] w-[13.2rem] rounded-[3px] border-[1px]  px-[1rem] py-[0.5rem]  bg-gray-bg-02 ';
-
-	const isDateSelected = !!selectedStartDate;
-	const isEndDateSelected = !!selectedEndDate;
 
 	const optionalStyle = isPeriodOn
 		? selectedStartDate && isDateSelected && !isEndDateSelected
@@ -62,11 +68,10 @@ const Calendar = ({
 			: 'border-gray-bg-05 bg-gray-bg-02 text-gray-bg-04';
 
 	const divideLineStyle = 'my-[1.3rem] border-gray-bg-06';
-
 	const toggleTxtStyle = 'detail-reg-12 text-white';
 
 	const formatWeekDay = (date: string): string => {
-		const dayOfWeek = new Date(date).getDay(); 
+		const dayOfWeek = new Date(date).getDay();
 		return weekDays[dayOfWeek];
 	};
 
@@ -105,7 +110,7 @@ const Calendar = ({
 							<>
 								<input
 									type="text"
-									value={formatCalendarDate(selectedStartDate) || formatCalendarDate(defaultDate)}
+									value={`${startYear}.${startMonth}.${startDay}`}
 									className={`${inputStyle} ${optionalStyle}`}
 									readOnly
 								/>
@@ -120,13 +125,13 @@ const Calendar = ({
 								<div className="flex gap-[11px]">
 									<input
 										type="text"
-										value={formatCalendarDate(selectedStartDate) || formatCalendarDate(defaultDate)}
+										value={`${startYear}.${startMonth}.${startDay}`}
 										className={`${calendarInputStyle} ${optionalStyle}`}
 										readOnly
 									/>
 									<input
 										type="text"
-										value={formatCalendarDate(selectedEndDate) || ''}
+										value={`${endYear}.${endMonth}.${endDay}`}
 										className={`${calendarInputStyle} ${optionalEndDateStyle}`}
 										readOnly
 									/>
@@ -143,14 +148,14 @@ const Calendar = ({
 
 						<hr className={divideLineStyle} />
 						<div className={`${defaultToggleStyle}`}>
-							<div className={toggleTxtStyle}>종료 날짜</div>
+							<h3 className={toggleTxtStyle}>종료 날짜</h3>
 							<ButtonStatusToggle isToggleOn={isPeriodOn} onToggle={onPeriodToggle} />
 						</div>
 
 						<hr className={divideLineStyle} />
 						<div className="flex-col gap-[1.2rem]">
 							<div className={`${defaultToggleStyle}`}>
-								<div className={toggleTxtStyle}>루틴 생성</div>
+								<h3 className={toggleTxtStyle}>루틴 생성</h3>
 								<ButtonStatusToggle isToggleOn={isRoutineOn} onToggle={handleRoutineToggle} />
 							</div>
 							{isRoutineOn && <ButtonCalendarAddRoutine />}

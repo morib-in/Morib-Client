@@ -1,4 +1,4 @@
-import { formatInputDate } from '@/shared/utils/calendar/index';
+import { getDateInfo } from '@/shared/utils/calendar/index';
 
 interface CalendarSelectedDateProps {
 	selectedStartDate: Date;
@@ -17,12 +17,14 @@ const CalendarSelectedDate = ({
 	const defaultStyle =
 		'cursor-pointer flex items-center self-stretch subhead-med-18 h-[4.6rem] w-[34.4rem] rounded-[8px] border-[1px] border-gray-bg-07 bg-gray-bg-03 px-[2rem] py-[0.8rem] mb-[0.9rem] text-white';
 
-	const formattedDate = formatInputDate(selectedStartDate);
+	const { year: startYear, month: startMonth, day: startDay } = getDateInfo(selectedStartDate);
 
 	const getFormattedEndDate = () => {
-		if (isPeriodOn) {
-			return formatInputDate(selectedEndDate || null);
+		if (isPeriodOn && selectedEndDate) {
+			const { year: endYear, month: endMonth, day: endDay } = getDateInfo(selectedEndDate);
+			return `${endYear}년 ${endMonth}월 ${endDay}일`;
 		}
+		return null;
 	};
 
 	const formattedEndDate = getFormattedEndDate();
@@ -31,11 +33,11 @@ const CalendarSelectedDate = ({
 		<>
 			{!isPeriodOn ? (
 				<div className={`${defaultStyle}`} onClick={onCalendarInputClick}>
-					{formattedDate}
+					{startYear}년 {startMonth}월 {startDay}일
 				</div>
 			) : (
 				<div className={`${defaultStyle}`} onClick={onCalendarInputClick}>
-					{formattedDate} ~ {formattedEndDate}
+					{startYear}년 {startMonth}월 {startDay}일 ~ {formattedEndDate}
 				</div>
 			)}
 		</>
