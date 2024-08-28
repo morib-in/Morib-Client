@@ -2,6 +2,7 @@ import debounce from 'lodash/debounce';
 
 import { useEffect, useState } from 'react';
 
+import CategoryMsetUrlInfo from '@/shared/components/CategoryMsetUrlInfo';
 import CategoryTabSelect from '@/shared/components/CategoryTabSelect';
 import DropdownCategory from '@/shared/components/DropdownCategory';
 
@@ -13,8 +14,6 @@ import { CATEGORY_MODALTABS } from '@/shared/constants/tabSelections';
 import AddBtn from '@/shared/assets/svgs/add_btn.svg?react';
 
 import CategoryCommonMoribSet from './CategoryCommonMoribSet';
-import CategoryMoribPageInfo from './CategoryMoribPageInfo';
-import CategoryMoribUrlInfo from './CategoryMoribUrlInfo';
 
 interface UrlInfo {
 	url: string;
@@ -127,20 +126,19 @@ const CategoryModalLeft = ({
 			<CategoryCommonMoribSet variant="smallLeft" urlInfos={urlInfos}>
 				{isSelectedTab !== 2 &&
 					urlInfos.map((urlInfo: UrlInfo) => (
-						<tr
+						<div
 							key={urlInfo.url}
 							className="group flex h-[4.6rem] w-[100%] gap-[1.2rem] border-b border-gray-bg-04 px-[0.8rem] hover:bg-gray-bg-04"
 							onClick={() => handleSelectedInfo(urlInfo)}
 						>
-							<CategoryMoribPageInfo urlInfo={urlInfo} variant="smallLeft" />
-							<CategoryMoribUrlInfo urlInfo={urlInfo} variant="smallLeft">
+							<CategoryMsetUrlInfo urlInfo={urlInfo} variant="smallLeft">
 								<div className="p-[1.25rem]">
 									<button type="button">
 										<AddBtn className="fill-gray-bg-07 group-hover:fill-mint-02-hover group-active:fill-mint-02-press" />
 									</button>
 								</div>
-							</CategoryMoribUrlInfo>
-						</tr>
+							</CategoryMsetUrlInfo>
+						</div>
 					))}
 			</CategoryCommonMoribSet>
 		</div>

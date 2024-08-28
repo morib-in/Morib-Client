@@ -8,8 +8,7 @@ import ButtonStatusToggle from '@/shared/components/ButtonStatusToggle';
 import Calendar from '@/shared/components/Calendar';
 import CalendarSelectedDate from '@/shared/components/CalendarSelectedDate';
 import CategoryCommonMoribSet from '@/shared/components/CategoryCommonMoribSet';
-import CategoryMoribPageInfo from '@/shared/components/CategoryMoribPageInfo';
-import CategoryMoribUrlInfo from '@/shared/components/CategoryMoribUrlInfo';
+import CategoryMsetUrlInfo from '@/shared/components/CategoryMsetUrlInfo';
 import InputCategoryUrl from '@/shared/components/InputCategoryUrl';
 
 import { getTabName } from '@/shared/apis/tasks/axios/index';
@@ -319,10 +318,9 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 
 				<CategoryCommonMoribSet urlInfos={combinedInfos} variant="basic">
 					{combinedInfos.map((urlInfo, url) => (
-						<tr key={url} className="flex h-[4.6rem] gap-[1.2rem] border-b border-gray-bg-04 px-[0.8rem]">
-							<CategoryMoribPageInfo urlInfo={urlInfo} variant="basic" />
-							<CategoryMoribUrlInfo urlInfo={urlInfo} variant="basic" />
-						</tr>
+						<div key={url} className="flex h-[4.6rem] gap-[1.2rem] border-b border-gray-bg-04 px-[0.8rem]">
+							<CategoryMsetUrlInfo urlInfo={urlInfo} variant="basic" />
+						</div>
 					))}
 				</CategoryCommonMoribSet>
 			</main>

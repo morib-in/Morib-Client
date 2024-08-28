@@ -1,10 +1,9 @@
 import ButtonCategoryCommon from '@/shared/components/ButtonCategoryCommon';
+import CategoryMsetUrlInfo from '@/shared/components/CategoryMsetUrlInfo';
 
 import MinusBtn from '@/shared/assets/svgs/minus_btn.svg?react';
 
 import CategoryCommonMoribSet from './CategoryCommonMoribSet';
-import CategoryMoribPageInfo from './CategoryMoribPageInfo';
-import CategoryMoribUrlInfo from './CategoryMoribUrlInfo';
 import InputCategoryUrl from './InputCategoryUrl';
 
 interface UrlInfo {
@@ -56,16 +55,15 @@ const CategoryModalRight = ({
 			</section>
 			<CategoryCommonMoribSet urlInfos={selectedInfo} variant="smallRight">
 				{selectedInfo.map((urlInfo, url) => (
-					<tr key={url} className="flex h-[4.6rem] gap-[2rem] border-b border-gray-bg-04 px-[0.8rem]">
-						<CategoryMoribPageInfo urlInfo={urlInfo} variant="smallRight" />
-						<CategoryMoribUrlInfo urlInfo={urlInfo} variant="smallRight">
+					<div key={url} className="flex h-[4.6rem] gap-[2rem] border-b border-gray-bg-04 px-[0.8rem]">
+						<CategoryMsetUrlInfo urlInfo={urlInfo} variant="smallRight">
 							<div className="p-[1.25rem]">
 								<button type="button" onClick={() => handleDeleteUrlInfo(urlInfo)}>
 									<MinusBtn className="fill-gray-bg-07 hover:fill-error-01 active:fill-error-03" />
 								</button>
 							</div>
-						</CategoryMoribUrlInfo>
-					</tr>
+						</CategoryMsetUrlInfo>
+					</div>
 				))}
 			</CategoryCommonMoribSet>
 
