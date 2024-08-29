@@ -1,3 +1,5 @@
+import dayjs, { Dayjs } from 'dayjs';
+
 import { useRef, useState } from 'react';
 import DatePicker from 'react-datepicker';
 
@@ -25,10 +27,10 @@ const STYLES = {
 };
 
 interface CalendarProps {
-	onStartDateInput: (date: Date | null) => void;
-	onEndDateInput: (date: Date | null) => void;
-	selectedStartDate: Date | null;
-	selectedEndDate: Date | null;
+	onStartDateInput: (date: Dayjs | null) => void;
+	onEndDateInput: (date: Dayjs | null) => void;
+	selectedStartDate: Dayjs | null;
+	selectedEndDate: Dayjs | null;
 	isPeriodOn: boolean;
 	isCalendarOpened: boolean;
 	onPeriodToggle: () => void;
@@ -71,22 +73,24 @@ const Calendar = ({
 
 	const commonDatePickerProps = {
 		renderCustomHeader: (props: any) => <HeaderCalendar {...props} />,
-		formatWeekDay: (date: string) => weekDays[new Date(date).getDay()],
+		formatWeekDay: (date: string) => weekDays[dayjs(date).day()],
 		inline: true,
 		disabledKeyboardNavigation: true,
 	};
 
 	const handleDateChange = (date: Date | null) => {
-		onStartDateInput(date);
+		if (date) {
+			const dayjsDate = dayjs(date);
+			onStartDateInput(dayjsDate);
+		} else {
+			onStartDateInput(null);
+		}
 	};
 
-	const handlePeriodChange = (dates: (Date | null)[]) => {
-		if (dates && dates.length === 2) {
-			onStartDateInput(dates[0] as Date);
-			onEndDateInput(dates[1]);
-		} else {
-			onEndDateInput(null);
-		}
+	const handlePeriodChange = (dates: [Date | null, Date | null]) => {
+		const [start, end] = dates;
+		onStartDateInput(start ? dayjs(start) : null);
+		onEndDateInput(end ? dayjs(end) : null);
 	};
 
 	const handleRoutineToggle = () => {
@@ -106,7 +110,7 @@ const Calendar = ({
 								readOnly
 							/>
 							<DatePicker
-								selected={selectedStartDate !== undefined ? selectedStartDate : null}
+								selected={selectedStartDate ? selectedStartDate.toDate() : null} // 변환된 Date 객체
 								onChange={handleDateChange}
 								{...commonDatePickerProps}
 							/>
@@ -129,8 +133,8 @@ const Calendar = ({
 							</div>
 							<DatePicker
 								selectsRange
-								startDate={selectedStartDate ?? undefined}
-								endDate={selectedEndDate ?? undefined}
+								startDate={selectedStartDate ? selectedStartDate.toDate() : undefined}
+								endDate={selectedEndDate ? selectedEndDate.toDate() : undefined}
 								onChange={handlePeriodChange}
 								{...commonDatePickerProps}
 							/>

@@ -1,3 +1,5 @@
+import { Dayjs } from 'dayjs';
+
 import { ChangeEvent, KeyboardEvent, forwardRef, useState } from 'react';
 
 import ButtonCalendarIcon from '@/shared/assets/svgs/btn_cal.svg?react';
@@ -12,15 +14,15 @@ interface BoxTodoInputProps {
 	onEditComplte: () => void;
 	name: string;
 	onInputChange: (name: string) => void;
-	selectedStartDate: Date | null;
-	selectedEndDate: Date | null;
+	selectedStartDate: Dayjs | null;
+	selectedEndDate: Dayjs | null;
 }
 
-const formatDateRange = (startDate: Date | null, endDate: Date | null): string => {
-	const format = (date: Date) => {
-		const year = date.getFullYear();
-		const month = String(date.getMonth() + 1).padStart(2, '0');
-		const day = String(date.getDate()).padStart(2, '0');
+const formatDateRange = (startDate: Dayjs | null, endDate: Dayjs | null): string => {
+	const format = (date: Dayjs) => {
+		const year = date.year();
+		const month = String(date.month() + 1).padStart(2, '0');
+		const day = String(date.date()).padStart(2, '0');
 		return `${year}.${month}.${day}`;
 	};
 
