@@ -27,9 +27,9 @@ interface msetsList {
 }
 
 interface ModalProps {
-	handleSelectedInfo: (url: UrlInfo) => void;
-	categoryUrlData: UrlInfo[];
-	handleCategoryUrlData: (infos: UrlInfo[]) => void;
+	handleRightModalUrlInfos: (url: UrlInfo) => void;
+	leftModalUrlInfos: UrlInfo[];
+	handleLeftModalUrlInfos: (infos: UrlInfo[]) => void;
 	handleClickButton: (is: any) => void;
 	handleSelectOption: (name: string) => void;
 	isClicked: boolean;
@@ -37,9 +37,9 @@ interface ModalProps {
 }
 
 const CategoryModalLeft = ({
-	handleSelectedInfo,
-	categoryUrlData,
-	handleCategoryUrlData,
+	handleLeftModalUrlInfos,
+	handleRightModalUrlInfos,
+	leftModalUrlInfos,
 	handleClickButton,
 	handleSelectOption,
 	isClicked,
@@ -64,17 +64,15 @@ const CategoryModalLeft = ({
 
 	const disabled = isSelectedTab === 2;
 	useEffect(() => {
-		// 서버에서 msetList 데이터를 받아온 후 urlData로 변환
 		if (msetsList.length > 0) {
 			const addFavicon = msetsList.map((item: msetsList) => ({
 				domain: item.name,
 				favicon: `https://www.google.com/s2/favicons?domain=${item.url}`,
 				url: item.url,
 			}));
-
-			handleCategoryUrlData(addFavicon);
+			handleLeftModalUrlInfos(addFavicon);
 		}
-	}, [msetsList, handleCategoryUrlData]);
+	}, [msetsList]);
 
 	return (
 		<div className="h-[80rem] w-[68.8rem] rounded-l-[10px] bg-gray-bg-04 py-[2.8rem] pl-[4.4rem] pr-[4.3rem]">
@@ -97,13 +95,13 @@ const CategoryModalLeft = ({
 				</div>
 			</aside>
 
-			<CategoryCommonMoribSet variant="smallLeft" urlInfos={categoryUrlData}>
+			<CategoryCommonMoribSet variant="smallLeft" urlInfos={leftModalUrlInfos}>
 				{isSelectedTab !== 2 &&
-					categoryUrlData.map((urlInfo: UrlInfo) => (
+					leftModalUrlInfos.map((urlInfo: UrlInfo) => (
 						<div
 							key={urlInfo.url}
 							className="group flex h-[4.6rem] w-[100%] gap-[1.2rem] border-b border-gray-bg-04 px-[0.8rem] hover:bg-gray-bg-04"
-							onClick={() => handleSelectedInfo(urlInfo)}
+							onClick={() => handleRightModalUrlInfos(urlInfo)}
 						>
 							<CategoryMsetUrlInfo urlInfo={urlInfo} variant="smallLeft">
 								<div className="p-[1.25rem]">

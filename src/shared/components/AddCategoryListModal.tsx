@@ -14,8 +14,10 @@ interface UrlInfo {
 type CategoryListModalProp = {
 	dialogRef: RefObject<HTMLDialogElement>;
 	handleSubmitModal: () => void;
-	selectedInfo: UrlInfo[];
-	handleSelectedInfo: (urlInfo: UrlInfo) => void;
+	leftModalUrlInfos: UrlInfo[];
+	rightModalUrlInfos: UrlInfo[];
+	handleLeftModalUrlInfos: (urlInfo: UrlInfo[]) => void;
+	handleRightModalUrlInfos: (url: UrlInfo) => void;
 	handleDeleteUrlInfo: (url: UrlInfo) => void;
 	moribSetName: string;
 	handleClose: () => void;
@@ -25,12 +27,13 @@ const AddCategoryListModal = ({
 	dialogRef,
 	handleSubmitModal,
 	handleClose,
-	selectedInfo,
-	handleSelectedInfo,
+	leftModalUrlInfos,
+	rightModalUrlInfos,
+	handleLeftModalUrlInfos,
+	handleRightModalUrlInfos,
 	handleDeleteUrlInfo,
 	moribSetName,
 }: CategoryListModalProp) => {
-	const [categoryUrlData, setCategoryUrlData] = useState<UrlInfo[]>([]); // 선택한 카테고리의 모립세트 url 상태
 	const [isClicked, setIsClicked] = useState(false);
 	const [selectedOption, setSelectedOption] = useState('카테고리 추가');
 
@@ -42,14 +45,10 @@ const AddCategoryListModal = ({
 				domain: tabNameData.data.tabName,
 				favicon: `https://www.google.com/s2/favicons?domain=${url}`,
 			};
-			handleSelectedInfo(newUrlInfo);
+			handleRightModalUrlInfos(newUrlInfo);
 		} catch (isQueryError) {
 			console.error(isQueryError);
 		}
-	};
-
-	const handleCategoryUrlData = (addFavicon: UrlInfo[]) => {
-		setCategoryUrlData(addFavicon);
 	};
 
 	const handleClickButton = (isClicked: boolean) => {
@@ -63,22 +62,22 @@ const AddCategoryListModal = ({
 	const handleClearModalData = () => {
 		setIsClicked(false);
 		setSelectedOption('카테고리 추가');
-		setCategoryUrlData([]);
+		handleLeftModalUrlInfos([]);
 	};
 	return (
 		<dialog ref={dialogRef} className="rounded-[10px]">
 			<div className="flex">
 				<CategoryModalLeft
-					handleSelectedInfo={(urlInfo: UrlInfo) => handleSelectedInfo(urlInfo)}
-					categoryUrlData={categoryUrlData}
-					handleCategoryUrlData={handleCategoryUrlData}
+					handleLeftModalUrlInfos={handleLeftModalUrlInfos}
+					leftModalUrlInfos={leftModalUrlInfos}
 					handleClickButton={handleClickButton}
 					handleSelectOption={handleSelectOption}
 					isClicked={isClicked}
 					selectedOption={selectedOption}
+					handleRightModalUrlInfos={handleRightModalUrlInfos}
 				/>
 				<CategoryModalRight
-					selectedInfo={selectedInfo}
+					rightModalUrlInfos={rightModalUrlInfos}
 					handleUrlInputChange={(url: string) => handleUrlInputChange(url)}
 					handleDeleteUrlInfo={(url: UrlInfo) => handleDeleteUrlInfo(url)}
 					handleClose={handleClose}

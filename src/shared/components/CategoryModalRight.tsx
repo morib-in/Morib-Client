@@ -13,8 +13,9 @@ interface UrlInfo {
 }
 
 interface ModalRightProps {
-	selectedInfo: UrlInfo[];
+	rightModalUrlInfos: UrlInfo[];
 	handleUrlInputChange: (url: string) => void;
+
 	handleDeleteUrlInfo: (url: UrlInfo) => void;
 	handleSubmitModal: () => void;
 	moribSetName: string;
@@ -23,7 +24,7 @@ interface ModalRightProps {
 }
 
 const CategoryModalRight = ({
-	selectedInfo,
+	rightModalUrlInfos,
 	handleUrlInputChange,
 	handleDeleteUrlInfo,
 	handleSubmitModal,
@@ -48,13 +49,13 @@ const CategoryModalRight = ({
 
 			<section className="flex w-full">
 				<InputCategoryUrl
-					selectedInfo={selectedInfo}
+					leftModalUrlInfos={rightModalUrlInfos}
 					variant="small"
 					onUrlInputChange={(url: string) => handleUrlInputChange(url)}
 				/>
 			</section>
-			<CategoryCommonMoribSet urlInfos={selectedInfo} variant="smallRight">
-				{selectedInfo.map((urlInfo, url) => (
+			<CategoryCommonMoribSet urlInfos={rightModalUrlInfos} variant="smallRight">
+				{rightModalUrlInfos.map((urlInfo, url) => (
 					<div key={url} className="flex h-[4.6rem] gap-[2rem] border-b border-gray-bg-04 px-[0.8rem]">
 						<CategoryMsetUrlInfo urlInfo={urlInfo} variant="smallRight">
 							<div className="p-[1.25rem]">

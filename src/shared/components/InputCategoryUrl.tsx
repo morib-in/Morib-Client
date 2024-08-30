@@ -13,11 +13,16 @@ interface UrlInfo {
 interface InputCategoryUrlProps {
 	variant?: 'basic' | 'small';
 	onUrlInputChange: (url: string) => void;
-	selectedInfo?: UrlInfo[];
+	leftModalUrlInfos?: UrlInfo[];
 	urlInfo?: UrlInfo[];
 }
 
-const InputCategoryUrl = ({ variant = 'basic', onUrlInputChange, selectedInfo, urlInfo }: InputCategoryUrlProps) => {
+const InputCategoryUrl = ({
+	variant = 'basic',
+	onUrlInputChange,
+	leftModalUrlInfos,
+	urlInfo,
+}: InputCategoryUrlProps) => {
 	const [url, setUrl] = useState('');
 	const [isUrlValidated, setIsUrlValidated] = useState<boolean | null>(null);
 	const [errorMessage, setErrorMessage] = useState<string>('');
@@ -35,7 +40,8 @@ const InputCategoryUrl = ({ variant = 'basic', onUrlInputChange, selectedInfo, u
 			const isValid = isUrlValid(url);
 			setIsUrlValidated(isValid);
 			if (isValid) {
-				const isExist = selectedInfo?.some((info) => info.url === url) || urlInfo?.some((info) => info.url === url);
+				const isExist =
+					leftModalUrlInfos?.some((info) => info.url === url) || urlInfo?.some((info) => info.url === url);
 				if (isExist) {
 					setErrorMessage('이미 추가된 주소입니다.');
 					setIsUrlValidated(false);

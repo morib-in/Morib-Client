@@ -30,8 +30,9 @@ interface ModalAddCategoryProps {
 
 const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 	const [inputUrl, setInputUrl] = useState<UrlInfo[]>([]); // input창에 입력되어 추가된 url
-	const [selectedInfo, setSelectedInfo] = useState<UrlInfo[]>([]); // 클릭하여 선택한 url
-	const [combinedInfos, setCombinedInfos] = useState<UrlInfo[]>(inputUrl); // 최종으로 추가된 url
+	const [leftModalUrlInfos, setLeftModalUrlInfos] = useState<UrlInfo[]>([]);
+	const [totalUrlInfos, setTotalUrlInfos] = useState<UrlInfo[]>(inputUrl); // 최종으로 추가된 url
+	const [rightModalUrlInfos, setRightModalUrlInfos] = useState<UrlInfo[]>([]); // 오른쪽 모달 url
 	const [name, setName] = useState('');
 	const [isDateToggleOn, setIsDateToggleOn] = useState(false);
 	const [isPeriodOn, setIsPeriodOn] = useState(false);
@@ -42,22 +43,21 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 	const queryClient = useQueryClient();
 
 	const handleUrlInfos = () => {
-		setSelectedInfo([]);
+		setLeftModalUrlInfos([]);
+		setRightModalUrlInfos([]);
+		setTotalUrlInfos([]);
 	};
 
-	// 최종으로 선택 또는 입력된 url 추가하는 함수
-	const handleAddUrl = (selectedInfo: any) => {
-		setCombinedInfos((prevItems) => {
-			if (prevItems.some((prevItem) => prevItem.url === selectedInfo.url)) {
-				return prevItems;
-			}
-			return [...prevItems, ...selectedInfo];
-		});
+	const handleAddTotalUrl = () => {
+		setTotalUrlInfos([...rightModalUrlInfos, ...inputUrl]);
 	};
 
-	// 빠른 불러오기 모달에서 url 추가하는 함수
-	const handleSelectedInfo = (urlInfo: UrlInfo) => {
-		setSelectedInfo((prevItems) => {
+	const handleLeftModalUrlInfos = (addFavicon: UrlInfo[]) => {
+		setLeftModalUrlInfos(addFavicon);
+	};
+
+	const handleRightModalUrlInfos = (urlInfo: UrlInfo) => {
+		setRightModalUrlInfos((prevItems) => {
 			if (prevItems.some((prevItem) => prevItem.url === urlInfo.url)) {
 				return prevItems;
 			}
@@ -76,15 +76,16 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 	const handleClearData = () => {
 		setName('');
 		setInputUrl([]);
+		setLeftModalUrlInfos([]);
 		setSelectedStartDate(null);
 		setSelectedEndDate(null);
 		setIsDateToggleOn(false);
-		setSelectedInfo([]);
-		setCombinedInfos([]);
+		setRightModalUrlInfos([]);
+		setTotalUrlInfos([]);
 	};
 
 	const handleDeleteUrlInfo = (urlInfoToDelete: UrlInfo) => {
-		setSelectedInfo((prevUrlInfos) => prevUrlInfos.filter((urlInfo) => urlInfo.url !== urlInfoToDelete.url));
+		setRightModalUrlInfos((prevUrlInfos) => prevUrlInfos.filter((urlInfo) => urlInfo.url !== urlInfoToDelete.url));
 	};
 
 	const defaultDate = new Date();
@@ -98,7 +99,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 				favicon: `https://www.google.com/s2/favicons?domain=${url}`,
 			};
 			setInputUrl((prevUrlInfos) => [...prevUrlInfos, newUrlInfo]);
-			setCombinedInfos((prev) => [...prev, newUrlInfo]);
+			setTotalUrlInfos((prev) => [...prev, newUrlInfo]);
 		} catch (isQueryError) {
 			console.error(queryError);
 		}
@@ -152,7 +153,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 	}, [isCalendarOpened, isDateToggleOn]);
 
 	const handleCategoryData = () => {
-		if (combinedInfos.length === 0) {
+		if (totalUrlInfos.length === 0) {
 			const categoryData = {
 				name,
 				startDate: formatCalendarApiDate(selectedStartDate),
@@ -168,7 +169,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 				name,
 				startDate: formatCalendarApiDate(selectedStartDate),
 				endDate: formatCalendarApiDate(selectedEndDate),
-				msets: combinedInfos.map((info) => ({
+				msets: totalUrlInfos.map((info) => ({
 					name: info.domain,
 					url: info.url,
 				})),
@@ -204,7 +205,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 	};
 
 	const handleMoveToNextModal = () => {
-		setSelectedInfo([]);
+		setLeftModalUrlInfos([]);
 		showModal();
 	};
 
@@ -233,7 +234,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 
 	// 빠른 불러오기 모달 완료 버튼 함수
 	const handleMsetSubmit = () => {
-		handleAddUrl(selectedInfo);
+		handleAddTotalUrl(rightModalUrlInfos);
 		closeModal();
 	};
 
@@ -303,8 +304,10 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 							handleSubmitModal={handleMsetSubmit}
 							handleClose={handleCategoryModalClose}
 							dialogRef={dialogRef}
-							selectedInfo={selectedInfo}
-							handleSelectedInfo={(urlInfo: UrlInfo) => handleSelectedInfo(urlInfo)}
+							leftModalUrlInfos={leftModalUrlInfos}
+							rightModalUrlInfos={rightModalUrlInfos}
+							handleLeftModalUrlInfos={handleLeftModalUrlInfos}
+							handleRightModalUrlInfos={handleRightModalUrlInfos}
 							handleDeleteUrlInfo={(url: UrlInfo) => handleDeleteUrlInfo(url)}
 							moribSetName={name}
 						/>
@@ -316,8 +319,8 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 					/>
 				</section>
 
-				<CategoryCommonMoribSet urlInfos={combinedInfos} variant="basic">
-					{combinedInfos.map((urlInfo, url) => (
+				<CategoryCommonMoribSet urlInfos={totalUrlInfos} variant="basic">
+					{totalUrlInfos.map((urlInfo, url) => (
 						<div key={url} className="flex h-[4.6rem] gap-[1.2rem] border-b border-gray-bg-04 px-[0.8rem]">
 							<CategoryMsetUrlInfo urlInfo={urlInfo} variant="basic" />
 						</div>
