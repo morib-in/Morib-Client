@@ -1,4 +1,4 @@
-import React from 'react';
+import { ReactNode } from 'react';
 
 interface UrlInfo {
 	url: string;
@@ -9,7 +9,7 @@ interface UrlInfo {
 interface CategoryCommonMoribSetProps {
 	variant: 'basic' | 'smallLeft' | 'smallRight';
 	urlInfos: UrlInfo[];
-	children?: React.ReactNode;
+	children?: ReactNode;
 }
 
 const CategoryCommonMoribSet = ({ variant, urlInfos, children }: CategoryCommonMoribSetProps) => {
@@ -49,7 +49,6 @@ const CategoryCommonMoribSet = ({ variant, urlInfos, children }: CategoryCommonM
 	const optionalScrollStyle = showYScroll === true ? 'overflow-y-auto' : 'overflow-y-hidden';
 	const theadStyle =
 		' detail-semibold-14 flex h-[4.6rem] items-center border-b-[0.1rem] border-gray-bg-04 text-gray-04';
-	const tbodyStyle = 'px-[0rem]';
 
 	return (
 		<div
@@ -61,7 +60,7 @@ const CategoryCommonMoribSet = ({ variant, urlInfos, children }: CategoryCommonM
 					<div className={`text-left ${sizeVariant[variant].urlHeadWidth}`}>주소</div>
 				</div>
 
-				<div className={tbodyStyle}>
+				<div>
 					{children}
 					{Array.from({ length: Math.max(sizeVariant[variant].rowCounts - urlInfos.length, 0) }, (_, index) => (
 						<div key={`empty-row-${index}`}>

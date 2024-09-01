@@ -1,4 +1,4 @@
-import React from 'react';
+import { ReactNode } from 'react';
 
 interface UrlInfo {
 	url: string;
@@ -9,10 +9,10 @@ interface UrlInfo {
 interface CategoryMoribPageInfoProps {
 	urlInfo: UrlInfo;
 	variant: 'basic' | 'smallLeft' | 'smallRight';
-	children?: React.ReactNode;
+	children?: ReactNode;
 }
 
-const CategoryMoribPageInfo = ({ urlInfo, variant, children }: CategoryMoribPageInfoProps) => {
+const CategoryMsetUrlInfo = ({ urlInfo, variant, children }: CategoryMoribPageInfoProps) => {
 	const sizeVariant = {
 		basic: {
 			pageWidth: 'w-[22.8rem]',
@@ -45,4 +45,4 @@ const CategoryMoribPageInfo = ({ urlInfo, variant, children }: CategoryMoribPage
 	);
 };
 
-export default CategoryMoribPageInfo;
+export default CategoryMsetUrlInfo;

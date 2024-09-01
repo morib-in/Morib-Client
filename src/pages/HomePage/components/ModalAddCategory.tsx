@@ -43,13 +43,11 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 	const queryClient = useQueryClient();
 
 	const handleUrlInfos = () => {
-		setLeftModalUrlInfos([]);
 		setRightModalUrlInfos([]);
-		setTotalUrlInfos([]);
 	};
 
 	const handleAddTotalUrl = () => {
-		setTotalUrlInfos([...rightModalUrlInfos, ...inputUrl]);
+		setTotalUrlInfos((prev) => [...prev, ...rightModalUrlInfos, ...inputUrl]);
 	};
 
 	const handleLeftModalUrlInfos = (addFavicon: UrlInfo[]) => {
@@ -205,7 +203,6 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 	};
 
 	const handleMoveToNextModal = () => {
-		setLeftModalUrlInfos([]);
 		showModal();
 	};
 
@@ -234,7 +231,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 
 	// 빠른 불러오기 모달 완료 버튼 함수
 	const handleMsetSubmit = () => {
-		handleAddTotalUrl(rightModalUrlInfos);
+		handleAddTotalUrl();
 		closeModal();
 	};
 
