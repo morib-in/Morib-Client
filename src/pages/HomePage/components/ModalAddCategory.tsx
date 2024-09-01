@@ -29,10 +29,10 @@ interface ModalAddCategoryProps {
 }
 
 const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
-	const [inputUrl, setInputUrl] = useState<UrlInfo[]>([]); // input창에 입력되어 추가된 url
+	const [inputUrl, setInputUrl] = useState<UrlInfo[]>([]);
 	const [leftModalUrlInfos, setLeftModalUrlInfos] = useState<UrlInfo[]>([]);
-	const [totalUrlInfos, setTotalUrlInfos] = useState<UrlInfo[]>(inputUrl); // 최종으로 추가된 url
-	const [rightModalUrlInfos, setRightModalUrlInfos] = useState<UrlInfo[]>([]); // 오른쪽 모달 url
+	const [totalUrlInfos, setTotalUrlInfos] = useState<UrlInfo[]>(inputUrl);
+	const [rightModalUrlInfos, setRightModalUrlInfos] = useState<UrlInfo[]>([]);
 	const [name, setName] = useState('');
 	const [isDateToggleOn, setIsDateToggleOn] = useState(false);
 	const [isPeriodOn, setIsPeriodOn] = useState(false);
@@ -206,19 +206,16 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 		showModal();
 	};
 
-	// 카테고리 추가 모달 취소 버튼 함수
 	const handleClose = () => {
 		handleClearData();
 		handleCloseModal();
 	};
 
-	// 빠른 불러오기 모달 취소 버튼 함수
 	const handleCategoryModalClose = () => {
 		handleClearData();
 		closeModal();
 	};
 
-	// 카테고리 추가 모달 완료 버튼 함수
 	const handlePostDataClick = () => {
 		handleClearData();
 		handleCategoryData();
@@ -229,7 +226,6 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 		}
 	};
 
-	// 빠른 불러오기 모달 완료 버튼 함수
 	const handleMsetSubmit = () => {
 		handleAddTotalUrl();
 		closeModal();
