@@ -74,11 +74,6 @@ const TimerPage = () => {
 		resetIncreasedTime: resetTimerIncreasedTime,
 	} = useTimerCount({ isPlaying, previousTime: targetTime });
 
-	const { increasedTime: sideBarIncreasedTime, resetIncreasedTime: resetIncreasedSideBarTime } = useTimerCount({
-		isPlaying,
-		previousTime: targetTime,
-	});
-
 	useUrlHandler({
 		isPlaying,
 		selectedTodo,
@@ -118,7 +113,6 @@ const TimerPage = () => {
 						formattedTodayDate={formattedTodayDate}
 						timerTime={timerTime}
 						timerIncreasedTime={timerIncreasedTime}
-						resetIncreasedSideBarTime={resetIncreasedSideBarTime}
 						resetTimerIncreasedTime={resetTimerIncreasedTime}
 					/>
 					<Carousel />
@@ -144,8 +138,6 @@ const TimerPage = () => {
 								formattedTodayDate={formattedTodayDate}
 								resetTimerIncreasedTime={resetTimerIncreasedTime}
 								timerIncreasedTime={timerIncreasedTime}
-								sideBarIncreasedTime={sideBarIncreasedTime}
-								resetIncreasedSideBarTime={resetIncreasedSideBarTime}
 							/>
 						</div>
 					</div>

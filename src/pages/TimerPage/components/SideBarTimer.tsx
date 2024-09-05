@@ -27,8 +27,6 @@ interface CategoryBoxProps {
 	formattedTodayDate: string;
 	resetTimerIncreasedTime: () => void;
 	timerIncreasedTime: number;
-	sideBarIncreasedTime: number;
-	resetIncreasedSideBarTime: () => void;
 }
 
 const SideBarTimer = ({
@@ -42,8 +40,6 @@ const SideBarTimer = ({
 	formattedTodayDate,
 	resetTimerIncreasedTime,
 	timerIncreasedTime,
-	sideBarIncreasedTime,
-	resetIncreasedSideBarTime,
 }: CategoryBoxProps) => {
 	const { animate, handleClose, sidebarRef } = useCloseSidebar(toggleSidebar);
 	const navigate = useNavigate();
@@ -61,7 +57,7 @@ const SideBarTimer = ({
 						onSuccess: () => {
 							handlePlayToggle(false);
 							queryClient.invalidateQueries({ queryKey: ['todo', formattedTodayDate] });
-							resetIncreasedSideBarTime();
+							resetTimerIncreasedTime();
 						},
 					},
 				);
@@ -74,7 +70,7 @@ const SideBarTimer = ({
 	const handleNavigateHome = () => {
 		if (isPlaying && selectedTodo !== null) {
 			stopTimer(
-				{ id: selectedTodo, elapsedTime: sideBarIncreasedTime, targetDate: formattedTodayDate },
+				{ id: selectedTodo, elapsedTime: timerIncreasedTime, targetDate: formattedTodayDate },
 				{
 					onSuccess: () => {
 						handlePlayToggle(false);
@@ -110,7 +106,7 @@ const SideBarTimer = ({
 						isSelected={todo.id === selectedTodo}
 						onClick={() => handleTodoClick(todo.id, todo.targetTime, todo.name, todo.categoryName)}
 						onToggleComplete={() => mutate(todo.id)}
-						sideBarIncreasedTime={todo.id === selectedTodo ? sideBarIncreasedTime : 0}
+						timerIncreasedTime={todo.id === selectedTodo ? timerIncreasedTime : 0}
 					/>
 				))}
 				<ButtonTodoToggle isCompleted={false} isToggled={false}>
@@ -120,7 +116,7 @@ const SideBarTimer = ({
 							{...todo}
 							isSelected={todo.id === selectedTodo}
 							onToggleComplete={() => mutate(todo.id)}
-							sideBarIncreasedTime={todo.id === selectedTodo ? sideBarIncreasedTime : 0}
+							timerIncreasedTime={todo.id === selectedTodo ? timerIncreasedTime : 0}
 						/>
 					))}
 				</ButtonTodoToggle>
