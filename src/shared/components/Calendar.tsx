@@ -9,7 +9,9 @@ import HeaderCalendar from '@/shared/components/HeaderCalendar';
 
 import useClickOutside from '@/shared/hooks/useClickOutside';
 
-import { getFullDateInfo } from '@/shared/utils/calendar/index';
+import { formatFullDateInfo } from '@/shared/utils/calendar/index';
+
+import { WEEK_DAYS } from '@/shared/constants/weekDays';
 
 import './calendar.css';
 
@@ -37,8 +39,6 @@ interface CalendarProps {
 	clickOutSideCallback: () => void;
 }
 
-const weekDays: string[] = ['일', '월', '화', '수', '목', '금', '토'];
-
 const Calendar = ({
 	onStartDateInput,
 	onEndDateInput,
@@ -54,26 +54,18 @@ const Calendar = ({
 
 	useClickOutside(calendarRef, clickOutSideCallback);
 
-	const { year: startYear, month: startMonth, day: startDay } = getFullDateInfo(selectedStartDate);
-	const endDateInfo = selectedEndDate ? getFullDateInfo(selectedEndDate) : { year: '', month: '', day: '' };
+	const startDateInfo = formatFullDateInfo(selectedStartDate);
+	const endDateInfo = formatFullDateInfo(selectedEndDate);
 
-	const isDateSelected = !!selectedStartDate;
+	const isStartDateSelected = !!selectedStartDate;
 	const isEndDateSelected = !!selectedEndDate;
 
-	const optionalStyle = isPeriodOn
-		? selectedStartDate && isDateSelected && !isEndDateSelected
-			? STYLES.optionalStyle
-			: STYLES.optionalStyleInactive
-		: isDateSelected
-			? STYLES.optionalStyle
-			: STYLES.optionalStyleInactive;
-
-	const optionalEndDateStyle =
-		isDateSelected && isEndDateSelected ? STYLES.optionalStyle : STYLES.optionalStyleInactive;
+	const optionalStyle = isStartDateSelected && !isEndDateSelected ? STYLES.optionalStyle : STYLES.optionalStyleInactive;
+	const optionalEndDateStyle = isEndDateSelected ? STYLES.optionalStyle : STYLES.optionalStyleInactive;
 
 	const commonDatePickerProps = {
 		renderCustomHeader: (props: any) => <HeaderCalendar {...props} />,
-		formatWeekDay: (date: string) => weekDays[dayjs(date).day()],
+		formatWeekDay: (date: string) => WEEK_DAYS[dayjs(date).day()],
 		inline: true,
 		disabledKeyboardNavigation: true,
 	};
@@ -105,12 +97,12 @@ const Calendar = ({
 						<>
 							<input
 								type="text"
-								value={`${startYear}.${startMonth}.${startDay}`}
+								value={`${startDateInfo.year}.${startDateInfo.month}.${startDateInfo.day}`}
 								className={`${STYLES.input} ${optionalStyle}`}
 								readOnly
 							/>
 							<DatePicker
-								selected={selectedStartDate ? selectedStartDate.toDate() : null} // 변환된 Date 객체
+								selected={selectedStartDate ? selectedStartDate.toDate() : null}
 								onChange={handleDateChange}
 								{...commonDatePickerProps}
 							/>
@@ -120,13 +112,13 @@ const Calendar = ({
 							<div className={STYLES.dateRangeContainer}>
 								<input
 									type="text"
-									value={`${startYear}.${startMonth}.${startDay}`}
+									value={`${startDateInfo.year}.${startDateInfo.month}.${startDateInfo.day}`}
 									className={`${STYLES.calendarInput} ${optionalStyle}`}
 									readOnly
 								/>
 								<input
 									type="text"
-									value={`${endDateInfo.year}.${endDateInfo.month}.${endDateInfo.day}`}
+									value={selectedEndDate ? `${endDateInfo.year}.${endDateInfo.month}.${endDateInfo.day}` : ''}
 									className={`${STYLES.calendarInput} ${optionalEndDateStyle}`}
 									readOnly
 								/>
