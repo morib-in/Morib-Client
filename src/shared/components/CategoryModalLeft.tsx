@@ -35,7 +35,7 @@ const CategoryModalLeft = ({
 	isClicked,
 	selectedOption,
 }: ModalProps) => {
-	const [isSelectedTab, setSelectedTab] = useState(CATEGORY_MODALTABS[0].id);
+	const [selectedTabId, setSelectedTabId] = useState(CATEGORY_MODALTABS[0].id);
 
 	const { data: categoryData } = useCategoryLists();
 	const categories = categoryData?.data || [];
@@ -49,10 +49,10 @@ const CategoryModalLeft = ({
 	};
 
 	const handleTabChange = (tab: number) => {
-		setSelectedTab(tab);
+		setSelectedTabId(tab);
 	};
 
-	const disabled = isSelectedTab === 2;
+	const disabled = selectedTabId === 2;
 
 	return (
 		<div className="h-[80rem] w-[68.8rem] rounded-l-[10px] bg-gray-bg-04 py-[2.8rem] pl-[4.4rem] pr-[4.3rem]">
@@ -60,7 +60,7 @@ const CategoryModalLeft = ({
 				<h1 className="head-bold-24 text-gray-04">카테고리 추가</h1>
 			</header>
 			<aside className="mb-[8px]">
-				<CategoryTabSelect tabs={CATEGORY_MODALTABS} handleTabChange={handleTabChange} isSelectedTab={isSelectedTab} />
+				<CategoryTabSelect tabs={CATEGORY_MODALTABS} handleTabChange={handleTabChange} selectedTabId={selectedTabId} />
 
 				<div className="relative mt-[0px]">
 					<DropdownCategory
@@ -76,7 +76,7 @@ const CategoryModalLeft = ({
 			</aside>
 
 			<CategoryCommonMoribSet variant="smallLeft" urlInfos={msetUrlInfos}>
-				{isSelectedTab !== 2 &&
+				{selectedTabId !== 2 &&
 					msetUrlInfos.map((urlInfo: UrlInfo) => (
 						<div
 							key={urlInfo.url}

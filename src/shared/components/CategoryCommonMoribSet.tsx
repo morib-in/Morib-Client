@@ -50,6 +50,13 @@ const CategoryCommonMoribSet = ({ variant, urlInfos, children }: CategoryCommonM
 	const theadStyle =
 		' detail-semibold-14 flex h-[4.6rem] items-center border-b-[0.1rem] border-gray-bg-04 text-gray-04';
 
+	const renderEmptyRows = (count: number) => {
+		return Array.from({ length: count }).map((_, index) => (
+			<div key={`empty-row-${index}`} className="h-[4.6rem] w-full border-b-[0.1rem] border-gray-bg-04" />
+		));
+	};
+
+	const emptyRowCount = Math.max(sizeVariant[variant].rowCounts - urlInfos.length, 0);
 	return (
 		<div
 			className={`${defaultTableStyle} ${optionalScrollStyle} ${sizeVariant[variant].bgColor} ${sizeVariant[variant].width} ${sizeVariant[variant].height} ${sizeVariant[variant].maxHeight}`}
@@ -62,11 +69,7 @@ const CategoryCommonMoribSet = ({ variant, urlInfos, children }: CategoryCommonM
 
 				<div>
 					{children}
-					{Array.from({ length: Math.max(sizeVariant[variant].rowCounts - urlInfos.length, 0) }, (_, index) => (
-						<div key={`empty-row-${index}`}>
-							<div className="h-[4.6rem] w-full border-b-[0.1rem] border-gray-bg-04" />
-						</div>
-					))}
+					{renderEmptyRows(emptyRowCount)}
 				</div>
 			</div>
 		</div>
