@@ -124,12 +124,13 @@ const TimerPage = () => {
 					<HamburgerIcon />
 				</button>
 				{isSidebarOpen && (
-					<div className="absolute inset-0 z-10 bg-dim">
+					<div className={` ${isSidebarOpen ? 'absolute inset-0 z-10 bg-dim' : ''}`}>
 						<div className="absolute inset-y-0 right-0 flex justify-end overflow-hidden">
 							<SideBarTimer
 								targetTime={targetTime}
 								ongoingTodos={ongoingTodos}
 								completedTodos={completedTodos}
+								isSideOpen={isSidebarOpen}
 								toggleSidebar={toggleSidebar}
 								handleTodoSelection={handleTodoSelection}
 								selectedTodo={selectedTodo}
