@@ -42,7 +42,7 @@ interface Todo {
 
 const TimerPage = () => {
 	const { mutate: stopTimer } = usePostTimerStop();
-	const { isSidebarOpen, toggleSidebar } = useToggleSidebar();
+	const { isSidebarOpen, handleSidebarToggle } = useToggleSidebar();
 	const todayDate = dayjs().tz(TIMEZONE);
 	const formattedTodayDate = todayDate.format(DATE_FORMAT);
 
@@ -108,7 +108,7 @@ const TimerPage = () => {
 					<Timer
 						selectedTodo={selectedTodo}
 						totalTimeOfToday={totalTimeOfToday}
-						handlePlayToggle={handlePlayToggle}
+						onPlayToggle={handlePlayToggle}
 						isPlaying={isPlaying}
 						formattedTodayDate={formattedTodayDate}
 						timerTime={timerTime}
@@ -118,7 +118,7 @@ const TimerPage = () => {
 					<Carousel />
 				</div>
 				<button
-					onClick={toggleSidebar}
+					onClick={handleSidebarToggle}
 					className="ml-[38.2rem] mt-[3.2rem] h-[5.4rem] w-[5.4rem] rounded-[1.5rem] hover:bg-gray-bg-04"
 				>
 					<HamburgerIcon />
@@ -131,10 +131,10 @@ const TimerPage = () => {
 								ongoingTodos={ongoingTodos}
 								completedTodos={completedTodos}
 								isSideOpen={isSidebarOpen}
-								toggleSidebar={toggleSidebar}
-								handleTodoSelection={handleTodoSelection}
+								toggleSidebar={handleSidebarToggle}
+								onTodoSelection={handleTodoSelection}
 								selectedTodo={selectedTodo}
-								handlePlayToggle={handlePlayToggle}
+								onPlayToggle={handlePlayToggle}
 								isPlaying={isPlaying}
 								formattedTodayDate={formattedTodayDate}
 								resetTimerIncreasedTime={resetTimerIncreasedTime}

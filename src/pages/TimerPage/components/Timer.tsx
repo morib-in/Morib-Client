@@ -12,7 +12,7 @@ import TaskTime from '@/pages/TimerPage/components/TaskTime';
 interface TaskTotalTimeProps {
 	totalTimeOfToday: number;
 	selectedTodo: number | null;
-	handlePlayToggle: (isPlaying: boolean) => void;
+	onPlayToggle: (isPlaying: boolean) => void;
 	isPlaying: boolean;
 	formattedTodayDate: string;
 	timerTime: number;
@@ -23,7 +23,7 @@ interface TaskTotalTimeProps {
 const Timer = ({
 	totalTimeOfToday,
 	selectedTodo,
-	handlePlayToggle,
+	onPlayToggle,
 	isPlaying,
 	formattedTodayDate,
 	timerTime,
@@ -42,14 +42,14 @@ const Timer = ({
 					{ id: selectedTodo, elapsedTime: timerIncreasedTime, targetDate: formattedTodayDate },
 					{
 						onSuccess: () => {
-							handlePlayToggle(false);
+							onPlayToggle(false);
 							resetTimerIncreasedTime();
 							queryClient.invalidateQueries({ queryKey: ['todo', formattedTodayDate] });
 						},
 					},
 				);
 			} else {
-				handlePlayToggle(true);
+				onPlayToggle(true);
 			}
 		}
 	};

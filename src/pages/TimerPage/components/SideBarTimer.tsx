@@ -20,9 +20,9 @@ interface CategoryBoxProps {
 	completedTodos: Todo[];
 	ongoingTodos: Todo[];
 	toggleSidebar: () => void;
-	handleTodoSelection: (id: number, time: number, name: string, categoryName: string) => void;
+	onTodoSelection: (id: number, time: number, name: string, categoryName: string) => void;
 	selectedTodo: number | null;
-	handlePlayToggle: (isPlaying: boolean) => void;
+	onPlayToggle: (isPlaying: boolean) => void;
 	isPlaying: boolean;
 	targetTime: number;
 	formattedTodayDate: string;
@@ -35,9 +35,9 @@ const SideBarTimer = ({
 	ongoingTodos = [],
 	completedTodos = [],
 	toggleSidebar,
-	handleTodoSelection,
+	onTodoSelection,
 	selectedTodo,
-	handlePlayToggle,
+	onPlayToggle,
 	isPlaying,
 	formattedTodayDate,
 	resetTimerIncreasedTime,
@@ -58,7 +58,7 @@ const SideBarTimer = ({
 					{ id: selectedTodo, elapsedTime: timerIncreasedTime, targetDate: formattedTodayDate },
 					{
 						onSuccess: () => {
-							handlePlayToggle(false);
+							onPlayToggle(false);
 							queryClient.invalidateQueries({ queryKey: ['todo', formattedTodayDate] });
 							resetTimerIncreasedTime();
 						},
@@ -67,7 +67,7 @@ const SideBarTimer = ({
 			}
 		}
 		resetTimerIncreasedTime();
-		handleTodoSelection(id, time, name, categoryName);
+		onTodoSelection(id, time, name, categoryName);
 	};
 
 	const handleNavigateHome = () => {
@@ -76,7 +76,7 @@ const SideBarTimer = ({
 				{ id: selectedTodo, elapsedTime: timerIncreasedTime, targetDate: formattedTodayDate },
 				{
 					onSuccess: () => {
-						handlePlayToggle(false);
+						onPlayToggle(false);
 						navigate('/home');
 					},
 				},
