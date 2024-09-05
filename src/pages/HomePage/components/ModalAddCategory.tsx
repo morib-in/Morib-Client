@@ -30,7 +30,6 @@ interface ModalAddCategoryProps {
 
 const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 	const [inputUrl, setInputUrl] = useState<UrlInfo[]>([]);
-	const [leftModalUrlInfos, setLeftModalUrlInfos] = useState<UrlInfo[]>([]);
 	const [totalUrlInfos, setTotalUrlInfos] = useState<UrlInfo[]>(inputUrl);
 	const [rightModalUrlInfos, setRightModalUrlInfos] = useState<UrlInfo[]>([]);
 	const [name, setName] = useState('');
@@ -48,10 +47,6 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 
 	const handleAddTotalUrl = () => {
 		setTotalUrlInfos((prev) => [...prev, ...rightModalUrlInfos, ...inputUrl]);
-	};
-
-	const handleLeftModalUrlInfos = (addFavicon: UrlInfo[]) => {
-		setLeftModalUrlInfos(addFavicon);
 	};
 
 	const handleRightModalUrlInfos = (urlInfo: UrlInfo) => {
@@ -74,7 +69,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 	const handleClearData = () => {
 		setName('');
 		setInputUrl([]);
-		setLeftModalUrlInfos([]);
+
 		setSelectedStartDate(null);
 		setSelectedEndDate(null);
 		setIsDateToggleOn(false);
@@ -297,9 +292,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 							handleSubmitModal={handleMsetSubmit}
 							handleClose={handleCategoryModalClose}
 							dialogRef={dialogRef}
-							leftModalUrlInfos={leftModalUrlInfos}
 							rightModalUrlInfos={rightModalUrlInfos}
-							handleLeftModalUrlInfos={handleLeftModalUrlInfos}
 							handleRightModalUrlInfos={handleRightModalUrlInfos}
 							handleDeleteUrlInfo={(url: UrlInfo) => handleDeleteUrlInfo(url)}
 							moribSetName={name}

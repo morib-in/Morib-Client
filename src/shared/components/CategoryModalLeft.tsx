@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import CategoryMsetUrlInfo from '@/shared/components/CategoryMsetUrlInfo';
 import CategoryTabSelect from '@/shared/components/CategoryTabSelect';
@@ -18,18 +18,9 @@ interface UrlInfo {
 	favicon: string;
 }
 
-interface msetsList {
-	createdAt: string;
-	updatedAt: string;
-	id: number;
-	name: string;
-	url: string;
-}
-
 interface ModalProps {
 	handleRightModalUrlInfos: (url: UrlInfo) => void;
-	leftModalUrlInfos: UrlInfo[];
-	handleLeftModalUrlInfos: (infos: UrlInfo[]) => void;
+
 	handleClickButton: (is: any) => void;
 	handleSelectOption: (name: string) => void;
 	isClicked: boolean;
@@ -37,9 +28,8 @@ interface ModalProps {
 }
 
 const CategoryModalLeft = ({
-	handleLeftModalUrlInfos,
 	handleRightModalUrlInfos,
-	leftModalUrlInfos,
+
 	handleClickButton,
 	handleSelectOption,
 	isClicked,
@@ -51,8 +41,8 @@ const CategoryModalLeft = ({
 	const categories = categoryData?.data || [];
 	const [categoryId, setCategoryId] = useState<number>(0);
 
-	const { data: msets } = useGetMsets(categoryId);
-	const msetsList = msets?.data.msetList || [];
+	const { data: msetsList } = useGetMsets(categoryId);
+	const msetUrlInfos = msetsList || [];
 
 	const handleOptionId = (id: number) => {
 		setCategoryId(id);
@@ -63,16 +53,6 @@ const CategoryModalLeft = ({
 	};
 
 	const disabled = isSelectedTab === 2;
-	useEffect(() => {
-		if (msetsList.length > 0) {
-			const addFavicon = msetsList.map((item: msetsList) => ({
-				domain: item.name,
-				favicon: `https://www.google.com/s2/favicons?domain=${item.url}`,
-				url: item.url,
-			}));
-			handleLeftModalUrlInfos(addFavicon);
-		}
-	}, [msetsList]);
 
 	return (
 		<div className="h-[80rem] w-[68.8rem] rounded-l-[10px] bg-gray-bg-04 py-[2.8rem] pl-[4.4rem] pr-[4.3rem]">
@@ -95,9 +75,9 @@ const CategoryModalLeft = ({
 				</div>
 			</aside>
 
-			<CategoryCommonMoribSet variant="smallLeft" urlInfos={leftModalUrlInfos}>
+			<CategoryCommonMoribSet variant="smallLeft" urlInfos={msetUrlInfos}>
 				{isSelectedTab !== 2 &&
-					leftModalUrlInfos.map((urlInfo: UrlInfo) => (
+					msetUrlInfos.map((urlInfo: UrlInfo) => (
 						<div
 							key={urlInfo.url}
 							className="group flex h-[4.6rem] w-[100%] gap-[1.2rem] border-b border-gray-bg-04 px-[0.8rem] hover:bg-gray-bg-04"

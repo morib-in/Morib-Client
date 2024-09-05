@@ -14,9 +14,8 @@ interface UrlInfo {
 type CategoryListModalProp = {
 	dialogRef: RefObject<HTMLDialogElement>;
 	handleSubmitModal: () => void;
-	leftModalUrlInfos: UrlInfo[];
+
 	rightModalUrlInfos: UrlInfo[];
-	handleLeftModalUrlInfos: (urlInfo: UrlInfo[]) => void;
 	handleRightModalUrlInfos: (url: UrlInfo) => void;
 	handleDeleteUrlInfo: (url: UrlInfo) => void;
 	moribSetName: string;
@@ -27,9 +26,9 @@ const AddCategoryListModal = ({
 	dialogRef,
 	handleSubmitModal,
 	handleClose,
-	leftModalUrlInfos,
+
 	rightModalUrlInfos,
-	handleLeftModalUrlInfos,
+
 	handleRightModalUrlInfos,
 	handleDeleteUrlInfo,
 	moribSetName,
@@ -62,14 +61,11 @@ const AddCategoryListModal = ({
 	const handleClearModalData = () => {
 		setIsClicked(false);
 		setSelectedOption('카테고리 추가');
-		handleLeftModalUrlInfos([]);
 	};
 	return (
 		<dialog ref={dialogRef} className="rounded-[10px]">
 			<div className="flex">
 				<CategoryModalLeft
-					handleLeftModalUrlInfos={handleLeftModalUrlInfos}
-					leftModalUrlInfos={leftModalUrlInfos}
 					handleClickButton={handleClickButton}
 					handleSelectOption={handleSelectOption}
 					isClicked={isClicked}
