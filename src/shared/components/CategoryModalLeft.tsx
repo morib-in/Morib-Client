@@ -21,7 +21,7 @@ interface UrlInfo {
 interface ModalProps {
 	handleRightModalUrlInfos: (url: UrlInfo) => void;
 
-	handleClickButton: (is: boolean) => boolean;
+	handleClickButton: (is: boolean) => void;
 	handleSelectOption: (name: string) => void;
 	isClicked: boolean;
 	selectedOption: string;

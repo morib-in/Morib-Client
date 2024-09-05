@@ -8,7 +8,7 @@ import ButtonDropdownOptions from '@/shared/components/ButtonDropdownOptions';
 interface DropdownBtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	optionData: Category[];
 	handleOptionId: (id: number) => void;
-	handleClickButton: (is: boolean) => boolean;
+	handleClickButton: (is: boolean) => void;
 	handleSelectOption: (name: string) => void;
 	isClicked: boolean;
 	selectedOption: string;
