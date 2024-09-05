@@ -49,7 +49,7 @@ const CategoryModalRight = ({
 
 			<section className="flex w-full">
 				<InputCategoryUrl
-					leftModalUrlInfos={rightModalUrlInfos}
+					rightModalUrlInfos={rightModalUrlInfos}
 					variant="small"
 					onUrlInputChange={(url: string) => handleUrlInputChange(url)}
 				/>

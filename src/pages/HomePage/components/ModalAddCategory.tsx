@@ -29,8 +29,7 @@ interface ModalAddCategoryProps {
 }
 
 const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
-	const [inputUrl, setInputUrl] = useState<UrlInfo[]>([]);
-	const [totalUrlInfos, setTotalUrlInfos] = useState<UrlInfo[]>(inputUrl);
+	const [totalUrlInfos, setTotalUrlInfos] = useState<UrlInfo[]>([]);
 	const [rightModalUrlInfos, setRightModalUrlInfos] = useState<UrlInfo[]>([]);
 	const [name, setName] = useState('');
 	const [isDateToggleOn, setIsDateToggleOn] = useState(false);
@@ -46,7 +45,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 	};
 
 	const handleAddTotalUrl = () => {
-		setTotalUrlInfos((prev) => [...prev, ...rightModalUrlInfos, ...inputUrl]);
+		setTotalUrlInfos((prev) => [...prev, ...rightModalUrlInfos]);
 	};
 
 	const handleRightModalUrlInfos = (urlInfo: UrlInfo) => {
@@ -68,7 +67,6 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 
 	const handleClearData = () => {
 		setName('');
-		setInputUrl([]);
 
 		setSelectedStartDate(null);
 		setSelectedEndDate(null);
@@ -91,7 +89,6 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 				domain: tabNameData.data.tabName,
 				favicon: `https://www.google.com/s2/favicons?domain=${url}`,
 			};
-			setInputUrl((prevUrlInfos) => [...prevUrlInfos, newUrlInfo]);
 			setTotalUrlInfos((prev) => [...prev, newUrlInfo]);
 		} catch (isQueryError) {
 			console.error(queryError);
@@ -298,11 +295,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 							moribSetName={name}
 						/>
 					</div>
-					<InputCategoryUrl
-						variant="basic"
-						onUrlInputChange={(url: string) => handleUrlInputChange(url)}
-						urlInfo={inputUrl}
-					/>
+					<InputCategoryUrl variant="basic" onUrlInputChange={(url: string) => handleUrlInputChange(url)} />
 				</section>
 
 				<CategoryCommonMoribSet urlInfos={totalUrlInfos} variant="basic">
