@@ -6,7 +6,7 @@ import UpIcon from '@/shared/assets/svgs/upIcon.svg?react';
 
 interface CategoryBtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	isClicked: boolean;
-	handleClicked: () => void;
+	handleClicked: (prev: boolean) => void;
 	selectedOption: string;
 }
 
@@ -21,7 +21,13 @@ const CategoryDropdownBtn = ({ isClicked, handleClicked, selectedOption, disable
 		: `${clickedDropdownStyle} ${commonBtnStyle}`;
 
 	return (
-		<button type="button" onClick={handleClicked} className={categoryDropdownBtnStyle} disabled={disabled} {...props}>
+		<button
+			type="button"
+			onClick={() => handleClicked(isClicked)}
+			className={categoryDropdownBtnStyle}
+			disabled={disabled}
+			{...props}
+		>
 			<p>{selectedOption}</p>
 			{disabled ? (
 				<DisabledDropIcon />

@@ -44,7 +44,7 @@ const CategoryModalRight = ({
 						</>
 					)}
 				</h1>
-				<p className="text-white">의 모립세트</p>
+				<h1 className="text-white">의 모립세트</h1>
 			</header>
 
 			<section className="flex w-full">

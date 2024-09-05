@@ -8,7 +8,7 @@ import ButtonDropdownOptions from '@/shared/components/ButtonDropdownOptions';
 interface DropdownBtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	optionData: Category[];
 	handleOptionId: (id: number) => void;
-	handleClickButton: (is: any) => void;
+	handleClickButton: (is: boolean) => boolean;
 	handleSelectOption: (name: string) => void;
 	isClicked: boolean;
 	selectedOption: string;
@@ -37,11 +37,10 @@ const DropdownCategory = ({
 		handleClickButton(false);
 	};
 
-	const handleBtnClicked = () => {
+	const handleBtnClicked = (prev: boolean) => {
 		queryClient.invalidateQueries({ queryKey: ['categories'] });
 
-		//Todo: 추후 타입 수정
-		handleClickButton((prev: boolean) => !prev);
+		handleClickButton(!prev);
 	};
 
 	return (
