@@ -24,7 +24,6 @@ import Carousel from './components/Carousel';
 import SideBarTimer from './components/SideBarTimer';
 import SideBoxTemporary from './components/SideBoxTemporary';
 import Timer from './components/Timer';
-import TitleTimer from './components/TitleTimer';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -104,7 +103,10 @@ const TimerPage = () => {
 					<SideBoxTemporary />
 				</div>
 				<div className="ml-[56.6rem] mt-[-0.8rem]">
-					<TitleTimer targetTodoTitle={targetTodoTitle} targetCategoryTitle={targetCategoryTitle} />
+					<header className="mt-[8.6rem] flex flex-col items-center gap-[1rem]">
+						<h1 className="title-semibold-64 text-white">{targetTodoTitle}</h1>
+						<h2 className="title-med-32 text-gray-04">{targetCategoryTitle}</h2>
+					</header>
 					<Timer
 						selectedTodo={selectedTodo}
 						totalTimeOfToday={totalTimeOfToday}
