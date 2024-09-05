@@ -110,6 +110,7 @@ const SideBarTimer = ({
 						isSelected={todo.id === selectedTodo}
 						onClick={() => handleTodoClick(todo.id, todo.targetTime, todo.name, todo.categoryName)}
 						onToggleComplete={() => mutate(todo.id)}
+						sideBarIncreasedTime={todo.id === selectedTodo ? sideBarIncreasedTime : 0}
 					/>
 				))}
 				<ButtonTodoToggle isCompleted={false} isToggled={false}>
@@ -119,6 +120,7 @@ const SideBarTimer = ({
 							{...todo}
 							isSelected={todo.id === selectedTodo}
 							onToggleComplete={() => mutate(todo.id)}
+							sideBarIncreasedTime={todo.id === selectedTodo ? sideBarIncreasedTime : 0}
 						/>
 					))}
 				</ButtonTodoToggle>
