@@ -66,7 +66,7 @@ const InputCategoryUrl = ({ variant = 'basic', onUrlInputChange, rightModalUrlIn
 				value={url}
 				onKeyDown={handleKeyDown}
 			/>
-			<div className={`my-[0.6rem] flex ${isUrlValidated === false ? 'visible' : 'invisible'}`}>
+			<div className={`flex h-[3.2rem] ${isUrlValidated === false ? 'visible' : 'invisible'}`}>
 				<ErrorIcon />
 				<div className="detail-reg-14 ml-[0.5rem] text-error-01">{errorMessage}</div>
 			</div>

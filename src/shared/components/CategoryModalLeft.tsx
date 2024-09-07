@@ -60,7 +60,13 @@ const CategoryModalLeft = ({
 				<h1 className="head-bold-24 text-gray-04">카테고리 추가</h1>
 			</header>
 			<aside className="mb-[8px]">
-				<CategoryTabSelect tabs={CATEGORY_MODALTABS} handleTabChange={handleTabChange} selectedTabId={selectedTabId} />
+				<div className="my-[8px]">
+					<CategoryTabSelect
+						tabs={CATEGORY_MODALTABS}
+						handleTabChange={handleTabChange}
+						selectedTabId={selectedTabId}
+					/>
+				</div>
 
 				<div className="relative mt-[0px]">
 					<DropdownCategory
