@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
 
-import { useGetTodoList, usePostTimerStop } from '@/shared/apis/timer/queries';
+import { usePostTimerStop } from '@/shared/apis/timer/queries';
 
 import InnerCircleIcon from '@/shared/assets/svgs/elipse.svg?react';
 
@@ -33,7 +33,6 @@ const Timer = ({
 	const queryClient = useQueryClient();
 	const accumulatedTime = totalTimeOfToday || 0;
 	const { mutate, isError, error } = usePostTimerStop();
-	const { data: timerData } = useGetTodoList(formattedTodayDate);
 
 	const handlePlayPauseToggle = () => {
 		if (selectedTodo !== null) {
@@ -65,7 +64,7 @@ const Timer = ({
 			<div className="absolute flex h-[22rem] w-[27.1rem] flex-col items-center justify-center">
 				<div className="flex flex-col items-center justify-center">
 					<AccumulatedTime isPlaying={isPlaying} totalTimeOfToday={accumulatedTime} />
-					<TaskTime isPlaying={isPlaying} timer={timerData?.timer || timerTime} />
+					<TaskTime isPlaying={isPlaying} timer={timerTime} />
 				</div>
 				<div>
 					<ButtonTimerPlay onClick={handlePlayPauseToggle} isPlaying={isPlaying} />
