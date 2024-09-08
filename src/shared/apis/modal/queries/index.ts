@@ -31,13 +31,11 @@ export const useGetMsets = (categoryId: number) => {
 		queryFn: () => getMsets(categoryId),
 		enabled: categoryId !== 0,
 		select: (data) => {
-			return (
-				data.data.msetList.map((item: MsetsList) => ({
-					domain: item.name,
-					favicon: `https://www.google.com/s2/favicons?domain=${item.url}`,
-					url: item.url,
-				})) || []
-			);
+			return data.data.msetList.map((item: MsetsList) => ({
+				domain: item.name,
+				favicon: `https://www.google.com/s2/favicons?domain=${item.url}`,
+				url: item.url,
+			}));
 		},
 	});
 };
