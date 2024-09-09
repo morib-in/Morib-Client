@@ -26,12 +26,14 @@ const useTimerCount = ({ isPlaying, previousTime }: UseTimerCountProps): UseTime
 			if (timerIntervalId.current !== null) {
 				clearInterval(timerIntervalId.current);
 				timerIntervalId.current = null;
+				setIncreasedTime(0);
 			}
 		}
 
 		return () => {
 			if (timerIntervalId.current !== null) {
 				clearInterval(timerIntervalId.current);
+				timerIntervalId.current = null;
 			}
 		};
 	}, [isPlaying]);
@@ -40,7 +42,7 @@ const useTimerCount = ({ isPlaying, previousTime }: UseTimerCountProps): UseTime
 		setIncreasedTime(0);
 	};
 
-	const timer = previousTime + increasedTime;
+	const timer = isPlaying ? previousTime + increasedTime : previousTime;
 
 	return { timer, increasedTime, resetIncreasedTime };
 };

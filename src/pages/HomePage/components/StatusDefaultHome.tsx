@@ -1,8 +1,10 @@
-import HomeLargeBtn from '@/components/atoms/HomeLargeBtn';
+import { HomeLargeBtnVariant } from '@/shared/types/global';
+
+import { LARGE_BTN_TEXT } from '@/shared/constants/btnText';
 
 import HomeDefaultIcon from '@/shared/assets/svgs/home_default_icon.svg?react';
-import { LARGE_BTN_TEXT } from '@/shared/constants/btnText';
-import { HomeLargeBtnVariant } from '@/shared/types/global';
+
+import HomeLargeBtn from '@/components/atoms/HomeLargeBtn';
 
 interface StatusDefaultHomeProps {
 	onClick?: () => void;

@@ -3,13 +3,13 @@ import { useState } from 'react';
 const useToggleSideBar = () => {
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-	const toggleSidebar = () => {
+	const handleSidebarToggle = () => {
 		setIsSidebarOpen((prev) => !prev);
 	};
 
 	return {
 		isSidebarOpen,
-		toggleSidebar,
+		handleSidebarToggle,
 	};
 };
 

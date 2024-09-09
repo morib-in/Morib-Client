@@ -26,6 +26,7 @@ interface BoxTodoProps {
 	updateTodayTodos?: (todo: Omit<Task, 'isComplete'>) => void;
 	clickable?: boolean;
 	addingComplete?: boolean;
+	timerIncreasedTime?: number;
 }
 const BoxTodo = ({
 	id,
@@ -41,8 +42,9 @@ const BoxTodo = ({
 	clickable,
 	targetTime,
 	addingComplete,
+	timerIncreasedTime,
 }: BoxTodoProps) => {
-	const formattedTime = formatSeconds(targetTime);
+	const formattedTime = formatSeconds(timerIncreasedTime ? targetTime + timerIncreasedTime : targetTime);
 	const formattedstartDate = startDate.replace(/-/g, '.');
 	const formattedendDate = endDate ? endDate.replace(/-/g, '.') : '';
 

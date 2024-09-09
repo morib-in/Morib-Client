@@ -1,8 +1,9 @@
+import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useQueryClient } from '@tanstack/react-query';
 
-import useCloseSidebar from '@/shared/hooks/useCloseSideBar';
+import useClickOutside from '@/shared/hooks/useClickOutside';
 
 import { usePatchTaskStatus } from '@/shared/apis/common/queries';
 import { usePostTimerStop } from '@/shared/apis/timer/queries';
@@ -19,39 +20,31 @@ interface CategoryBoxProps {
 	completedTodos: Todo[];
 	ongoingTodos: Todo[];
 	toggleSidebar: () => void;
-	setSelectedTodo: (id: number) => void;
-	setTargetTime: (time: number) => void;
-	setTargetName: (name: string) => void;
+	onTodoSelection: (id: number, time: number, name: string, categoryName: string) => void;
 	selectedTodo: number | null;
-	setIsPlaying: (isPlaying: boolean) => void;
-	setTargetCategoryName: (name: string) => void;
+	onPlayToggle: (isPlaying: boolean) => void;
 	isPlaying: boolean;
 	targetTime: number;
 	formattedTodayDate: string;
 	resetTimerIncreasedTime: () => void;
 	timerIncreasedTime: number;
-	increasedSideBarTime: number;
-	resetIncreasedSideBarTime: () => void;
+	isSideOpen: boolean;
 }
 
-const TimerSideBar = ({
+const SideBarTimer = ({
 	ongoingTodos = [],
 	completedTodos = [],
 	toggleSidebar,
-	setSelectedTodo,
-	setTargetTime,
-	setTargetName,
+	onTodoSelection,
 	selectedTodo,
-	setIsPlaying,
+	onPlayToggle,
 	isPlaying,
 	formattedTodayDate,
 	resetTimerIncreasedTime,
 	timerIncreasedTime,
-	increasedSideBarTime,
-	setTargetCategoryName,
-	resetIncreasedSideBarTime,
+	isSideOpen,
 }: CategoryBoxProps) => {
-	const { animate, handleClose } = useCloseSidebar(toggleSidebar);
+	const sidebarRef = useRef<HTMLDivElement>(null);
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
 
@@ -65,32 +58,25 @@ const TimerSideBar = ({
 					{ id: selectedTodo, elapsedTime: timerIncreasedTime, targetDate: formattedTodayDate },
 					{
 						onSuccess: () => {
-							setIsPlaying(false);
+							onPlayToggle(false);
 							queryClient.invalidateQueries({ queryKey: ['todo', formattedTodayDate] });
-							resetIncreasedSideBarTime();
+							resetTimerIncreasedTime();
 						},
 					},
 				);
 			}
 		}
 		resetTimerIncreasedTime();
-		setSelectedTodo(id);
-		setTargetTime(time);
-		setTargetName(name);
-		setTargetCategoryName(categoryName);
+		onTodoSelection(id, time, name, categoryName);
 	};
-
-	if (isError) {
-		console.error(error);
-	}
 
 	const handleNavigateHome = () => {
 		if (isPlaying && selectedTodo !== null) {
 			stopTimer(
-				{ id: selectedTodo, elapsedTime: increasedSideBarTime, targetDate: formattedTodayDate },
+				{ id: selectedTodo, elapsedTime: timerIncreasedTime, targetDate: formattedTodayDate },
 				{
 					onSuccess: () => {
-						setIsPlaying(false);
+						onPlayToggle(false);
 						navigate('/home');
 					},
 				},
@@ -100,13 +86,24 @@ const TimerSideBar = ({
 		}
 	};
 
+	if (isError) {
+		console.error(error);
+	}
+
+	useClickOutside(sidebarRef, () => {
+		if (isSideOpen) toggleSidebar();
+	});
+
 	return (
 		<div
-			className={`flex h-[108rem] w-[40.2rem] transform flex-col rounded-bl-[16px] rounded-tl-[16px] bg-gray-bg-03 pl-[1.8rem] transition-transform duration-300 ${animate ? 'translate-x-0' : 'translate-x-full'}`}
+			ref={sidebarRef}
+			className={`flex h-[108rem] w-[40.2rem] transform flex-col rounded-bl-[16px] rounded-tl-[16px] bg-gray-bg-03 pl-[1.8rem] ${
+				isSideOpen ? 'translate-x-0' : 'translate-x-full'
+			}`}
 		>
 			<div className="flex h-[5.4rem] w-[36.6rem] items-center justify-between pl-[0.2rem] pt-[2rem]">
 				<p className="head-bold-24 text-white">오늘 할 일</p>
-				<button className="rounded-[1.5rem] hover:bg-gray-bg-04" onClick={handleClose}>
+				<button className="rounded-[1.5rem] hover:bg-gray-bg-04" onClick={toggleSidebar}>
 					<BtnListIcon />
 				</button>
 			</div>
@@ -118,6 +115,7 @@ const TimerSideBar = ({
 						isSelected={todo.id === selectedTodo}
 						onClick={() => handleTodoClick(todo.id, todo.targetTime, todo.name, todo.categoryName)}
 						onToggleComplete={() => mutate(todo.id)}
+						timerIncreasedTime={todo.id === selectedTodo ? timerIncreasedTime : 0}
 					/>
 				))}
 				<ButtonTodoToggle isCompleted={false} isToggled={false}>
@@ -127,6 +125,7 @@ const TimerSideBar = ({
 							{...todo}
 							isSelected={todo.id === selectedTodo}
 							onToggleComplete={() => mutate(todo.id)}
+							timerIncreasedTime={todo.id === selectedTodo ? timerIncreasedTime : 0}
 						/>
 					))}
 				</ButtonTodoToggle>
@@ -141,4 +140,4 @@ const TimerSideBar = ({
 	);
 };
 
-export default TimerSideBar;
+export default SideBarTimer;

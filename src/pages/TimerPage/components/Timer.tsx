@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
 
-import { useGetTodoList, usePostTimerStop } from '@/shared/apis/timer/queries';
+import { usePostTimerStop } from '@/shared/apis/timer/queries';
 
 import InnerCircleIcon from '@/shared/assets/svgs/elipse.svg?react';
 
@@ -11,30 +11,28 @@ import TaskTime from '@/pages/TimerPage/components/TaskTime';
 
 interface TaskTotalTimeProps {
 	totalTimeOfToday: number;
-	targetTime: number;
 	selectedTodo: number | null;
-	setIsPlaying: (isPlaying: boolean) => void;
+	onPlayToggle: (isPlaying: boolean) => void;
 	isPlaying: boolean;
 	formattedTodayDate: string;
 	timerTime: number;
 	timerIncreasedTime: number;
-	resetIncreasedSideBarTime: () => void;
+	resetTimerIncreasedTime: () => void;
 }
 
 const Timer = ({
 	totalTimeOfToday,
 	selectedTodo,
-	setIsPlaying,
+	onPlayToggle,
 	isPlaying,
 	formattedTodayDate,
 	timerTime,
 	timerIncreasedTime,
-	resetIncreasedSideBarTime,
+	resetTimerIncreasedTime,
 }: TaskTotalTimeProps) => {
 	const queryClient = useQueryClient();
 	const accumulatedTime = totalTimeOfToday || 0;
 	const { mutate, isError, error } = usePostTimerStop();
-	const { data: timerData } = useGetTodoList(formattedTodayDate);
 
 	const handlePlayPauseToggle = () => {
 		if (selectedTodo !== null) {
@@ -43,17 +41,16 @@ const Timer = ({
 					{ id: selectedTodo, elapsedTime: timerIncreasedTime, targetDate: formattedTodayDate },
 					{
 						onSuccess: () => {
-							setIsPlaying(false);
+							onPlayToggle(false);
+							resetTimerIncreasedTime();
 							queryClient.invalidateQueries({ queryKey: ['todo', formattedTodayDate] });
-							resetIncreasedSideBarTime();
 						},
 					},
 				);
 			} else {
-				setIsPlaying(true);
+				onPlayToggle(true);
 			}
 		}
-		resetIncreasedSideBarTime();
 	};
 
 	if (isError) {
@@ -67,7 +64,7 @@ const Timer = ({
 			<div className="absolute flex h-[22rem] w-[27.1rem] flex-col items-center justify-center">
 				<div className="flex flex-col items-center justify-center">
 					<AccumulatedTime isPlaying={isPlaying} totalTimeOfToday={accumulatedTime} />
-					<TaskTime isPlaying={isPlaying} timer={timerData?.timer || timerTime} />
+					<TaskTime isPlaying={isPlaying} timer={timerTime} />
 				</div>
 				<div>
 					<ButtonTimerPlay onClick={handlePlayPauseToggle} isPlaying={isPlaying} />
