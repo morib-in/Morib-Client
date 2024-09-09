@@ -1,4 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+
+import { useState } from 'react';
+
 
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -10,6 +12,8 @@ import CalendarSelectedDate from '@/shared/components/CalendarSelectedDate';
 import CategoryCommonMoribSet from '@/shared/components/CategoryCommonMoribSet';
 import CategoryMsetUrlInfo from '@/shared/components/CategoryMsetUrlInfo';
 import InputCategoryUrl from '@/shared/components/InputCategoryUrl';
+
+import { useCalendar } from '@/shared/hooks/useCalendar';
 
 import { getTabName } from '@/shared/apis/tasks/axios/index';
 import { useGetTabName, usePostCategory } from '@/shared/apis/tasks/queries/index';
@@ -32,13 +36,31 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 	const [totalUrlInfos, setTotalUrlInfos] = useState<UrlInfo[]>([]);
 	const [rightModalUrlInfos, setRightModalUrlInfos] = useState<UrlInfo[]>([]);
 	const [name, setName] = useState('');
-	const [isDateToggleOn, setIsDateToggleOn] = useState(false);
-	const [isPeriodOn, setIsPeriodOn] = useState(false);
-	const [selectedStartDate, setSelectedStartDate] = useState<Date | null>(null);
-	const [selectedEndDate, setSelectedEndDate] = useState<Date | null>(null);
-	const [isCalendarOpened, setIsCalendarOpened] = useState(false);
+
+	const [combinedInfos, setCombinedInfos] = useState<UrlInfo[]>(urlInfos);
 
 	const queryClient = useQueryClient();
+
+	const [urlData, setUrlData] = useState<UrlInfo[]>([]);
+	const [isClicked, setIsClicked] = useState(false);
+	const [selectedOption, setSelectedOption] = useState('카테고리 추가');
+
+	const {
+		isDateToggleOn,
+		isPeriodOn,
+		selectedStartDate,
+		selectedEndDate,
+		isCalendarOpened,
+		defaultDate,
+		handleDateToggle,
+		handlePeriodToggle,
+		handleCalendarToggle,
+		handleStartDateInput,
+		handleEndDateInput,
+		handlePeriodEnd,
+		handleClearDateInfo,
+	} = useCalendar();
+
 
 	const handleUrlInfos = () => {
 		setRightModalUrlInfos([]);
@@ -67,19 +89,17 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 
 	const handleClearData = () => {
 		setName('');
-
-		setSelectedStartDate(null);
-		setSelectedEndDate(null);
-		setIsDateToggleOn(false);
 		setRightModalUrlInfos([]);
 		setTotalUrlInfos([]);
+		handleClearDateInfo();
+		handlePeriodEnd();
 	};
+
+
 
 	const handleDeleteUrlInfo = (urlInfoToDelete: UrlInfo) => {
 		setRightModalUrlInfos((prevUrlInfos) => prevUrlInfos.filter((urlInfo) => urlInfo.url !== urlInfoToDelete.url));
 	};
-
-	const defaultDate = new Date();
 
 	const handleUrlInputChange = async (url: string) => {
 		try {
@@ -94,53 +114,6 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 			console.error(queryError);
 		}
 	};
-
-	const handleDateToggle = () => {
-		if (!isDateToggleOn) {
-			setIsCalendarOpened(true);
-		} else {
-			setSelectedStartDate(null);
-			setSelectedEndDate(null);
-		}
-		setIsDateToggleOn((prev) => !prev);
-	};
-
-	const handlePeriodToggle = () => {
-		setIsPeriodOn((prev) => !prev);
-	};
-
-	const handleStartDateInput = (date: Date | null) => {
-		setSelectedStartDate(date);
-	};
-
-	const handleEndDateInput = (date: Date | null) => {
-		setSelectedEndDate(date);
-	};
-
-	const handleOpenCalendar = () => {
-		setIsCalendarOpened(true);
-	};
-
-	const calendarRef = useRef<HTMLDivElement>(null);
-
-	const handleClickOutside = (event: MouseEvent) => {
-		if (calendarRef.current && !calendarRef.current.contains(event.target as Node)) {
-			setIsCalendarOpened(false);
-		}
-	};
-
-	useEffect(() => {
-		document.addEventListener('mousedown', handleClickOutside);
-		return () => {
-			document.removeEventListener('mousedown', handleClickOutside);
-		};
-	}, []);
-
-	useEffect(() => {
-		if (!isDateToggleOn) {
-			setIsCalendarOpened(false);
-		}
-	}, [isCalendarOpened, isDateToggleOn]);
 
 	const handleCategoryData = () => {
 		if (totalUrlInfos.length === 0) {
@@ -224,6 +197,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 	};
 
 	return (
+
 		<>
 			<header>
 				<h1 className="head-bold-24 text-gray-04">카테고리 추가</h1>
@@ -241,7 +215,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 					/>
 				</section>
 
-				<div ref={calendarRef}>
+				<div>
 					<div className="mt-[1rem] flex items-center gap-[1rem]">
 						<h2 className="subhead-bold-22 pb-[1rem] text-white">날짜</h2>
 						<div className="mb-[0.6rem]">
@@ -253,7 +227,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 							isPeriodOn={isPeriodOn}
 							selectedStartDate={selectedStartDate ?? defaultDate}
 							selectedEndDate={selectedEndDate ?? null}
-							onCalendarInputClick={handleOpenCalendar}
+							onCalendarInputClick={handleCalendarToggle}
 							readOnly={true}
 						/>
 					)}
@@ -267,6 +241,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 								onEndDateInput={handleEndDateInput}
 								isCalendarOpened={isCalendarOpened}
 								onPeriodToggle={handlePeriodToggle}
+								clickOutSideCallback={handleCalendarToggle}
 							/>
 						</div>
 					)}

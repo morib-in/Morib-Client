@@ -9,16 +9,16 @@ interface Task {
 }
 
 export const splitTasksByCompletion = (tasks: Task[]) => {
-	let completedTasks: Task[] = [];
-	let ongoingTasks: Task[] = [];
+	let completedTodos: Task[] = [];
+	let ongoingTodos: Task[] = [];
 
 	tasks.forEach((task) => {
 		if (task.isComplete) {
-			completedTasks = [...completedTasks, task];
+			completedTodos = [...completedTodos, task];
 		} else {
-			ongoingTasks = [...ongoingTasks, task];
+			ongoingTodos = [...ongoingTodos, task];
 		}
 	});
 
-	return { completedTasks, ongoingTasks };
+	return { completedTodos, ongoingTodos };
 };

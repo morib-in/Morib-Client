@@ -1,12 +1,26 @@
+import dayjs, { Dayjs } from 'dayjs';
+
 import { useState } from 'react';
 
 export const useCalendar = () => {
-	const defaultDate = new Date();
+	const defaultDate = dayjs();
 
+	const [isDateToggleOn, setIsDateToggleOn] = useState(false);
 	const [isPeriodOn, setIsPeriodOn] = useState(false);
-	const [selectedStartDate, setSelectedStartDate] = useState<Date | null>(defaultDate);
-	const [selectedEndDate, setSelectedEndDate] = useState<Date | null>(null);
+	const [selectedStartDate, setSelectedStartDate] = useState<Dayjs | null>(defaultDate);
+	const [selectedEndDate, setSelectedEndDate] = useState<Dayjs | null>(null);
 	const [isCalendarOpened, setIsCalendarOpened] = useState(true);
+
+	const handleDateToggle = () => {
+		if (!isDateToggleOn) {
+			setIsCalendarOpened(true);
+		} else {
+			setIsPeriodOn(false);
+			setSelectedStartDate(null);
+			setSelectedEndDate(null);
+		}
+		setIsDateToggleOn((prev) => !prev);
+	};
 
 	const handlePeriodToggle = () => {
 		if (isPeriodOn === true) {
@@ -19,28 +33,37 @@ export const useCalendar = () => {
 		setIsPeriodOn(false);
 	};
 
-	const handleOpenCalendar = () => {
-		setIsCalendarOpened(true);
+	const handleCalendarToggle = () => {
+		setIsCalendarOpened((prev) => !prev);
 	};
 
-	const handleStartDateInput = (date: Date | null) => {
+	const handleStartDateInput = (date: Dayjs | null) => {
 		setSelectedStartDate(date);
 	};
 
-	const handleEndDateInput = (date: Date | null) => {
+	const handleEndDateInput = (date: Dayjs | null) => {
 		setSelectedEndDate(date);
 	};
 
+	const handleClearDateInfo = () => {
+		setSelectedStartDate(null);
+		setSelectedEndDate(null);
+		setIsDateToggleOn(false);
+	};
+
 	return {
+		isDateToggleOn,
 		isPeriodOn,
 		selectedStartDate,
 		selectedEndDate,
 		isCalendarOpened,
 		defaultDate,
+		handleDateToggle,
 		handlePeriodToggle,
-		handleOpenCalendar,
+		handleCalendarToggle,
 		handleStartDateInput,
 		handleEndDateInput,
 		handlePeriodEnd,
+		handleClearDateInfo,
 	};
 };

@@ -1,8 +1,10 @@
-import { formatInputDate } from '@/shared/utils/calendar/index';
+import { Dayjs } from 'dayjs';
+
+import { formatDateInfo } from '@/shared/utils/calendar/index';
 
 interface CalendarSelectedDateProps {
-	selectedStartDate: Date;
-	selectedEndDate?: Date | null;
+	selectedStartDate: Dayjs;
+	selectedEndDate?: Dayjs | null;
 	isPeriodOn: boolean;
 	onCalendarInputClick: () => void;
 	readOnly?: boolean;
@@ -15,30 +17,25 @@ const CalendarSelectedDate = ({
 	isPeriodOn,
 }: CalendarSelectedDateProps) => {
 	const defaultStyle =
-		'cursor-pointer flex items-center self-stretch subhead-med-18 h-[4.6rem] w-[34.4rem] rounded-[8px] border-[1px] border-gray-bg-07 bg-gray-bg-03 px-[2rem] py-[0.8rem] mb-[0.9rem] text-white';
+		'flex h-[4.6rem] w-[34.4rem] px-[2rem] py-[0.8rem] items-center gap-[0.4rem] subhead-med-18 rounded-[8px] border-[1px] border-gray-bg-07 bg-gray-bg-03 mb-[0.9rem] text-white';
 
-	const formattedDate = formatInputDate(selectedStartDate);
-
-	const getFormattedEndDate = () => {
-		if (isPeriodOn) {
-			return formatInputDate(selectedEndDate || null);
-		}
-	};
-
-	const formattedEndDate = getFormattedEndDate();
+	const formattedStartDate = formatDateInfo(selectedStartDate);
+	const formattedEndDate = isPeriodOn && selectedEndDate ? formatDateInfo(selectedEndDate) : null;
 
 	return (
-		<>
-			{!isPeriodOn ? (
-				<div className={`${defaultStyle}`} onClick={onCalendarInputClick}>
-					{formattedDate}
-				</div>
-			) : (
-				<div className={`${defaultStyle}`} onClick={onCalendarInputClick}>
-					{formattedDate} ~ {formattedEndDate}
-				</div>
+		<div className={defaultStyle} onClick={onCalendarInputClick}>
+			<div>
+				{formattedStartDate.year}년 {formattedStartDate.month}월 {formattedStartDate.day}일
+			</div>
+			{isPeriodOn && formattedEndDate && (
+				<>
+					<div>~</div>
+					<div>
+						{formattedEndDate.year}년 {formattedEndDate.month}월 {formattedEndDate.day}일
+					</div>
+				</>
 			)}
-		</>
+		</div>
 	);
 };
 

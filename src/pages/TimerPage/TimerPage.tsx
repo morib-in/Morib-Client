@@ -2,8 +2,9 @@ import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 
-import React, { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 
+import { useSelectedTodo } from '@/shared/hooks/useSelectedTodo';
 import useTimerCount from '@/shared/hooks/useTimerCount';
 import useToggleSidebar from '@/shared/hooks/useToggleSideBar';
 import useUrlHandler from '@/shared/hooks/useUrlHandler';
@@ -11,6 +12,9 @@ import useUrlHandler from '@/shared/hooks/useUrlHandler';
 import { useGetMoribSet, useGetTodoList, usePostTimerStop } from '@/shared/apis/timer/queries';
 
 import { splitTasksByCompletion } from '@/shared/utils/timer';
+import { getBaseUrl } from '@/shared/utils/url';
+
+import { DATE_FORMAT, DEFAULT_URL, TIMEZONE } from '@/shared/constants/timerPageText';
 
 import HamburgerIcon from '@/shared/assets/svgs/btn_hamburger.svg?react';
 
@@ -20,7 +24,6 @@ import Carousel from './components/Carousel';
 import SideBarTimer from './components/SideBarTimer';
 import SideBoxTemporary from './components/SideBoxTemporary';
 import Timer from './components/Timer';
-import TitleTimer from './components/TitleTimer';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -29,62 +32,46 @@ interface MoribSetData {
 	url: string;
 }
 
-const TimerPage: React.FC = () => {
+interface Todo {
+	id: number;
+	name: string;
+	targetTime: string;
+	categoryName: string;
+}
+
+const TimerPage = () => {
 	const { mutate: stopTimer } = usePostTimerStop();
-	const { isSidebarOpen, toggleSidebar } = useToggleSidebar();
-	const todayDate = dayjs().tz('Asia/Seoul');
-	const formattedTodayDate = todayDate.format('YYYY-MM-DD');
+	const { isSidebarOpen, handleSidebarToggle } = useToggleSidebar();
+	const todayDate = dayjs().tz(TIMEZONE);
+	const formattedTodayDate = todayDate.format(DATE_FORMAT);
+
 	const { data: todosData, isLoading, error } = useGetTodoList(formattedTodayDate);
+	const { task: todos = [], totalTimeOfToday = 0 } = todosData?.data || {};
+	const { ongoingTodos, completedTodos } = splitTasksByCompletion(todos);
 
-	const todos = useMemo(() => todosData?.data.task || [], [todosData]);
-	const tasktotaltime = todosData?.data || [];
-
-	const { ongoingTasks, completedTasks } = useMemo(() => splitTasksByCompletion(todos), [todos]);
-
-	const [targetTime, setTargetTime] = useState(0);
-	const [targetName, setTargetName] = useState('');
-	const [targetCategoryName, setTargetCategoryName] = useState('');
-	const [selectedTodo, setSelectedTodo] = useState<number | null>(null);
+	const [selectedTodo, setSelectedTodo] = useSelectedTodo(todos);
 	const [isPlaying, setIsPlaying] = useState(false);
 
-	const getBaseUrl = (url: string) => {
-		try {
-			const urlObj = new URL(url);
-			return urlObj.origin;
-		} catch (error) {
-			return url;
-		}
-	};
+	const { data: setData } = useGetMoribSet(selectedTodo || 0);
+	const urls = useMemo(() => setData?.data.map(({ url }: MoribSetData) => url.trim()) || [], [setData]);
+
+	const baseUrls = useMemo(() => {
+		const mappedUrls = urls.map(getBaseUrl);
+		return [...mappedUrls, DEFAULT_URL];
+	}, [urls]);
+
+	const selectedTodoData = todos.find((todo: Todo) => todo.id === selectedTodo);
+	const targetTime = selectedTodoData?.targetTime || '';
+	const targetTodoTitle = selectedTodoData?.name || '';
+	const targetCategoryTitle = selectedTodoData?.categoryName || '';
 
 	const { increasedTime } = useTimerCount({ isPlaying, previousTime: targetTime });
+
 	const {
 		timer: timerTime,
 		increasedTime: timerIncreasedTime,
 		resetIncreasedTime: resetTimerIncreasedTime,
 	} = useTimerCount({ isPlaying, previousTime: targetTime });
-
-	const { increasedTime: increasedSidebarTime, resetIncreasedTime: resetIncreasedSideBarTime } = useTimerCount({
-		isPlaying,
-		previousTime: targetTime,
-	});
-
-	useEffect(() => {
-		if (todos.length > 0 && selectedTodo === null) {
-			setTargetTime(todos[0].targetTime);
-			setTargetName(todos[0].name);
-			setTargetCategoryName(todos[0].categoryName);
-			setSelectedTodo(todos[0].id);
-		}
-	}, [todos, selectedTodo]);
-
-	const { data: setData } = useGetMoribSet(selectedTodo || 0);
-
-	const urls = useMemo(() => setData?.data.map((item: MoribSetData) => item.url.trim()) || [], [setData]);
-
-	const baseUrls = useMemo(() => {
-		const mappedUrls = urls.map(getBaseUrl);
-		return [...mappedUrls, 'chrome://newtab'];
-	}, [urls]);
 
 	useUrlHandler({
 		isPlaying,
@@ -97,8 +84,17 @@ const TimerPage: React.FC = () => {
 		getBaseUrl,
 	});
 
-	if (isLoading) return <div>Loading...</div>;
-	if (error) return <div>Error loading todos</div>;
+	const handleTodoSelection = (id: number) => {
+		setSelectedTodo(id);
+	};
+
+	const handlePlayToggle = (isPlaying: boolean) => {
+		setIsPlaying(isPlaying);
+	};
+
+	if (isLoading || error) {
+		return <div>{isLoading ? 'Loading...' : 'Error...'}</div>;
+	}
 
 	return (
 		<TimerPageTemplates>
@@ -107,46 +103,44 @@ const TimerPage: React.FC = () => {
 					<SideBoxTemporary />
 				</div>
 				<div className="ml-[56.6rem] mt-[-0.8rem]">
-					<TitleTimer targetName={targetName} targetCategoryName={targetCategoryName} />
+					<header className="mt-[8.6rem] flex flex-col items-center gap-[1rem]">
+						<h1 className="title-semibold-64 text-white">{targetTodoTitle}</h1>
+						<h2 className="title-med-32 text-gray-04">{targetCategoryTitle}</h2>
+					</header>
 					<Timer
 						selectedTodo={selectedTodo}
-						totalTimeOfToday={tasktotaltime.totalTimeOfToday}
-						targetTime={targetTime}
-						setIsPlaying={setIsPlaying}
+						totalTimeOfToday={totalTimeOfToday}
+						onPlayToggle={handlePlayToggle}
 						isPlaying={isPlaying}
 						formattedTodayDate={formattedTodayDate}
 						timerTime={timerTime}
 						timerIncreasedTime={timerIncreasedTime}
-						resetIncreasedSideBarTime={resetIncreasedSideBarTime}
+						resetTimerIncreasedTime={resetTimerIncreasedTime}
 					/>
 					<Carousel />
 				</div>
 				<button
-					onClick={toggleSidebar}
+					onClick={handleSidebarToggle}
 					className="ml-[38.2rem] mt-[3.2rem] h-[5.4rem] w-[5.4rem] rounded-[1.5rem] hover:bg-gray-bg-04"
 				>
 					<HamburgerIcon />
 				</button>
 				{isSidebarOpen && (
-					<div className="absolute inset-0 z-10 bg-dim">
+					<div className={` ${isSidebarOpen ? 'absolute inset-0 z-10 bg-dim' : ''}`}>
 						<div className="absolute inset-y-0 right-0 flex justify-end overflow-hidden">
 							<SideBarTimer
 								targetTime={targetTime}
-								ongoingTodos={ongoingTasks}
-								completedTodos={completedTasks}
-								toggleSidebar={toggleSidebar}
-								setTargetTime={setTargetTime}
-								setTargetName={setTargetName}
-								setTargetCategoryName={setTargetCategoryName}
-								setSelectedTodo={setSelectedTodo}
+								ongoingTodos={ongoingTodos}
+								completedTodos={completedTodos}
+								isSideOpen={isSidebarOpen}
+								toggleSidebar={handleSidebarToggle}
+								onTodoSelection={handleTodoSelection}
 								selectedTodo={selectedTodo}
-								setIsPlaying={setIsPlaying}
+								onPlayToggle={handlePlayToggle}
 								isPlaying={isPlaying}
 								formattedTodayDate={formattedTodayDate}
 								resetTimerIncreasedTime={resetTimerIncreasedTime}
 								timerIncreasedTime={timerIncreasedTime}
-								increasedSideBarTime={increasedSidebarTime}
-								resetIncreasedSideBarTime={resetIncreasedSideBarTime}
 							/>
 						</div>
 					</div>

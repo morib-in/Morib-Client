@@ -1,25 +1,43 @@
-import { useState } from 'react';
+import dayjs, { Dayjs } from 'dayjs';
+
+import { useRef, useState } from 'react';
 import DatePicker from 'react-datepicker';
 
 import ButtonCalendarAddRoutine from '@/shared/components/ButtonCalendarAddRoutine';
 import ButtonStatusToggle from '@/shared/components/ButtonStatusToggle';
 import HeaderCalendar from '@/shared/components/HeaderCalendar';
 
-import { formatCalendarDate } from '@/shared/utils/calendar/index';
+import useClickOutside from '@/shared/hooks/useClickOutside';
+
+import { formatFullDateInfo } from '@/shared/utils/calendar/index';
+
+import { WEEK_DAYS } from '@/shared/constants/weekDays';
 
 import './calendar.css';
 
+const STYLES = {
+	calendarContainer:
+		'detail-reg-14 drop-shadow-calendarDrop w-[30.3rem] flex-col gap-[2.1rem] rounded-[8px] bg-gray-bg-02 p-[1.4rem] absolute z-50',
+	input: 'body-med-16 h-[3.2rem] w-[27.5rem] rounded-[3px] border-[1px] px-[1rem] py-[0.5rem]',
+	calendarInput: 'body-med-16 h-[3.2rem] w-[13.2rem] rounded-[3px] border-[1px] px-[1rem] py-[0.5rem] bg-gray-bg-02',
+	optionalStyle: 'border-mint-01 bg-date-active text-white',
+	optionalStyleInactive: 'border-gray-bg-05 bg-gray-bg-02 text-gray-bg-04',
+	divideLine: 'my-[1.3rem] border-gray-bg-06',
+	toggleText: 'detail-reg-12 text-white',
+	defaultToggle: 'flex justify-between px-[1.75rem]',
+	dateRangeContainer: 'flex gap-[11px]',
+};
+
 interface CalendarProps {
-	onStartDateInput: (date: Date | null) => void;
-	onEndDateInput: (date: Date | null) => void;
-	selectedStartDate: Date | null;
-	selectedEndDate: Date | null;
+	onStartDateInput: (date: Dayjs | null) => void;
+	onEndDateInput: (date: Dayjs | null) => void;
+	selectedStartDate: Dayjs | null;
+	selectedEndDate: Dayjs | null;
 	isPeriodOn: boolean;
 	isCalendarOpened: boolean;
 	onPeriodToggle: () => void;
+	clickOutSideCallback: () => void;
 }
-
-const weekDays: string[] = ['일', '월', '화', '수', '목', '금', '토'];
 
 const Calendar = ({
 	onStartDateInput,
@@ -29,62 +47,42 @@ const Calendar = ({
 	isPeriodOn,
 	isCalendarOpened,
 	onPeriodToggle,
+	clickOutSideCallback,
 }: CalendarProps) => {
 	const [isRoutineOn, setIsRoutineOn] = useState(false);
+	const calendarRef = useRef<HTMLDivElement>(null);
 
-	const defaultDate = new Date();
+	useClickOutside(calendarRef, clickOutSideCallback);
 
-	const defaultToggleStyle = 'flex justify-between px-[1.75rem]';
-	const calendarStyle =
-		'detail-reg-14  drop-shadow-calendarDrop w-[30.3rem] flex-col gap-[2.1rem] rounded-[8px] bg-gray-bg-02 p-[1.4rem] absolute z-50';
-	const inputStyle = 'body-med-16 h-[3.2rem] w-[27.5rem] rounded-[3px] border-[1px] px-[1rem] py-[0.5rem] ';
-	const calendarInputStyle =
-		'body-med-16 h-[3.2rem] w-[13.2rem] rounded-[3px] border-[1px]  px-[1rem] py-[0.5rem]  bg-gray-bg-02 ';
+	const startDateInfo = formatFullDateInfo(selectedStartDate);
+	const endDateInfo = formatFullDateInfo(selectedEndDate);
 
-	const isDateSelected = !!selectedStartDate;
+	const isStartDateSelected = !!selectedStartDate;
 	const isEndDateSelected = !!selectedEndDate;
 
-	const optionalStyle = isPeriodOn
-		? selectedStartDate && isDateSelected && !isEndDateSelected
-			? 'border-mint-01 bg-date-active text-white'
-			: 'border-gray-bg-05 bg-gray-bg-02 text-gray-bg-04'
-		: isDateSelected
-			? 'border-mint-01 bg-date-active text-white'
-			: 'border-gray-bg-05 bg-gray-bg-02 text-gray-bg-04';
-
-	const optionalEndDateStyle =
-		isDateSelected && isEndDateSelected
-			? 'border-mint-01 bg-date-active text-white'
-			: 'border-gray-bg-05 bg-gray-bg-02 text-gray-bg-04';
-
-	const divideLineStyle = 'my-[1.3rem] border-gray-bg-06';
-
-	const toggleTxtStyle = 'detail-reg-12 text-white';
-
-	const formatWeekDay = (date: string): string => {
-		const dayOfWeek = new Date(date).getDay();
-		return weekDays[dayOfWeek];
-	};
+	const optionalStyle = isStartDateSelected && !isEndDateSelected ? STYLES.optionalStyle : STYLES.optionalStyleInactive;
+	const optionalEndDateStyle = isEndDateSelected ? STYLES.optionalStyle : STYLES.optionalStyleInactive;
 
 	const commonDatePickerProps = {
 		renderCustomHeader: (props: any) => <HeaderCalendar {...props} />,
-		formatWeekDay: formatWeekDay,
-		dateFormat: 'yyyy년 M월 dd일',
+		formatWeekDay: (date: string) => WEEK_DAYS[dayjs(date).day()],
 		inline: true,
 		disabledKeyboardNavigation: true,
 	};
 
 	const handleDateChange = (date: Date | null) => {
-		onStartDateInput(date);
+		if (date) {
+			const dayjsDate = dayjs(date);
+			onStartDateInput(dayjsDate);
+		} else {
+			onStartDateInput(null);
+		}
 	};
 
-	const handlePeriodChange = (dates: (Date | null)[]) => {
-		if (dates && dates.length === 2) {
-			onStartDateInput(dates[0]);
-			onEndDateInput(dates[1]);
-		} else {
-			onEndDateInput(null);
-		}
+	const handlePeriodChange = (dates: [Date | null, Date | null]) => {
+		const [start, end] = dates;
+		onStartDateInput(start ? dayjs(start) : null);
+		onEndDateInput(end ? dayjs(end) : null);
 	};
 
 	const handleRoutineToggle = () => {
@@ -94,64 +92,62 @@ const Calendar = ({
 	return (
 		<>
 			{isCalendarOpened && (
-				<>
-					<div className={`${calendarStyle}`}>
-						{!isPeriodOn ? (
-							<>
+				<div className={`${STYLES.calendarContainer}`} ref={calendarRef}>
+					{!isPeriodOn ? (
+						<>
+							<input
+								type="text"
+								value={`${startDateInfo.year}.${startDateInfo.month}.${startDateInfo.day}`}
+								className={`${STYLES.input} ${optionalStyle}`}
+								readOnly
+							/>
+							<DatePicker
+								selected={selectedStartDate ? selectedStartDate.toDate() : null}
+								onChange={handleDateChange}
+								{...commonDatePickerProps}
+							/>
+						</>
+					) : (
+						<>
+							<div className={STYLES.dateRangeContainer}>
 								<input
 									type="text"
-									value={formatCalendarDate(selectedStartDate) || formatCalendarDate(defaultDate)}
-									className={`${inputStyle} ${optionalStyle}`}
+									value={`${startDateInfo.year}.${startDateInfo.month}.${startDateInfo.day}`}
+									className={`${STYLES.calendarInput} ${optionalStyle}`}
 									readOnly
 								/>
-								<DatePicker
-									selected={selectedStartDate !== undefined ? selectedStartDate : null}
-									onChange={handleDateChange}
-									{...commonDatePickerProps}
+								<input
+									type="text"
+									value={selectedEndDate ? `${endDateInfo.year}.${endDateInfo.month}.${endDateInfo.day}` : ''}
+									className={`${STYLES.calendarInput} ${optionalEndDateStyle}`}
+									readOnly
 								/>
-							</>
-						) : (
-							<>
-								<div className="flex gap-[11px]">
-									<input
-										type="text"
-										value={formatCalendarDate(selectedStartDate) || formatCalendarDate(defaultDate)}
-										className={`${calendarInputStyle} ${optionalStyle}`}
-										readOnly
-									/>
-									<input
-										type="text"
-										value={formatCalendarDate(selectedEndDate) || ''}
-										className={`${calendarInputStyle} ${optionalEndDateStyle}`}
-										readOnly
-									/>
-								</div>
-								<DatePicker
-									selectsRange
-									startDate={selectedStartDate ?? undefined}
-									endDate={selectedEndDate ?? undefined}
-									onChange={handlePeriodChange}
-									{...commonDatePickerProps}
-								/>
-							</>
-						)}
-
-						<hr className={divideLineStyle} />
-						<div className={`${defaultToggleStyle}`}>
-							<div className={toggleTxtStyle}>종료 날짜</div>
-							<ButtonStatusToggle isToggleOn={isPeriodOn} onToggle={onPeriodToggle} />
-						</div>
-						<hr className={divideLineStyle} />
-
-						<div className="flex-col gap-[1.2rem]">
-							<div className={`${defaultToggleStyle}`}>
-								<div className={toggleTxtStyle}>루틴 생성</div>
-								<ButtonStatusToggle isToggleOn={isRoutineOn} onToggle={handleRoutineToggle} />
 							</div>
-							{isRoutineOn && <ButtonCalendarAddRoutine />}
-						</div>
+							<DatePicker
+								selectsRange
+								startDate={selectedStartDate ? selectedStartDate.toDate() : undefined}
+								endDate={selectedEndDate ? selectedEndDate.toDate() : undefined}
+								onChange={handlePeriodChange}
+								{...commonDatePickerProps}
+							/>
+						</>
+					)}
+
+					<hr className={STYLES.divideLine} />
+					<div className={`${STYLES.defaultToggle}`}>
+						<h3 className={STYLES.toggleText}>종료 날짜</h3>
+						<ButtonStatusToggle isToggleOn={isPeriodOn} onToggle={onPeriodToggle} />
 					</div>
-				</>
+
+					<hr className={STYLES.divideLine} />
+					<div className="flex-col gap-[1.2rem]">
+						<div className={`${STYLES.defaultToggle}`}>
+							<h3 className={STYLES.toggleText}>루틴 생성</h3>
+							<ButtonStatusToggle isToggleOn={isRoutineOn} onToggle={handleRoutineToggle} />
+						</div>
+						{isRoutineOn && <ButtonCalendarAddRoutine />}
+					</div>
+				</div>
 			)}
 		</>
 	);

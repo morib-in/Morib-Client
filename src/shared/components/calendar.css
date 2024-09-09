@@ -3,7 +3,7 @@
   display: none;
 }
 
-/*이전 달, 다음 달에 해당하는 날짜는 표시되지 않도록*/
+/* 이전 달, 다음 달에 해당하는 날짜는 표시되지 않도록 */
 .react-datepicker__day--outside-month {
   cursor: default;
   @apply text-gray-03;
@@ -11,7 +11,7 @@
 
 /* 달 셀 크기 설정 */
 .react-datepicker__month {
-  @apply flex-col w-[25.5rem] h-[19.2rem] mx-[1rem] mb-[0.5rem] items-start self-stretch;
+  @apply flex-col w-[25.5rem] mx-[1rem] mb-[0.5rem] items-start self-stretch;
 }
 
 /* days (week)의 각 행을 가로로 나란히 배치 */
@@ -36,6 +36,7 @@
 
 /* 호버된 날짜 스타일 설정 */
 .react-datepicker__day:hover {
+  cursor: default;
   @apply bg-gray-bg-04 rounded-full;
 }
 
@@ -45,25 +46,24 @@
   @apply bg-mint-01 text-black rounded-full;
 }
 
-/* 달력 외부 날짜 스타일 설정 */
-.react-datepicker__day--outside-month {
-  cursor: default;
-  @apply text-gray-03;
-}
-
+/* 범위 선택 중일 때의 스타일 */
 .react-datepicker__day--in-selecting-range,
 .react-datepicker__day--in-range {
   @apply bg-date-active rounded-full;
 }
 
+/* 범위 선택 중일 때의 호버 스타일 */
 .react-datepicker__day--in-selecting-range:hover {
   @apply rounded-full;
 }
 
+/* 범위 시작일 스타일 */
+.react-datepicker__day--selecting-range-start,
 .react-datepicker__day--range-start {
-  @apply bg-mint-01 text-gray-bg-06 rounded-full text-[18px] font-bold ;
+  @apply bg-mint-01 text-gray-bg-06 rounded-full text-[18px] font-bold;
 }
 
+/* 범위 종료일 스타일 */
 .react-datepicker__day--range-end {
   @apply bg-mint-01 text-black rounded-full text-[18px] font-bold;
 }
