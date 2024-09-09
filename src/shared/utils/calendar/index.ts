@@ -1,32 +1,18 @@
-export const formatCalendarTitle = (date: Date): string => {
-	const year = date.getFullYear();
-	const month = date.getMonth() + 1;
-	return `${year}년 ${month < 10 ? `0${month}` : month}월`;
+import { Dayjs } from 'dayjs';
+
+export const formatDateInfo = (date: Dayjs | null) => {
+	if (!date) return { year: '', month: '', day: '' };
+	return { year: date.year().toString(), month: (date.month() + 1).toString(), day: date.date().toString() };
 };
 
-export const formatInputDate = (date: Date | null): string => {
-	if (!date) return '';
-	const year = date.getFullYear();
-	const month = date.getMonth() + 1;
-	const day = date.getDate();
-
-	return `${year}년 ${month}월 ${day}일`;
+export const formatFullDateInfo = (date: Dayjs | null) => {
+	if (!date) return { year: '', month: '', day: '' };
+	const { year, month, day } = formatDateInfo(date);
+	return { year, month: month.padStart(2, '0'), day: day.padStart(2, '0') };
 };
 
-export const formatCalendarDate = (date: Date | null): string => {
+export const formatCalendarApiDate = (date: Dayjs | null): string => {
 	if (!date) return '';
-	const year = date.getFullYear();
-	const month = (date.getMonth() + 1).toString().padStart(2, '0');
-	const day = date.getDate().toString().padStart(2, '0');
-
-	return `${year}.${month}.${day}`;
-};
-
-export const formatCalendarApiDate = (date: Date | null): string => {
-	if (!date) return '';
-	const year = date.getFullYear();
-	const month = (date.getMonth() + 1).toString().padStart(2, '0');
-	const day = date.getDate().toString().padStart(2, '0');
-
+	const { year, month, day } = formatFullDateInfo(date);
 	return `${year}-${month}-${day}`;
 };

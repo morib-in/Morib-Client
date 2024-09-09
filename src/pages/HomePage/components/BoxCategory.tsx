@@ -1,7 +1,9 @@
+import { Dayjs } from 'dayjs';
+
 import { useRef } from 'react';
 
 import ButtonSVG from '@/shared/components/ButtonSVG';
-import CalendarTemporary from '@/shared/components/CalendarTemporary';
+import Calendar from '@/shared/components/Calendar';
 
 import { useCalendar } from '@/shared/hooks/useCalendar';
 import useClickOutside from '@/shared/hooks/useClickOutside';
@@ -32,11 +34,11 @@ interface BoxCategoryProps {
 	onDeleteCategory: (categoryId: number) => void;
 }
 
-const format = (date: Date | null) => {
+const format = (date: Dayjs | null) => {
 	if (!date) return null;
-	const year = date.getFullYear();
-	const month = String(date.getMonth() + 1).padStart(2, '0');
-	const day = String(date.getDate()).padStart(2, '0');
+	const year = date.year();
+	const month = String(date.month() + 1).padStart(2, '0');
+	const day = String(date.date()).padStart(2, '0');
 	return `${year}-${month}-${day}`;
 };
 
@@ -138,7 +140,7 @@ const BoxCategory = ({
 
 									{!editable && (
 										<div className="absolute left-[7.25rem] top-[9.5rem]">
-											<CalendarTemporary
+											<Calendar
 												isPeriodOn={isPeriodOn}
 												selectedStartDate={selectedStartDate ?? defaultDate}
 												selectedEndDate={selectedEndDate ?? null}

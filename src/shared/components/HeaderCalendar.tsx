@@ -1,13 +1,15 @@
+import dayjs, { Dayjs } from 'dayjs';
+
 import React from 'react';
 
-import { formatCalendarTitle } from '@/shared/utils/calendar/index';
+import { formatDateInfo } from '@/shared/utils/calendar/index';
+
+import { WEEK_DAYS } from '@/shared/constants/weekDays';
 
 import ArrowIcon from '@/shared/assets/svgs/btn_arrow_bgNone.svg?react';
 
-const weekDays = ['일', '월', '화', '수', '목', '금', '토'];
-
 interface CustomHeaderProps {
-	date: Date;
+	date: Dayjs;
 	decreaseMonth: () => void;
 	increaseMonth: () => void;
 	prevMonthButtonDisabled: boolean;
@@ -21,10 +23,13 @@ const HeaderCalendar: React.FC<CustomHeaderProps> = ({
 	prevMonthButtonDisabled,
 	nextMonthButtonDisabled,
 }) => {
+	const { year, month } = formatDateInfo(dayjs(date));
 	return (
 		<div className="mt-[2.1rem] flex flex-col">
 			<div className="mb-[1.3rem] flex">
-				<p className="body-med-16 ml-[1.5rem] mr-[0.8rem] text-white">{formatCalendarTitle(date)}</p>
+				<p className="body-med-16 ml-[1.5rem] mr-[0.8rem] text-white">
+					{year}년 {month}월
+				</p>
 				<button onClick={decreaseMonth} disabled={prevMonthButtonDisabled} aria-label="Previous Month">
 					<ArrowIcon />
 				</button>
@@ -34,7 +39,7 @@ const HeaderCalendar: React.FC<CustomHeaderProps> = ({
 			</div>
 			<div className="p-[1rem]">
 				<div className="detail-reg-12 mx-[1rem] flex justify-between text-gray-03">
-					{weekDays.map((day) => (
+					{WEEK_DAYS.map((day) => (
 						<span key={day}>{day}</span>
 					))}
 				</div>
