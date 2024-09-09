@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 
 import { useQueryClient } from '@tanstack/react-query';
@@ -52,7 +52,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 		handlePeriodEnd,
 		handleClearDateInfo,
 	} = useCalendar();
-
+	const dialogRef = useRef<HTMLDialogElement>(null);
 
 	const handleUrlInfos = () => {
 		setRightModalUrlInfos([]);
@@ -170,7 +170,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 
 	const handleCategoryModalClose = () => {
 		handleClearData();
-		closeModal();
+		handleCloseModal();
 	};
 
 	const handlePostDataClick = () => {
