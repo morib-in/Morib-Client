@@ -36,15 +36,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 	const [totalUrlInfos, setTotalUrlInfos] = useState<UrlInfo[]>([]);
 	const [rightModalUrlInfos, setRightModalUrlInfos] = useState<UrlInfo[]>([]);
 	const [name, setName] = useState('');
-
-	const [combinedInfos, setCombinedInfos] = useState<UrlInfo[]>(urlInfos);
-
 	const queryClient = useQueryClient();
-
-	const [urlData, setUrlData] = useState<UrlInfo[]>([]);
-	const [isClicked, setIsClicked] = useState(false);
-	const [selectedOption, setSelectedOption] = useState('카테고리 추가');
-
 	const {
 		isDateToggleOn,
 		isPeriodOn,
@@ -157,7 +149,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 		setName(event.target.value);
 	};
 
-	const dialogRef = useRef<HTMLDialogElement>(null);
+
 	const showModal = () => {
 		handleUrlInfos();
 		dialogRef.current?.showModal();
