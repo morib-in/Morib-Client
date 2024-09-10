@@ -2,10 +2,8 @@ import { RefObject, useState } from 'react';
 
 import CategoryModalLeft from '@/shared/components/CategoryModalLeft';
 import CategoryModalRight from '@/shared/components/CategoryModalRight';
-import LoadingUrl from '@/shared/components/LoadingUrl';
 
 import { getTabName } from '@/shared/apis/modal/axios';
-import { useCategoryLists, useGetMsets } from '@/shared/apis/modal/queries';
 
 interface UrlInfo {
 	url: string;
@@ -15,53 +13,28 @@ interface UrlInfo {
 
 type CategoryListModalProp = {
 	dialogRef: RefObject<HTMLDialogElement>;
-	handleCloseModal: () => void;
-	selectedInfo: UrlInfo[];
-	handleSelectedInfo: (urlInfo: UrlInfo) => void;
+	handleSubmitModal: () => void;
+
+	rightModalUrlInfos: UrlInfo[];
+	handleRightModalUrlInfos: (url: UrlInfo) => void;
 	handleDeleteUrlInfo: (url: UrlInfo) => void;
-	// Todo: 발등 이슈로 추후 타입 수정
-	setSelectedInfo: (urlInfo: any) => any;
 	moribSetName: string;
-	urlData: UrlInfo[];
-	setUrlData: any;
-	isClicked: boolean;
-	setIsClicked: any;
-	selectedOption: string;
-	setSelectedOption: any;
-	handleClearModalData: () => void;
-	addInfos: (selectedInfo: UrlInfo[]) => void;
+	handleClose: () => void;
 };
 
 const AddCategoryListModal = ({
 	dialogRef,
-	handleCloseModal,
-	selectedInfo,
-	handleSelectedInfo,
+	handleSubmitModal,
+	handleClose,
+
+	rightModalUrlInfos,
+
+	handleRightModalUrlInfos,
 	handleDeleteUrlInfo,
-	setSelectedInfo,
 	moribSetName,
-	urlData,
-	setUrlData,
-	isClicked,
-	setIsClicked,
-	selectedOption,
-	setSelectedOption,
-	handleClearModalData,
-	addInfos,
 }: CategoryListModalProp) => {
-	const { data: categoryData, isLoading, error } = useCategoryLists();
-	const categories = categoryData?.data || [];
-	const [categoryId, setCategoryId] = useState<number>(0);
-
-	const { data: msets } = useGetMsets(categoryId);
-	const msetsList = msets?.data.msetList || [];
-
-	if (isLoading) return <LoadingUrl />;
-	if (error) return <LoadingUrl />;
-
-	const handleOptionId = (id: number) => {
-		setCategoryId(id);
-	};
+	const [isClicked, setIsClicked] = useState(false);
+	const [selectedOption, setSelectedOption] = useState('카테고리 추가');
 
 	const handleUrlInputChange = async (url: string) => {
 		try {
@@ -71,38 +44,42 @@ const AddCategoryListModal = ({
 				domain: tabNameData.data.tabName,
 				favicon: `https://www.google.com/s2/favicons?domain=${url}`,
 			};
-			// Todo: 발등 이슈로 추후 타입 수정
-			setSelectedInfo((prevUrlInfos: any) => [...prevUrlInfos, newUrlInfo]);
+			handleRightModalUrlInfos(newUrlInfo);
 		} catch (isQueryError) {
 			console.error(isQueryError);
 		}
 	};
 
+	const handleClickButton = (isClicked: boolean) => {
+		setIsClicked(isClicked);
+	};
+
+	const handleSelectOption = (name: string) => {
+		setSelectedOption(name);
+	};
+
+	const handleClearModalData = () => {
+		setIsClicked(false);
+		setSelectedOption('카테고리 추가');
+	};
 	return (
 		<dialog ref={dialogRef} className="rounded-[10px]">
 			<div className="flex">
 				<CategoryModalLeft
-					optionData={categories}
-					handleSelectedInfo={(urlInfo: UrlInfo) => handleSelectedInfo(urlInfo)}
-					handleOptionId={handleOptionId}
-					msetsList={msetsList}
-					urlInfos={urlData}
-					setUrlData={setUrlData}
-					setIsClicked={setIsClicked}
-					setSelectedOption={setSelectedOption}
+					handleClickButton={handleClickButton}
+					handleSelectOption={handleSelectOption}
 					isClicked={isClicked}
 					selectedOption={selectedOption}
+					handleRightModalUrlInfos={handleRightModalUrlInfos}
 				/>
 				<CategoryModalRight
-					selectedInfo={selectedInfo}
+					rightModalUrlInfos={rightModalUrlInfos}
 					handleUrlInputChange={(url: string) => handleUrlInputChange(url)}
 					handleDeleteUrlInfo={(url: UrlInfo) => handleDeleteUrlInfo(url)}
-					handleCloseModal={handleCloseModal}
+					handleClose={handleClose}
+					handleSubmitModal={handleSubmitModal}
 					moribSetName={moribSetName}
 					handleClearModalData={handleClearModalData}
-					setSelectedOption={setSelectedOption}
-					setIsClicked={setIsClicked}
-					addInfos={addInfos}
 				/>
 			</div>
 		</dialog>

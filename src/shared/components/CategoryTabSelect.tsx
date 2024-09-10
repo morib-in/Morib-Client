@@ -8,10 +8,10 @@ interface Tabs {
 interface TabSelectProps {
 	tabs: Tabs[];
 	handleTabChange: (number: number) => void;
-	isSelectedTab: number;
+	selectedTabId: number;
 }
 
-const CategoryTabSelect = ({ tabs, handleTabChange, isSelectedTab }: TabSelectProps) => {
+const CategoryTabSelect = ({ tabs, handleTabChange, selectedTabId }: TabSelectProps) => {
 	return (
 		<>
 			{tabs.map((tab) => (
@@ -21,7 +21,7 @@ const CategoryTabSelect = ({ tabs, handleTabChange, isSelectedTab }: TabSelectPr
 					onClick={() => {
 						handleTabChange(tab.id);
 					}}
-					activeTab={isSelectedTab}
+					activeTab={selectedTabId}
 				>
 					{tab.name}
 				</ButtonCategoryTab>

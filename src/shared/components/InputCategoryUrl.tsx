@@ -13,11 +13,10 @@ interface UrlInfo {
 interface InputCategoryUrlProps {
 	variant?: 'basic' | 'small';
 	onUrlInputChange: (url: string) => void;
-	selectedInfo?: UrlInfo[];
-	urlInfo?: UrlInfo[];
+	rightModalUrlInfos?: UrlInfo[];
 }
 
-const InputCategoryUrl = ({ variant = 'basic', onUrlInputChange, selectedInfo, urlInfo }: InputCategoryUrlProps) => {
+const InputCategoryUrl = ({ variant = 'basic', onUrlInputChange, rightModalUrlInfos }: InputCategoryUrlProps) => {
 	const [url, setUrl] = useState('');
 	const [isUrlValidated, setIsUrlValidated] = useState<boolean | null>(null);
 	const [errorMessage, setErrorMessage] = useState<string>('');
@@ -35,7 +34,7 @@ const InputCategoryUrl = ({ variant = 'basic', onUrlInputChange, selectedInfo, u
 			const isValid = isUrlValid(url);
 			setIsUrlValidated(isValid);
 			if (isValid) {
-				const isExist = selectedInfo?.some((info) => info.url === url) || urlInfo?.some((info) => info.url === url);
+				const isExist = rightModalUrlInfos?.some((info) => info.url === url);
 				if (isExist) {
 					setErrorMessage('이미 추가된 주소입니다.');
 					setIsUrlValidated(false);
@@ -67,7 +66,7 @@ const InputCategoryUrl = ({ variant = 'basic', onUrlInputChange, selectedInfo, u
 				value={url}
 				onKeyDown={handleKeyDown}
 			/>
-			<div className={`my-[0.6rem] flex ${isUrlValidated === false ? 'visible' : 'invisible'}`}>
+			<div className={`flex h-[3.2rem] ${isUrlValidated === false ? 'visible' : 'invisible'}`}>
 				<ErrorIcon />
 				<div className="detail-reg-14 ml-[0.5rem] text-error-01">{errorMessage}</div>
 			</div>
