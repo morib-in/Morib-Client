@@ -10,7 +10,6 @@ import ProgressCircle from '@/pages/TimerPage/components/ProgressCircle';
 import TaskTime from '@/pages/TimerPage/components/TaskTime';
 
 interface TaskTotalTimeProps {
-	totalTimeOfToday: number;
 	selectedTodo: number | null;
 	onPlayToggle: (isPlaying: boolean) => void;
 	isPlaying: boolean;
@@ -18,10 +17,11 @@ interface TaskTotalTimeProps {
 	timerTime: number;
 	timerIncreasedTime: number;
 	resetTimerIncreasedTime: () => void;
+	accumulatedTime: number;
+	resetAccumulatedIncreasedTime: () => void;
 }
 
 const Timer = ({
-	totalTimeOfToday,
 	selectedTodo,
 	onPlayToggle,
 	isPlaying,
@@ -29,9 +29,11 @@ const Timer = ({
 	timerTime,
 	timerIncreasedTime,
 	resetTimerIncreasedTime,
+	accumulatedTime,
+	resetAccumulatedIncreasedTime,
 }: TaskTotalTimeProps) => {
 	const queryClient = useQueryClient();
-	const accumulatedTime = totalTimeOfToday || 0;
+
 	const { mutate, isError, error } = usePostTimerStop();
 
 	const handlePlayPauseToggle = () => {
@@ -43,6 +45,7 @@ const Timer = ({
 						onSuccess: () => {
 							onPlayToggle(false);
 							resetTimerIncreasedTime();
+							resetAccumulatedIncreasedTime();
 							queryClient.invalidateQueries({ queryKey: ['todo', formattedTodayDate] });
 						},
 					},
@@ -63,7 +66,7 @@ const Timer = ({
 			<InnerCircleIcon className="absolute" />
 			<div className="absolute flex h-[22rem] w-[27.1rem] flex-col items-center justify-center">
 				<div className="flex flex-col items-center justify-center">
-					<AccumulatedTime isPlaying={isPlaying} totalTimeOfToday={accumulatedTime} />
+					<AccumulatedTime accumulatedTime={accumulatedTime} />
 					<TaskTime isPlaying={isPlaying} timer={timerTime} />
 				</div>
 				<div>
