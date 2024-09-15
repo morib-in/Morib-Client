@@ -28,7 +28,11 @@ const ModalCategory = forwardRef<CategoryRef, CategoryProps>(function CategoryMo
 		close: handleCloseModal,
 	}));
 
-	return <ModalWrapper ref={modalWrapperRef}>{children(handleCloseModal)}</ModalWrapper>;
+	return (
+		<ModalWrapper ref={modalWrapperRef} modalBorderRadius="radius14">
+			{children(handleCloseModal)}
+		</ModalWrapper>
+	);
 });
 
 export default ModalCategory;
