@@ -2,7 +2,7 @@ import { ReactNode, forwardRef, useImperativeHandle, useRef } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
 
-import './dialog.css';
+import ModalWrapper, { ModalWrapperRef } from './ModalWrapper';
 
 interface CategoryProps {
 	children: (handleCloseModal: () => void) => ReactNode;
@@ -15,31 +15,20 @@ export interface CategoryRef {
 
 const ModalCategory = forwardRef<CategoryRef, CategoryProps>(function CategoryModal({ children }: CategoryProps, ref) {
 	const queryClient = useQueryClient();
-	const dialogRef = useRef<HTMLDialogElement>(null);
-
-	const handleOpenModal = () => {
-		dialogRef.current?.showModal();
-	};
+	const modalWrapperRef = useRef<ModalWrapperRef>(null);
 
 	const handleCloseModal = () => {
-		dialogRef.current?.close();
+		modalWrapperRef.current?.close();
 		queryClient.invalidateQueries({ queryKey: ['categories'] });
 		queryClient.invalidateQueries({ queryKey: ['msets'] });
 	};
 
 	useImperativeHandle(ref, () => ({
-		open: handleOpenModal,
+		open: () => modalWrapperRef.current?.open(),
 		close: handleCloseModal,
 	}));
 
-	return (
-		<dialog
-			ref={dialogRef}
-			className="custom-dialog h-[80rem] w-[81.6rem] rounded-[14px] bg-gray-bg-03 px-[4.4rem] pb-[3rem] pt-[2.8rem]"
-		>
-			{children(handleCloseModal)}
-		</dialog>
-	);
+	return <ModalWrapper ref={modalWrapperRef}>{children(handleCloseModal)}</ModalWrapper>;
 });
 
 export default ModalCategory;
