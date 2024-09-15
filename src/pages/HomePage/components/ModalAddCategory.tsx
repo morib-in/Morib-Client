@@ -33,6 +33,7 @@ interface ModalAddCategoryProps {
 const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 	const [totalUrlInfos, setTotalUrlInfos] = useState<UrlInfo[]>([]);
 	const [rightModalUrlInfos, setRightModalUrlInfos] = useState<UrlInfo[]>([]);
+
 	const [name, setName] = useState('');
 	const queryClient = useQueryClient();
 	const {
@@ -52,7 +53,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 	} = useCalendar();
 	const dialogRef = useRef<HTMLDialogElement>(null);
 
-	const handleUrlInfos = () => {
+	const handleClearUrlInfos = () => {
 		setRightModalUrlInfos([]);
 	};
 
@@ -146,7 +147,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 	};
 
 	const showModal = () => {
-		handleUrlInfos();
+		handleClearUrlInfos();
 		dialogRef.current?.showModal();
 	};
 
@@ -269,10 +270,10 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 			</main>
 
 			<footer className="mt-[3rem] flex justify-end gap-[1.6rem]">
-				<ButtonCategoryCommon variant="취소" handleCloseModal={handleClose}>
+				<ButtonCategoryCommon variant="취소" onClick={handleClose}>
 					취소
 				</ButtonCategoryCommon>
-				<ButtonCategoryCommon variant="완료" handleSubmit={handlePostDataClick} disabled={!isFormValid()}>
+				<ButtonCategoryCommon variant="완료" onClick={handlePostDataClick} disabled={!isFormValid()}>
 					완료
 				</ButtonCategoryCommon>
 			</footer>

@@ -25,9 +25,9 @@ interface UrlInfo {
 type CategoryListModalProp = {
 	dialogRef: RefObject<HTMLDialogElement>;
 	handleSubmitModal: () => void;
-
 	rightModalUrlInfos: UrlInfo[];
 	handleRightModalUrlInfos: (url: UrlInfo) => void;
+
 	handleDeleteUrlInfo: (url: UrlInfo) => void;
 	moribSetName: string;
 	handleClose: () => void;
@@ -37,9 +37,7 @@ const AddCategoryListModal = ({
 	dialogRef,
 	handleSubmitModal,
 	handleClose,
-
 	rightModalUrlInfos,
-
 	handleRightModalUrlInfos,
 	handleDeleteUrlInfo,
 	moribSetName,
@@ -178,6 +176,7 @@ const AddCategoryListModal = ({
 							onClick={() => {
 								handleClearModalData();
 								handleClose();
+								setCategoryId(0);
 							}}
 						>
 							취소
@@ -187,6 +186,7 @@ const AddCategoryListModal = ({
 							onClick={() => {
 								handleClearModalData();
 								handleSubmitModal();
+								setCategoryId(0);
 							}}
 						>
 							완료
