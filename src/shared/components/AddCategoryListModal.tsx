@@ -4,6 +4,7 @@ import ButtonCategoryCommon from '@/shared/components/ButtonCategoryCommon';
 import CategoryMsetUrlInfo from '@/shared/components/CategoryMsetUrlInfo';
 import CategoryTabSelect from '@/shared/components/CategoryTabSelect';
 import DropdownCategory from '@/shared/components/DropdownCategory';
+import TitleMoribSet from '@/shared/components/TitleMoribSet';
 
 import { getTabName } from '@/shared/apis/modal/axios';
 import { useCategoryLists, useGetMsets } from '@/shared/apis/modal/queries';
@@ -90,9 +91,9 @@ const AddCategoryListModal = ({
 		<dialog ref={dialogRef} className="rounded-[10px]">
 			<div className="flex">
 				<div className="h-[80rem] w-[68.8rem] rounded-l-[10px] bg-gray-bg-04 py-[2.8rem] pl-[4.4rem] pr-[4.3rem]">
-					<header className="mb-[3.3rem]">
+					<div className="mb-[3.3rem]">
 						<h1 className="head-bold-24 text-gray-04">카테고리 추가</h1>
-					</header>
+					</div>
 					<aside className="mb-[8px]">
 						<div className="my-[8px]">
 							<CategoryTabSelect
@@ -135,18 +136,7 @@ const AddCategoryListModal = ({
 					</CategoryCommonMoribSet>
 				</div>
 				<div className="flex h-[80rem] w-[61.2rem] flex-col items-end justify-between rounded-r-[1rem] bg-gray-bg-03 pb-[3rem] pl-[3rem] pr-[4.3rem] pt-[9.7rem]">
-					<div className="subhead-bold-22 mb-[8px] flex w-full flex-row justify-start p-[1rem]">
-						<h2 className="text-mint-01">
-							{moribSetName.length > 0 ? (
-								moribSetName
-							) : (
-								<>
-									<h2 className="pr-[1rem]" /> _______ <span className="pr-[0.5rem]" />
-								</>
-							)}
-						</h2>
-						<h2 className="text-white">의 모립세트</h2>
-					</div>
+					<TitleMoribSet moribSetName={moribSetName} />
 
 					<InputCategoryUrl
 						currentUrlInfos={rightModalUrlInfos}
