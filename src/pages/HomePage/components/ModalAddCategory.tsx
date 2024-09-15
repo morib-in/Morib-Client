@@ -1,6 +1,4 @@
-
-import { useState, useRef } from 'react';
-
+import React, { useRef, useState } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -87,8 +85,6 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 		handlePeriodEnd();
 	};
 
-
-
 	const handleDeleteUrlInfo = (urlInfoToDelete: UrlInfo) => {
 		setRightModalUrlInfos((prevUrlInfos) => prevUrlInfos.filter((urlInfo) => urlInfo.url !== urlInfoToDelete.url));
 	};
@@ -149,7 +145,6 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 		setName(event.target.value);
 	};
 
-
 	const showModal = () => {
 		handleUrlInfos();
 		dialogRef.current?.showModal();
@@ -189,7 +184,6 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 	};
 
 	return (
-
 		<>
 			<header>
 				<h1 className="head-bold-24 text-gray-04">카테고리 추가</h1>
