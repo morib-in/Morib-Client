@@ -257,7 +257,11 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 							moribSetName={name}
 						/>
 					</div>
-					<InputCategoryUrl variant="basic" onUrlInputChange={(url: string) => handleUrlInputChange(url)} />
+					<InputCategoryUrl
+						currentUrlInfos={totalUrlInfos}
+						variant="basic"
+						onUrlInputChange={(url: string) => handleUrlInputChange(url)}
+					/>
 				</section>
 
 				<CategoryCommonMoribSet urlInfos={totalUrlInfos} variant="basic">

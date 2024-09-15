@@ -45,14 +45,11 @@ const AddCategoryListModal = ({
 	const [isClicked, setIsClicked] = useState(false);
 	const [selectedOption, setSelectedOption] = useState('카테고리 추가');
 	const [selectedTabId, setSelectedTabId] = useState(CATEGORY_MODALTABS[0].id);
-
 	const { data: categoryData } = useCategoryLists();
 	const categories = categoryData?.data || [];
 	const [categoryId, setCategoryId] = useState<number>(0);
-
 	const { data: msetsList } = useGetMsets(categoryId);
 	const msetUrlInfos = msetsList || [];
-
 	const handleOptionId = (id: number) => {
 		setCategoryId(id);
 	};
@@ -152,7 +149,7 @@ const AddCategoryListModal = ({
 					</header>
 
 					<InputCategoryUrl
-						rightModalUrlInfos={rightModalUrlInfos}
+						currentUrlInfos={rightModalUrlInfos}
 						variant="small"
 						onUrlInputChange={(url: string) => handleUrlInputChange(url)}
 					/>
