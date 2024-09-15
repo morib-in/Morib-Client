@@ -10,7 +10,6 @@ import CalendarSelectedDate from '@/shared/components/CalendarSelectedDate';
 import CategoryCommonMoribSet from '@/shared/components/CategoryCommonMoribSet';
 import CategoryMsetUrlInfo from '@/shared/components/CategoryMsetUrlInfo';
 import InputCategoryUrl from '@/shared/components/InputCategoryUrl';
-import ModalWrapper, { ModalWrapperRef } from '@/shared/components/ModalWrapper';
 
 import { useCalendar } from '@/shared/hooks/useCalendar';
 
@@ -51,7 +50,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 		handlePeriodEnd,
 		handleClearDateInfo,
 	} = useCalendar();
-	const dialogRef = useRef<ModalWrapperRef>(null);
+	const dialogRef = useRef<HTMLDialogElement>(null);
 
 	const handleUrlInfos = () => {
 		setRightModalUrlInfos([]);
@@ -251,6 +250,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 							handleSubmitModal={handleMsetSubmit}
 							handleClose={handleClose}
 							rightModalUrlInfos={rightModalUrlInfos}
+							dialogRef={dialogRef}
 							handleRightModalUrlInfos={handleRightModalUrlInfos}
 							handleDeleteUrlInfo={(url: UrlInfo) => handleDeleteUrlInfo(url)}
 							moribSetName={name}
