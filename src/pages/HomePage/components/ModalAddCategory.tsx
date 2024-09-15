@@ -161,7 +161,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 
 	const handleClose = () => {
 		handleClearData();
-		handleCloseModal();
+		closeModal();
 	};
 
 	const handleCategoryModalClose = () => {
@@ -249,7 +249,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 						</button>
 						<AddCategoryListModal
 							handleSubmitModal={handleMsetSubmit}
-							handleClose={handleCategoryModalClose}
+							handleClose={handleClose}
 							dialogRef={dialogRef}
 							rightModalUrlInfos={rightModalUrlInfos}
 							handleRightModalUrlInfos={handleRightModalUrlInfos}
@@ -273,14 +273,14 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 				</CategoryCommonMoribSet>
 			</main>
 
-			<footer className="mt-[3rem] flex justify-end gap-[1.6rem]">
-				<ButtonCategoryCommon variant="취소" onClick={handleClose}>
+			<div className="mt-[3rem] flex justify-end gap-[1.6rem]">
+				<ButtonCategoryCommon variant="취소" onClick={handleCategoryModalClose}>
 					취소
 				</ButtonCategoryCommon>
 				<ButtonCategoryCommon variant="완료" onClick={handlePostDataClick} disabled={!isFormValid()}>
 					완료
 				</ButtonCategoryCommon>
-			</footer>
+			</div>
 		</>
 	);
 };

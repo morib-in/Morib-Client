@@ -135,7 +135,7 @@ const AddCategoryListModal = ({
 					</CategoryCommonMoribSet>
 				</div>
 				<div className="flex h-[80rem] w-[61.2rem] flex-col items-end justify-between rounded-r-[1rem] bg-gray-bg-03 pb-[3rem] pl-[3rem] pr-[4.3rem] pt-[9.7rem]">
-					<header className="subhead-bold-22 mb-[8px] flex w-full flex-row justify-start p-[1rem]">
+					<div className="subhead-bold-22 mb-[8px] flex w-full flex-row justify-start p-[1rem]">
 						<h2 className="text-mint-01">
 							{moribSetName.length > 0 ? (
 								moribSetName
@@ -146,7 +146,7 @@ const AddCategoryListModal = ({
 							)}
 						</h2>
 						<h2 className="text-white">의 모립세트</h2>
-					</header>
+					</div>
 
 					<InputCategoryUrl
 						currentUrlInfos={rightModalUrlInfos}
