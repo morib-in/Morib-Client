@@ -1,6 +1,4 @@
-
-import { useState, useRef } from 'react';
-
+import { useRef, useState } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -12,6 +10,7 @@ import CalendarSelectedDate from '@/shared/components/CalendarSelectedDate';
 import CategoryCommonMoribSet from '@/shared/components/CategoryCommonMoribSet';
 import CategoryMsetUrlInfo from '@/shared/components/CategoryMsetUrlInfo';
 import InputCategoryUrl from '@/shared/components/InputCategoryUrl';
+import ModalWrapper, { ModalWrapperRef } from '@/shared/components/ModalWrapper';
 
 import { useCalendar } from '@/shared/hooks/useCalendar';
 
@@ -52,7 +51,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 		handlePeriodEnd,
 		handleClearDateInfo,
 	} = useCalendar();
-	const dialogRef = useRef<HTMLDialogElement>(null);
+	const dialogRef = useRef<ModalWrapperRef>(null);
 
 	const handleUrlInfos = () => {
 		setRightModalUrlInfos([]);
@@ -86,8 +85,6 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 		handleClearDateInfo();
 		handlePeriodEnd();
 	};
-
-
 
 	const handleDeleteUrlInfo = (urlInfoToDelete: UrlInfo) => {
 		setRightModalUrlInfos((prevUrlInfos) => prevUrlInfos.filter((urlInfo) => urlInfo.url !== urlInfoToDelete.url));
@@ -149,7 +146,6 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 		setName(event.target.value);
 	};
 
-
 	const showModal = () => {
 		handleUrlInfos();
 		dialogRef.current?.showModal();
@@ -189,8 +185,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 	};
 
 	return (
-
-		<>
+		<div className="h-[80rem] w-[81.6rem] flex-shrink-0 bg-gray-bg-03 px-[4.4rem] pb-[3rem] pt-[2.8rem]">
 			<header>
 				<h1 className="head-bold-24 text-gray-04">카테고리 추가</h1>
 			</header>
@@ -254,8 +249,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 						</button>
 						<AddCategoryListModal
 							handleSubmitModal={handleMsetSubmit}
-							handleClose={handleCategoryModalClose}
-							dialogRef={dialogRef}
+							handleClose={handleClose}
 							rightModalUrlInfos={rightModalUrlInfos}
 							handleRightModalUrlInfos={handleRightModalUrlInfos}
 							handleDeleteUrlInfo={(url: UrlInfo) => handleDeleteUrlInfo(url)}
@@ -275,14 +269,14 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 			</main>
 
 			<footer className="mt-[3rem] flex justify-end gap-[1.6rem]">
-				<ButtonCategoryCommon variant="취소" handleCloseModal={handleClose}>
+				<ButtonCategoryCommon variant="취소" handleCloseModal={handleCategoryModalClose}>
 					취소
 				</ButtonCategoryCommon>
 				<ButtonCategoryCommon variant="완료" handleSubmit={handlePostDataClick} disabled={!isFormValid()}>
 					완료
 				</ButtonCategoryCommon>
 			</footer>
-		</>
+		</div>
 	);
 };
 
