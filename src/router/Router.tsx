@@ -4,6 +4,7 @@ import { Outlet, createBrowserRouter } from 'react-router-dom';
 
 import HomePage from '@/pages/HomePage/HomePage';
 import LoginPage from '@/pages/LoginPage';
+import NotFoundPage from '@/pages/NotFoundPage/NotFoundPage';
 import TimerPage from '@/pages/TimerPage/TimerPage';
 
 import RedirectPage from '../pages/RedirectPage';
@@ -55,7 +56,7 @@ const router: Router = createBrowserRouter([
 	{
 		//404 페이지
 		path: '*',
-		element: <div className="text-3xl">잘못 찾아오셨어요!</div>,
+		element: <NotFoundPage />,
 	},
 ]);
 
