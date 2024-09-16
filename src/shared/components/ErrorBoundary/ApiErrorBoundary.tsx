@@ -6,12 +6,12 @@ import { SHOULD_HANDLE_ERROR } from '@/shared/constants/error';
 
 interface FallbackProps {
 	error?: AxiosError;
-	resetError?: () => void;
+	resetError: () => void;
 }
 
 interface ApiErrorBoundaryProps {
 	children: ReactNode;
-	fallback?: ComponentType<FallbackProps>;
+	fallback: ComponentType<FallbackProps>;
 	handleError?: () => void;
 }
 
@@ -32,7 +32,6 @@ class ApiErrorBoundary extends Component<ApiErrorBoundaryProps, ApiErrorBoundary
 	}
 
 	static getDerivedStateFromError(error: AxiosError | Error): ApiErrorBoundaryState {
-		// 에러를 특정 API 에러로 가정하고 처리할 수 있는지 확인
 		if (
 			error instanceof AxiosError &&
 			error?.response?.status &&
@@ -67,7 +66,7 @@ class ApiErrorBoundary extends Component<ApiErrorBoundaryProps, ApiErrorBoundary
 	render() {
 		// Todo: 실제 UI가 나오면 fallback에 적용하기
 		const { shouldHandleError, shouldRethrow, error } = this.state;
-		// const { fallback: Fallback } = this.props;
+		const { fallback: Fallback } = this.props;
 
 		if (shouldRethrow && error) {
 			throw error; // 상위 Error Boundary로 에러를 전달
@@ -77,17 +76,8 @@ class ApiErrorBoundary extends Component<ApiErrorBoundaryProps, ApiErrorBoundary
 			return this.props.children; // 에러가 처리 대상이 아니면 원래의 UI를 그대로 렌더링
 		}
 
-		// // 에러에 따라 UI를 분기 처리
-		// if (error instanceof AxiosError) {
-		// 	return <Fallback error={error} resetError={this.resetError} />;
-		// }
-
 		if (error instanceof AxiosError) {
-			return (
-				<button onClick={this.resetError} className="text-3xl">
-					API 에러 발생했어요~~
-				</button>
-			);
+			return <Fallback error={error} resetError={this.resetError} />;
 		}
 	}
 }

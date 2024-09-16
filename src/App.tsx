@@ -2,12 +2,12 @@ import { Provider } from 'jotai';
 
 import { RouterProvider } from 'react-router-dom';
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
+
+import { queryClient } from '@/shared/apis/queryClient';
 
 import router from './router/Router';
 import GlobalErrorBoundary from './shared/components/ErrorBoundary/GlobalErrorBoundary';
-
-const queryClient = new QueryClient();
 
 const App = () => {
 	return (
