@@ -1,26 +1,10 @@
-import { useEffect } from 'react';
-
-import useTimerCount from '@/shared/hooks/useTimerCount';
-
 interface AccumulatedTimeProps {
-	isPlaying: boolean;
-	totalTimeOfToday: number;
+	accumulatedTime: number;
 }
 
-const AccumulatedTime = ({ isPlaying, totalTimeOfToday }: AccumulatedTimeProps) => {
-	const { timer, resetIncreasedTime } = useTimerCount({
-		isPlaying,
-		previousTime: totalTimeOfToday,
-	});
-
-	useEffect(() => {
-		if (!isPlaying) {
-			resetIncreasedTime();
-		}
-	}, [isPlaying, resetIncreasedTime]);
-
-	const hours = Math.floor(timer / 3600);
-	const minutes = Math.floor((timer % 3600) / 60);
+const AccumulatedTime = ({ accumulatedTime }: AccumulatedTimeProps) => {
+	const hours = Math.floor(accumulatedTime / 3600);
+	const minutes = Math.floor((accumulatedTime % 3600) / 60);
 
 	return (
 		<span className="head-bold-24 text-white">
