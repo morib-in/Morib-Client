@@ -8,7 +8,7 @@ interface ErrorProps {
 	resetError: () => void;
 }
 
-const ApiErrorFallback = ({ resetError }: ErrorProps) => {
+const FallbackApiError = ({ resetError }: ErrorProps) => {
 	return (
 		<div className="flex w-full justify-center">
 			<div className="flex w-full flex-col items-center">
@@ -26,4 +26,4 @@ const ApiErrorFallback = ({ resetError }: ErrorProps) => {
 	);
 };
 
-export default ApiErrorFallback;
+export default FallbackApiError;

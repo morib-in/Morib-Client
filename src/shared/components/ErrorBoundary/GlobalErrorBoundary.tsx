@@ -2,7 +2,7 @@ import { Component, ReactNode } from 'react';
 
 import { AxiosError } from 'axios';
 
-import ApiErrorFallback from '../ApiErrorFallback';
+import FallbackApiError from '../FallbackApiError';
 
 // import { ERROR_CODES } from '@/shared/constants/error';
 
@@ -68,7 +68,7 @@ class GlobalErrorBoundary extends Component<GlobalErrorBoundaryProps, GlobalErro
 		// 알 수 없는 에러 처리
 		// return <UnknownError onClickRetry={this.resetError} />;
 
-		if (error) return <ApiErrorFallback resetError={this.resetError} />;
+		if (error) return <FallbackApiError resetError={this.resetError} />;
 	}
 }
 
