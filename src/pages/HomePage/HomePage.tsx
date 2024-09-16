@@ -158,6 +158,16 @@ const HomePage = () => {
 			<div className={addTodayTodoOverlayStyle}>
 				<SideBarHome />
 			</div>
+
+			<div className={`absolute right-[4.4rem] top-[5.4rem] flex gap-[0.8rem] ${addTodayTodoOverlayStyle}`}>
+				<button>
+					<FriendSettingIcon className="rounded-[1.6rem] hover:bg-gray-bg-04 active:bg-gray-bg-05" />
+				</button>
+				<button>
+					<BellIcon className="rounded-[1.6rem] hover:bg-gray-bg-04 active:bg-gray-bg-05" />
+				</button>
+			</div>
+
 			<div className="flex h-full w-full justify-between p-[4.2rem]">
 				<section>
 					<div className={addTodayTodoOverlayStyle}>
@@ -226,14 +236,6 @@ const HomePage = () => {
 				</section>
 				<section className="flex items-end justify-end">
 					<div className="flex flex-col">
-						<div className={`mb-[4.4rem] flex justify-end ${addTodayTodoOverlayStyle}`}>
-							<ButtonSVG>
-								<FriendSettingIcon className="rounded-[1.6rem] hover:bg-gray-bg-04 active:bg-gray-bg-05" />
-							</ButtonSVG>
-							<ButtonSVG>
-								<BellIcon className="rounded-[1.6rem] hover:bg-gray-bg-04 active:bg-gray-bg-05" />
-							</ButtonSVG>
-						</div>
 						<BoxTodayTodo
 							time={targetTime}
 							addingTodayTodoStatus={addingTodayTodoStatus}
