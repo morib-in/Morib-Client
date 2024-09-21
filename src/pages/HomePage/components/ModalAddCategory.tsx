@@ -184,7 +184,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 	};
 
 	return (
-		<div className="h-[80rem] w-[81.6rem] flex-shrink-0 bg-gray-bg-03 px-[4.4rem] pb-[3rem] pt-[2.8rem]">
+		<div className="h-[80rem] w-[81.6rem] flex-shrink-0 rounded-[14px] bg-gray-bg-03 px-[4.4rem] pb-[3rem] pt-[2.8rem]">
 			<header>
 				<h1 className="head-bold-24 text-gray-04">카테고리 추가</h1>
 			</header>

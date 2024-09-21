@@ -29,7 +29,7 @@ const ModalCategory = forwardRef<CategoryRef, CategoryProps>(function CategoryMo
 	}));
 
 	return (
-		<ModalWrapper ref={modalWrapperRef} modalBorderRadius="radius14">
+		<ModalWrapper ref={modalWrapperRef} backdrop={false}>
 			{children(handleCloseModal)}
 		</ModalWrapper>
 	);
