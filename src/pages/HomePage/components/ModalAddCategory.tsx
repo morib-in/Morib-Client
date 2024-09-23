@@ -10,6 +10,7 @@ import CalendarSelectedDate from '@/shared/components/CalendarSelectedDate';
 import CategoryCommonMoribSet from '@/shared/components/CategoryCommonMoribSet';
 import CategoryMsetUrlInfo from '@/shared/components/CategoryMsetUrlInfo';
 import InputCategoryUrl from '@/shared/components/InputCategoryUrl';
+import ModalWrapper, { ModalWrapperRef } from '@/shared/components/ModalWrapper';
 
 import { useCalendar } from '@/shared/hooks/useCalendar';
 
@@ -50,7 +51,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 		handlePeriodEnd,
 		handleClearDateInfo,
 	} = useCalendar();
-	const dialogRef = useRef<HTMLDialogElement>(null);
+	const dialogRef = useRef<ModalWrapperRef>(null);
 
 	const handleUrlInfos = () => {
 		setRightModalUrlInfos([]);
@@ -147,7 +148,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 
 	const showModal = () => {
 		handleUrlInfos();
-		dialogRef.current?.showModal();
+		dialogRef.current?.open();
 	};
 
 	const closeModal = () => {
@@ -160,7 +161,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 
 	const handleClose = () => {
 		handleClearData();
-		handleCloseModal();
+		dialogRef.current?.close();
 	};
 
 	const handleCategoryModalClose = () => {
@@ -246,15 +247,16 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 							<p className="pretendard my-[0.15rem] text-[1.4rem] font-normal leading-120 text-white">빠른 불러오기</p>
 							<ArrowCircleUpRight className="h-[2rem] w-[2rem]" />
 						</button>
-						<AddCategoryListModal
-							handleSubmitModal={handleMsetSubmit}
-							handleClose={handleClose}
-							rightModalUrlInfos={rightModalUrlInfos}
-							dialogRef={dialogRef}
-							handleRightModalUrlInfos={handleRightModalUrlInfos}
-							handleDeleteUrlInfo={(url: UrlInfo) => handleDeleteUrlInfo(url)}
-							moribSetName={name}
-						/>
+						<ModalWrapper ref={dialogRef} backdrop={false}>
+							<AddCategoryListModal
+								handleSubmitModal={handleMsetSubmit}
+								handleClose={handleClose}
+								rightModalUrlInfos={rightModalUrlInfos}
+								handleRightModalUrlInfos={handleRightModalUrlInfos}
+								handleDeleteUrlInfo={(url: UrlInfo) => handleDeleteUrlInfo(url)}
+								moribSetName={name}
+							/>
+						</ModalWrapper>
 					</div>
 					<InputCategoryUrl variant="basic" onUrlInputChange={(url: string) => handleUrlInputChange(url)} />
 				</section>
