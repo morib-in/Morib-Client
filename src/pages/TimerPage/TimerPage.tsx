@@ -65,13 +65,16 @@ const TimerPage = () => {
 	const targetTodoTitle = selectedTodoData?.name || '';
 	const targetCategoryTitle = selectedTodoData?.categoryName || '';
 
-	const { increasedTime } = useTimerCount({ isPlaying, previousTime: targetTime });
-
 	const {
 		timer: timerTime,
 		increasedTime: timerIncreasedTime,
 		resetIncreasedTime: resetTimerIncreasedTime,
 	} = useTimerCount({ isPlaying, previousTime: targetTime });
+
+	const { timer: accumulatedTime, resetIncreasedTime: resetAccumulatedIncreasedTime } = useTimerCount({
+		isPlaying,
+		previousTime: totalTimeOfToday,
+	});
 
 	useUrlHandler({
 		isPlaying,
@@ -79,7 +82,7 @@ const TimerPage = () => {
 		baseUrls,
 		stopTimer,
 		formattedTodayDate,
-		increasedTime,
+		timerIncreasedTime,
 		setIsPlaying,
 		getBaseUrl,
 	});
@@ -109,13 +112,14 @@ const TimerPage = () => {
 					</header>
 					<Timer
 						selectedTodo={selectedTodo}
-						totalTimeOfToday={totalTimeOfToday}
 						onPlayToggle={handlePlayToggle}
 						isPlaying={isPlaying}
 						formattedTodayDate={formattedTodayDate}
 						timerTime={timerTime}
 						timerIncreasedTime={timerIncreasedTime}
 						resetTimerIncreasedTime={resetTimerIncreasedTime}
+						accumulatedTime={accumulatedTime}
+						resetAccumulatedIncreasedTime={resetAccumulatedIncreasedTime}
 					/>
 					<Carousel />
 				</div>
@@ -141,6 +145,7 @@ const TimerPage = () => {
 								formattedTodayDate={formattedTodayDate}
 								resetTimerIncreasedTime={resetTimerIncreasedTime}
 								timerIncreasedTime={timerIncreasedTime}
+								resetAccumulatedIncreasedTime={resetAccumulatedIncreasedTime}
 							/>
 						</div>
 					</div>

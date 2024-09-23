@@ -8,7 +8,7 @@ interface UseUrlHandlerProps {
 		params: { id: number; elapsedTime: number; targetDate: string },
 		options: { onSuccess: () => void },
 	) => void;
-	increasedTime: number;
+	timerIncreasedTime: number;
 	setIsPlaying: (isPlaying: boolean) => void;
 	getBaseUrl: (url: string) => string;
 	formattedTodayDate: string;
@@ -19,7 +19,7 @@ const useUrlHandler = ({
 	selectedTodo,
 	baseUrls,
 	stopTimer,
-	increasedTime,
+	timerIncreasedTime,
 	setIsPlaying,
 	getBaseUrl,
 	formattedTodayDate,
@@ -33,7 +33,7 @@ const useUrlHandler = ({
 				setTimeout(() => {
 					if (isPlaying && selectedTodo !== null && !baseUrls.includes(updatedBaseUrl)) {
 						stopTimer(
-							{ id: selectedTodo, elapsedTime: increasedTime, targetDate: formattedTodayDate },
+							{ id: selectedTodo, elapsedTime: timerIncreasedTime, targetDate: formattedTodayDate },
 							{
 								onSuccess: () => {
 									setIsPlaying(false);
@@ -50,7 +50,7 @@ const useUrlHandler = ({
 		return () => {
 			document.removeEventListener('FROM_EXTENSION', handleMessage);
 		};
-	}, [increasedTime, isPlaying, selectedTodo, stopTimer, baseUrls, getBaseUrl, formattedTodayDate, setIsPlaying]);
+	}, [timerIncreasedTime, isPlaying, selectedTodo, stopTimer, baseUrls, getBaseUrl, formattedTodayDate, setIsPlaying]);
 };
 
 export default useUrlHandler;

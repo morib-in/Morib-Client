@@ -29,6 +29,7 @@ interface CategoryBoxProps {
 	resetTimerIncreasedTime: () => void;
 	timerIncreasedTime: number;
 	isSideOpen: boolean;
+	resetAccumulatedIncreasedTime: () => void;
 }
 
 const SideBarTimer = ({
@@ -43,6 +44,7 @@ const SideBarTimer = ({
 	resetTimerIncreasedTime,
 	timerIncreasedTime,
 	isSideOpen,
+	resetAccumulatedIncreasedTime,
 }: CategoryBoxProps) => {
 	const sidebarRef = useRef<HTMLDivElement>(null);
 	const navigate = useNavigate();
@@ -61,6 +63,7 @@ const SideBarTimer = ({
 							onPlayToggle(false);
 							queryClient.invalidateQueries({ queryKey: ['todo', formattedTodayDate] });
 							resetTimerIncreasedTime();
+							resetAccumulatedIncreasedTime();
 						},
 					},
 				);
