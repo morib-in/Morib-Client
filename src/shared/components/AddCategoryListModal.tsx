@@ -1,4 +1,4 @@
-import { RefObject, useState } from 'react';
+import { useState } from 'react';
 
 import ButtonCategoryCommon from '@/shared/components/ButtonCategoryCommon';
 import CategoryMsetUrlInfo from '@/shared/components/CategoryMsetUrlInfo';
@@ -24,7 +24,6 @@ interface UrlInfo {
 }
 
 type CategoryListModalProp = {
-	dialogRef: RefObject<HTMLDialogElement>;
 	handleSubmitModal: () => void;
 	rightModalUrlInfos: UrlInfo[];
 	handleRightModalUrlInfos: (url: UrlInfo) => void;
@@ -35,7 +34,6 @@ type CategoryListModalProp = {
 };
 
 const AddCategoryListModal = ({
-	dialogRef,
 	handleSubmitModal,
 	handleClose,
 	rightModalUrlInfos,
@@ -88,7 +86,7 @@ const AddCategoryListModal = ({
 		setSelectedOption('카테고리 추가');
 	};
 	return (
-		<dialog ref={dialogRef} className="rounded-[10px]">
+		<div className="rounded-[10px]">
 			<div className="flex">
 				<div className="h-[80rem] w-[68.8rem] rounded-l-[10px] bg-gray-bg-04 py-[2.8rem] pl-[4.4rem] pr-[4.3rem]">
 					<div className="mb-[3.3rem]">
@@ -181,7 +179,7 @@ const AddCategoryListModal = ({
 					</div>
 				</div>
 			</div>
-		</dialog>
+		</div>
 	);
 };
 export default AddCategoryListModal;

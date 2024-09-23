@@ -1,3 +1,7 @@
 .custom-dialog::backdrop {
     background-color: rgba(0, 0, 0, 0.7);
   }
+
+.custom-dialog:not(.with-backdrop)::backdrop {
+    background-color: transparent;
+}

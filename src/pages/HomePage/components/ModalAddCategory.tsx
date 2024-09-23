@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 
+
 import { useQueryClient } from '@tanstack/react-query';
 
 import AddCategoryListModal from '@/shared/components/AddCategoryListModal';
@@ -10,6 +11,7 @@ import CalendarSelectedDate from '@/shared/components/CalendarSelectedDate';
 import CategoryCommonMoribSet from '@/shared/components/CategoryCommonMoribSet';
 import CategoryMsetUrlInfo from '@/shared/components/CategoryMsetUrlInfo';
 import InputCategoryUrl from '@/shared/components/InputCategoryUrl';
+import ModalWrapper, { ModalWrapperRef } from '@/shared/components/ModalWrapper';
 
 import { useCalendar } from '@/shared/hooks/useCalendar';
 
@@ -51,7 +53,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 		handlePeriodEnd,
 		handleClearDateInfo,
 	} = useCalendar();
-	const dialogRef = useRef<HTMLDialogElement>(null);
+	const dialogRef = useRef<ModalWrapperRef>(null);
 
 	const handleClearUrlInfos = () => {
 		setRightModalUrlInfos([]);
@@ -148,7 +150,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 
 	const showModal = () => {
 		handleClearUrlInfos();
-		dialogRef.current?.showModal();
+		dialogRef.current?.open();
 	};
 
 	const closeModal = () => {
@@ -161,7 +163,8 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 
 	const handleClose = () => {
 		handleClearData();
-		closeModal();
+		dialogRef.current?.close();
+
 	};
 
 	const handleCategoryModalClose = () => {
@@ -185,7 +188,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 	};
 
 	return (
-		<>
+		<div className="h-[80rem] w-[81.6rem] flex-shrink-0 rounded-[14px] bg-gray-bg-03 px-[4.4rem] pb-[3rem] pt-[2.8rem]">
 			<div>
 				<h1 className="head-bold-24 text-gray-04">카테고리 추가</h1>
 			</div>
@@ -247,15 +250,16 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 							<p className="pretendard my-[0.15rem] text-[1.4rem] font-normal leading-120 text-white">빠른 불러오기</p>
 							<ArrowCircleUpRight className="h-[2rem] w-[2rem]" />
 						</button>
-						<AddCategoryListModal
-							handleSubmitModal={handleMsetSubmit}
-							handleClose={handleClose}
-							dialogRef={dialogRef}
-							rightModalUrlInfos={rightModalUrlInfos}
-							handleRightModalUrlInfos={handleRightModalUrlInfos}
-							handleDeleteUrlInfo={(url: UrlInfo) => handleDeleteUrlInfo(url)}
-							moribSetName={name}
-						/>
+						<ModalWrapper ref={dialogRef} backdrop={false}>
+							<AddCategoryListModal
+								handleSubmitModal={handleMsetSubmit}
+								handleClose={handleClose}
+								rightModalUrlInfos={rightModalUrlInfos}
+								handleRightModalUrlInfos={handleRightModalUrlInfos}
+								handleDeleteUrlInfo={(url: UrlInfo) => handleDeleteUrlInfo(url)}
+								moribSetName={name}
+							/>
+						</ModalWrapper>
 					</div>
 					<InputCategoryUrl
 						currentUrlInfos={totalUrlInfos}
@@ -281,7 +285,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 					완료
 				</ButtonCategoryCommon>
 			</div>
-		</>
+		</div>
 	);
 };
 

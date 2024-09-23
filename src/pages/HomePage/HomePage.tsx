@@ -5,7 +5,9 @@ import utc from 'dayjs/plugin/utc';
 import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import ModalCategory, { CategoryRef } from '@/shared/components/ModalCategory';
+import { useQueryClient } from '@tanstack/react-query';
+
+import ModalWrapper, { ModalWrapperRef } from '@/shared/components/ModalWrapper';
 
 import {
 	useDeleteCategory,
@@ -45,7 +47,7 @@ const HomePage = () => {
 	const todayDate = dayjs().tz('Asia/Seoul');
 	const formattedTodayDate = todayDate.format('YYYY-MM-DD');
 
-	const modalRef = useRef<CategoryRef>(null);
+	const modalRef = useRef<ModalWrapperRef>(null);
 
 	const [selectedDate, setSelectedDate] = useState(todayDate);
 	const { startDate, endDate } = getThisWeekRange(selectedDate);
@@ -82,6 +84,14 @@ const HomePage = () => {
 
 	const handleOpenModal = () => {
 		modalRef.current?.open();
+	};
+
+	const queryClient = useQueryClient();
+
+	const handleCloseModal = () => {
+		modalRef.current?.close();
+		queryClient.invalidateQueries({ queryKey: ['categories'] });
+		queryClient.invalidateQueries({ queryKey: ['msets'] });
 	};
 
 	const deleteTodayTodos = (todo: Omit<Task, 'isComplete'>) => {
@@ -241,9 +251,9 @@ const HomePage = () => {
 					</div>
 				</section>
 			</div>
-			<ModalCategory ref={modalRef}>
-				{(handleCloseModal) => <ModalAddCategory handleCloseModal={handleCloseModal} />}
-			</ModalCategory>
+			<ModalWrapper ref={modalRef} backdrop={true}>
+				<ModalAddCategory handleCloseModal={handleCloseModal} />
+			</ModalWrapper>
 		</HomePageWrapper>
 	);
 };
