@@ -1,6 +1,4 @@
-
-import { useState, useRef } from 'react';
-
+import React, { useRef, useState } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -35,6 +33,7 @@ interface ModalAddCategoryProps {
 const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 	const [totalUrlInfos, setTotalUrlInfos] = useState<UrlInfo[]>([]);
 	const [rightModalUrlInfos, setRightModalUrlInfos] = useState<UrlInfo[]>([]);
+
 	const [name, setName] = useState('');
 	const queryClient = useQueryClient();
 	const {
@@ -54,7 +53,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 	} = useCalendar();
 	const dialogRef = useRef<HTMLDialogElement>(null);
 
-	const handleUrlInfos = () => {
+	const handleClearUrlInfos = () => {
 		setRightModalUrlInfos([]);
 	};
 
@@ -86,8 +85,6 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 		handleClearDateInfo();
 		handlePeriodEnd();
 	};
-
-
 
 	const handleDeleteUrlInfo = (urlInfoToDelete: UrlInfo) => {
 		setRightModalUrlInfos((prevUrlInfos) => prevUrlInfos.filter((urlInfo) => urlInfo.url !== urlInfoToDelete.url));
@@ -149,9 +146,8 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 		setName(event.target.value);
 	};
 
-
 	const showModal = () => {
-		handleUrlInfos();
+		handleClearUrlInfos();
 		dialogRef.current?.showModal();
 	};
 
@@ -165,7 +161,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 
 	const handleClose = () => {
 		handleClearData();
-		handleCloseModal();
+		closeModal();
 	};
 
 	const handleCategoryModalClose = () => {
@@ -189,11 +185,10 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 	};
 
 	return (
-
 		<>
-			<header>
+			<div>
 				<h1 className="head-bold-24 text-gray-04">카테고리 추가</h1>
-			</header>
+			</div>
 			<section className="flex-start my-[2rem] mt-[1.6rem] inline-flex gap-[4.4rem]">
 				<section className="flex-col">
 					<h2 className="subhead-bold-22 pb-[1rem] pt-[1rem] text-white">이름 *</h2>
@@ -254,7 +249,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 						</button>
 						<AddCategoryListModal
 							handleSubmitModal={handleMsetSubmit}
-							handleClose={handleCategoryModalClose}
+							handleClose={handleClose}
 							dialogRef={dialogRef}
 							rightModalUrlInfos={rightModalUrlInfos}
 							handleRightModalUrlInfos={handleRightModalUrlInfos}
@@ -262,7 +257,11 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 							moribSetName={name}
 						/>
 					</div>
-					<InputCategoryUrl variant="basic" onUrlInputChange={(url: string) => handleUrlInputChange(url)} />
+					<InputCategoryUrl
+						currentUrlInfos={totalUrlInfos}
+						variant="basic"
+						onUrlInputChange={(url: string) => handleUrlInputChange(url)}
+					/>
 				</section>
 
 				<CategoryCommonMoribSet urlInfos={totalUrlInfos} variant="basic">
@@ -274,14 +273,14 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 				</CategoryCommonMoribSet>
 			</main>
 
-			<footer className="mt-[3rem] flex justify-end gap-[1.6rem]">
-				<ButtonCategoryCommon variant="취소" handleCloseModal={handleClose}>
+			<div className="mt-[3rem] flex justify-end gap-[1.6rem]">
+				<ButtonCategoryCommon variant="취소" onClick={handleCategoryModalClose}>
 					취소
 				</ButtonCategoryCommon>
-				<ButtonCategoryCommon variant="완료" handleSubmit={handlePostDataClick} disabled={!isFormValid()}>
+				<ButtonCategoryCommon variant="완료" onClick={handlePostDataClick} disabled={!isFormValid()}>
 					완료
 				</ButtonCategoryCommon>
-			</footer>
+			</div>
 		</>
 	);
 };

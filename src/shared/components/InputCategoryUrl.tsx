@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { isUrlValid } from '@/shared/utils/isUrlValid/index';
 
@@ -13,10 +13,10 @@ interface UrlInfo {
 interface InputCategoryUrlProps {
 	variant?: 'basic' | 'small';
 	onUrlInputChange: (url: string) => void;
-	rightModalUrlInfos?: UrlInfo[];
+	currentUrlInfos?: UrlInfo[];
 }
 
-const InputCategoryUrl = ({ variant = 'basic', onUrlInputChange, rightModalUrlInfos }: InputCategoryUrlProps) => {
+const InputCategoryUrl = ({ variant = 'basic', onUrlInputChange, currentUrlInfos }: InputCategoryUrlProps) => {
 	const [url, setUrl] = useState('');
 	const [isUrlValidated, setIsUrlValidated] = useState<boolean | null>(null);
 	const [errorMessage, setErrorMessage] = useState<string>('');
@@ -29,12 +29,23 @@ const InputCategoryUrl = ({ variant = 'basic', onUrlInputChange, rightModalUrlIn
 	const defaultStyle = `subhead-med-18 h-[4.6rem] rounded-[8px] border-[1px] bg-gray-bg-02 px-[2rem] py-[1rem] text-white placeholder-gray-03 focus:outline-none ${sizeVariantWidth[variant]}`;
 	const borderStyle = isUrlValidated === false ? 'border-error-02' : 'border-transparent';
 
+	useEffect(() => {
+		if (isUrlValidated === false) {
+			const timer = setTimeout(() => {
+				setUrl('');
+				setIsUrlValidated(true);
+			}, 3000);
+
+			return () => clearTimeout(timer);
+		}
+	}, [isUrlValidated]);
+
 	const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
 		if (e.key === 'Enter') {
 			const isValid = isUrlValid(url);
 			setIsUrlValidated(isValid);
 			if (isValid) {
-				const isExist = rightModalUrlInfos?.some((info) => info.url === url);
+				const isExist = currentUrlInfos?.some((info) => info.url === url);
 				if (isExist) {
 					setErrorMessage('이미 추가된 주소입니다.');
 					setIsUrlValidated(false);
