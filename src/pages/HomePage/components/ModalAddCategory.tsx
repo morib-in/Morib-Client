@@ -59,7 +59,13 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 	};
 
 	const handleAddTotalUrl = () => {
-		setTotalUrlInfos((prev) => [...prev, ...rightModalUrlInfos]);
+		setTotalUrlInfos((prev) => {
+			const existingUrls = new Set(prev.map((totalUrlInfo) => totalUrlInfo.url));
+
+			const newUrls = rightModalUrlInfos.filter((rightUrlInfo) => existingUrls.has(rightUrlInfo.url) === false);
+
+			return [...prev, ...newUrls];
+		});
 	};
 
 	const handleRightModalUrlInfos = (urlInfo: UrlInfo) => {
