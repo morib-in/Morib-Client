@@ -1,9 +1,11 @@
-import { ButtonHTMLAttributes } from 'react';
+import { ButtonHTMLAttributes, useRef } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
 
 import ButtonCategoryDropdown from '@/shared/components/ButtonCategoryDropdown';
 import ButtonDropdownOptions from '@/shared/components/ButtonDropdownOptions';
+
+import useClickOutside from '@/shared/hooks/useClickOutside';
 
 interface DropdownBtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	optionData: Category[];
@@ -42,6 +44,8 @@ const DropdownCategory = ({
 
 		handleClickButton(!prev);
 	};
+	const dropdownRef = useRef<HTMLUListElement>(null);
+	useClickOutside(dropdownRef, () => handleClickButton(false), isClicked);
 
 	return (
 		<>
@@ -52,7 +56,10 @@ const DropdownCategory = ({
 				selectedOption={selectedOption}
 			/>
 			{isClicked && (
-				<ul className="absolute top-[5.6rem] max-h-[41.4rem] w-[27.2rem] flex-col overflow-scroll rounded-[5px] shadow-[0_3px_30px_0_rgba(0,0,0,0.40)]">
+				<ul
+					ref={dropdownRef}
+					className="absolute top-[5.6rem] max-h-[41.4rem] w-[27.2rem] flex-col overflow-scroll rounded-[5px] shadow-[0_3px_30px_0_rgba(0,0,0,0.40)]"
+				>
 					{optionData?.map((item) => {
 						return (
 							<li
