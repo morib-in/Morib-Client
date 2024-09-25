@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { isUrlValid } from '@/shared/utils/isUrlValid/index';
 
@@ -14,11 +14,21 @@ interface InputCategoryUrlProps {
 	variant?: 'basic' | 'small';
 	onUrlInputChange: (url: string) => void;
 	currentUrlInfos?: UrlInfo[];
+	isUrlValidated: boolean | null;
+	handleUrlValidation: (state: boolean | null) => void;
+	inputUrl: string;
+	handleInputUrl: (url: string) => void;
 }
 
-const InputCategoryUrl = ({ variant = 'basic', onUrlInputChange, currentUrlInfos }: InputCategoryUrlProps) => {
-	const [url, setUrl] = useState('');
-	const [isUrlValidated, setIsUrlValidated] = useState<boolean | null>(null);
+const InputCategoryUrl = ({
+	variant = 'basic',
+	onUrlInputChange,
+	currentUrlInfos,
+	isUrlValidated,
+	handleUrlValidation,
+	inputUrl,
+	handleInputUrl,
+}: InputCategoryUrlProps) => {
 	const [errorMessage, setErrorMessage] = useState<string>('');
 
 	const sizeVariantWidth = {
@@ -29,29 +39,18 @@ const InputCategoryUrl = ({ variant = 'basic', onUrlInputChange, currentUrlInfos
 	const defaultStyle = `subhead-med-18 h-[4.6rem] rounded-[8px] border-[1px] bg-gray-bg-02 px-[2rem] py-[1rem] text-white placeholder-gray-03 focus:outline-none ${sizeVariantWidth[variant]}`;
 	const borderStyle = isUrlValidated === false ? 'border-error-02' : 'border-transparent';
 
-	useEffect(() => {
-		if (isUrlValidated === false) {
-			const timer = setTimeout(() => {
-				setUrl('');
-				setIsUrlValidated(true);
-			}, 3000);
-
-			return () => clearTimeout(timer);
-		}
-	}, [isUrlValidated]);
-
 	const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
 		if (e.key === 'Enter') {
-			const isValid = isUrlValid(url);
-			setIsUrlValidated(isValid);
+			const isValid = isUrlValid(inputUrl);
+			handleUrlValidation(isValid);
 			if (isValid) {
-				const isExist = currentUrlInfos?.some((info) => info.url === url);
+				const isExist = currentUrlInfos?.some((info) => info.url === inputUrl);
 				if (isExist) {
 					setErrorMessage('이미 추가된 주소입니다.');
-					setIsUrlValidated(false);
+					handleUrlValidation(false);
 				} else {
-					onUrlInputChange(url);
-					setUrl('');
+					onUrlInputChange(inputUrl);
+					handleInputUrl('');
 					setErrorMessage('알맞은 도메인을 입력해주세요.');
 				}
 			} else {
@@ -62,8 +61,8 @@ const InputCategoryUrl = ({ variant = 'basic', onUrlInputChange, currentUrlInfos
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const userInput = e.target.value;
-		setUrl(userInput);
-		setIsUrlValidated(null);
+		handleInputUrl(userInput);
+		handleUrlValidation(null);
 		setErrorMessage('');
 	};
 
@@ -74,7 +73,7 @@ const InputCategoryUrl = ({ variant = 'basic', onUrlInputChange, currentUrlInfos
 				placeholder="허용할 웹사이트 주소를 입력해 주세요."
 				className={`${defaultStyle} ${borderStyle}`}
 				onChange={handleChange}
-				value={url}
+				value={inputUrl}
 				onKeyDown={handleKeyDown}
 			/>
 			<div className={`flex h-[3.2rem] ${isUrlValidated === false ? 'visible' : 'invisible'}`}>
