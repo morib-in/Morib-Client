@@ -27,10 +27,13 @@ type CategoryListModalProp = {
 	handleSubmitModal: () => void;
 	rightModalUrlInfos: UrlInfo[];
 	handleRightModalUrlInfos: (url: UrlInfo) => void;
-
+	isUrlValidated: boolean | null;
+	handleUrlValidation: (state: boolean | null) => void;
 	handleDeleteUrlInfo: (url: UrlInfo) => void;
 	moribSetName: string;
 	handleSecondModalClose: () => void;
+	inputUrl: string;
+	handleInputUrl: (url: string) => void;
 };
 
 const AddCategoryListModal = ({
@@ -40,6 +43,10 @@ const AddCategoryListModal = ({
 	handleRightModalUrlInfos,
 	handleDeleteUrlInfo,
 	moribSetName,
+	isUrlValidated,
+	handleUrlValidation,
+	inputUrl,
+	handleInputUrl,
 }: CategoryListModalProp) => {
 	const [isClicked, setIsClicked] = useState(false);
 	const [selectedOption, setSelectedOption] = useState('카테고리 추가');
@@ -82,6 +89,9 @@ const AddCategoryListModal = ({
 	};
 
 	const handleClearModalData = () => {
+		setCategoryId(0);
+		handleUrlValidation(null);
+		handleInputUrl('');
 		setIsClicked(false);
 		setSelectedOption('카테고리 추가');
 	};
@@ -137,6 +147,10 @@ const AddCategoryListModal = ({
 					<TitleMoribSet moribSetName={moribSetName} />
 
 					<InputCategoryUrl
+						inputUrl={inputUrl}
+						handleInputUrl={handleInputUrl}
+						isUrlValidated={isUrlValidated}
+						handleUrlValidation={handleUrlValidation}
 						currentUrlInfos={rightModalUrlInfos}
 						variant="small"
 						onUrlInputChange={(url: string) => handleUrlInputChange(url)}
@@ -161,7 +175,6 @@ const AddCategoryListModal = ({
 							onClick={() => {
 								handleClearModalData();
 								handleSecondModalClose();
-								setCategoryId(0);
 							}}
 						>
 							취소
@@ -171,7 +184,6 @@ const AddCategoryListModal = ({
 							onClick={() => {
 								handleClearModalData();
 								handleSubmitModal();
-								setCategoryId(0);
 							}}
 						>
 							완료

@@ -34,6 +34,8 @@ interface ModalAddCategoryProps {
 const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 	const [totalUrlInfos, setTotalUrlInfos] = useState<UrlInfo[]>([]);
 	const [rightModalUrlInfos, setRightModalUrlInfos] = useState<UrlInfo[]>([]);
+	const [isUrlValidated, setIsUrlValidated] = useState<boolean | null>(null);
+	const [inputUrl, setInputUrl] = useState('');
 
 	const [name, setName] = useState('');
 	const queryClient = useQueryClient();
@@ -56,6 +58,12 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 
 	const handleClearUrlInfos = () => {
 		setRightModalUrlInfos([]);
+	};
+	const handleUrlValidation = (state: boolean | null) => {
+		setIsUrlValidated(state);
+	};
+	const handleInputUrl = (url: string) => {
+		setInputUrl(url);
 	};
 
 	const handleAddTotalUrl = () => {
@@ -86,6 +94,8 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 	const { error: queryError } = useGetTabName('');
 
 	const handleClearData = () => {
+		handleInputUrl('');
+		handleUrlValidation(null);
 		setName('');
 		setRightModalUrlInfos([]);
 		setTotalUrlInfos([]);
@@ -172,6 +182,8 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 	};
 
 	const handlePostDataClick = () => {
+		handleUrlValidation(null);
+		handleInputUrl('');
 		handleClearData();
 		handleCategoryData();
 		handleCloseModal();
@@ -251,6 +263,10 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 						</button>
 						<ModalWrapper ref={dialogRef} backdrop={false}>
 							<AddCategoryListModal
+								inputUrl={inputUrl}
+								handleInputUrl={handleInputUrl}
+								isUrlValidated={isUrlValidated}
+								handleUrlValidation={handleUrlValidation}
 								handleSubmitModal={handleSecondModalSubmit}
 								handleSecondModalClose={handleSecondModalClose}
 								rightModalUrlInfos={rightModalUrlInfos}
@@ -261,6 +277,10 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 						</ModalWrapper>
 					</div>
 					<InputCategoryUrl
+						inputUrl={inputUrl}
+						handleInputUrl={handleInputUrl}
+						isUrlValidated={isUrlValidated}
+						handleUrlValidation={handleUrlValidation}
 						currentUrlInfos={totalUrlInfos}
 						variant="basic"
 						onUrlInputChange={(url: string) => handleUrlInputChange(url)}
@@ -286,7 +306,13 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 				>
 					취소
 				</ButtonCategoryCommon>
-				<ButtonCategoryCommon variant="완료" onClick={handlePostDataClick} disabled={!isFormValid()}>
+				<ButtonCategoryCommon
+					variant="완료"
+					onClick={() => {
+						handlePostDataClick();
+					}}
+					disabled={!isFormValid()}
+				>
 					완료
 				</ButtonCategoryCommon>
 			</div>
