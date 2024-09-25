@@ -30,12 +30,12 @@ type CategoryListModalProp = {
 
 	handleDeleteUrlInfo: (url: UrlInfo) => void;
 	moribSetName: string;
-	handleClose: () => void;
+	handleSecondModalClose: () => void;
 };
 
 const AddCategoryListModal = ({
 	handleSubmitModal,
-	handleClose,
+	handleSecondModalClose,
 	rightModalUrlInfos,
 	handleRightModalUrlInfos,
 	handleDeleteUrlInfo,
@@ -160,7 +160,7 @@ const AddCategoryListModal = ({
 							variant="취소"
 							onClick={() => {
 								handleClearModalData();
-								handleClose();
+								handleSecondModalClose();
 								setCategoryId(0);
 							}}
 						>
