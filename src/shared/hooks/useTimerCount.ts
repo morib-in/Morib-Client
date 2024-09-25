@@ -16,6 +16,10 @@ const useTimerCount = ({ isPlaying, previousTime }: UseTimerCountProps): UseTime
 	const timerIntervalId = useRef<ReturnType<typeof setInterval> | null>(null);
 
 	useEffect(() => {
+		setIncreasedTime(0);
+	}, [previousTime]);
+
+	useEffect(() => {
 		if (isPlaying) {
 			if (timerIntervalId.current === null) {
 				timerIntervalId.current = setInterval(() => {
@@ -42,7 +46,7 @@ const useTimerCount = ({ isPlaying, previousTime }: UseTimerCountProps): UseTime
 		setIncreasedTime(0);
 	};
 
-	const timer = isPlaying ? previousTime + increasedTime : previousTime;
+	const timer = previousTime + increasedTime;
 
 	return { timer, increasedTime, resetIncreasedTime };
 };
