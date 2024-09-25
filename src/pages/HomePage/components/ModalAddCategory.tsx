@@ -1,6 +1,5 @@
 import React, { useRef, useState } from 'react';
 
-
 import { useQueryClient } from '@tanstack/react-query';
 
 import AddCategoryListModal from '@/shared/components/AddCategoryListModal';
@@ -161,15 +160,9 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 		showModal();
 	};
 
-	const handleClose = () => {
+	const handleSecondModalClose = () => {
 		handleClearData();
 		dialogRef.current?.close();
-
-	};
-
-	const handleCategoryModalClose = () => {
-		handleClearData();
-		handleCloseModal();
 	};
 
 	const handlePostDataClick = () => {
@@ -182,7 +175,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 		}
 	};
 
-	const handleMsetSubmit = () => {
+	const handleSecondModalSubmit = () => {
 		handleAddTotalUrl();
 		closeModal();
 	};
@@ -252,8 +245,8 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 						</button>
 						<ModalWrapper ref={dialogRef} backdrop={false}>
 							<AddCategoryListModal
-								handleSubmitModal={handleMsetSubmit}
-								handleClose={handleClose}
+								handleSubmitModal={handleSecondModalSubmit}
+								handleSecondModalClose={handleSecondModalClose}
 								rightModalUrlInfos={rightModalUrlInfos}
 								handleRightModalUrlInfos={handleRightModalUrlInfos}
 								handleDeleteUrlInfo={(url: UrlInfo) => handleDeleteUrlInfo(url)}
@@ -278,7 +271,13 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 			</main>
 
 			<div className="mt-[3rem] flex justify-end gap-[1.6rem]">
-				<ButtonCategoryCommon variant="취소" onClick={handleCategoryModalClose}>
+				<ButtonCategoryCommon
+					variant="취소"
+					onClick={() => {
+						handleClearData();
+						handleCloseModal();
+					}}
+				>
 					취소
 				</ButtonCategoryCommon>
 				<ButtonCategoryCommon variant="완료" onClick={handlePostDataClick} disabled={!isFormValid()}>
