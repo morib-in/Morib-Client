@@ -177,7 +177,6 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 	};
 
 	const handleSecondModalClose = () => {
-		handleClearData();
 		dialogRef.current?.close();
 	};
 
