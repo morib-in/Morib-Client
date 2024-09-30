@@ -34,7 +34,8 @@ interface ModalAddCategoryProps {
 const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 	const [totalUrlInfos, setTotalUrlInfos] = useState<UrlInfo[]>([]);
 	const [rightModalUrlInfos, setRightModalUrlInfos] = useState<UrlInfo[]>([]);
-	const [isUrlValidated, setIsUrlValidated] = useState<boolean | null>(null);
+	const [isFirstUrlValidated, setIsFirstUrlValidated] = useState<boolean | null>(null);
+	const [isSecondUrlValidated, setIsSecondUrlValidated] = useState<boolean | null>(null);
 	const [inputUrl, setInputUrl] = useState('');
 
 	const [name, setName] = useState('');
@@ -60,7 +61,8 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 		setRightModalUrlInfos([]);
 	};
 	const handleUrlValidation = (state: boolean | null) => {
-		setIsUrlValidated(state);
+		setIsFirstUrlValidated(state);
+		setIsSecondUrlValidated(state);
 	};
 	const handleInputUrl = (url: string) => {
 		setInputUrl(url);
@@ -264,7 +266,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 							<AddCategoryListModal
 								inputUrl={inputUrl}
 								handleInputUrl={handleInputUrl}
-								isUrlValidated={isUrlValidated}
+								isUrlValidated={isSecondUrlValidated}
 								handleUrlValidation={handleUrlValidation}
 								handleSubmitModal={handleSecondModalSubmit}
 								handleSecondModalClose={handleSecondModalClose}
@@ -278,7 +280,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 					<InputCategoryUrl
 						inputUrl={inputUrl}
 						handleInputUrl={handleInputUrl}
-						isUrlValidated={isUrlValidated}
+						isUrlValidated={isFirstUrlValidated}
 						handleUrlValidation={handleUrlValidation}
 						currentUrlInfos={totalUrlInfos}
 						variant="basic"
