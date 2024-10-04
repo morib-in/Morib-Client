@@ -59,7 +59,7 @@ const TimerPage = () => {
 
 	useEffect(() => {
 		setTargetTime(selectedTodoData?.targetTime || 0);
-	}, [selectedTodoData]);
+	}, [selectedTodoData?.targetTime]);
 
 	const { data: setData } = useGetMoribSet(selectedTodo || 0);
 	const urls = useMemo(() => setData?.data.map(({ url }: MoribSetData) => url.trim()) || [], [setData]);
