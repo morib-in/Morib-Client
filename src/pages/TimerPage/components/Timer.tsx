@@ -19,6 +19,7 @@ interface TaskTotalTimeProps {
 	resetTimerIncreasedTime: () => void;
 	accumulatedTime: number;
 	resetAccumulatedIncreasedTime: () => void;
+	updateTargetTime: (newTime: number) => void;
 }
 
 const Timer = ({
@@ -31,6 +32,7 @@ const Timer = ({
 	resetTimerIncreasedTime,
 	accumulatedTime,
 	resetAccumulatedIncreasedTime,
+	updateTargetTime,
 }: TaskTotalTimeProps) => {
 	const queryClient = useQueryClient();
 
@@ -39,6 +41,8 @@ const Timer = ({
 	const handlePlayPauseToggle = () => {
 		if (selectedTodo !== null) {
 			if (isPlaying) {
+				updateTargetTime(timerTime);
+
 				mutate(
 					{ id: selectedTodo, elapsedTime: timerIncreasedTime, targetDate: formattedTodayDate },
 					{

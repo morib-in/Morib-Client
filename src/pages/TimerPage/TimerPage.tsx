@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { useSelectedTodo } from '@/shared/hooks/useSelectedTodo';
 import useTimerCount from '@/shared/hooks/useTimerCount';
@@ -35,7 +35,7 @@ interface MoribSetData {
 interface Todo {
 	id: number;
 	name: string;
-	targetTime: string;
+	targetTime: number;
 	categoryName: string;
 }
 
@@ -50,7 +50,16 @@ const TimerPage = () => {
 	const { ongoingTodos, completedTodos } = splitTasksByCompletion(todos);
 
 	const [selectedTodo, setSelectedTodo] = useSelectedTodo(todos);
+
+	const [targetTime, setTargetTime] = useState(0);
+
 	const [isPlaying, setIsPlaying] = useState(false);
+
+	const selectedTodoData = todos.find((todo: Todo) => todo.id === selectedTodo);
+
+	useEffect(() => {
+		setTargetTime(selectedTodoData?.targetTime || 0);
+	}, [selectedTodoData?.targetTime]);
 
 	const { data: setData } = useGetMoribSet(selectedTodo || 0);
 	const urls = useMemo(() => setData?.data.map(({ url }: MoribSetData) => url.trim()) || [], [setData]);
@@ -59,11 +68,6 @@ const TimerPage = () => {
 		const mappedUrls = urls.map(getBaseUrl);
 		return [...mappedUrls, DEFAULT_URL];
 	}, [urls]);
-
-	const selectedTodoData = todos.find((todo: Todo) => todo.id === selectedTodo);
-	const targetTime = selectedTodoData?.targetTime || '';
-	const targetTodoTitle = selectedTodoData?.name || '';
-	const targetCategoryTitle = selectedTodoData?.categoryName || '';
 
 	const {
 		timer: timerTime,
@@ -95,6 +99,10 @@ const TimerPage = () => {
 		setIsPlaying(isPlaying);
 	};
 
+	const updateTargetTime = (newTime: number) => {
+		setTargetTime(newTime);
+	};
+
 	if (isLoading || error) {
 		return <div>{isLoading ? 'Loading...' : 'Error...'}</div>;
 	}
@@ -107,8 +115,8 @@ const TimerPage = () => {
 				</div>
 				<div className="ml-[56.6rem] mt-[-0.8rem]">
 					<header className="mt-[8.6rem] flex flex-col items-center gap-[1rem]">
-						<h1 className="title-semibold-64 text-white">{targetTodoTitle}</h1>
-						<h2 className="title-med-32 text-gray-04">{targetCategoryTitle}</h2>
+						<h1 className="title-semibold-64 text-white">{selectedTodoData?.name || ''}</h1>
+						<h2 className="title-med-32 text-gray-04">{selectedTodoData?.categoryName || ''}</h2>
 					</header>
 					<Timer
 						selectedTodo={selectedTodo}
@@ -120,6 +128,7 @@ const TimerPage = () => {
 						resetTimerIncreasedTime={resetTimerIncreasedTime}
 						accumulatedTime={accumulatedTime}
 						resetAccumulatedIncreasedTime={resetAccumulatedIncreasedTime}
+						updateTargetTime={updateTargetTime}
 					/>
 					<Carousel />
 				</div>
@@ -130,7 +139,7 @@ const TimerPage = () => {
 					<HamburgerIcon />
 				</button>
 				{isSidebarOpen && (
-					<div className={` ${isSidebarOpen ? 'absolute inset-0 z-10 bg-dim' : ''}`}>
+					<div className={`${isSidebarOpen ? 'absolute inset-0 z-10 bg-dim' : ''}`}>
 						<div className="absolute inset-y-0 right-0 flex justify-end overflow-hidden">
 							<SideBarTimer
 								targetTime={targetTime}
