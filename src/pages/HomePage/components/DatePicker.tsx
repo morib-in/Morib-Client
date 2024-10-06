@@ -1,10 +1,8 @@
 import { Dayjs } from 'dayjs';
 
-import { useRef } from 'react';
-
 import ButtonDropdownOptions from '@/shared/components/ButtonDropdownOptions';
+import Dropdown from '@/shared/components/Dropdown';
 
-import useClickOutside from '@/shared/hooks/useClickOutside';
 import { useDatePicker } from '@/shared/hooks/useDatePicker';
 
 import { getHomeDropdownData } from '@/shared/utils/date';
@@ -26,22 +24,10 @@ interface DatePickerProps {
 }
 
 const DatePicker = ({ todayDate, selectedDate, onSelectedDateChange }: DatePickerProps) => {
-	const {
-		currentDate,
-		weekDates,
-		dropdownToggle,
-		handleNextWeek,
-		handlePreviousWeek,
-		handleToday,
-		handleYearMonthClick,
-		handleDropdownToggle,
-		handleDropdownClose,
-	} = useDatePicker(todayDate);
+	const { currentDate, weekDates, handleNextWeek, handlePreviousWeek, handleToday, handleYearMonthClick } =
+		useDatePicker(todayDate);
 
 	const homeDropdownData = getHomeDropdownData(todayDate);
-	const dropdownRef = useRef<HTMLUListElement>(null);
-
-	useClickOutside(dropdownRef, handleDropdownClose);
 
 	const handleClickTodayBtn = () => {
 		handleToday();
@@ -50,18 +36,21 @@ const DatePicker = ({ todayDate, selectedDate, onSelectedDateChange }: DatePicke
 
 	return (
 		<header className="mb-[2.8rem]">
-			<section ref={dropdownRef} className="relative">
-				<button type="button" className="flex items-center gap-[2rem]" onClick={handleDropdownToggle}>
-					<h1 className="title-bold-32 text-white">{currentDate.format('YYYY년 MM월')}</h1>;
-					<ButtonArrowIcon className={'rounded-full bg-gray-bg-03 hover:bg-gray-bg-05'} />
-				</button>
-				{dropdownToggle && (
-					<ul className="absolute top-[5.4rem] z-50 max-h-[41.4rem] w-[22.5rem] flex-col overflow-scroll rounded-[5px] shadow-[0_3px_30px_0_rgba(0,0,0,0.40)]">
+			<section className="relative">
+				<Dropdown.Root>
+					<Dropdown.Trigger>
+						<div className="mb-[0.6rem] flex items-center gap-[2rem]">
+							<h1 className="title-bold-32 text-white">{currentDate.format('YYYY년 MM월')}</h1>;
+							<ButtonArrowIcon className={'rounded-full bg-gray-bg-03 hover:bg-gray-bg-05'} />
+						</div>
+					</Dropdown.Trigger>
+
+					<Dropdown.Content maxHeight="max-h-[41.4rem]" boxShadow="shadow-[0_4px_4.8px_0_rgba(0,0,0,0.25)]">
 						{homeDropdownData.map((item) => {
 							return (
 								<li
 									key={item.format('YYYY년 MM월')}
-									className="flex h-[4.6rem] w-full flex-row items-center justify-center border-none bg-mint-01"
+									className="flex h-[4.6rem] w-[22.5rem] flex-row items-center justify-center border-none bg-mint-01"
 								>
 									<ButtonDropdownOptions onClick={() => handleYearMonthClick(item)}>
 										{item.format('YYYY년 MM월')}
@@ -69,8 +58,8 @@ const DatePicker = ({ todayDate, selectedDate, onSelectedDateChange }: DatePicke
 								</li>
 							);
 						})}
-					</ul>
-				)}
+					</Dropdown.Content>
+				</Dropdown.Root>
 			</section>
 
 			<div className="flex items-center gap-[4.7rem]">
