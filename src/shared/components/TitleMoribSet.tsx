@@ -7,7 +7,7 @@ const TitleMoribSet = ({ moribSetName }: TitleMoribSetProp) => {
 					moribSetName
 				) : (
 					<>
-						<h2 className="pr-[1rem]" /> _______ <span className="pr-[0.5rem]" />
+						<span className="pr-[1rem]" /> _______ <span className="pr-[0.5rem]" />
 					</>
 				)}
 			</h2>
