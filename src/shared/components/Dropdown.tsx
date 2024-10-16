@@ -73,7 +73,10 @@ const DropdownContent = ({ children, maxHeight, boxShadow }: DropdownContentProp
 	const shadowStyle = boxShadow ? boxShadow : 'shadow-[0_3px_30px_0_rgba(0,0,0,0.4)]';
 
 	return (
-		<ul onClick={handleToggleClose} className={`absolute overflow-scroll rounded-[4px] ${shadowStyle} ${maxHeight}`}>
+		<ul
+			onClick={handleToggleClose}
+			className={`absolute z-50 overflow-scroll rounded-[4px] ${shadowStyle} ${maxHeight}`}
+		>
 			{open && children}
 		</ul>
 	);
