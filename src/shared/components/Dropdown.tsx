@@ -8,16 +8,16 @@ interface DropdownContextProps {
 	handleToggleClose: () => void;
 }
 
-const DropdownContext = createContext({});
+const DropdownContext = createContext<DropdownContextProps | null>(null);
 
 // useDropdownContext: Select 컴포넌트 외부에서 서브 컴포넌트들이 사용됐을 때 에러 처리
-function useDropdownContext() {
+const useDropdownContext = () => {
 	const context = useContext(DropdownContext);
-	if (Object.keys(context).length === 0) {
+	if (!context) {
 		throw new Error('Select 컴포넌트는 Select.Root 내에서 사용되어야 합니다.');
 	}
-	return context as DropdownContextProps;
-}
+	return context;
+};
 
 // Dropdown root 컴포넌트
 interface DropdownRootProps {
@@ -85,13 +85,12 @@ interface DropdownItemProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	textColor?: 'default' | 'red';
 }
 
-const DropdownItem = ({ label, textColor = 'default', onClick, ...props }: DropdownItemProps) => {
+const DropdownItem = ({ label, textColor = 'default', ...props }: DropdownItemProps) => {
 	const textStyle = textColor === 'red' ? 'text-error-01' : 'text-white';
 
 	return (
 		<li className="border-t border-t-gray-bg-04 first:border-none">
 			<button
-				onClick={onClick}
 				{...props}
 				className={`flex bg-gray-bg-02 px-[1.6rem] py-[0.4rem] hover:bg-gray-bg-03 active:bg-gray-bg-04`}
 			>
