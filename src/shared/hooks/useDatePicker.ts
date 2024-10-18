@@ -6,7 +6,6 @@ import { getWeekDates } from '@/shared/utils/date';
 
 export const useDatePicker = (todayDate: Dayjs) => {
 	const [currentDate, setCurrentDate] = useState(todayDate);
-	const [dropdownToggle, setDropdownToggle] = useState(false);
 
 	const weekDates = getWeekDates(currentDate);
 
@@ -24,34 +23,21 @@ export const useDatePicker = (todayDate: Dayjs) => {
 		setCurrentDate(todayDate);
 	};
 
-	const handleDropdownToggle = () => {
-		setDropdownToggle((prevToggle) => !prevToggle);
-	};
-
 	const handleYearMonthClick = (yearMonthDate: Dayjs) => {
 		if (yearMonthDate.isSame(todayDate, 'month')) {
 			setCurrentDate(todayDate);
 		} else {
 			setCurrentDate(yearMonthDate);
 		}
-
-		handleDropdownToggle();
-	};
-
-	const handleDropdownClose = () => {
-		setDropdownToggle(false);
 	};
 
 	return {
 		todayDate,
 		currentDate,
 		weekDates,
-		dropdownToggle,
 		handleNextWeek,
 		handlePreviousWeek,
 		handleToday,
 		handleYearMonthClick,
-		handleDropdownToggle,
-		handleDropdownClose,
 	};
 };
