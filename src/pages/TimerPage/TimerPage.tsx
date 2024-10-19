@@ -109,7 +109,7 @@ const TimerPage = () => {
 
 	return (
 		<TimerPageTemplates>
-			<div className="relative flex h-[108rem] w-[192rem] bg-[url('@/shared/assets/images/img_timer_bg.png')]">
+			<div className="relative flex h-[108rem] w-[192rem] bg-[url('@/shared/assets/images/img_timer_bg.webp')]">
 				<div className="absolute left-0">
 					<SideBoxTemporary />
 				</div>

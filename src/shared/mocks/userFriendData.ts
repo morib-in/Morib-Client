@@ -1,7 +1,7 @@
-import img1 from '@/shared/assets/images/profile_image1.png';
-import img2 from '@/shared/assets/images/profile_image2.png';
-import img3 from '@/shared/assets/images/profile_image3.png';
-import img4 from '@/shared/assets/images/profile_image4.png';
+import img1 from '@/shared/assets/images/profile_image1.webp';
+import img2 from '@/shared/assets/images/profile_image2.webp';
+import img3 from '@/shared/assets/images/profile_image3.webp';
+import img4 from '@/shared/assets/images/profile_image4.webp';
 
 export const userFriendData = [
 	{
