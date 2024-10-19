@@ -1,9 +1,1 @@
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			width="22"
-			height="22"
-			viewBox="0 0 12 12"
-			fill="none"
-		>
-			<circle cx="6" cy="6" r="6" fill="#00F2C6" />
-		</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 12 12"><circle cx="6" cy="6" r="6" fill="#00F2C6"/></svg>
