@@ -12,7 +12,6 @@ import InputCategoryUrl from '@/shared/components/InputCategoryUrl';
 import ModalWrapper, { ModalWrapperRef } from '@/shared/components/ModalWrapper';
 
 import { useCalendar } from '@/shared/hooks/useCalendar';
-import { usePreloadCalendar } from '@/shared/hooks/usePreloadCalendar';
 
 import { getTabName } from '@/shared/apis/tasks/axios/index';
 import { useGetTabName, usePostCategory } from '@/shared/apis/tasks/queries/index';
@@ -60,7 +59,11 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 	} = useCalendar();
 	const dialogRef = useRef<ModalWrapperRef>(null);
 
-	const { preloadCalendarComponent } = usePreloadCalendar();
+	const handleMouseEnter = () => {
+		import('@/shared/components/Calendar').catch((error) => {
+			console.error('캘린더를 받아오는데 오류가 발생했습니다.', error);
+		});
+	};
 
 	const handleClearUrlInfos = () => {
 		setRightModalUrlInfos([]);
@@ -225,7 +228,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 				<div>
 					<div className="mt-[1rem] flex items-center gap-[1rem]">
 						<h2 className="subhead-bold-22 pb-[1rem] text-white">날짜</h2>
-						<div className="mb-[0.6rem]" onMouseEnter={preloadCalendarComponent}>
+						<div className="mb-[0.6rem]" onMouseEnter={handleMouseEnter}>
 							<ButtonStatusToggle isToggleOn={isDateToggleOn} onToggle={handleDateToggle} />
 						</div>
 					</div>
