@@ -107,11 +107,13 @@ const TimerPage = () => {
 		return <div>{isLoading ? 'Loading...' : 'Error...'}</div>;
 	}
 
+	const cdnUrl = import.meta.env.VITE_IMAGE_CDN_URL;
+
 	return (
 		<TimerPageTemplates>
 			<div
 				className="relative flex h-[108rem] w-[192rem]"
-				style={{ backgroundImage: 'url(https://morib-413807115.imgix.net/img_timer_bg.webp)' }}
+				style={{ backgroundImage: `url(${cdnUrl}img_timer_bg.webp)` }}
 			>
 				<div className="absolute left-0">
 					<SideBoxTemporary />

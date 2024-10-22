@@ -1,7 +1,8 @@
-import PauseIcon from '@/shared/assets/svgs/defaultpause.svg?react';
-import PlayIcon from '@/shared/assets/svgs/defaultplay.svg?react';
-import HoverPauseIcon from '@/shared/assets/svgs/hoverpause.svg?react';
-import HoverPlayIcon from '@/shared/assets/svgs/hoverplay.svg?react';
+const cdnUrl = import.meta.env.VITE_IMAGE_CDN_URL;
+const HoverPauseIcon = `${cdnUrl}hoverpause.svg`;
+const HoverPlayIcon = `${cdnUrl}hoverplay.svg`;
+const PauseIcon = `${cdnUrl}defaultpause.svg`;
+const PlayIcon = `${cdnUrl}defaultplay.svg`;
 
 interface ButtonTimerPlayProps {
 	onClick: () => void;
@@ -14,8 +15,8 @@ const ButtonTimerPlay = ({ onClick, isPlaying }: ButtonTimerPlayProps) => {
 
 	return (
 		<button onClick={onClick} className="group relative">
-			<IconComponent className="block group-hover:hidden" />
-			<HoverIconComponent className="hidden group-hover:block" />
+			<img src={IconComponent} className="block group-hover:hidden" />
+			<img src={HoverIconComponent} className="hidden group-hover:block" />
 		</button>
 	);
 };
