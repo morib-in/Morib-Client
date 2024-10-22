@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "optimize-svg": "svgo -f src/shared/assets/svgs -o src/shared/assets/svgs",
-    "build": "pnpm run optimize-svg && tsc -b && vite build",
+    "build": "tsc -b && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
