@@ -2,8 +2,6 @@ import { useQueryClient } from '@tanstack/react-query';
 
 import { usePostTimerStop } from '@/shared/apis/timer/queries';
 
-import InnerCircleIcon from '@/shared/assets/svgs/elipse.svg?react';
-
 import AccumulatedTime from '@/pages/TimerPage/components/AccumulatedTime';
 import ButtonTimerPlay from '@/pages/TimerPage/components/ButtonTimerPlay';
 import ProgressCircle from '@/pages/TimerPage/components/ProgressCircle';
@@ -67,7 +65,7 @@ const Timer = ({
 	return (
 		<div className="mt-[8.2rem] flex items-center justify-center">
 			<ProgressCircle isPlaying={isPlaying} timer={timerTime} />
-			<InnerCircleIcon className="absolute" />
+			<img src={`${import.meta.env.VITE_IMAGE_CDN_URL}elipse.svg`} className="absolute" />
 			<div className="absolute flex h-[22rem] w-[27.1rem] flex-col items-center justify-center">
 				<div className="flex flex-col items-center justify-center">
 					<AccumulatedTime accumulatedTime={accumulatedTime} />

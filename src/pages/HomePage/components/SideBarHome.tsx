@@ -1,8 +1,7 @@
+import GearIcon from '@/shared/assets/svgs/gear.svg?react';
+
 import HomeSideBox from '@/components/atoms/HomeSideBox';
 import SpaceLogoBtn from '@/components/atoms/SpaceLogoBtn';
-
-import GearIcon from '@/shared/assets/svgs/gear.svg?react';
-import LogoIcon from '@/shared/assets/svgs/logo_icon.svg?react';
 
 import ButtonSVG from '../../../shared/components/ButtonSVG';
 
@@ -11,7 +10,7 @@ const SideBarHome = () => {
 		<HomeSideBox>
 			<div>
 				<SpaceLogoBtn>
-					<LogoIcon />
+					<img src={`${import.meta.env.VITE_IMAGE_CDN_URL}logo_icon.svg`} alt="로고 아이콘" />
 				</SpaceLogoBtn>
 			</div>
 			<div>
