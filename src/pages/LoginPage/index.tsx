@@ -26,6 +26,12 @@ const LoginPage = () => {
 		window.location.href = API_URL;
 	};
 
+	const handleMouseEnter = () => {
+		import('@/pages/HomePage/HomePage').catch((error) => {
+			console.error('홈페이지를 받아오는데 오류가 발생했습니다.', error);
+		});
+	};
+
 	return (
 		<LoginPageWrapper>
 			<div className="h-[37rem] w-[60rem]">
@@ -44,6 +50,7 @@ const LoginPage = () => {
 				/>
 				{/* Todo: 추후 로그인 로직 추가 */}
 				<ButtonSVG
+					onMouseEnter={handleMouseEnter}
 					onClick={handleClick}
 					className={`ml-[12rem] transition-opacity duration-300 ${isAnimationComplete ? 'opacity-100' : 'opacity-0'}`}
 				>
