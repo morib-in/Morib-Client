@@ -1,11 +1,10 @@
-import React, { useRef, useState } from 'react';
+import React, { Suspense, lazy, useRef, useState } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
 
 import AddCategoryListModal from '@/shared/components/AddCategoryListModal';
 import ButtonCategoryCommon from '@/shared/components/ButtonCategoryCommon';
 import ButtonStatusToggle from '@/shared/components/ButtonStatusToggle';
-import Calendar from '@/shared/components/Calendar';
 import CalendarSelectedDate from '@/shared/components/CalendarSelectedDate';
 import CategoryCommonMoribSet from '@/shared/components/CategoryCommonMoribSet';
 import CategoryMsetUrlInfo from '@/shared/components/CategoryMsetUrlInfo';
@@ -20,6 +19,8 @@ import { useGetTabName, usePostCategory } from '@/shared/apis/tasks/queries/inde
 import { formatCalendarApiDate } from '@/shared/utils/calendar/index';
 
 import ArrowCircleUpRight from '@/shared/assets/svgs/arrow_circle_up_right.svg?react';
+
+const Calendar = lazy(() => import('@/shared/components/Calendar'));
 
 interface UrlInfo {
 	url: string;
@@ -36,6 +37,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 	const [rightModalUrlInfos, setRightModalUrlInfos] = useState<UrlInfo[]>([]);
 	const [isFirstUrlValidated, setIsFirstUrlValidated] = useState<boolean | null>(null);
 	const [isSecondUrlValidated, setIsSecondUrlValidated] = useState<boolean | null>(null);
+
 	const [inputUrl, setInputUrl] = useState('');
 
 	const [name, setName] = useState('');
@@ -56,6 +58,12 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 		handleClearDateInfo,
 	} = useCalendar();
 	const dialogRef = useRef<ModalWrapperRef>(null);
+
+	const handleMouseEnter = () => {
+		import('@/shared/components/Calendar').catch((error) => {
+			console.error('캘린더를 받아오는데 오류가 발생했습니다.', error);
+		});
+	};
 
 	const handleClearUrlInfos = () => {
 		setRightModalUrlInfos([]);
@@ -220,7 +228,7 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 				<div>
 					<div className="mt-[1rem] flex items-center gap-[1rem]">
 						<h2 className="subhead-bold-22 pb-[1rem] text-white">날짜</h2>
-						<div className="mb-[0.6rem]">
+						<div className="mb-[0.6rem]" onMouseEnter={handleMouseEnter}>
 							<ButtonStatusToggle isToggleOn={isDateToggleOn} onToggle={handleDateToggle} />
 						</div>
 					</div>
@@ -234,18 +242,20 @@ const ModalAddCategory = ({ handleCloseModal }: ModalAddCategoryProps) => {
 						/>
 					)}
 					{isDateToggleOn && (
-						<div>
-							<Calendar
-								isPeriodOn={isPeriodOn}
-								selectedStartDate={selectedStartDate ?? defaultDate}
-								selectedEndDate={selectedEndDate ?? null}
-								onStartDateInput={handleStartDateInput}
-								onEndDateInput={handleEndDateInput}
-								isCalendarOpened={isCalendarOpened}
-								onPeriodToggle={handlePeriodToggle}
-								clickOutSideCallback={handleCalendarToggle}
-							/>
-						</div>
+						<Suspense fallback={<div>Loading...</div>}>
+							<div>
+								<Calendar
+									isPeriodOn={isPeriodOn}
+									selectedStartDate={selectedStartDate ?? defaultDate}
+									selectedEndDate={selectedEndDate ?? null}
+									onStartDateInput={handleStartDateInput}
+									onEndDateInput={handleEndDateInput}
+									isCalendarOpened={isCalendarOpened}
+									onPeriodToggle={handlePeriodToggle}
+									clickOutSideCallback={handleCalendarToggle}
+								/>
+							</div>
+						</Suspense>
 					)}
 				</div>
 			</section>

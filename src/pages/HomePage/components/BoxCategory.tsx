@@ -1,9 +1,8 @@
 import { Dayjs } from 'dayjs';
 
-import { useRef } from 'react';
+import { Suspense, lazy, useRef } from 'react';
 
 import ButtonSVG from '@/shared/components/ButtonSVG';
-import Calendar from '@/shared/components/Calendar';
 
 import { useCalendar } from '@/shared/hooks/useCalendar';
 import useClickOutside from '@/shared/hooks/useClickOutside';
@@ -21,6 +20,8 @@ import BoxTodo from './BoxTodo';
 import BoxTodoInput from './BoxTodoInput';
 import ButtonTodoToggle from './ButtonTodoToggle';
 import StatusDefaultBoxCategory from './StatusDefaultBoxCategory';
+
+const Calendar = lazy(() => import('@/shared/components/Calendar'));
 
 interface BoxCategoryProps {
 	id: number;
@@ -68,7 +69,6 @@ const BoxCategory = ({
 	} = useCreateTodo();
 
 	const todoRef = useRef<HTMLDivElement>(null);
-
 	useClickOutside(todoRef, cancelAddingTodo, isAdding && editable);
 
 	const {
@@ -107,12 +107,22 @@ const BoxCategory = ({
 		console.error(error);
 	}
 
+	const handleMouseEnter = () => {
+		import('@/shared/components/Calendar').catch((error) => {
+			console.error('캘린더를 받아오는데 오류가 발생했습니다.', error);
+		});
+	};
+
 	return (
 		<div className="flex h-[73.2rem] w-[40.2rem] flex-shrink-0 flex-col rounded-[16px] bg-gray-bg-03 px-[1.8rem] pt-[1.8rem]">
 			<div className="mt-[0.4rem] flex items-center justify-between">
 				<h2 className="head-bold-24 text-white">{title}</h2>
 				<div className="flex gap-[0.1rem]">
-					<ButtonSVG onClick={startAddingTodo} className="rounded-full hover:bg-gray-bg-04 active:bg-gray-bg-05">
+					<ButtonSVG
+						onMouseEnter={handleMouseEnter}
+						onClick={startAddingTodo}
+						className="rounded-full hover:bg-gray-bg-04 active:bg-gray-bg-05"
+					>
 						<ButtonAddIcon />
 					</ButtonSVG>
 					<ButtonSVG onClick={() => onDeleteCategory(id)}>
@@ -120,6 +130,7 @@ const BoxCategory = ({
 					</ButtonSVG>
 				</div>
 			</div>
+
 			{ongoingTodos.length === 0 && completedTodos.length === 0 && isAdding === false ? (
 				<StatusDefaultBoxCategory />
 			) : (
@@ -139,18 +150,20 @@ const BoxCategory = ({
 									/>
 
 									{!editable && (
-										<div className="absolute left-[7.25rem] top-[9.5rem]">
-											<Calendar
-												isPeriodOn={isPeriodOn}
-												selectedStartDate={selectedStartDate ?? defaultDate}
-												selectedEndDate={selectedEndDate ?? null}
-												onStartDateInput={handleStartDateInput}
-												onEndDateInput={handleEndDateInput}
-												isCalendarOpened={isCalendarOpened}
-												onPeriodToggle={handlePeriodToggle}
-												clickOutSideCallback={handleCreatePost}
-											/>
-										</div>
+										<Suspense fallback={<div>Loading...</div>}>
+											<div className="absolute left-[7.25rem] top-[9.5rem]">
+												<Calendar
+													isPeriodOn={isPeriodOn}
+													selectedStartDate={selectedStartDate ?? defaultDate}
+													selectedEndDate={selectedEndDate ?? null}
+													onStartDateInput={handleStartDateInput}
+													onEndDateInput={handleEndDateInput}
+													isCalendarOpened={isCalendarOpened}
+													onPeriodToggle={handlePeriodToggle}
+													clickOutSideCallback={handleCreatePost}
+												/>
+											</div>
+										</Suspense>
 									)}
 								</>
 							)}
