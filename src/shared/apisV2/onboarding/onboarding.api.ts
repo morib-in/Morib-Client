@@ -7,11 +7,17 @@ export const ONBOARDING_URL = {
 };
 
 export const postInterestArea = async ({
-	serviceList,
+	name,
+	colorCode,
+	allowedSites,
 	interestArea,
 }: PostInterestAreaReq): Promise<PostInterestAreaRes> => {
-	const { data } = await authClient.post(ONBOARDING_URL.POST_INTEREST_AREA, serviceList, {
-		params: { interestArea },
-	});
+	const { data } = await authClient.post(
+		ONBOARDING_URL.POST_INTEREST_AREA,
+		{ name, colorCode, allowedSites },
+		{
+			params: { interestArea },
+		},
+	);
 	return data;
 };
