@@ -1,12 +1,15 @@
-export interface GetUrlNameReq {
-	url: string;
+export interface GetUrlInfoReq {
+	siteUrl: string;
 }
 
-export interface GetUrlNameRes {
+export interface GetUrlInfoRes {
 	status: number;
 	message: string;
 	data: {
-		tabName: string;
+		favicon: string;
+		siteName: string;
+		pageName: string;
+		siteUrl: string;
 	};
 }
 

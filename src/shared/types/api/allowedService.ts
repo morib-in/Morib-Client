@@ -35,6 +35,8 @@ export interface GetAllowedServiceGroupDetailRes {
 		colorCode: ColorPaletteType;
 		allowedSites: {
 			id: number;
+			favicon: string;
+			pageName: string;
 			siteName: string;
 			siteUrl: string;
 		}[];

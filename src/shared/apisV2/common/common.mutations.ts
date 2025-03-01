@@ -2,17 +2,18 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { AxiosError } from 'axios';
 
-import { GetUrlNameReq, GetUrlNameRes } from '@/shared/types/api/common';
+import { GetUrlInfoReq, GetUrlInfoRes } from '@/shared/types/api/common';
+import { ApiErrorResponseType } from '@/shared/types/api/error';
 
 import { homeKeys } from '../home/home.keys';
 import { timerKeys } from '../timer/timer.keys';
-import { getUrlName, postToggleTaskStatus } from './common.api';
+import { getUrlInfo, postToggleTaskStatus } from './common.api';
 
-export const useGetUrlName = () => {
-	return useMutation<GetUrlNameRes, AxiosError, GetUrlNameReq>({
-		mutationFn: getUrlName,
+export const useGetUrlInfo = () => {
+	return useMutation<GetUrlInfoRes, ApiErrorResponseType, GetUrlInfoReq>({
+		mutationFn: getUrlInfo,
 		onSuccess: (response) => {
-			return response.data.tabName;
+			return response.data;
 		},
 	});
 };

@@ -1,9 +1,13 @@
+import { useNavigate } from 'react-router-dom';
+
 import HomeLargeBtn from '@/shared/components/ButtonHomeLarge/ButtonHomeLarge';
 
 import type { FieldType } from '@/shared/types/fileds';
 import { HomeLargeBtnVariant } from '@/shared/types/global';
 
 import { FIELDS } from '@/shared/constants/fields';
+
+import { ROUTES_CONFIG } from '@/router/routesConfig';
 
 interface StepFieldProps {
 	setStep: (step: string) => void;
@@ -12,6 +16,12 @@ interface StepFieldProps {
 }
 
 const StepField = ({ setStep, onSelectField, selectedField }: StepFieldProps) => {
+	const navigate = useNavigate();
+
+	const handleNavigateToHome = () => {
+		navigate(ROUTES_CONFIG.home.path);
+	};
+
 	return (
 		<main className="flex min-h-screen w-full flex-col items-center overflow-auto pb-[18.2rem] pt-[18rem] 2xl:pb-0">
 			<h1 className="mb-[2rem] text-center text-white title-bold-36">주로 어떤 분야에 집중하시나요?</h1>
@@ -43,7 +53,9 @@ const StepField = ({ setStep, onSelectField, selectedField }: StepFieldProps) =>
 				다음으로 넘어가기
 			</HomeLargeBtn>
 
-			<button className="text-gray-04 subhead-reg-22">건너뛰기</button>
+			<button onClick={handleNavigateToHome} className="text-gray-04 subhead-reg-22">
+				건너뛰기
+			</button>
 		</main>
 	);
 };

@@ -6,6 +6,8 @@ import { HomeLargeBtnVariant } from '@/shared/types/global';
 
 import OnboardingIcon from '@/shared/assets/svgs/onboarding_image.svg?react';
 
+import { ROUTES_CONFIG } from '@/router/routesConfig';
+
 interface StepStartProps {
 	setStep: (step: string) => void;
 }
@@ -14,7 +16,7 @@ const StepStart = ({ setStep }: StepStartProps) => {
 	const navigate = useNavigate();
 
 	const handleNavigateToHome = () => {
-		navigate('/home');
+		navigate(ROUTES_CONFIG.home.path);
 	};
 
 	return (
