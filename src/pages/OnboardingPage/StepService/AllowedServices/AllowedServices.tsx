@@ -1,7 +1,8 @@
-import { ButtonHTMLAttributes, ReactNode } from 'react';
+import { ButtonHTMLAttributes, InputHTMLAttributes, ReactNode } from 'react';
 
 import HomeLargeBtn from '@/shared/components/ButtonHomeLarge/ButtonHomeLarge';
 
+import { AllowedSiteType } from '@/shared/types/allowedSites';
 import { HomeLargeBtnVariant } from '@/shared/types/global';
 
 import ColorIcon from '@/shared/assets/svgs/ic_color.svg?react';
@@ -22,17 +23,59 @@ const AllowedServicesRoot = ({ children }: AllowedServicesRootProps) => {
 	);
 };
 
+interface AllowedServiceHeaderProps {
+	children: ReactNode;
+}
+
 const AllowedServiceHeader = () => {
 	return (
 		<div className="flex items-center">
 			<button>
 				<ColorIcon />
 			</button>
-			<h2 className="ml-[1rem] text-white head-bold-30">나의 허용서비스</h2>
+			<h2 className="ml-[1rem] text-white head-bold-24">허용서비스 리스트 1</h2>
 			<button className="ml-[1.7rem]">
 				<PencilIcon />
 			</button>
 		</div>
+	);
+};
+
+const AllowedServiceHeaderColorButton = () => {
+	return (
+		<button>
+			<ColorIcon />
+		</button>
+	);
+};
+
+interface AllowedServiceHeaderInput extends InputHTMLAttributes<HTMLInputElement> {
+	onChangeEditing: (status: boolean) => void;
+	isEditing: boolean;
+}
+
+const AllowedServiceHeaderInput = ({ isEditing, onChangeEditing, ...props }: AllowedServiceHeaderInput) => {
+	const handleEnableEditing = () => {
+		onChangeEditing(true);
+	};
+
+	const handleDisableEditing = () => {
+		onChangeEditing(false);
+	};
+
+	return (
+		<>
+			{isEditing ? (
+				<input
+					{...props}
+					className="placeholder-text-gray-03 ml-[1rem] w-full bg-transparent text-white head-bold-24 focus:outline-none"
+				/>
+			) : (
+				<h1 onDoubleClick={handleEnableEditing} className="ml-[1rem] w-full bg-transparent text-white head-bold-24">
+					허용서비스 리스트 1
+				</h1>
+			)}
+		</>
 	);
 };
 
@@ -44,27 +87,25 @@ const AllowedServiceList = ({ children }: AllowedServiceListProps) => {
 	return <ul className="mt-[2rem] overflow-auto">{children}</ul>;
 };
 
-interface AllowedServiceItemProps {
-	siteUrl: string;
-	siteName: string;
+interface AllowedServiceItemProps extends AllowedSiteType {
 	onClick: (url: string) => void;
 }
 
-const AllowedServiceItem = ({ siteUrl, siteName, onClick }: AllowedServiceItemProps) => {
+const AllowedServiceItem = ({ onClick, ...props }: AllowedServiceItemProps) => {
 	return (
-		<li className="flex h-[5.4rem] w-full items-center border-b border-b-gray-bg-04 px-[1rem] py-[1.2rem]">
-			<img src={getServiceFavicon(siteUrl)} alt={`${siteName} 아이콘`} className="h-[2rem] w-[2rem]" />
-			<h3 className="ml-[1.2rem] w-[6.6rem] flex-shrink-0 truncate p-0 text-white body-med-16">{siteName}</h3>
-			<div className="ml-[2.2rem] h-[3.1rem] w-[20.4rem] flex-shrink-0 truncate rounded-[20px] bg-gray-bg-04 px-[1rem] py-[0.6rem] text-gray-04 body-reg-16">
-				{siteUrl}
+		<li className="flex h-[5.3rem] w-full min-w-0 items-center border-b border-b-gray-bg-04 px-[1rem] py-[1.2rem]">
+			<img src={props.favicon} alt={`${props.siteName} 아이콘`} className="h-[2rem] w-[2rem] flex-shrink-0" />
+			<h3 className="ml-[1rem] w-[6rem] flex-shrink-0 truncate p-0 text-white body-med-16">{props.siteName}</h3>
+			<div className="ml-[1rem] h-[3.1rem] w-[16rem] flex-shrink-0 truncate rounded-[20px] bg-gray-bg-04 px-[1rem] py-[0.6rem] text-gray-04 body-reg-16">
+				{props.siteUrl}
 			</div>
 			<button
 				onClick={() => {
-					onClick(siteUrl);
+					onClick(props.siteUrl);
 				}}
 				className="flex-shrink-0"
 			>
-				<MinusIcon className="ml-[1.25rem]" />
+				<MinusIcon />
 			</button>
 		</li>
 	);

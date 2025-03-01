@@ -6,7 +6,7 @@ import TextField from '@/shared/components/TextField/TextField';
 
 import { isUrlValid } from '@/shared/utils/validation';
 
-import type { PostInterestAreaReq } from '@/shared/types/api/onboarding';
+import { AllowedSitesType } from '@/shared/types/allowedSites';
 import type { FieldType } from '@/shared/types/fileds';
 
 import { FIELDS } from '@/shared/constants/fields';
@@ -14,7 +14,8 @@ import { SUGGESTED_STIES } from '@/shared/constants/suggestedSites';
 
 import BackIcon from '@/shared/assets/svgs/ic_back_btn.svg?react';
 
-import { useGetUrlName } from '@/shared/apisV2/common/common.mutations';
+import { getUrlInfo } from '@/shared/apisV2/common/common.api';
+import { useGetUrlInfo } from '@/shared/apisV2/common/common.mutations';
 import { usePostInterestArea } from '@/shared/apisV2/onboarding/onboarding.mutations';
 
 import AllowedService from './AllowedServices/AllowedServices';
@@ -29,24 +30,27 @@ interface StepServiceProps {
 const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 	const [activeTab, setActiveTab] = useState<FieldType>('비즈니스');
 	const [inputUrl, setInputUrl] = useState('');
-	const [selectedServices, setSelectedServices] = useState<PostInterestAreaReq['serviceList']>([]);
+	const [selectedServices, setSelectedServices] = useState<AllowedSitesType>([]);
 	const [inputSuccess, setInputSuccess] = useState(false);
+	const [categoryInput, setCategoryInput] = useState('허용서비스 리스트 1');
+	const [isEditingCategory, setIsEditingCategory] = useState(false);
 
 	const navigate = useNavigate();
 
-	const { mutateAsync: getUrlName } = useGetUrlName();
+	const { mutateAsync: getUrlInfo, reset: resetGetUrlInfo, isError, error } = useGetUrlInfo();
 	const { mutate: postInterestArea } = usePostInterestArea();
 
-	const handleAddSelectedService = async (url: string) => {
-		const isExist = selectedServices.some((service) => service.siteUrl === url);
+	const handleAddSelectedService = async (siteUrl: string) => {
+		const isExist = selectedServices.some((service) => service.siteUrl === siteUrl);
 
-		if (!url || isExist) return;
+		if (!siteUrl || isExist) return;
 
-		const response = await getUrlName({ url });
+		const response = await getUrlInfo({ siteUrl });
+
 		setInputSuccess(true);
-		const urlName = response?.data?.tabName;
+		const urlInfo = response?.data;
 
-		setSelectedServices((prev) => [...prev, { siteName: urlName, siteUrl: url }]);
+		setSelectedServices((prev) => [...prev, urlInfo]);
 	};
 
 	const handleRemoveSelectedService = (url: string) => {
@@ -71,13 +75,31 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 		setActiveTab(tab);
 	};
 
+	const handleClickClearButton = () => {
+		resetGetUrlInfo();
+		setInputUrl('');
+	};
+
+	// const handleChangeCategoryInput = (e: ChangeEvent<HTMLInputElement>) => {
+	// 	setCategoryInput(e.target.value);
+	// };
+
+	// const handleChangeEditingCategoryStatus = (status: boolean) => {
+	// 	setIsEditingCategory(status);
+	// };
+
 	const handleComplete = () => {
 		if (!selectedField) {
 			alert('필드를 먼저 선택해주세요');
 			setStep('field');
 		} else {
 			postInterestArea(
-				{ serviceList: selectedServices, interestArea: selectedField },
+				{
+					allowedSites: selectedServices,
+					interestArea: selectedField,
+					name: '허용 서비스 리스트 1',
+					colorCode: '#868C93',
+				},
 				{
 					onSuccess: () => {
 						navigate('/home');
@@ -112,9 +134,10 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 							<Tabs.ContentList>
 								{SUGGESTED_STIES[activeTab].map((site) => (
 									<ButtonService
-										key={site.url}
-										title={site.title}
-										url={site.url}
+										key={site.siteUrl}
+										favicon={site.favicon}
+										title={site.siteName}
+										url={site.siteUrl}
 										onAddSelectedService={handleAddSelectedService}
 									/>
 								))}
@@ -125,13 +148,13 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 							value={inputUrl}
 							onKeyDown={handleKeyDown}
 							onChange={handleChangeInputUrl}
-							isError={inputUrl.length > 0 && !isUrlValid(inputUrl)}
-							errorMessage="알맞은 형식의 url을 입력해 주세요."
+							isError={(inputUrl.length > 0 && !isUrlValid(inputUrl)) || isError}
+							errorMessage={isError ? error.response?.data.message : '알맞은 형식의 url을 입력해 주세요.'}
 							isSuccess={inputUrl.length > 0 && inputSuccess}
-							successMessage="url 입력에 성공했어요."
+							successMessage={'url 입력에 성공했어요.'}
 							placeholder="직접 url 입력하기"
 						>
-							<TextField.ClearButton onClick={() => setInputUrl('')} />
+							<TextField.ClearButton onClick={handleClickClearButton} />
 							<TextField.ConfirmButton
 								disabled={inputUrl.length === 0}
 								onClick={() => handleAddSelectedService(inputUrl)}
@@ -150,8 +173,10 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 						{selectedServices.map((service) => (
 							<AllowedService.Item
 								key={service.siteUrl}
-								siteUrl={service.siteUrl}
+								favicon={service.favicon}
 								siteName={service.siteName}
+								pageName={service.pageName}
+								siteUrl={service.siteUrl}
 								onClick={handleRemoveSelectedService}
 							/>
 						))}

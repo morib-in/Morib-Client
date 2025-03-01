@@ -35,7 +35,6 @@ import { API_URL } from '@/shared/apisV2/client';
 import { friendKeys } from '@/shared/apisV2/friends/friends.keys';
 import { useAddCategory, useDeleteCategory, usePostAddTodayTodos } from '@/shared/apisV2/home/home.mutations';
 import { useGetCategoryTask, useGetWorkTime } from '@/shared/apisV2/home/home.queries';
-import { useGetTimerTodos } from '@/shared/apisV2/timer/timer.queries';
 import { sseConnectionAtom } from '@/shared/stores/atoms/SSEAtoms';
 import { todayTodoAtom } from '@/shared/stores/atoms/todayTodoAtom';
 

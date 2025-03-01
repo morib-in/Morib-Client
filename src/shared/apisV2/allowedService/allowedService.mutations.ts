@@ -1,5 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+import { PostAddAllowedServiceReq } from '@/shared/types/api/allowedService';
+import { ApiErrorResponseType } from '@/shared/types/api/error';
+
 import {
 	deleteAllowedService,
 	deleteAllowedServiceGroup,
@@ -56,7 +59,7 @@ export const useDeleteAllowedServiceGroup = () => {
 export const usePostAddAllowedService = () => {
 	const queryClient = useQueryClient();
 
-	return useMutation({
+	return useMutation<undefined, ApiErrorResponseType, PostAddAllowedServiceReq>({
 		mutationFn: postAddAllowedService,
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: allowedServiceKeys.allowedService });

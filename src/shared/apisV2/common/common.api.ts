@@ -1,15 +1,15 @@
-import { GetUrlNameReq, GetUrlNameRes } from '@/shared/types/api/common';
+import { GetUrlInfoReq, GetUrlInfoRes } from '@/shared/types/api/common';
 import { PostToggleTaskStatusReq } from '@/shared/types/api/home';
 
 import { authClient } from '../client';
 
 export const COMMON_ENDPOINT = {
-	GET_URL_NAME: 'api/v2/tabName',
+	GET_URL_INFO: 'api/v2/onboard/allowedSite/info',
 	POST_TOGGLE_TASK_STATUS: 'api/v2/tasks/:taskId/status',
 };
 
-export const getUrlName = async ({ url }: GetUrlNameReq): Promise<GetUrlNameRes> => {
-	const { data } = await authClient.get(COMMON_ENDPOINT.GET_URL_NAME, { params: { url } });
+export const getUrlInfo = async ({ siteUrl }: GetUrlInfoReq): Promise<GetUrlInfoRes> => {
+	const { data } = await authClient.get(COMMON_ENDPOINT.GET_URL_INFO, { params: { siteUrl } });
 	return data;
 };
 

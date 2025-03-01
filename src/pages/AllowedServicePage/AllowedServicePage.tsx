@@ -88,8 +88,13 @@ const AllowedServicePage = () => {
 	const { mutate: patchChangeAllowedServiceGroupColor } = usePatchChangeAllowedServiceGroupColor();
 	const { mutate: postAddAllowedServiceGroup } = usePostAddAllowedServiceGroup();
 	const { mutate: deleteAllowedServiceGroup } = useDeleteAllowedServiceGroup();
-	const { mutate: postAddAllowedService } = usePostAddAllowedService();
+	const { mutate: postAddAllowedService, reset: resetAllowedService, isError, error } = usePostAddAllowedService();
 	const { mutate: deleteAllowedService } = useDeleteAllowedService();
+
+	const resetUrlInput = () => {
+		setUrlInput('');
+		resetAllowedService();
+	};
 
 	const handleSelectActiveGroupId = (activeGroupId: number | null) => {
 		setActiveGroupId(activeGroupId);
@@ -311,11 +316,11 @@ const AllowedServicePage = () => {
 								value={urlInput}
 								onKeyDown={handleKeyDownTitleInput}
 								onChange={handleChangeUrlInput}
-								isError={urlInput.length > 0 && !isUrlValid(urlInput)}
-								errorMessage="알맞은 형식의 url을 입력해 주세요."
+								isError={(urlInput.length > 0 && !isUrlValid(urlInput)) || isError}
+								errorMessage={isError ? error.response?.data.message : '알맞은 형식의 url을 입력해 주세요.'}
 								placeholder="허용할 웹사이트 주소를 입력해 주세요."
 							>
-								<TextField.ClearButton onClick={() => setUrlInput('')} />
+								<TextField.ClearButton onClick={resetUrlInput} />
 								<TextField.ConfirmButton
 									disabled={urlInput.length === 0}
 									onClick={() => handleAddAllowedService(urlInput, activeGroupId)}
