@@ -36,7 +36,7 @@ const addAuthInterceptor = (axiosClient: AxiosInstance) => {
 		},
 		async (e) => {
 			const prevRequest = e.config;
-			if (e.response.status === 401 && !prevRequest.sent) {
+			if (e.response && e.response.status === 401 && !prevRequest.sent) {
 				prevRequest.sent = true;
 				// 401 에러가 떴을 때 토큰 재발급
 				try {
