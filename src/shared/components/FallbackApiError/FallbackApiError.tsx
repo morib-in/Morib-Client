@@ -10,9 +10,9 @@ interface ErrorProps {
 
 const FallbackApiError = ({ resetError }: ErrorProps) => {
 	return (
-		<div className="flex w-full justify-center">
-			<div className="flex w-full flex-col items-center">
-				<ErrorIcon className="mt-[32.3rem]" />
+		<div className="flex h-screen w-screen items-center justify-center bg-gray-bg-01">
+			<div className="flex flex-col items-center">
+				<ErrorIcon />
 				<h2 className="mt-[7.75rem] text-white title-bold-36">일시적인 오류가 발생했습니다.</h2>
 				<p className="text-white title-med-32">잠시 후 다시 이용해 주세요.</p>
 
