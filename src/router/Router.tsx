@@ -3,6 +3,7 @@ import type { Router } from '@remix-run/router';
 import { Suspense, lazy } from 'react';
 import { Outlet, createBrowserRouter } from 'react-router-dom';
 
+import ErrorBoundary from '@/shared/components/ErrorBoundary/ErrorBoundary';
 import LoadingOverlay from '@/shared/components/LoadingOverlay/LoadingOverlay';
 
 import AllowedServicePage from '@/pages/AllowedServicePage/AllowedServicePage';
@@ -22,7 +23,11 @@ const router: Router = createBrowserRouter([
 	{
 		//public 라우트들
 		path: '/',
-		element: <Outlet />,
+		element: (
+			<ErrorBoundary>
+				<Outlet />
+			</ErrorBoundary>
+		),
 		children: [
 			{
 				path: ROUTES_CONFIG.login.path,
