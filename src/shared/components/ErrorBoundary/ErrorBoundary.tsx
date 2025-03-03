@@ -41,27 +41,10 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
 		const errorCategory = getErrorCategory(error);
 
 		Sentry.withScope((scope) => {
-			// 에러 카테고리를 태그로 설정하여 Sentry 대시보드에서 그룹화에 도움을 줍니다.
+			// 에러 카테고리를 태그로 설정하여 Sentry 대시보드에서 그룹화
 			scope.setLevel('error');
 			scope.setTag('errorCategory', errorCategory);
 
-			// AxiosError인 경우 API 요청/응답 세부 정보를 추가 컨텍스트로 설정합니다.
-			if (isAxiosError(error) && error.config) {
-				const { method, url, params, data: requestData, headers } = error.config;
-				scope.setContext('API Request Details', {
-					method,
-					url,
-					params,
-					requestData,
-					headers,
-				});
-				if (error.response) {
-					const { data, status } = error.response;
-					scope.setContext('API Response Details', { data, status });
-				}
-			}
-
-			// 에러 발생 시점의 추가 정보를 함께 전달합니다.
 			scope.setExtras({ componentStack: errorInfo.componentStack });
 			Sentry.captureException(error);
 		});
