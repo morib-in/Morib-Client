@@ -1,13 +1,11 @@
-import { useNavigate } from 'react-router-dom';
-
 import HomeLargeBtn from '@/shared/components/ButtonHomeLarge/ButtonHomeLarge';
 
 import type { FieldType } from '@/shared/types/fileds';
 import { HomeLargeBtnVariant } from '@/shared/types/global';
 
-import { FIELDS } from '@/shared/constants/fields';
+import { FIELDS_WITH_ICONS } from '@/shared/constants/fields';
 
-import { ROUTES_CONFIG } from '@/router/routesConfig';
+import ButtonSkip from '../ButtonSkip/ButtonSkip';
 
 interface StepFieldProps {
 	setStep: (step: string) => void;
@@ -16,12 +14,6 @@ interface StepFieldProps {
 }
 
 const StepField = ({ setStep, onSelectField, selectedField }: StepFieldProps) => {
-	const navigate = useNavigate();
-
-	const handleNavigateToHome = () => {
-		navigate(ROUTES_CONFIG.home.path);
-	};
-
 	return (
 		<main className="flex min-h-screen w-full flex-col items-center overflow-auto pb-[18.2rem] pt-[18rem] 2xl:pb-0">
 			<h1 className="mb-[2rem] text-center text-white title-bold-36">주로 어떤 분야에 집중하시나요?</h1>
@@ -31,13 +23,14 @@ const StepField = ({ setStep, onSelectField, selectedField }: StepFieldProps) =>
 
 			<div>
 				<ul className="mb-[11.7rem] flex flex-wrap justify-center gap-[2rem]">
-					{FIELDS.filter((field) => field !== '기타').map((field) => (
-						<li key={field}>
+					{FIELDS_WITH_ICONS.map((field) => (
+						<li key={field.label}>
 							<button
-								onClick={() => onSelectField(field)}
-								className={`flex h-[28rem] w-[22rem] items-center justify-center rounded-[8px] text-white head-bold-24 ${selectedField === field ? 'border border-mint-01 bg-gray-bg-02' : 'bg-gray-bg-03'}`}
+								onClick={() => onSelectField(field.label)}
+								className={`flex h-[26rem] w-[19rem] flex-col items-center justify-center gap-y-[0.8rem] rounded-[8px] text-white head-bold-24 ${selectedField === field.label ? 'border border-mint-01 bg-gray-bg-02' : 'bg-gray-bg-03'}`}
 							>
-								{field}
+								<img src={field.img} alt={field.label} />
+								<p>{field.label}</p>
 							</button>
 						</li>
 					))}
@@ -53,9 +46,7 @@ const StepField = ({ setStep, onSelectField, selectedField }: StepFieldProps) =>
 				다음으로 넘어가기
 			</HomeLargeBtn>
 
-			<button onClick={handleNavigateToHome} className="text-gray-04 subhead-reg-22">
-				건너뛰기
-			</button>
+			<ButtonSkip />
 		</main>
 	);
 };
