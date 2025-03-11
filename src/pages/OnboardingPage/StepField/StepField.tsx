@@ -17,7 +17,7 @@ const StepField = ({ setStep, onSelectField, selectedField }: StepFieldProps) =>
 	return (
 		<main className="flex min-h-screen w-full flex-col items-center overflow-auto pb-[18.2rem] pt-[18rem] 2xl:pb-0">
 			<h1 className="mb-[2rem] text-center text-white title-bold-36">주로 어떤 분야에 집중하시나요?</h1>
-			<h2 className="mb-[8.3rem] text-center text-gray-04 body-reg-24">
+			<h2 className="mb-[8.3rem] text-center text-gray-04 subhead-reg-22">
 				업무 분야에 자주 쓰이는 서비스들을 추천 해드릴게요
 			</h2>
 
