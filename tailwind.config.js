@@ -34,6 +34,9 @@ export default {
 				'.subhead-reg-22': {
 					'@apply text-[2.2rem] font-normal leading-120': '',
 				},
+				'.subhead-reg-20': {
+					'@apply text-[2rem] font-normal leading-120': '',
+				},
 				'.subhead-bold-20': {
 					'@apply text-[2rem] font-bold leading-120': '',
 				},
