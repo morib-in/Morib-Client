@@ -17,7 +17,7 @@ interface AllowedServicesRootProps {
 
 const AllowedServicesRoot = ({ children }: AllowedServicesRootProps) => {
 	return (
-		<div className="flex h-screen flex-shrink-0 pb-[5rem] pr-[6rem] pt-[11rem]">
+		<div className="flex h-full flex-shrink-0">
 			<div className="grid w-full grid-rows-[auto,1fr,auto] rounded-[18px] bg-gray-bg-03 p-[2.8rem]">{children}</div>
 		</div>
 	);

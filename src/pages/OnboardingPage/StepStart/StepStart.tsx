@@ -1,28 +1,20 @@
-import { useNavigate } from 'react-router-dom';
-
 import HomeLargeBtn from '@/shared/components/ButtonHomeLarge/ButtonHomeLarge';
 
 import { HomeLargeBtnVariant } from '@/shared/types/global';
 
 import OnboardingIcon from '@/shared/assets/svgs/onboarding_image.svg?react';
 
-import { ROUTES_CONFIG } from '@/router/routesConfig';
+import ButtonSkip from '../ButtonSkip/ButtonSkip';
 
 interface StepStartProps {
 	setStep: (step: string) => void;
 }
 
 const StepStart = ({ setStep }: StepStartProps) => {
-	const navigate = useNavigate();
-
-	const handleNavigateToHome = () => {
-		navigate(ROUTES_CONFIG.home.path);
-	};
-
 	return (
 		<main className="flex w-full flex-col items-center justify-center">
 			<h1 className="mb-[2rem] text-center text-white title-bold-36">집중을 도와줄 모립세트를 만들어볼까요?</h1>
-			<p className="mb-[8.3rem] text-center text-gray-04 body-reg-24">
+			<p className="mb-[8.3rem] text-center text-gray-04 subhead-reg-22">
 				모립세트란 작업에 꼭 필요한 일만 할 수 있도록
 				<br />
 				설정하는 작업 시 사용 할 허용 서비스들의 모음을 말해요.
@@ -33,9 +25,7 @@ const StepStart = ({ setStep }: StepStartProps) => {
 				<span className="min-w-[15.6rem]">시작하기</span>
 			</HomeLargeBtn>
 
-			<button type="button" onClick={handleNavigateToHome} className="text-gray-04 subhead-reg-22">
-				건너뛰기
-			</button>
+			<ButtonSkip />
 		</main>
 	);
 };
