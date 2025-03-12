@@ -2,6 +2,7 @@ import { ChangeEvent, KeyboardEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import AutoFixedGrid from '@/shared/components/AutoFixedGrid/AutoFixedGrid';
+import Spacer from '@/shared/components/Spacer/Spacer';
 import TextField from '@/shared/components/TextField/TextField';
 
 import { isUrlValid } from '@/shared/utils/validation';
@@ -110,60 +111,58 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 	};
 
 	return (
-		<AutoFixedGrid type="onboarding" className="bg-gray-bg-01">
-			<AutoFixedGrid.Slot>
-				<main className="relative flex h-full min-h-0 flex-col">
-					<button onClick={() => setStep('field')} className="absolute left-[6rem] top-[6rem]">
-						<BackIcon />
-					</button>
+		<AutoFixedGrid type="onboarding" className="relative gap-[2rem] bg-gray-bg-01 px-[6rem] pb-[5rem] pt-[11rem]">
+			<AutoFixedGrid.Slot className="h-full min-h-0">
+				<button onClick={() => setStep('field')} className="absolute left-[6rem] top-[5rem]">
+					<BackIcon />
+				</button>
 
-					<div className="flex min-h-0 flex-1 flex-col pb-[4.8rem] pl-[6rem] pr-[4.2rem] pt-[15rem]">
-						<h1 className="mb-[2rem] text-white title-bold-36">작업 시 사용할 서비스들을 입력해주세요</h1>
-						<p className="mb-[2.3rem] text-gray-04 subhead-reg-22">
-							필요한 서비스에만 들어가고, 나의 온전한 집중 시간을 기록할 수 있어요. <br />
-							만든 모립세트는 언제든 편집할 수 있어요.
-						</p>
+				<Spacer.Height as="main" className="flex flex-col pb-[3rem]">
+					<h1 className="mb-[2rem] text-white title-bold-36">작업 시 사용할 서비스들을 입력해주세요</h1>
+					<p className="mb-[2.3rem] text-gray-04 subhead-reg-22">
+						필요한 서비스에만 들어가고, 나의 온전한 집중 시간을 기록할 수 있어요. 만든 모립세트는 언제든 편집할 수
+						있어요.
+					</p>
 
-						<Tabs activeTab={activeTab} onChangeActiveTab={handleChangeActiveTab}>
-							<Tabs.TriggerList>
-								{FIELDS.map((field) => (
-									<Tabs.Trigger value={field} key={field} />
-								))}
-							</Tabs.TriggerList>
+					<Tabs activeTab={activeTab} onChangeActiveTab={handleChangeActiveTab}>
+						<Tabs.TriggerList>
+							{FIELDS.map((field) => (
+								<Tabs.Trigger value={field} key={field} />
+							))}
+						</Tabs.TriggerList>
 
-							<Tabs.ContentList>
-								{SUGGESTED_STIES[activeTab].map((site) => (
-									<ButtonService
-										key={site.siteUrl}
-										favicon={site.favicon}
-										title={site.siteName}
-										url={site.siteUrl}
-										onAddSelectedService={handleAddSelectedService}
-									/>
-								))}
-							</Tabs.ContentList>
-						</Tabs>
+						<Tabs.ContentList>
+							{SUGGESTED_STIES[activeTab].map((site) => (
+								<ButtonService
+									key={site.siteUrl}
+									favicon={site.favicon}
+									title={site.siteName}
+									url={site.siteUrl}
+									onAddSelectedService={handleAddSelectedService}
+								/>
+							))}
+						</Tabs.ContentList>
+					</Tabs>
 
-						<TextField
-							value={inputUrl}
-							onKeyDown={handleKeyDown}
-							onChange={handleChangeInputUrl}
-							isError={(inputUrl.length > 0 && !isUrlValid(inputUrl)) || isError}
-							errorMessage={isError ? error.response?.data.message : '알맞은 형식의 url을 입력해 주세요.'}
-							isSuccess={inputUrl.length > 0 && inputSuccess}
-							successMessage={'url 입력에 성공했어요.'}
-							placeholder="직접 url 입력하기"
+					<TextField
+						value={inputUrl}
+						onKeyDown={handleKeyDown}
+						onChange={handleChangeInputUrl}
+						isError={(inputUrl.length > 0 && !isUrlValid(inputUrl)) || isError}
+						errorMessage={isError ? error.response?.data.message : '알맞은 형식의 url을 입력해 주세요.'}
+						isSuccess={inputUrl.length > 0 && inputSuccess}
+						successMessage={'url 입력에 성공했어요.'}
+						placeholder="직접 url 입력하기"
+					>
+						<TextField.ClearButton onClick={handleClickClearButton} />
+						<TextField.ConfirmButton
+							disabled={inputUrl.length === 0}
+							onClick={() => handleAddSelectedService(inputUrl)}
 						>
-							<TextField.ClearButton onClick={handleClickClearButton} />
-							<TextField.ConfirmButton
-								disabled={inputUrl.length === 0}
-								onClick={() => handleAddSelectedService(inputUrl)}
-							>
-								등록하기
-							</TextField.ConfirmButton>
-						</TextField>
-					</div>
-				</main>
+							등록하기
+						</TextField.ConfirmButton>
+					</TextField>
+				</Spacer.Height>
 			</AutoFixedGrid.Slot>
 
 			<AutoFixedGrid.Slot>

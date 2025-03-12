@@ -1,5 +1,7 @@
 import { ReactElement, ReactNode, createContext, useContext } from 'react';
 
+import Spacer from '@/shared/components/Spacer/Spacer';
+
 import type { FieldType } from '@/shared/types/fileds';
 
 // ===== 1) Context 설정 =====
@@ -32,7 +34,7 @@ const TabsRoot = ({ activeTab, onChangeActiveTab, children }: TabsRootProps) => 
 
 	return (
 		<TabsContext.Provider value={contextValue}>
-			<div className="flex min-h-0 w-full flex-col">{children}</div>
+			<Spacer.Height className="flex w-full flex-col pb-[3rem] pr-[4rem]">{children}</Spacer.Height>
 		</TabsContext.Provider>
 	);
 };
@@ -42,7 +44,7 @@ interface TabsTriggerListProps {
 }
 
 const TabsTriggerList = ({ children }: TabsTriggerListProps) => {
-	return <div className="mr-[17%] grid min-w-[840px] grid-cols-7">{children}</div>;
+	return <div className="grid min-w-[840px] grid-cols-7">{children}</div>;
 };
 
 interface TabsTriggerProps {
@@ -71,9 +73,9 @@ interface TabsContentListProps {
 
 const TabsContentList = ({ children }: TabsContentListProps) => {
 	return (
-		<div className="mt-[4rem] flex min-h-0 flex-1 flex-wrap gap-x-[2rem] gap-y-[2.3rem] overflow-y-auto">
-			{children}
-		</div>
+		<Spacer.Height className="mt-[4rem] flex">
+			<div className="flex flex-wrap content-start gap-x-[2rem] gap-y-[2.3rem] overflow-y-auto">{children}</div>
+		</Spacer.Height>
 	);
 };
 
