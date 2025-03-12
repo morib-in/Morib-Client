@@ -108,7 +108,7 @@ export const SUGGESTED_STIES: Record<FieldType, AllowedSiteType[]> = {
 			siteUrl: 'https://www.mezzomedia.co.kr/',
 		},
 		{
-			favicon: 'https://www.nasmedia.co.kr/favicon.ico',
+			favicon: 'https://www.nasmedia.co.kr/wp-content/themes/nasmedia/images/favicon/r-01.png',
 			siteName: '나스 미디어',
 			pageName: 'Nas Media',
 			siteUrl: 'https://www.nasmedia.co.kr/',
