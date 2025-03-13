@@ -2,14 +2,17 @@ interface ButtonServiceProps {
 	favicon: string;
 	title: string;
 	url: string;
-	onAddSelectedService: (service: string) => void;
+	onAddSelectedService: () => void;
+	isSelected: boolean;
 }
 
-const ButtonService = ({ title, url, favicon, onAddSelectedService }: ButtonServiceProps) => {
+const ButtonService = ({ title, url, favicon, onAddSelectedService, isSelected }: ButtonServiceProps) => {
 	return (
 		<button
-			onClick={() => onAddSelectedService(url)}
-			className="flex h-[11rem] w-[34rem] items-center gap-x-[2rem] rounded-[8px] bg-gray-bg-03 p-[2rem]"
+			onClick={onAddSelectedService}
+			className={`flex h-[11rem] w-[34rem] items-center gap-x-[2rem] rounded-[8px] border-[1px] bg-gray-bg-03 p-[2rem] ${
+				isSelected ? 'border-mint-01' : 'border-transparent'
+			}`}
 		>
 			<img src={favicon} alt={`${title} 아이콘`} className="h-[7rem] w-[7rem] rounded-full" />
 			<div className="flex flex-col">
