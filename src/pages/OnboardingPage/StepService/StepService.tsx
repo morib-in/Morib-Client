@@ -7,7 +7,7 @@ import TextField from '@/shared/components/TextField/TextField';
 
 import { isUrlValid } from '@/shared/utils/validation';
 
-import { AllowedSitesType } from '@/shared/types/allowedSites';
+import { AllowedSiteType, AllowedSitesType } from '@/shared/types/allowedSites';
 import type { FieldType } from '@/shared/types/fileds';
 
 import { FIELDS } from '@/shared/constants/fields';
@@ -41,15 +41,27 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 	const { mutateAsync: getUrlInfo, reset: resetGetUrlInfo, isError, error } = useGetUrlInfo();
 	const { mutate: postInterestArea } = usePostInterestArea();
 
-	const handleAddSelectedService = async (siteUrl: string) => {
-		const isExist = selectedServices.some((service) => service.siteUrl === siteUrl);
+	const isSelectedUrl = (siteUrl: string) => {
+		return selectedServices.some((service) => service.siteUrl === siteUrl);
+	};
 
-		if (!siteUrl || isExist) return;
+	const handleAddSelectedService = async (siteUrl: string) => {
+		const selected = isSelectedUrl(siteUrl);
+
+		if (!siteUrl || selected) return;
 
 		const response = await getUrlInfo({ siteUrl });
 
 		setInputSuccess(true);
 		const urlInfo = response?.data;
+
+		setSelectedServices((prev) => [...prev, urlInfo]);
+	};
+
+	const handleAddRecommendedService = (urlInfo: AllowedSiteType) => {
+		const selected = isSelectedUrl(urlInfo.siteUrl);
+
+		if (selected) return;
 
 		setSelectedServices((prev) => [...prev, urlInfo]);
 	};
@@ -109,6 +121,7 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 			);
 		}
 	};
+	console.log(selectedServices);
 
 	return (
 		<AutoFixedGrid type="onboarding" className="relative gap-[2rem] bg-gray-bg-01 px-[6rem] pb-[5rem] pt-[11rem]">
@@ -138,7 +151,8 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 									favicon={site.favicon}
 									title={site.siteName}
 									url={site.siteUrl}
-									onAddSelectedService={handleAddSelectedService}
+									onAddSelectedService={() => handleAddRecommendedService(site)}
+									isSelected={selectedServices.some((service) => service.siteUrl === site.siteUrl)}
 								/>
 							))}
 						</Tabs.ContentList>
@@ -165,7 +179,7 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 				</Spacer.Height>
 			</AutoFixedGrid.Slot>
 
-			<AutoFixedGrid.Slot>
+			<AutoFixedGrid.Slot className="h-full min-h-0">
 				<AllowedService>
 					<AllowedService.Header />
 					<AllowedService.List>
