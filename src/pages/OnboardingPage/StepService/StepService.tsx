@@ -29,7 +29,7 @@ interface StepServiceProps {
 }
 
 const StepService = ({ setStep, selectedField }: StepServiceProps) => {
-	const [activeTab, setActiveTab] = useState<FieldType>('비즈니스');
+	const [activeTab, setActiveTab] = useState<FieldType>(selectedField || '비즈니스');
 	const [inputUrl, setInputUrl] = useState('');
 	const [selectedServices, setSelectedServices] = useState<AllowedSitesType>([]);
 	const [inputSuccess, setInputSuccess] = useState(false);
