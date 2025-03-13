@@ -141,9 +141,9 @@ export const SUGGESTED_STIES: Record<FieldType, AllowedSiteType[]> = {
 		},
 		{
 			favicon: 'https://static.figma.com/uploads/b6df2735e4cb368306acf5480b50f96e69f96099',
-			siteName: 'Figma',
-			pageName: 'Figma (Korean)',
-			siteUrl: 'https://www.figma.com/ko-kr/',
+			siteName: '피그마',
+			pageName: 'Figma - 디자인 협업툴',
+			siteUrl: 'https://www.figma.com/',
 		},
 	],
 	개발: [
