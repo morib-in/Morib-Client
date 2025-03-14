@@ -41,6 +41,7 @@ const BoxAddCategory = forwardRef<HTMLDivElement, BoxAddCategoryProps>(function 
 						onKeyPress={handleKeydown}
 						placeholder="프로젝트 제목"
 						className="w-full bg-transparent text-white subhead-semibold-18 focus:outline-none"
+						autoFocus
 					/>
 					<div className="ml-[1rem] flex gap-[1rem]">
 						<button disabled className="rounded-full hover:bg-gray-bg-04 active:bg-gray-bg-05">

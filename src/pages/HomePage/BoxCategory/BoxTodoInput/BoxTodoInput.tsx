@@ -73,6 +73,7 @@ const BoxTodoInput = forwardRef<HTMLDivElement, BoxTodoInputProps>(function BoxT
 								onChange={handleInputChange}
 								onKeyPress={handleKeyPress}
 								placeholder="할 일 입력"
+								autoFocus
 							/>
 						) : (
 							<h3 className="mt-[0.42rem] text-gray-04 detail-reg-14" onDoubleClick={handleDoubleClick}>
