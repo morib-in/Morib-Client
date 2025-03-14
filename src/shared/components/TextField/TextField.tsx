@@ -14,6 +14,7 @@ import FailIcon from '@/shared/assets/svgs/ic_description.svg?react';
 
 interface TextFieldContextProps {
 	isError?: boolean;
+	value?: string | number | readonly string[] | undefined;
 }
 
 const TextFieldContext = createContext<TextFieldContextProps | null>(null);
@@ -39,6 +40,7 @@ const TextFieldRoot = ({
 
 	const contextValue = {
 		isError,
+		value: props.value,
 	};
 
 	const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -83,8 +85,10 @@ const TextFieldRoot = ({
 };
 
 const TextFieldClearButton = ({ ...props }: ButtonHTMLAttributes<HTMLButtonElement>) => {
+	const { value } = useTextFieldContext();
+
 	return (
-		<button {...props}>
+		<button {...props} className={`${!value?.toString().length && 'hidden'} ${props.className}`}>
 			<InputClearIcon />
 		</button>
 	);
