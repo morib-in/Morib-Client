@@ -191,7 +191,20 @@ const HomePage = () => {
 		});
 	};
 
+	const setTodayTodoAtom = useSetAtom(todayTodoAtom);
+
 	const handleDeleteCategory = (categoryId: number) => {
+		const updatedTodayTodos = todayTodos.filter((todo) => {
+			const belongsToDeletedCategory = dailyCategoryTask.some(
+				({ category, tasks }) => category.id === categoryId && tasks.some((task) => task.id === todo.id),
+			);
+			return !belongsToDeletedCategory;
+		});
+
+		setTodayTodos(updatedTodayTodos);
+
+		setTodayTodoAtom(updatedTodayTodos);
+
 		deleteCategory({ categoryId });
 	};
 
