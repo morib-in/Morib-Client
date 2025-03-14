@@ -191,8 +191,6 @@ const HomePage = () => {
 		});
 	};
 
-	const setTodayTodoAtom = useSetAtom(todayTodoAtom);
-
 	const handleDeleteCategory = (categoryId: number) => {
 		const updatedTodayTodos = todayTodos.filter((todo) => {
 			const belongsToDeletedCategory = dailyCategoryTask.some(
@@ -202,8 +200,6 @@ const HomePage = () => {
 		});
 
 		setTodayTodos(updatedTodayTodos);
-
-		setTodayTodoAtom(updatedTodayTodos);
 
 		deleteCategory({ categoryId });
 	};
