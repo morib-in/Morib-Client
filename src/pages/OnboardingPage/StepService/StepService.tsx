@@ -7,6 +7,7 @@ import TextField from '@/shared/components/TextField/TextField';
 
 import { isUrlValid } from '@/shared/utils/validation';
 
+import { ColorPaletteType } from '@/shared/types/allowedService';
 import { AllowedSiteType, AllowedSitesType } from '@/shared/types/allowedSites';
 import type { FieldType } from '@/shared/types/fileds';
 
@@ -15,7 +16,6 @@ import { SUGGESTED_STIES } from '@/shared/constants/suggestedSites';
 
 import BackIcon from '@/shared/assets/svgs/ic_back_btn.svg?react';
 
-import { getUrlInfo } from '@/shared/apisV2/common/common.api';
 import { useGetUrlInfo } from '@/shared/apisV2/common/common.mutations';
 import { usePostInterestArea } from '@/shared/apisV2/onboarding/onboarding.mutations';
 
@@ -33,12 +33,12 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 	const [inputUrl, setInputUrl] = useState('');
 	const [selectedServices, setSelectedServices] = useState<AllowedSitesType>([]);
 	const [inputSuccess, setInputSuccess] = useState(false);
-	const [categoryInput, setCategoryInput] = useState('허용서비스 리스트 1');
-	const [isEditingCategory, setIsEditingCategory] = useState(false);
+	const [categoryNameInput, setCategoryNameInput] = useState('허용서비스 리스트 1');
+	const [selectedColor, setSelectedColor] = useState<ColorPaletteType>('#868C93');
 
 	const navigate = useNavigate();
 
-	const { mutateAsync: getUrlInfo, reset: resetGetUrlInfo, isError, error } = useGetUrlInfo();
+	const { mutateAsync: getUrlInfo, reset: resetGetUrlInfo, isError, error, isPending } = useGetUrlInfo();
 	const { mutate: postInterestArea } = usePostInterestArea();
 
 	const isSelectedUrl = (siteUrl: string) => {
@@ -93,13 +93,13 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 		setInputUrl('');
 	};
 
-	// const handleChangeCategoryInput = (e: ChangeEvent<HTMLInputElement>) => {
-	// 	setCategoryInput(e.target.value);
-	// };
+	const handleChangeCategoryNameInput = (e: ChangeEvent<HTMLInputElement>) => {
+		setCategoryNameInput(e.target.value);
+	};
 
-	// const handleChangeEditingCategoryStatus = (status: boolean) => {
-	// 	setIsEditingCategory(status);
-	// };
+	const handleInitCategoryNameInput = () => {
+		setCategoryNameInput('허용 서비스 리스트 1');
+	};
 
 	const handleComplete = () => {
 		if (!selectedField) {
@@ -121,7 +121,6 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 			);
 		}
 	};
-	console.log(selectedServices);
 
 	return (
 		<AutoFixedGrid type="onboarding" className="relative gap-[2rem] bg-gray-bg-01 px-[6rem] pb-[5rem] pt-[11rem]">
@@ -170,7 +169,7 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 					>
 						<TextField.ClearButton onClick={handleClickClearButton} />
 						<TextField.ConfirmButton
-							disabled={inputUrl.length === 0}
+							disabled={inputUrl.length === 0 || isPending}
 							onClick={() => handleAddSelectedService(inputUrl)}
 						>
 							등록하기
@@ -181,7 +180,14 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 
 			<AutoFixedGrid.Slot className="h-full min-h-0">
 				<AllowedService>
-					<AllowedService.Header />
+					<AllowedService.Header>
+						<AllowedService.HeaderColorButton selectedColor={selectedColor} onSelectColor={setSelectedColor} />
+						<AllowedService.HeaderInput
+							value={categoryNameInput}
+							onChange={handleChangeCategoryNameInput}
+							onInitCategoryNameInput={handleInitCategoryNameInput}
+						/>
+					</AllowedService.Header>
 					<AllowedService.List>
 						{selectedServices.map((service) => (
 							<AllowedService.Item
