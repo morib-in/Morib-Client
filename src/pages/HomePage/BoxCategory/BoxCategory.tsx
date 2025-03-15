@@ -107,8 +107,7 @@ const BoxCategory = ({
 
 		setName('');
 		setIsAdding(false);
-		handleStartDateInput(null);
-		handleEndDateInput(null);
+
 		handlePeriodEnd();
 	};
 
