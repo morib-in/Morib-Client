@@ -1,10 +1,9 @@
 import dayjs, { Dayjs } from 'dayjs';
 
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import DatePicker from 'react-datepicker';
 
 import ButtonStatusToggle from '@/shared/components/ButtonStatusToggle/ButtonStatusToggle';
-import ButtonCalendarAddRoutine from '@/shared/components/Calendar/ButtonCalendarAddRoutine/ButtonCalendarAddRoutine';
 import HeaderCalendar from '@/shared/components/Calendar/HeaderCalendar/HeaderCalendar';
 
 import useClickOutside from '@/shared/hooks/useClickOutside';
@@ -49,7 +48,6 @@ const Calendar = ({
 	onPeriodToggle,
 	clickOutSideCallback,
 }: CalendarProps) => {
-	const [isRoutineOn, setIsRoutineOn] = useState(false);
 	const calendarRef = useRef<HTMLDivElement>(null);
 
 	useClickOutside(calendarRef, clickOutSideCallback);
@@ -83,10 +81,6 @@ const Calendar = ({
 		const [start, end] = dates;
 		onStartDateInput(start ? dayjs(start) : null);
 		onEndDateInput(end ? dayjs(end) : null);
-	};
-
-	const handleRoutineToggle = () => {
-		setIsRoutineOn((prev) => !prev);
 	};
 
 	return (
@@ -137,15 +131,6 @@ const Calendar = ({
 					<div className={`${STYLES.defaultToggle}`}>
 						<h3 className={STYLES.toggleText}>종료 날짜</h3>
 						<ButtonStatusToggle isToggleOn={isPeriodOn} onToggle={onPeriodToggle} />
-					</div>
-
-					<hr className={STYLES.divideLine} />
-					<div className="flex-col gap-[1.2rem]">
-						<div className={`${STYLES.defaultToggle}`}>
-							<h3 className={STYLES.toggleText}>루틴 생성</h3>
-							<ButtonStatusToggle isToggleOn={isRoutineOn} onToggle={handleRoutineToggle} />
-						</div>
-						{isRoutineOn && <ButtonCalendarAddRoutine />}
 					</div>
 				</div>
 			)}
