@@ -110,8 +110,8 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 				{
 					allowedSites: selectedServices,
 					interestArea: selectedField,
-					name: '허용 서비스 리스트 1',
-					colorCode: '#868C93',
+					name: categoryNameInput,
+					colorCode: selectedColor,
 				},
 				{
 					onSuccess: () => {
