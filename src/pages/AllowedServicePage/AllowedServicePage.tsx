@@ -294,7 +294,7 @@ const AllowedServicePage = () => {
 							onAddAllowedServiceGroup={handleAddAllowedServiceGroup}
 							onChangeAllowedServiceGroupName={handleChangeAllowedServiceGroupName}
 						>
-							<AllowedServiceGroupDetail.ColorButton onSelectColor={handleSelectColor} hashColor={selectedColor} />
+							<AllowedServiceGroupDetail.ColorButton onSelectColor={handleSelectColor} selectedColor={selectedColor} />
 							<AllowedServiceGroupDetail.Input
 								value={titleInput}
 								onChange={handleChangeTitleInput}

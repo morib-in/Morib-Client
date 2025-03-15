@@ -121,10 +121,9 @@ const AllowedServiceListItem = ({
 			</Spacer.Width>
 
 			<div className="mt-[0.4rem] flex items-center gap-[0.6rem]">
-				{allowedServiceGroupData.allowedSites &&
-					allowedServiceGroupData.allowedSites.map((siteUrl) => (
-						<img key={siteUrl} src={siteUrl} alt="favicon" className="h-[2rem] w-[2rem] rounded-full" />
-					))}
+				{allowedServiceGroupData?.favicons.map((siteUrl) => (
+					<img key={siteUrl} src={siteUrl} alt="favicon" className="h-[2rem] w-[2rem] rounded-full" />
+				))}
 				{allowedServiceGroupData?.extraCnt > 0 && (
 					<div className="body-detail-reg-12 flex h-[2rem] w-[2rem] items-center justify-center rounded-[57px] bg-date-active text-white">
 						+{allowedServiceGroupData.extraCnt}
