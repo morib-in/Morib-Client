@@ -56,6 +56,7 @@ const TimerPage = () => {
 	const { ongoingTodos, completedTodos } = splitTasksByCompletion(todos);
 	const [selectedTodoId, setSelectedTodoId] = useState<number | null>(null);
 	const [selectedTodoData, setSelectedTodoData] = useState<TimerTodoType | undefined>(undefined);
+	const [isInitialRender, setIsInitialRender] = useState(false);
 
 	const [registeredNames, setRegisteredNames] = useState<string[]>([]);
 	const [allowedSitesUrl, setAllowedSitesUrl] = useState<string[]>([]);
@@ -120,9 +121,10 @@ const TimerPage = () => {
 	};
 
 	useEffect(() => {
-		if (todosData && todosData.data.task.length > 0) {
+		if (todosData && todosData.data.task.length > 0 && isInitialRender) {
 			const selectedId = todosData.data.task[0].id;
 			setSelectedTodoId(selectedId);
+			setIsInitialRender(false);
 		}
 	}, [todosData]);
 
