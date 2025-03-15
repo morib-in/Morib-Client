@@ -33,7 +33,12 @@ import { useSSE } from '@/shared/apisV2/SSE/useSSE';
 import { useSSEEvent } from '@/shared/apisV2/SSE/useSSEEvent';
 import { API_URL } from '@/shared/apisV2/client';
 import { friendKeys } from '@/shared/apisV2/friends/friends.keys';
-import { useAddCategory, useDeleteCategory, usePostAddTodayTodos } from '@/shared/apisV2/home/home.mutations';
+import {
+	useAddCategory,
+	useDeleteCategory,
+	useModifyCategory,
+	usePostAddTodayTodos,
+} from '@/shared/apisV2/home/home.mutations';
 import { useGetCategoryTask, useGetWorkTime } from '@/shared/apisV2/home/home.queries';
 import { sseConnectionAtom } from '@/shared/stores/atoms/SSEAtoms';
 import { todayTodoAtom } from '@/shared/stores/atoms/todayTodoAtom';
@@ -81,6 +86,7 @@ const HomePage = () => {
 	const { mutate: addTodayTodos } = usePostAddTodayTodos();
 	const { mutate: deleteCategory } = useDeleteCategory();
 	const { mutate: addCategory } = useAddCategory();
+	const { mutate: modifyCategory } = useModifyCategory();
 
 	const navigate = useNavigate();
 
@@ -204,6 +210,11 @@ const HomePage = () => {
 		deleteCategory({ categoryId });
 	};
 
+	const handleModifyCategory = (categoryId: number, name: string) => {
+		if (!name.trim()) return;
+		modifyCategory({ categoryId, name: name });
+	};
+
 	useEffect(() => {
 		setTodayTodos(todayTodosStorageData);
 
@@ -318,6 +329,7 @@ const HomePage = () => {
 												getSelectedNumber={getSelectedNumber}
 												addingComplete={addingComplete}
 												onDeleteCategory={handleDeleteCategory}
+												onModifyCategory={handleModifyCategory}
 												isSelectedTodoExist={todayTodos.length > 0}
 											/>
 										);

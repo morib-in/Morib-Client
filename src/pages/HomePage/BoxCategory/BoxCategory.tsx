@@ -34,6 +34,7 @@ interface BoxCategoryProps {
 	getSelectedNumber: (id: number) => number;
 	addingComplete: boolean;
 	onDeleteCategory: (categoryId: number) => void;
+	onModifyCategory: (categoryId: number, newName: string) => void;
 	isSelectedTodoExist?: boolean;
 }
 
@@ -55,11 +56,14 @@ const BoxCategory = ({
 	getSelectedNumber,
 	addingComplete,
 	onDeleteCategory,
+	onModifyCategory,
 	isSelectedTodoExist,
 }: BoxCategoryProps) => {
 	const { mutate, isError, error } = usePostCreateTask();
 	const [ongoingTodoToggle, setOngoingTodoToggle] = useState(true);
 	const [completedTodoToggle, setCompletedTodoToggle] = useState(false);
+	const [isCategoryEditing, setIsCategoryEditing] = useState(false);
+	const [editedCategoryName, setEditedCategoryName] = useState(title);
 
 	const handleOngoingTodoToggle = () => {
 		setOngoingTodoToggle((prev) => !prev);
@@ -130,13 +134,41 @@ const BoxCategory = ({
 		}
 	};
 
+	const handleStartEditing = () => {
+		setIsCategoryEditing(true);
+	};
+
+	const handleFinishEditing = () => {
+		if (editedCategoryName.trim() && editedCategoryName !== title) {
+			onModifyCategory(id, editedCategoryName);
+		}
+		setIsCategoryEditing(false);
+	};
+
+	const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+		if (e.key === 'Enter') {
+			handleFinishEditing();
+		}
+	};
+
 	return (
 		<Spacer.Height
 			as="article"
 			className="flex w-[31.6rem] flex-shrink-0 flex-col rounded-[16px] bg-gray-bg-03 p-[1.8rem]"
 		>
 			<div className="mt-[0.4rem] flex items-center justify-between">
-				<h2 className="text-white subhead-semibold-18">{title}</h2>
+				{isCategoryEditing ? (
+					<input
+						autoFocus
+						className="w-full rounded-md bg-gray-bg-04 bg-transparent text-white subhead-semibold-18 focus:outline-none"
+						value={editedCategoryName}
+						onChange={(e) => setEditedCategoryName(e.target.value)}
+						onBlur={handleFinishEditing}
+						onKeyDown={handleKeyDown}
+					/>
+				) : (
+					<h2 className="text-white subhead-semibold-18">{title}</h2>
+				)}
 				<div className="flex items-center gap-[1rem]">
 					<button
 						onMouseEnter={handleMouseEnter}
@@ -150,7 +182,7 @@ const BoxCategory = ({
 							<MeatballDefaultIcon className="rounded-full hover:bg-gray-bg-04 active:bg-gray-bg-05" />
 						</Dropdown.Trigger>
 						<Dropdown.Content className="top-[3.2rem]">
-							<Dropdown.Item label="카테고리 이름 수정" />
+							<Dropdown.Item label="카테고리 이름 수정" onClick={handleStartEditing} />
 							<Dropdown.Item label="카테고리 삭제" textColor="red" onClick={() => onDeleteCategory(id)} />
 						</Dropdown.Content>
 					</Dropdown>
@@ -205,11 +237,11 @@ const BoxCategory = ({
 
 							{ongoingTodos.map(({ id, name, startDate, endDate, elapsedTime }) => {
 								const todo = {
-									id: id,
-									name: name,
-									startDate: startDate,
-									endDate: endDate,
-									elapsedTime: elapsedTime,
+									id,
+									name,
+									startDate,
+									endDate,
+									elapsedTime,
 								};
 
 								const selectedNumber = getSelectedNumber(id);
