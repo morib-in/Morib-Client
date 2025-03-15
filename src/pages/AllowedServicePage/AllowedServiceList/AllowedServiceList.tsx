@@ -10,8 +10,6 @@ import { COLOR_PALETTE_MAP } from '@/shared/constants/colorPalette';
 import MeatBallDefaultIcon from '@/shared/assets/svgs/common/ic_meatball_default.svg?react';
 import PlusIcon from '@/shared/assets/svgs/plus.svg?react';
 
-import { getServiceFavicon } from '@/pages/OnboardingPage/utils/serviceUrl';
-
 export interface AllowedService {
 	id: number;
 	allowedServiceName: string;
@@ -123,10 +121,10 @@ const AllowedServiceListItem = ({
 			</Spacer.Width>
 
 			<div className="mt-[0.4rem] flex items-center gap-[0.6rem]">
-				{allowedServiceGroupData.allowedSites.map((siteUrl) => (
+				{allowedServiceGroupData?.favicons.map((siteUrl) => (
 					<img key={siteUrl} src={siteUrl} alt="favicon" className="h-[2rem] w-[2rem] rounded-full" />
 				))}
-				{allowedServiceGroupData.extraCnt > 0 && (
+				{allowedServiceGroupData?.extraCnt > 0 && (
 					<div className="body-detail-reg-12 flex h-[2rem] w-[2rem] items-center justify-center rounded-[57px] bg-date-active text-white">
 						+{allowedServiceGroupData.extraCnt}
 					</div>

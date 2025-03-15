@@ -16,7 +16,7 @@ export interface GetAllowedServiceListRes {
 		id: number;
 		name: string;
 		colorCode: ColorPaletteType;
-		allowedSites: string[];
+		favicons: string[];
 		extraCnt: 0;
 	}[];
 }

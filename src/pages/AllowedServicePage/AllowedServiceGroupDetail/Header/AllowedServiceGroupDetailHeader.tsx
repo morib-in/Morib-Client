@@ -131,12 +131,12 @@ const AllowedServiceGroupDetailHeaderInput = ({ ...props }: AllowedServiceGroupD
 };
 
 export interface AllowedServiceGroupDetailHeaderColorButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-	hashColor: ColorPaletteType;
-	onSelectColor: (hashColor: ColorPaletteType) => void;
+	selectedColor: ColorPaletteType;
+	onSelectColor: (selectedColor: ColorPaletteType) => void;
 }
 
 const AllowedServiceGroupDetailHeaderColorButton = ({
-	hashColor,
+	selectedColor,
 	onSelectColor,
 	...props
 }: AllowedServiceGroupDetailHeaderColorButtonProps) => {
@@ -151,8 +151,8 @@ const AllowedServiceGroupDetailHeaderColorButton = ({
 		setIsPaletteOpen(false);
 	};
 
-	const handleColorButtonClick = (hashColor: ColorPaletteType) => {
-		onSelectColor(hashColor);
+	const handleColorButtonClick = (selectedColor: ColorPaletteType) => {
+		onSelectColor(selectedColor);
 		handleClosePalette();
 	};
 
@@ -160,7 +160,10 @@ const AllowedServiceGroupDetailHeaderColorButton = ({
 
 	return (
 		<div ref={paletteRef} className="relative flex items-center gap-[0.4rem]">
-			<div onClick={handleTogglePalette} className={`h-[3rem] w-[3rem] rounded-full ${COLOR_PALETTE_MAP[hashColor]}`} />
+			<div
+				onClick={handleTogglePalette}
+				className={`h-[3rem] w-[3rem] rounded-full ${COLOR_PALETTE_MAP[selectedColor]}`}
+			/>
 			<span>
 				<ButtonArrowSVG
 					onClick={handleTogglePalette}
@@ -168,15 +171,16 @@ const AllowedServiceGroupDetailHeaderColorButton = ({
 					bg={false}
 					{...props}
 				/>
-				<ColorPalette isOpen={isPaletteOpen}>
+				<ColorPalette isOpen={isPaletteOpen} className="top-[4.8rem]">
 					{Object.keys(COLOR_PALETTE_MAP).map((hashColor) => {
 						return (
 							<ColorPalette.ColorButton
 								key={hashColor}
 								onClick={() => {
-									handleColorButtonClick(hashColor as keyof typeof COLOR_PALETTE_MAP);
+									handleColorButtonClick(hashColor as ColorPaletteType);
 								}}
-								hashColor={hashColor as keyof typeof COLOR_PALETTE_MAP}
+								hashColor={hashColor as ColorPaletteType}
+								isSelected={hashColor === selectedColor}
 							/>
 						);
 					})}

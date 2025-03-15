@@ -1,12 +1,17 @@
-import { ButtonHTMLAttributes, InputHTMLAttributes, ReactNode } from 'react';
+import { ButtonHTMLAttributes, InputHTMLAttributes, KeyboardEvent, ReactNode, useRef, useState } from 'react';
 
 import HomeLargeBtn from '@/shared/components/ButtonHomeLarge/ButtonHomeLarge';
+import ColorPalette from '@/shared/components/ColorPallete/ColorPallete';
 import Spacer from '@/shared/components/Spacer/Spacer';
 
+import useClickOutside from '@/shared/hooks/useClickOutside';
+
+import { ColorPaletteType } from '@/shared/types/allowedService';
 import { AllowedSiteType } from '@/shared/types/allowedSites';
 import { HomeLargeBtnVariant } from '@/shared/types/global';
 
-import ColorIcon from '@/shared/assets/svgs/ic_color.svg?react';
+import { COLOR_PALETTE_MAP } from '@/shared/constants/colorPalette';
+
 import MinusIcon from '@/shared/assets/svgs/ic_minus.svg?react';
 import PencilIcon from '@/shared/assets/svgs/ic_pencil.svg?react';
 
@@ -26,55 +31,111 @@ interface AllowedServiceHeaderProps {
 	children: ReactNode;
 }
 
-const AllowedServiceHeader = () => {
+const AllowedServiceHeader = ({ children }: AllowedServiceHeaderProps) => {
+	return <div className="flex items-center">{children}</div>;
+};
+
+interface AllowedServiceHeaderColorButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+	selectedColor: ColorPaletteType;
+	onSelectColor: (hashColor: ColorPaletteType) => void;
+}
+
+const AllowedServiceHeaderColorButton = ({
+	selectedColor,
+	onSelectColor,
+	...props
+}: AllowedServiceHeaderColorButtonProps) => {
+	const [isPaletteOpen, setIsPaletteOpen] = useState(false);
+	const paletteRef = useRef<HTMLDivElement>(null);
+
+	const handleTogglePalette = () => {
+		setIsPaletteOpen((prev) => !prev);
+	};
+
+	const handleClosePalette = () => {
+		setIsPaletteOpen(false);
+	};
+
+	const handleColorButtonClick = (hashColor: ColorPaletteType) => {
+		onSelectColor(hashColor);
+	};
+
+	useClickOutside(paletteRef, handleClosePalette);
+
 	return (
-		<div className="flex items-center">
-			<button>
-				<ColorIcon />
+		<div ref={paletteRef} className="relative flex h-full items-center">
+			<button onClick={handleTogglePalette} {...props}>
+				<div className={`h-[2.2rem] w-[2.2rem] rounded-full ${COLOR_PALETTE_MAP[selectedColor]}`} />
 			</button>
-			<h2 className="ml-[1rem] text-white head-bold-24">허용서비스 리스트 1</h2>
-			<button className="ml-[1.7rem]">
-				<PencilIcon />
-			</button>
+			<ColorPalette isOpen={isPaletteOpen} className={'top-[3.6rem]'}>
+				{Object.keys(COLOR_PALETTE_MAP).map((hashColor) => {
+					return (
+						<ColorPalette.ColorButton
+							key={hashColor}
+							onClick={() => {
+								handleColorButtonClick(hashColor as ColorPaletteType);
+							}}
+							hashColor={hashColor as ColorPaletteType}
+							isSelected={selectedColor === hashColor}
+						/>
+					);
+				})}
+			</ColorPalette>
 		</div>
 	);
 };
 
-const AllowedServiceHeaderColorButton = () => {
-	return (
-		<button>
-			<ColorIcon />
-		</button>
-	);
-};
-
 interface AllowedServiceHeaderInput extends InputHTMLAttributes<HTMLInputElement> {
-	onChangeEditing: (status: boolean) => void;
-	isEditing: boolean;
+	onInitCategoryNameInput: () => void;
 }
 
-const AllowedServiceHeaderInput = ({ isEditing, onChangeEditing, ...props }: AllowedServiceHeaderInput) => {
+const AllowedServiceHeaderInput = ({ onInitCategoryNameInput, ...props }: AllowedServiceHeaderInput) => {
+	const [isEditing, setIsEditing] = useState(false);
+	const divRef = useRef(null);
+
 	const handleEnableEditing = () => {
-		onChangeEditing(true);
+		setIsEditing(true);
 	};
 
 	const handleDisableEditing = () => {
-		onChangeEditing(false);
+		if (typeof props.value === 'string' && props.value.length === 0) {
+			onInitCategoryNameInput();
+		}
+
+		setIsEditing(false);
 	};
 
+	const handleKeydown = (e: KeyboardEvent) => {
+		if (e.key === 'Enter') {
+			handleDisableEditing();
+		}
+	};
+
+	useClickOutside(divRef, handleDisableEditing);
+
 	return (
-		<>
+		<div ref={divRef} className="flex w-full items-center">
 			{isEditing ? (
 				<input
 					{...props}
-					className="placeholder-text-gray-03 ml-[1rem] w-full bg-transparent text-white head-bold-24 focus:outline-none"
+					onKeyPress={handleKeydown}
+					autoFocus
+					className={`placeholder-text-gray-03 ml-[1rem] max-w-[calc(36.4rem-4.7rem-3.2rem)] bg-transparent text-white head-bold-24 focus:outline-none`}
 				/>
 			) : (
-				<h1 onDoubleClick={handleEnableEditing} className="ml-[1rem] w-full bg-transparent text-white head-bold-24">
-					허용서비스 리스트 1
-				</h1>
+				<>
+					<h1
+						onClick={handleEnableEditing}
+						className="ml-[1rem] max-w-[calc(36.4rem-4.7rem-3.2rem)] truncate bg-transparent text-white head-bold-24"
+					>
+						{props.value}
+					</h1>
+					<button type="button" onClick={handleEnableEditing} className="ml-[1.7rem]">
+						<PencilIcon />
+					</button>
+				</>
 			)}
-		</>
+		</div>
 	);
 };
 
@@ -122,6 +183,8 @@ const AllowedServiceBottomButton = (props: ButtonHTMLAttributes<HTMLButtonElemen
 
 const AllowedService = Object.assign(AllowedServicesRoot, {
 	Header: AllowedServiceHeader,
+	HeaderInput: AllowedServiceHeaderInput,
+	HeaderColorButton: AllowedServiceHeaderColorButton,
 	List: AllowedServiceList,
 	Item: AllowedServiceItem,
 	BottomButton: AllowedServiceBottomButton,
