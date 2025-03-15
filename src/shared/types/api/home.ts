@@ -62,3 +62,8 @@ export interface DeleteCategoryReq {
 export interface DeleteTaskReq {
 	taskId: number;
 }
+
+export interface ModifyCategoryReq {
+	categoryId: number;
+	name: string;
+}
