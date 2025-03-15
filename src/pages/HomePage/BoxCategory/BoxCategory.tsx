@@ -1,6 +1,6 @@
 import { Dayjs } from 'dayjs';
 
-import { Suspense, lazy, useRef, useState } from 'react';
+import { KeyboardEvent, Suspense, lazy, useRef, useState } from 'react';
 
 import BoxTodo from '@/shared/components/BoxTodo/BoxTodo';
 import ButtonTodoToggle from '@/shared/components/ButtonTodayToggle/ButtonTodoToggle';
@@ -123,6 +123,13 @@ const BoxCategory = ({
 		});
 	};
 
+	const handleCalendarKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+		if (e.key === 'Enter' && isCalendarOpened) {
+			handleCreatePost();
+			e.preventDefault();
+		}
+	};
+
 	return (
 		<Spacer.Height
 			as="article"
@@ -170,7 +177,16 @@ const BoxCategory = ({
 
 									{!editable && (
 										<Suspense fallback={<div>Loading...</div>}>
-											<div className="absolute left-[7.25rem] top-[9.5rem]">
+											<div
+												className="absolute left-[7.25rem] top-[9.5rem]"
+												tabIndex={0}
+												ref={(node) => {
+													if (node) {
+														node.focus();
+													}
+												}}
+												onKeyDown={handleCalendarKeyDown}
+											>
 												<Calendar
 													isPeriodOn={isPeriodOn}
 													selectedStartDate={selectedStartDate ?? defaultDate}
