@@ -244,7 +244,7 @@ const AllowedServicePage = () => {
 					break;
 			}
 		}
-	}, [event, queryClient]);
+	}, [event]);
 
 	return (
 		<AutoFixedGrid type="allowedService" className="gap-[3rem] bg-gray-bg-01 px-[3.6rem] py-[4.2rem]">

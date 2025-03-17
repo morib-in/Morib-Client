@@ -261,7 +261,7 @@ const HomePage = () => {
 					break;
 			}
 		}
-	}, [event, queryClient]);
+	}, [event]);
 
 	useEffect(() => {
 		handleCategoryScroll();

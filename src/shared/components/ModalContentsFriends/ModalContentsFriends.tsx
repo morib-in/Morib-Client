@@ -56,7 +56,7 @@ const ModalContentsFriends = forwardRef<HTMLDivElement, ModalContentsFriendsProp
 					break;
 			}
 		}
-	}, [event, queryClient]);
+	}, [event]);
 
 	return (
 		<div

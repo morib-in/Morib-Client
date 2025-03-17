@@ -190,14 +190,17 @@ const TimerPage = () => {
 						}
 
 						if (selectedTodoData?.categoryName) {
-							const refreshedEventSource = new EventSourcePolyfill(API_URL + SSE_ENDPOINT.GET_SSE_REFRESH, {
-								headers: {
-									Authorization: `Bearer ${accessToken}`,
-									elapsedTime: String(timerTime),
-									runningCategoryName: selectedTodoData?.categoryName || '',
-									taskId: String(selectedTodoData?.id),
+							const refreshedEventSource = new EventSourcePolyfill(
+								API_URL + SSE_ENDPOINT.GET_SSE_REFRESH({ runningCategoryName: selectedTodoData?.categoryName || '' }),
+								{
+									headers: {
+										Authorization: `Bearer ${accessToken}`,
+										elapsedTime: String(timerTime),
+
+										taskId: String(selectedTodoData?.id),
+									},
 								},
-							});
+							);
 
 							dispatch(refreshedEventSource);
 						}
@@ -207,7 +210,7 @@ const TimerPage = () => {
 					break;
 			}
 		}
-	}, [event, queryClient]);
+	}, [event]);
 
 	return (
 		<div className="relative flex h-screen w-screen min-w-[750px] flex-col overflow-hidden bg-gray-bg-01">
