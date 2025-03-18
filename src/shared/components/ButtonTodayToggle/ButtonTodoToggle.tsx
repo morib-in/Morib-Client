@@ -9,7 +9,7 @@ interface ButtonTodoToggle extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const ButtonTodoToggle = ({ children, isCompleted = false, isToggled, ...props }: ButtonTodoToggle) => {
 	const title = isCompleted ? '할 일 목록' : '완료된 일';
-	const ToggleIcon = isToggled ? <TodoToggleIcon className="rotate-180" /> : <TodoToggleIcon />;
+	const ToggleIcon = isToggled ? <TodoToggleIcon /> : <TodoToggleIcon className="rotate-180" />;
 
 	return (
 		<>
