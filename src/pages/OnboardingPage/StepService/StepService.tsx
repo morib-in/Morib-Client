@@ -61,7 +61,9 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 	const handleAddRecommendedService = (urlInfo: AllowedSiteType) => {
 		const selected = isSelectedUrl(urlInfo.siteUrl);
 
-		if (selected) return;
+		if (selected) {
+			return handleRemoveSelectedService(urlInfo.siteUrl);
+		}
 
 		setSelectedServices((prev) => [...prev, urlInfo]);
 	};
