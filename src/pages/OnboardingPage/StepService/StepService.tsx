@@ -56,6 +56,7 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 		const urlInfo = response?.data;
 
 		setSelectedServices((prev) => [...prev, urlInfo]);
+		setInputUrl('');
 	};
 
 	const handleAddRecommendedService = (urlInfo: AllowedSiteType) => {
@@ -165,7 +166,7 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 						onChange={handleChangeInputUrl}
 						isError={(inputUrl.length > 0 && !isUrlValid(inputUrl)) || isError}
 						errorMessage={isError ? '유효하지 않은 주소입니다.' : '알맞은 형식의 url을 입력해 주세요.'}
-						isSuccess={inputUrl.length > 0 && inputSuccess}
+						isSuccess={inputSuccess}
 						successMessage={'url 입력에 성공했어요.'}
 						placeholder="직접 url 입력하기"
 					>
