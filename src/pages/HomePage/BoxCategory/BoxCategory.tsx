@@ -204,7 +204,10 @@ const BoxCategory = ({
 									<BoxTodoInput
 										ref={todoRef}
 										editable={editable}
-										onEditComplete={handleEditComplete}
+										onEditComplete={() => {
+											handleEditComplete();
+											handleCreatePost();
+										}}
 										name={name}
 										onInputChange={handleInputChange}
 										selectedStartDate={selectedDate}
