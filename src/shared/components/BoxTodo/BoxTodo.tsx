@@ -89,11 +89,15 @@ const BoxTodo = ({
 		>
 			<div className="flex flex-col justify-center">
 				<div className="flex items-center justify-between">
-					<div className="flex items-center gap-[0.6rem]">
+					<div className="flex w-[22.2rem] items-center gap-[0.6rem]">
 						<button onClick={onToggleComplete} className={disableBtnStyle}>
 							{CheckBoxIcon}
 						</button>
-						<h3 className={`+ mt-[0.42rem] text-white body-semibold-16 ${nameStyle}`}>{name}</h3>
+						<h3
+							className={`mt-[0.42rem] text-white body-semibold-16 ${nameStyle} overflow-hidden text-ellipsis whitespace-nowrap`}
+						>
+							{name}
+						</h3>
 					</div>
 					{!isSelectedTodoExist && !addingComplete && (
 						<Dropdown>
