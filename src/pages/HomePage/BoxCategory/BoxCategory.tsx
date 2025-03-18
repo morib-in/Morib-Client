@@ -167,7 +167,9 @@ const BoxCategory = ({
 						onKeyDown={handleKeyDown}
 					/>
 				) : (
-					<h2 className="text-white subhead-semibold-18">{title}</h2>
+					<h2 className="text-white subhead-semibold-18" onClick={handleStartEditing}>
+						{title}
+					</h2>
 				)}
 				<div className="flex items-center gap-[1rem]">
 					<button
