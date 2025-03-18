@@ -1,39 +1,37 @@
 import { Dayjs } from 'dayjs';
 
-import { useState } from 'react';
-
 import { getWeekDates } from '@/shared/utils/date';
 
-export const useDatePicker = (todayDate: Dayjs) => {
-	const [currentDate, setCurrentDate] = useState(todayDate);
+interface UseDatePickerProps {
+	todayDate: Dayjs;
+	selectedDate: Dayjs;
+	onSelectedDateChange: (date: Dayjs) => void;
+}
 
-	const weekDates = getWeekDates(currentDate);
+export const useDatePicker = ({ todayDate, selectedDate, onSelectedDateChange }: UseDatePickerProps) => {
+	const weekDates = getWeekDates(selectedDate);
 
 	const handleNextWeek = () => {
-		const nextWeek = currentDate.add(1, 'week');
-		setCurrentDate(nextWeek);
+		onSelectedDateChange(selectedDate.add(1, 'week'));
 	};
 
 	const handlePreviousWeek = () => {
-		const previousWeek = currentDate.subtract(1, 'week');
-		setCurrentDate(previousWeek);
+		onSelectedDateChange(selectedDate.subtract(1, 'week'));
 	};
 
 	const handleToday = () => {
-		setCurrentDate(todayDate);
+		onSelectedDateChange(todayDate);
 	};
 
 	const handleYearMonthClick = (yearMonthDate: Dayjs) => {
 		if (yearMonthDate.isSame(todayDate, 'month')) {
-			setCurrentDate(todayDate);
+			onSelectedDateChange(todayDate);
 		} else {
-			setCurrentDate(yearMonthDate);
+			onSelectedDateChange(yearMonthDate);
 		}
 	};
 
 	return {
-		todayDate,
-		currentDate,
 		weekDates,
 		handleNextWeek,
 		handlePreviousWeek,

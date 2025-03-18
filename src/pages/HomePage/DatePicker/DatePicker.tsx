@@ -21,14 +21,16 @@ interface DatePickerProps {
 }
 
 const DatePicker = ({ todayDate, selectedDate, onSelectedDateChange }: DatePickerProps) => {
-	const { currentDate, weekDates, handleNextWeek, handlePreviousWeek, handleToday, handleYearMonthClick } =
-		useDatePicker(todayDate);
+	const { weekDates, handleNextWeek, handlePreviousWeek, handleToday, handleYearMonthClick } = useDatePicker({
+		todayDate,
+		selectedDate,
+		onSelectedDateChange,
+	});
 
 	const homeDropdownData = getHomeDropdownData(todayDate);
 
 	const handleClickTodayBtn = () => {
 		handleToday();
-		onSelectedDateChange(todayDate);
 	};
 
 	return (
@@ -37,8 +39,9 @@ const DatePicker = ({ todayDate, selectedDate, onSelectedDateChange }: DatePicke
 				<Dropdown>
 					<Dropdown.Trigger>
 						<div className="mb-[0.7rem] flex items-center gap-[2rem]">
-							<h1 className="text-white head-bold-28 2xl:title-bold-32">{currentDate.format('YYYY년 MM월')}</h1>
-							<ButtonArrowIcon className={'rounded-full bg-gray-bg-03 hover:bg-gray-bg-05'} />
+							{/* selectedDate를 사용하여 월을 표시 */}
+							<h1 className="text-white head-bold-28 2xl:title-bold-32">{selectedDate.format('YYYY년 MM월')}</h1>
+							<ButtonArrowIcon className="rounded-full bg-gray-bg-03 hover:bg-gray-bg-05" />
 						</div>
 					</Dropdown.Trigger>
 
@@ -47,18 +50,16 @@ const DatePicker = ({ todayDate, selectedDate, onSelectedDateChange }: DatePicke
 						boxShadow="shadow-[0_4px_4.8px_0_rgba(0,0,0,0.25)]"
 						className="top-[4.4rem]"
 					>
-						{homeDropdownData.map((item) => {
-							return (
-								<li
-									key={item.format('YYYY년 MM월')}
-									className="flex h-[4.6rem] w-[22.5rem] flex-row items-center justify-center border-none bg-mint-01"
-								>
-									<ButtonDropdownOptions onClick={() => handleYearMonthClick(item)}>
-										{item.format('YYYY년 MM월')}
-									</ButtonDropdownOptions>
-								</li>
-							);
-						})}
+						{homeDropdownData.map((item) => (
+							<li
+								key={item.format('YYYY년 MM월')}
+								className="flex h-[4.6rem] w-[22.5rem] items-center justify-center border-none bg-mint-01"
+							>
+								<ButtonDropdownOptions onClick={() => handleYearMonthClick(item)}>
+									{item.format('YYYY년 MM월')}
+								</ButtonDropdownOptions>
+							</li>
+						))}
 					</Dropdown.Content>
 				</Dropdown>
 			</section>
@@ -72,10 +73,9 @@ const DatePicker = ({ todayDate, selectedDate, onSelectedDateChange }: DatePicke
 
 							return (
 								<li key={day}>
-									<DateBtn
-										isSelected={isSelected}
-										onClick={() => onSelectedDateChange(date)}
-									>{`${formattedDate} ${day}`}</DateBtn>
+									<DateBtn isSelected={isSelected} onClick={() => onSelectedDateChange(date)}>
+										{`${formattedDate} ${day}`}
+									</DateBtn>
 								</li>
 							);
 						})}
