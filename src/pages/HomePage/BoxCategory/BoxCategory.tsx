@@ -36,6 +36,7 @@ interface BoxCategoryProps {
 	onDeleteCategory: (categoryId: number) => void;
 	onModifyCategory: (categoryId: number, newName: string) => void;
 	isSelectedTodoExist?: boolean;
+	selectedDate: Dayjs;
 }
 
 const format = (date: Dayjs | null) => {
@@ -58,6 +59,7 @@ const BoxCategory = ({
 	onDeleteCategory,
 	onModifyCategory,
 	isSelectedTodoExist,
+	selectedDate,
 }: BoxCategoryProps) => {
 	const { mutate, isError, error } = usePostCreateTask();
 	const [ongoingTodoToggle, setOngoingTodoToggle] = useState(true);
@@ -90,7 +92,6 @@ const BoxCategory = ({
 
 	const {
 		isPeriodOn,
-		selectedStartDate,
 		selectedEndDate,
 		isCalendarOpened,
 		defaultDate,
@@ -104,13 +105,14 @@ const BoxCategory = ({
 		const dataToPost = {
 			categoryId: id,
 			name: name,
-			startDate: format(selectedStartDate) as string,
+			startDate: format(selectedDate) as string,
 			endDate: format(selectedEndDate),
 		};
 		mutate(dataToPost);
 
 		setName('');
 		setIsAdding(false);
+		handleEndDateInput(null);
 
 		handlePeriodEnd();
 	};
@@ -205,7 +207,7 @@ const BoxCategory = ({
 										onEditComplete={handleEditComplete}
 										name={name}
 										onInputChange={handleInputChange}
-										selectedStartDate={selectedStartDate}
+										selectedStartDate={selectedDate}
 										selectedEndDate={selectedEndDate}
 									/>
 
@@ -223,7 +225,7 @@ const BoxCategory = ({
 											>
 												<Calendar
 													isPeriodOn={isPeriodOn}
-													selectedStartDate={selectedStartDate ?? defaultDate}
+													selectedStartDate={selectedDate ?? defaultDate}
 													selectedEndDate={selectedEndDate ?? null}
 													onStartDateInput={handleStartDateInput}
 													onEndDateInput={handleEndDateInput}
