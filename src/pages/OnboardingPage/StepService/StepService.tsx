@@ -38,7 +38,7 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 
 	const navigate = useNavigate();
 
-	const { mutateAsync: getUrlInfo, reset: resetGetUrlInfo, isError, error, isPending } = useGetUrlInfo();
+	const { mutateAsync: getUrlInfo, reset: resetGetUrlInfo, isError, isPending } = useGetUrlInfo();
 	const { mutate: postInterestArea } = usePostInterestArea();
 
 	const isSelectedUrl = (siteUrl: string) => {
@@ -162,7 +162,7 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 						onKeyDown={handleKeyDown}
 						onChange={handleChangeInputUrl}
 						isError={(inputUrl.length > 0 && !isUrlValid(inputUrl)) || isError}
-						errorMessage={isError ? error.response?.data.message : '알맞은 형식의 url을 입력해 주세요.'}
+						errorMessage={isError ? '유효하지 않은 주소입니다.' : '알맞은 형식의 url을 입력해 주세요.'}
 						isSuccess={inputUrl.length > 0 && inputSuccess}
 						successMessage={'url 입력에 성공했어요.'}
 						placeholder="직접 url 입력하기"
