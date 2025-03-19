@@ -70,6 +70,8 @@ const BoxCategory = ({
 
 	const handleCalendarToggle = () => {
 		setIsCalendarOpen((prev) => !prev);
+		handleEndDateInput(null);
+		handlePeriodEnd();
 	};
 
 	const handleOngoingTodoToggle = () => {
