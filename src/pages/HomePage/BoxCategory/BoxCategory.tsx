@@ -66,6 +66,11 @@ const BoxCategory = ({
 	const [completedTodoToggle, setCompletedTodoToggle] = useState(false);
 	const [isCategoryEditing, setIsCategoryEditing] = useState(false);
 	const [editedCategoryName, setEditedCategoryName] = useState(title);
+	const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+
+	const handleCalendarToggle = () => {
+		setIsCalendarOpen((prev) => !prev);
+	};
 
 	const handleOngoingTodoToggle = () => {
 		setOngoingTodoToggle((prev) => !prev);
@@ -199,47 +204,45 @@ const BoxCategory = ({
 				<Spacer.Height className="relative flex">
 					<Spacer.Height className="flex flex-col overflow-y-auto">
 						<ButtonTodoToggle isCompleted onClick={handleOngoingTodoToggle} isToggled={ongoingTodoToggle}>
-							{isAdding && (
-								<>
-									<BoxTodoInput
-										ref={todoRef}
-										editable={editable}
-										onEditComplete={() => {
-											handleEditComplete();
-											handleCreatePost();
-										}}
-										name={name}
-										onInputChange={handleInputChange}
-										selectedStartDate={selectedDate}
-										selectedEndDate={selectedEndDate}
-									/>
+							{isAdding && !isCalendarOpen && (
+								<BoxTodoInput
+									ref={todoRef}
+									editable={editable}
+									onEditComplete={() => {
+										handleEditComplete();
+										handleCreatePost();
+									}}
+									name={name}
+									onInputChange={handleInputChange}
+									selectedStartDate={selectedDate}
+									selectedEndDate={selectedEndDate}
+								/>
+							)}
 
-									{!editable && (
-										<Suspense fallback={<div>Loading...</div>}>
-											<div
-												className="absolute left-[7.25rem] top-[9.5rem]"
-												tabIndex={0}
-												ref={(node) => {
-													if (node) {
-														node.focus();
-													}
-												}}
-												onKeyDown={handleCalendarKeyDown}
-											>
-												<Calendar
-													isPeriodOn={isPeriodOn}
-													selectedStartDate={selectedDate ?? defaultDate}
-													selectedEndDate={selectedEndDate ?? null}
-													onStartDateInput={handleStartDateInput}
-													onEndDateInput={handleEndDateInput}
-													isCalendarOpened={isCalendarOpened}
-													onPeriodToggle={handlePeriodToggle}
-													clickOutSideCallback={handleCreatePost}
-												/>
-											</div>
-										</Suspense>
-									)}
-								</>
+							{isCalendarOpen && (
+								<Suspense fallback={<div>Loading...</div>}>
+									<div
+										className="absolute left-[7.25rem] top-[9.5rem]"
+										tabIndex={0}
+										ref={(node) => {
+											if (node) {
+												node.focus();
+											}
+										}}
+										onKeyDown={handleCalendarKeyDown}
+									>
+										<Calendar
+											isPeriodOn={isPeriodOn}
+											selectedStartDate={selectedDate ?? defaultDate}
+											selectedEndDate={selectedEndDate ?? null}
+											onStartDateInput={handleStartDateInput}
+											onEndDateInput={handleEndDateInput}
+											isCalendarOpened={isCalendarOpened}
+											onPeriodToggle={handlePeriodToggle}
+											clickOutSideCallback={handleCalendarToggle}
+										/>
+									</div>
+								</Suspense>
 							)}
 
 							{ongoingTodos.map(({ id, name, startDate, endDate, elapsedTime }) => {
@@ -250,9 +253,7 @@ const BoxCategory = ({
 									endDate,
 									elapsedTime,
 								};
-
 								const selectedNumber = getSelectedNumber(id);
-
 								return (
 									<BoxTodo
 										id={id}
@@ -277,6 +278,7 @@ const BoxCategory = ({
 										clickable={addingTodayTodoStatus}
 										addingComplete={addingComplete}
 										isSelectedTodoExist={isSelectedTodoExist}
+										handleCalendarToggle={handleCalendarToggle}
 									/>
 								);
 							})}
@@ -299,6 +301,7 @@ const BoxCategory = ({
 										clickable={addingTodayTodoStatus}
 										addingComplete={addingComplete}
 										isSelectedTodoExist={isSelectedTodoExist}
+										handleCalendarToggle={handleCalendarToggle}
 									/>
 								))}
 							</ButtonTodoToggle>
