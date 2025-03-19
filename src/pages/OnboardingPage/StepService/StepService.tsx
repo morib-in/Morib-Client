@@ -164,8 +164,14 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 						value={inputUrl}
 						onKeyDown={handleKeyDown}
 						onChange={handleChangeInputUrl}
-						isError={(inputUrl.length > 0 && !isUrlValid(inputUrl)) || isError}
-						errorMessage={isError ? '유효하지 않은 주소입니다.' : '알맞은 형식의 url을 입력해 주세요.'}
+						isError={(inputUrl.length > 0 && !isUrlValid(inputUrl)) || isError || isSelectedUrl(inputUrl)}
+						errorMessage={
+							isError
+								? '유효하지 않은 주소입니다.'
+								: isSelectedUrl(inputUrl)
+									? '이미 등록된 url입니다.'
+									: '알맞은 형식의 url을 입력해 주세요.'
+						}
 						isSuccess={inputSuccess}
 						successMessage={'url 입력에 성공했어요.'}
 						placeholder="직접 url 입력하기"
