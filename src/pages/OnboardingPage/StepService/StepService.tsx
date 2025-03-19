@@ -42,7 +42,9 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 	const { mutate: postInterestArea } = usePostInterestArea();
 
 	const isSelectedUrl = (siteUrl: string) => {
-		return selectedServices.some((service) => service.siteUrl === siteUrl);
+		return selectedServices.some(
+			(service) => service.siteUrl.replace(/^https?:\/\//, '') === siteUrl.replace(/^https?:\/\//, ''),
+		);
 	};
 
 	const handleAddSelectedService = async (siteUrl: string) => {
@@ -78,6 +80,7 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 			setInputSuccess(false);
 		}
 
+		resetGetUrlInfo();
 		setInputUrl(e.target.value);
 	};
 
