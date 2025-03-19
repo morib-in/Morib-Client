@@ -55,6 +55,9 @@ export default {
 				'.body-semibold-16-done': {
 					'@apply text-[1.6rem] font-semibold leading-140 line-through': '',
 				},
+				'.body-med-24': {
+					'@apply text-[2.4rem] font-medium leading-normal': '',
+				},
 				'.body-med-16': {
 					'@apply text-[1.6rem] font-medium leading-140': '',
 				},
