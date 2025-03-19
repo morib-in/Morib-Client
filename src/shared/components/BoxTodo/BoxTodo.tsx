@@ -30,7 +30,7 @@ interface BoxTodoProps {
 	addingComplete?: boolean;
 	timerIncreasedTime?: number;
 	isSelectedTodoExist?: boolean;
-	handleCalendarToggle: () => void;
+	handleCalendarToggle?: () => void;
 }
 const BoxTodo = ({
 	id,

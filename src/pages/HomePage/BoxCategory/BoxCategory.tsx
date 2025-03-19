@@ -280,7 +280,6 @@ const BoxCategory = ({
 										clickable={addingTodayTodoStatus}
 										addingComplete={addingComplete}
 										isSelectedTodoExist={isSelectedTodoExist}
-										handleCalendarToggle={handleCalendarToggle}
 									/>
 								);
 							})}
