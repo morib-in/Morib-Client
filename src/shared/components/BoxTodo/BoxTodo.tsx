@@ -95,11 +95,7 @@ const BoxTodo = ({
 						<button onClick={onToggleComplete} className={disableBtnStyle}>
 							{CheckBoxIcon}
 						</button>
-						<h3
-							className={`mt-[0.42rem] text-white body-semibold-16 ${nameStyle} overflow-hidden text-ellipsis whitespace-nowrap`}
-						>
-							{name}
-						</h3>
+						<h3 className={`mt-[0.42rem] text-white body-semibold-16 ${nameStyle} truncate`}>{name}</h3>
 					</div>
 					{!isSelectedTodoExist && !addingComplete && (
 						<Dropdown>
