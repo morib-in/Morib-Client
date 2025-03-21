@@ -56,7 +56,7 @@ const TimerPage = () => {
 	const { ongoingTodos, completedTodos } = splitTasksByCompletion(todos);
 	const [selectedTodoId, setSelectedTodoId] = useState<number | null>(null);
 	const [selectedTodoData, setSelectedTodoData] = useState<TimerTodoType | undefined>(undefined);
-	const [isInitialRender, setIsInitialRender] = useState(false);
+	const [isInitialRender, setIsInitialRender] = useState(true);
 
 	const [registeredNames, setRegisteredNames] = useState<string[]>([]);
 	const [allowedSitesUrl, setAllowedSitesUrl] = useState<string[]>([]);
@@ -190,17 +190,14 @@ const TimerPage = () => {
 						}
 
 						if (selectedTodoData?.categoryName) {
-							const refreshedEventSource = new EventSourcePolyfill(
-								API_URL + SSE_ENDPOINT.GET_SSE_REFRESH({ runningCategoryName: selectedTodoData?.categoryName || '' }),
-								{
-									headers: {
-										Authorization: `Bearer ${accessToken}`,
-										elapsedTime: String(timerTime),
+							const refreshedEventSource = new EventSourcePolyfill(API_URL + SSE_ENDPOINT.GET_SSE_REFRESH, {
+								headers: {
+									Authorization: `Bearer ${accessToken}`,
+									elapsedTime: String(timerTime),
 
-										taskId: String(selectedTodoData?.id),
-									},
+									taskId: String(selectedTodoData?.id),
 								},
-							);
+							});
 
 							dispatch(refreshedEventSource);
 						}
