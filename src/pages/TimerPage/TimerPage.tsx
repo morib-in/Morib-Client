@@ -29,7 +29,6 @@ import { API_URL } from '@/shared/apisV2/client';
 import { timerKeys } from '@/shared/apisV2/timer/timer.keys';
 import { usePostStopTimer } from '@/shared/apisV2/timer/timer.mutations';
 import { useGetPopoverAllowedServiceList, useGetTimerTodos } from '@/shared/apisV2/timer/timer.queries';
-import { todoData } from '@/shared/mocks/homeData';
 import { sseConnectionAtom } from '@/shared/stores/atoms/SSEAtoms';
 
 import Carousel from './Carousel/Carousel';
