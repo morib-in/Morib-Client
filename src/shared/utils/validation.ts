@@ -1,5 +1,5 @@
 export const isUrlValid = (url: string): boolean => {
-	const urlPattern = /^(https?:\/\/)?([\w-]+(?:\.[\w-]+)+)(:[0-9]{1,5})?(\/[\w#!:.?+=&%@!\-/]*)?$/;
+	const urlPattern = /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+(\.[a-zA-Z]{2,})+)(:\d{1,5})?(\/[\w#!:.?+=&%@!\-/]*)?$/;
 	return urlPattern.test(url);
 };
 
