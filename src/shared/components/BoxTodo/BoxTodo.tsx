@@ -30,6 +30,7 @@ interface BoxTodoProps {
 	addingComplete?: boolean;
 	timerIncreasedTime?: number;
 	isSelectedTodoExist?: boolean;
+	handleCalendarToggle?: () => void;
 }
 const BoxTodo = ({
 	id,
@@ -47,6 +48,7 @@ const BoxTodo = ({
 	addingComplete,
 	timerIncreasedTime,
 	isSelectedTodoExist,
+	handleCalendarToggle,
 }: BoxTodoProps) => {
 	const { mutate: deleteTask } = useDeleteTask();
 
@@ -89,11 +91,11 @@ const BoxTodo = ({
 		>
 			<div className="flex flex-col justify-center">
 				<div className="flex items-center justify-between">
-					<div className="flex items-center gap-[0.6rem]">
+					<div className="flex w-[22.2rem] items-center gap-[0.6rem]">
 						<button onClick={onToggleComplete} className={disableBtnStyle}>
 							{CheckBoxIcon}
 						</button>
-						<h3 className={`+ mt-[0.42rem] text-white body-semibold-16 ${nameStyle}`}>{name}</h3>
+						<h3 className={`mt-[0.42rem] text-white body-semibold-16 ${nameStyle} truncate`}>{name}</h3>
 					</div>
 					{!isSelectedTodoExist && !addingComplete && (
 						<Dropdown>
@@ -114,7 +116,7 @@ const BoxTodo = ({
 					)}
 				</div>
 				<div className="ml-[0.8rem] mt-[0.7rem] flex flex-col gap-[0.2rem]">
-					<button className="flex items-center gap-[0.6rem]">
+					<button className="flex items-center gap-[0.6rem]" onClick={handleCalendarToggle}>
 						<ButtonCalendarIcon />
 						<p className="mt-[0.3rem] text-gray-04 detail-reg-12">{duration}</p>
 					</button>

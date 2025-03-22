@@ -331,6 +331,7 @@ const HomePage = () => {
 												onDeleteCategory={handleDeleteCategory}
 												onModifyCategory={handleModifyCategory}
 												isSelectedTodoExist={todayTodos.length > 0}
+												selectedDate={selectedDate}
 											/>
 										);
 									})}

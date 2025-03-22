@@ -50,7 +50,7 @@ export default {
 					'@apply text-[1.8rem] font-medium leading-120': '',
 				},
 				'.body-semibold-16': {
-					'@apply text-[1.6rem] font-semibold leading-120': '',
+					'@apply text-[1.6rem] font-semibold leading-140': '',
 				},
 				'.body-semibold-16-done': {
 					'@apply text-[1.6rem] font-semibold leading-140 line-through': '',

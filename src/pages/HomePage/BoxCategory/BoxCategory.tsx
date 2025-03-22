@@ -36,6 +36,7 @@ interface BoxCategoryProps {
 	onDeleteCategory: (categoryId: number) => void;
 	onModifyCategory: (categoryId: number, newName: string) => void;
 	isSelectedTodoExist?: boolean;
+	selectedDate: Dayjs;
 }
 
 const format = (date: Dayjs | null) => {
@@ -58,12 +59,20 @@ const BoxCategory = ({
 	onDeleteCategory,
 	onModifyCategory,
 	isSelectedTodoExist,
+	selectedDate,
 }: BoxCategoryProps) => {
 	const { mutate, isError, error } = usePostCreateTask();
 	const [ongoingTodoToggle, setOngoingTodoToggle] = useState(true);
 	const [completedTodoToggle, setCompletedTodoToggle] = useState(false);
 	const [isCategoryEditing, setIsCategoryEditing] = useState(false);
 	const [editedCategoryName, setEditedCategoryName] = useState(title);
+	const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+
+	const handleCalendarToggle = () => {
+		setIsCalendarOpen((prev) => !prev);
+		handleEndDateInput(null);
+		handlePeriodEnd();
+	};
 
 	const handleOngoingTodoToggle = () => {
 		setOngoingTodoToggle((prev) => !prev);
@@ -90,7 +99,6 @@ const BoxCategory = ({
 
 	const {
 		isPeriodOn,
-		selectedStartDate,
 		selectedEndDate,
 		isCalendarOpened,
 		defaultDate,
@@ -104,13 +112,14 @@ const BoxCategory = ({
 		const dataToPost = {
 			categoryId: id,
 			name: name,
-			startDate: format(selectedStartDate) as string,
+			startDate: format(selectedDate) as string,
 			endDate: format(selectedEndDate),
 		};
 		mutate(dataToPost);
 
 		setName('');
 		setIsAdding(false);
+		handleEndDateInput(null);
 
 		handlePeriodEnd();
 	};
@@ -167,7 +176,9 @@ const BoxCategory = ({
 						onKeyDown={handleKeyDown}
 					/>
 				) : (
-					<h2 className="text-white subhead-semibold-18">{title}</h2>
+					<h2 className="text-white subhead-semibold-18" onClick={handleStartEditing}>
+						{title}
+					</h2>
 				)}
 				<div className="flex items-center gap-[1rem]">
 					<button
@@ -195,44 +206,45 @@ const BoxCategory = ({
 				<Spacer.Height className="relative flex">
 					<Spacer.Height className="flex flex-col overflow-y-auto">
 						<ButtonTodoToggle isCompleted onClick={handleOngoingTodoToggle} isToggled={ongoingTodoToggle}>
-							{isAdding && (
-								<>
-									<BoxTodoInput
-										ref={todoRef}
-										editable={editable}
-										onEditComplete={handleEditComplete}
-										name={name}
-										onInputChange={handleInputChange}
-										selectedStartDate={selectedStartDate}
-										selectedEndDate={selectedEndDate}
-									/>
+							{isAdding && !isCalendarOpen && (
+								<BoxTodoInput
+									ref={todoRef}
+									editable={editable}
+									onEditComplete={() => {
+										handleEditComplete();
+										handleCreatePost();
+									}}
+									name={name}
+									onInputChange={handleInputChange}
+									selectedStartDate={selectedDate}
+									selectedEndDate={selectedEndDate}
+								/>
+							)}
 
-									{!editable && (
-										<Suspense fallback={<div>Loading...</div>}>
-											<div
-												className="absolute left-[7.25rem] top-[9.5rem]"
-												tabIndex={0}
-												ref={(node) => {
-													if (node) {
-														node.focus();
-													}
-												}}
-												onKeyDown={handleCalendarKeyDown}
-											>
-												<Calendar
-													isPeriodOn={isPeriodOn}
-													selectedStartDate={selectedStartDate ?? defaultDate}
-													selectedEndDate={selectedEndDate ?? null}
-													onStartDateInput={handleStartDateInput}
-													onEndDateInput={handleEndDateInput}
-													isCalendarOpened={isCalendarOpened}
-													onPeriodToggle={handlePeriodToggle}
-													clickOutSideCallback={handleCreatePost}
-												/>
-											</div>
-										</Suspense>
-									)}
-								</>
+							{isCalendarOpen && (
+								<Suspense fallback={<div>Loading...</div>}>
+									<div
+										className="absolute left-[7.25rem] top-[9.5rem]"
+										tabIndex={0}
+										ref={(node) => {
+											if (node) {
+												node.focus();
+											}
+										}}
+										onKeyDown={handleCalendarKeyDown}
+									>
+										<Calendar
+											isPeriodOn={isPeriodOn}
+											selectedStartDate={selectedDate ?? defaultDate}
+											selectedEndDate={selectedEndDate ?? null}
+											onStartDateInput={handleStartDateInput}
+											onEndDateInput={handleEndDateInput}
+											isCalendarOpened={isCalendarOpened}
+											onPeriodToggle={handlePeriodToggle}
+											clickOutSideCallback={handleCalendarToggle}
+										/>
+									</div>
+								</Suspense>
 							)}
 
 							{ongoingTodos.map(({ id, name, startDate, endDate, elapsedTime }) => {
@@ -243,9 +255,7 @@ const BoxCategory = ({
 									endDate,
 									elapsedTime,
 								};
-
 								const selectedNumber = getSelectedNumber(id);
-
 								return (
 									<BoxTodo
 										id={id}
@@ -292,6 +302,7 @@ const BoxCategory = ({
 										clickable={addingTodayTodoStatus}
 										addingComplete={addingComplete}
 										isSelectedTodoExist={isSelectedTodoExist}
+										handleCalendarToggle={handleCalendarToggle}
 									/>
 								))}
 							</ButtonTodoToggle>
