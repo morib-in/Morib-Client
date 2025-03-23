@@ -1,31 +1,11 @@
+import { useEffect } from 'react';
+
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { PostApplyAllowedServiceGroupReq } from '@/shared/types/api/timer';
+import { PostApplyAllowedServiceGroupReq, PostUpdateTimerInfoReq } from '@/shared/types/api/timer';
 
-import { postApplyAllowedServiceGroup, postStartTimer, postStopTimer } from './timer.api';
+import { postApplyAllowedServiceGroup, postUpdateTimerInfo } from './timer.api';
 import { timerKeys } from './timer.keys';
-
-export const usePostStopTimer = () => {
-	const queryClient = useQueryClient();
-
-	return useMutation({
-		mutationFn: postStopTimer,
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: timerKeys.timer });
-		},
-	});
-};
-
-export const usePostStartTimer = () => {
-	const queryClient = useQueryClient();
-
-	return useMutation({
-		mutationFn: postStartTimer,
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: timerKeys.timer });
-		},
-	});
-};
 
 export const usePostApplyAllowedServiceGroup = ({ allowedGroupIdList }: PostApplyAllowedServiceGroupReq) => {
 	const queryClient = useQueryClient();
@@ -36,4 +16,37 @@ export const usePostApplyAllowedServiceGroup = ({ allowedGroupIdList }: PostAppl
 			queryClient.invalidateQueries({ queryKey: timerKeys.popover() });
 		},
 	});
+};
+
+export const usePostUpdateTimerInfo = () => {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: postUpdateTimerInfo,
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: timerKeys.friends() });
+		},
+	});
+};
+
+export const usePostUpdateTimerInfoWithPolling = ({
+	taskId,
+	elapsedTime,
+	targetDate,
+	timerStatus,
+}: Omit<PostUpdateTimerInfoReq, 'taskId'> & { taskId: number | null }) => {
+	const mutation = usePostUpdateTimerInfo();
+	const { mutate: updateTimerInfo } = mutation;
+
+	useEffect(() => {
+		if (taskId) {
+			const intervalId = setInterval(() => {
+				updateTimerInfo({ taskId, elapsedTime, targetDate, timerStatus });
+			}, 60000);
+
+			return () => clearInterval(intervalId);
+		}
+	}, [taskId, elapsedTime, targetDate, timerStatus, updateTimerInfo]);
+
+	return mutation;
 };
