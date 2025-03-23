@@ -1,7 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { AxiosError } from 'axios';
-
 import { GetUrlInfoReq, GetUrlInfoRes } from '@/shared/types/api/common';
 import { ApiErrorResponseType } from '@/shared/types/api/error';
 
