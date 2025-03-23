@@ -1,15 +1,12 @@
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
-import { EventSourcePolyfill } from 'event-source-polyfill';
-import { useSetAtom } from 'jotai';
 
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useQueryClient } from '@tanstack/react-query';
 
-import { getAccessToken } from '@/shared/utils/auth';
 import { splitTasksByCompletion } from '@/shared/utils/timer';
 import { getBaseUrl } from '@/shared/utils/url';
 
@@ -22,14 +19,8 @@ import HomeIcon from '@/shared/assets/svgs/btn_home.svg?react';
 
 import { ROUTES_CONFIG } from '@/router/routesConfig';
 
-import { SSE_ENDPOINT } from '@/shared/apisV2/SSE/SSE.endpoint';
-import { useSSE } from '@/shared/apisV2/SSE/useSSE';
-import { useSSEEvent } from '@/shared/apisV2/SSE/useSSEEvent';
-import { API_URL } from '@/shared/apisV2/client';
-import { timerKeys } from '@/shared/apisV2/timer/timer.keys';
 import { usePostStopTimer } from '@/shared/apisV2/timer/timer.mutations';
 import { useGetPopoverAllowedServiceList, useGetTimerTodos } from '@/shared/apisV2/timer/timer.queries';
-import { sseConnectionAtom } from '@/shared/stores/atoms/SSEAtoms';
 
 import Carousel from './Carousel/Carousel';
 import PopoverAllowedService from './PopoverAllowedService/PopoverAllowedService';
@@ -159,55 +150,6 @@ const TimerPage = () => {
 			setAllowedSitesUrl(uniqueAllowedSites);
 		}
 	}, [allowedServiceList]);
-
-	// NOTE: SSE 연결
-	useSSE();
-
-	// NOTE: SSE 이벤트 구독
-	const event = useSSEEvent();
-
-	const dispatch = useSetAtom(sseConnectionAtom);
-
-	useEffect(() => {
-		if (event) {
-			switch (event.type) {
-				case 'timerStart':
-					console.log('타이머 시작 이벤트 수신', event.data);
-					queryClient.invalidateQueries({ queryKey: timerKeys.timer });
-					break;
-				case 'timerStopAction':
-					console.log('타이머 정지 수신', event.data);
-					queryClient.invalidateQueries({ queryKey: timerKeys.timer });
-					break;
-				case 'timeout':
-					console.log('SSE 만료 수신', event.data);
-					{
-						const accessToken = getAccessToken();
-
-						if (!accessToken) {
-							console.warn('SSE 연결을 위한 access token이 없습니다.');
-							return;
-						}
-
-						if (selectedTodoData?.categoryName) {
-							const refreshedEventSource = new EventSourcePolyfill(API_URL + SSE_ENDPOINT.GET_SSE_REFRESH, {
-								headers: {
-									Authorization: `Bearer ${accessToken}`,
-									elapsedTime: String(timerTime),
-
-									taskId: String(selectedTodoData?.id),
-								},
-							});
-
-							dispatch(refreshedEventSource);
-						}
-					}
-					break;
-				default:
-					break;
-			}
-		}
-	}, [event]);
 
 	return (
 		<div className="relative flex h-screen w-screen min-w-[750px] flex-col overflow-hidden bg-gray-bg-01">
