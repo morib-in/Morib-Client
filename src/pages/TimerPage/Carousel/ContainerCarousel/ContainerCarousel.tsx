@@ -16,7 +16,7 @@ interface ContainerCarouselProps {
 	isOnline: boolean;
 }
 
-const ContainerCarousel = ({ image, name, time, categoryname, isPlaying }: ContainerCarouselProps) => {
+const ContainerCarousel = ({ image, name, time, categoryname, isPlaying, isOnline }: ContainerCarouselProps) => {
 	const timer = useCarouselTimer({ isPlaying, previousTime: time });
 	const formattedTime = formatSeconds(timer);
 
@@ -35,7 +35,9 @@ const ContainerCarousel = ({ image, name, time, categoryname, isPlaying }: Conta
 						}}
 						className="h-[7.4rem] w-[7.4rem] rounded-full"
 					/>
-					<OnlineIcon className="absolute bottom-[0.4rem] right-[0.6rem] flex-shrink-0 rounded-full border-[0.2rem] border-gray-bg-01" />
+					{isOnline && (
+						<OnlineIcon className="absolute bottom-[0.4rem] right-[0.6rem] flex-shrink-0 rounded-full border-[0.2rem] border-gray-bg-01" />
+					)}
 				</span>
 
 				<div className="absolute top-[8.4rem] flex items-center gap-[0.4rem]">
