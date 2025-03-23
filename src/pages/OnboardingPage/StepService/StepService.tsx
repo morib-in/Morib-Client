@@ -41,14 +41,14 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 	const { mutateAsync: getUrlInfo, reset: resetGetUrlInfo, isError, isPending } = useGetUrlInfo();
 	const { mutate: postInterestArea } = usePostInterestArea();
 
-	const isSelectedUrl = (siteUrl: string) => {
+	const checkIsSelectedUrl = (siteUrl: string) => {
 		return selectedServices.some(
 			(service) => service.siteUrl.replace(/^https?:\/\//, '') === siteUrl.replace(/^https?:\/\//, ''),
 		);
 	};
 
 	const handleAddSelectedService = async (siteUrl: string) => {
-		const selected = isSelectedUrl(siteUrl);
+		const selected = checkIsSelectedUrl(siteUrl);
 
 		if (!siteUrl || selected) return;
 
@@ -62,7 +62,7 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 	};
 
 	const handleAddRecommendedService = (urlInfo: AllowedSiteType) => {
-		const selected = isSelectedUrl(urlInfo.siteUrl);
+		const selected = checkIsSelectedUrl(urlInfo.siteUrl);
 
 		if (selected) {
 			return handleRemoveSelectedService(urlInfo.siteUrl);
@@ -167,11 +167,11 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 						value={inputUrl}
 						onKeyDown={handleKeyDown}
 						onChange={handleChangeInputUrl}
-						isError={(inputUrl.length > 0 && !isUrlValid(inputUrl)) || isError || isSelectedUrl(inputUrl)}
+						isError={(inputUrl.length > 0 && !isUrlValid(inputUrl)) || isError || checkIsSelectedUrl(inputUrl)}
 						errorMessage={
 							isError
 								? '유효하지 않은 주소입니다.'
-								: isSelectedUrl(inputUrl)
+								: checkIsSelectedUrl(inputUrl)
 									? '이미 등록된 url입니다.'
 									: '알맞은 형식의 url을 입력해 주세요.'
 						}
