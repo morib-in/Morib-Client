@@ -73,7 +73,7 @@ export const patchCategory = async ({ categoryId, name }: PatchCategoryReq) => {
 };
 
 export const patchTask = async ({ taskId, name, startDate, endDate }: PatchTaskReq) => {
-	const { data } = await authClient.patch(HOME_ENDPOINT.PATCH_TASK.replace(':categoryId', String(taskId)), {
+	const { data } = await authClient.patch(HOME_ENDPOINT.PATCH_TASK.replace(':taskId', String(taskId)), {
 		name,
 		startDate,
 		endDate,

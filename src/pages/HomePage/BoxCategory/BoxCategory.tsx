@@ -35,6 +35,7 @@ interface BoxCategoryProps {
 	addingComplete: boolean;
 	onDeleteCategory: (categoryId: number) => void;
 	onModifyCategory: (categoryId: number, newName: string) => void;
+	onPatchTask: (categoryId: number, name: string, startDate: string, endDate: string | null) => void;
 	isSelectedTodoExist?: boolean;
 	selectedDate: Dayjs;
 }
@@ -60,6 +61,7 @@ const BoxCategory = ({
 	onModifyCategory,
 	isSelectedTodoExist,
 	selectedDate,
+	onPatchTask,
 }: BoxCategoryProps) => {
 	const { mutate, isError, error } = usePostCreateTask();
 	const [ongoingTodoToggle, setOngoingTodoToggle] = useState(true);
@@ -281,6 +283,7 @@ const BoxCategory = ({
 										addingComplete={addingComplete}
 										isSelectedTodoExist={isSelectedTodoExist}
 										handleCalendarToggle={handleCalendarToggle}
+										onPatchTask={onPatchTask}
 									/>
 								);
 							})}
@@ -304,6 +307,7 @@ const BoxCategory = ({
 										addingComplete={addingComplete}
 										isSelectedTodoExist={isSelectedTodoExist}
 										handleCalendarToggle={handleCalendarToggle}
+										onPatchTask={onPatchTask}
 									/>
 								))}
 							</ButtonTodoToggle>
