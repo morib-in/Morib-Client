@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import SettingIcon from '@/shared/assets/svgs/setting.svg?react';
 import UserIcon from '@/shared/assets/svgs/user_circle.svg?react';
@@ -9,7 +9,11 @@ import AccountContent from './AccountContent/AccountContent';
 import Tabs from './Tabs/Tabs';
 import WorkSpaceSettingContent from './WorkspaceSettingContent/WorkspaceSettingContent';
 
-const ModalContentsSetting = () => {
+interface ModalContentsSettingProps {
+	isModalOpen: boolean;
+}
+
+const ModalContentsSetting = ({ isModalOpen }: ModalContentsSettingProps) => {
 	const [activeTab, setActiveTab] = useState<string>('account');
 
 	const { data: userProfile } = useGetProfile();
@@ -20,6 +24,12 @@ const ModalContentsSetting = () => {
 	const handleTabChange = (value: string) => {
 		setActiveTab(value);
 	};
+
+	useEffect(() => {
+		if (!isModalOpen) {
+			setActiveTab('account');
+		}
+	}, [isModalOpen]);
 
 	return (
 		<div className="flex h-[80rem] w-[102rem] rounded-[1.4rem] bg-gray-bg-04">

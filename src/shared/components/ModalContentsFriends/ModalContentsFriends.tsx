@@ -1,5 +1,9 @@
 import { forwardRef, useEffect, useState } from 'react';
 
+import { useQueryClient } from '@tanstack/react-query';
+
+import { friendKeys } from '@/shared/apisV2/friends/friends.keys';
+
 import FriendsRequest from './FriendRequest/FriendsRequest';
 import FriendsList from './FriendsList/FriendsList';
 
@@ -9,6 +13,7 @@ interface ModalContentsFriendsProps {
 
 const ModalContentsFriends = forwardRef<HTMLDivElement, ModalContentsFriendsProps>(({ isModalOpen }, ref) => {
 	const [activeTab, setActiveTab] = useState<'친구목록' | '친구요청'>('친구목록');
+	const queryClient = useQueryClient();
 
 	const handleTabChange = (tab: '친구목록' | '친구요청') => {
 		setActiveTab(tab);
@@ -25,6 +30,8 @@ const ModalContentsFriends = forwardRef<HTMLDivElement, ModalContentsFriendsProp
 	useEffect(() => {
 		if (!isModalOpen) {
 			resetActiveTab();
+		} else {
+			queryClient.invalidateQueries({ queryKey: friendKeys.friend });
 		}
 	}, [isModalOpen]);
 

@@ -38,9 +38,9 @@ const FriendInfo = ({ friendsData }: FriendsInfoProp) => {
 
 						<Dropdown>
 							<Dropdown.Trigger>
-								<button className="flex flex-col items-center justify-center">
+								<div className="flex flex-col items-center justify-center">
 									<DeleteBtn />
-								</button>
+								</div>
 							</Dropdown.Trigger>
 							<Dropdown.Content boxShadow="shadow-none" className="right-0 top-[26px]">
 								<Dropdown.Item onClick={() => deleteFriend({ friendId: friend.id })} label="친구삭제" textColor="red" />
