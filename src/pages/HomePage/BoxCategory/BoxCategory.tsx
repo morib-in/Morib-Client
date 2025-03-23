@@ -217,7 +217,9 @@ const BoxCategory = ({
 	const handlePeriodToggleWrapper = () => {
 		if (!isPeriodOn) {
 			handlePeriodToggle();
-			setCalendarStartDate(null);
+			if (!calendarEndDate) {
+				setCalendarStartDate(null);
+			}
 		} else {
 			handlePeriodToggle();
 		}
