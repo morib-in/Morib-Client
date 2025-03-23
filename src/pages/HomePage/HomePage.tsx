@@ -36,7 +36,7 @@ import { friendKeys } from '@/shared/apisV2/friends/friends.keys';
 import {
 	useAddCategory,
 	useDeleteCategory,
-	useModifyCategory,
+	usePatchCategory,
 	usePostAddTodayTodos,
 } from '@/shared/apisV2/home/home.mutations';
 import { useGetCategoryTask, useGetWorkTime } from '@/shared/apisV2/home/home.queries';
@@ -86,7 +86,7 @@ const HomePage = () => {
 	const { mutate: addTodayTodos } = usePostAddTodayTodos();
 	const { mutate: deleteCategory } = useDeleteCategory();
 	const { mutate: addCategory } = useAddCategory();
-	const { mutate: modifyCategory } = useModifyCategory();
+	const { mutate: modifyCategory } = usePatchCategory();
 
 	const navigate = useNavigate();
 

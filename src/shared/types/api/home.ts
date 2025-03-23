@@ -63,7 +63,7 @@ export interface DeleteTaskReq {
 	taskId: number;
 }
 
-export interface ModifyCategoryReq {
+export interface PatchCategoryReq {
 	categoryId: number;
 	name: string;
 }
