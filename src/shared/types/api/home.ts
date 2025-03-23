@@ -67,3 +67,10 @@ export interface PatchCategoryReq {
 	categoryId: number;
 	name: string;
 }
+
+export interface PatchTaskReq {
+	taskId: number;
+	name: string;
+	startDate: string;
+	endDate: string | null;
+}

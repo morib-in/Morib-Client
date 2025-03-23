@@ -6,6 +6,7 @@ import {
 	GetWorkTimeReq,
 	GetWorkTimeRes,
 	PatchCategoryReq,
+	PatchTaskReq,
 	PostAddCategoryReq,
 	PostCreateTaskReq,
 	postAddTodayTodosReq,
@@ -22,6 +23,7 @@ export const HOME_ENDPOINT = {
 	DELETE_CATEGORY: 'api/v2/categories/:categoryId',
 	DELETE_TASK: 'api/v2/tasks/:taskId',
 	PATCH_CATEGORY: 'api/v2/categories/:categoryId',
+	PATCH_TASK: 'api/v2/tasks/:taskId',
 };
 
 export const getCategoryTask = async ({ startDate, endDate }: GetCategoryTaskReq): Promise<GetCategoryTaskRes> => {
@@ -66,6 +68,15 @@ export const deleteCategory = async ({ categoryId }: DeleteCategoryReq) => {
 export const patchCategory = async ({ categoryId, name }: PatchCategoryReq) => {
 	const { data } = await authClient.patch(HOME_ENDPOINT.PATCH_CATEGORY.replace(':categoryId', String(categoryId)), {
 		name,
+	});
+	return data;
+};
+
+export const patchTask = async ({ taskId, name, startDate, endDate }: PatchTaskReq) => {
+	const { data } = await authClient.patch(HOME_ENDPOINT.PATCH_TASK.replace(':categoryId', String(taskId)), {
+		name,
+		startDate,
+		endDate,
 	});
 	return data;
 };

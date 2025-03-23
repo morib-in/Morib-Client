@@ -5,6 +5,7 @@ import {
 	deleteCategory,
 	deleteTask,
 	patchCategory,
+	patchTask,
 	postAddCategory,
 	postAddTodayTodos,
 	postCreateTask,
@@ -67,6 +68,17 @@ export const usePatchCategory = () => {
 
 	return useMutation({
 		mutationFn: patchCategory,
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: homeKeys.task });
+		},
+	});
+};
+
+export const usePatchTask = () => {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: patchTask,
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: homeKeys.task });
 		},
