@@ -34,7 +34,7 @@ interface BoxCategoryProps {
 	getSelectedNumber: (id: number) => number;
 	addingComplete: boolean;
 	onDeleteCategory: (categoryId: number) => void;
-	onModifyCategory: (categoryId: number, newName: string) => void;
+	onPatchCategory: (categoryId: number, newName: string) => void;
 	isSelectedTodoExist?: boolean;
 	selectedDate: Dayjs;
 }
@@ -57,7 +57,7 @@ const BoxCategory = ({
 	getSelectedNumber,
 	addingComplete,
 	onDeleteCategory,
-	onModifyCategory,
+	onPatchCategory,
 	isSelectedTodoExist,
 	selectedDate,
 }: BoxCategoryProps) => {
@@ -184,7 +184,7 @@ const BoxCategory = ({
 
 	const handleFinishEditing = () => {
 		if (editedCategoryName.trim() && editedCategoryName !== title) {
-			onModifyCategory(id, editedCategoryName);
+			onPatchCategory(id, editedCategoryName);
 		}
 		setIsCategoryEditing(false);
 	};

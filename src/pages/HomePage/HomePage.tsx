@@ -210,7 +210,7 @@ const HomePage = () => {
 		deleteCategory({ categoryId });
 	};
 
-	const handleModifyCategory = (categoryId: number, name: string) => {
+	const handlePatchCategory = (categoryId: number, name: string) => {
 		if (!name.trim()) return;
 		patchCategory({ categoryId, name: name });
 	};
@@ -329,7 +329,7 @@ const HomePage = () => {
 												getSelectedNumber={getSelectedNumber}
 												addingComplete={addingComplete}
 												onDeleteCategory={handleDeleteCategory}
-												onModifyCategory={handleModifyCategory}
+												onPatchCategory={handlePatchCategory}
 												isSelectedTodoExist={todayTodos.length > 0}
 												selectedDate={selectedDate}
 											/>
