@@ -43,7 +43,6 @@ const ModalWrapper = forwardRef<ModalWrapperRef, ModalWrapperProps>(function Mod
 		return null;
 	}
 
-	// children이 함수면 isModalOpen을 전달, 아니면 그대로 렌더링
 	const content =
 		typeof children === 'function'
 			? (children as (props: { isModalOpen: boolean }) => ReactNode)({ isModalOpen })

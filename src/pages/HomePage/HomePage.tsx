@@ -66,7 +66,8 @@ const HomePage = () => {
 
 	const [addingTodayTodoStatus, setAddingTodayTodoStatus] = useState(false);
 	const [addingComplete, setAddingComplete] = useState(false);
-	const addTodayTodosOverlayStyle = addingTodayTodoStatus && !addingComplete ? 'opacity-30 pointer-events-none' : '';
+	// NOTE: 추후 사용 예정
+	// const addTodayTodosOverlayStyle = addingTodayTodoStatus && !addingComplete ? 'opacity-30 pointer-events-none' : '';
 
 	const todayTodosStorageData = useAtomValue(todayTodoAtom);
 	const [todayTodos, setTodayTodos] = useState<Omit<TaskType, 'isComplete'>[]>([]);
@@ -239,9 +240,7 @@ const HomePage = () => {
 				<ButtonMoreFriends friendsCount={13} />
 			</div>
 
-			<div
-				className={`absolute right-[4.2rem] top-[4rem] flex gap-[0.8rem] 2xl:top-[5.4rem] ${addTodayTodosOverlayStyle}`}
-			>
+			<div className={`absolute right-[4.2rem] top-[4rem] flex gap-[0.8rem] 2xl:top-[5.4rem]`}>
 				<button onClick={handleOpenFriendsModal}>
 					<FriendSettingIcon className="rounded-[1.6rem] hover:bg-gray-bg-04 active:bg-gray-bg-05" />
 				</button>
