@@ -19,7 +19,7 @@ export const SUGGESTED_STIES: Record<FieldType, AllowedSiteType[]> = {
 			siteUrl: 'https://trello.com/en',
 		},
 		{
-			favicon: 'https://www.salesforce.com/favicon.ico',
+			favicon: `https://a.sfdcstatic.com/shared/images/c360-nav/salesforce-no-type-logo.svg`,
 			siteName: 'Salesforce',
 			pageName: 'Salesforce Korea',
 			siteUrl: 'https://www.salesforce.com/kr/?ir=1',
@@ -51,7 +51,7 @@ export const SUGGESTED_STIES: Record<FieldType, AllowedSiteType[]> = {
 			siteUrl: 'https://unsplash.com/ko',
 		},
 		{
-			favicon: 'https://www.freepik.com/favicon.ico',
+			favicon: 'https://www.google.com/s2/favicons?domain=freepik.com&sz=128',
 			siteName: '프리픽',
 			pageName: 'Freepik',
 			siteUrl: 'https://www.freepik.com/',
@@ -75,8 +75,7 @@ export const SUGGESTED_STIES: Record<FieldType, AllowedSiteType[]> = {
 			siteUrl: 'https://notefolio.net/',
 		},
 		{
-			favicon:
-				'https://cdn.dribbble.com/assets/favicon-452601365a822699d1d5db718ddf7499d036e8c2f7da69e85160a4d2f83534bd.ico',
+			favicon: `https://cdn.dribbble.com/assets/favicon-192x192-d70ad402693bdd1a8460da7f9f3c590e817da7369c5287789ac968cf6947d214.png`,
 			siteName: '드리블',
 			pageName: 'Dribbble',
 			siteUrl: 'https://dribbble.com/',
@@ -84,7 +83,7 @@ export const SUGGESTED_STIES: Record<FieldType, AllowedSiteType[]> = {
 	],
 	마케팅: [
 		{
-			favicon: 'https://newneek.co/favicon.ico',
+			favicon: 'https://newneek.co/icons/android-icon-192x192.png',
 			siteName: '뉴닉',
 			pageName: 'Newneek',
 			siteUrl: 'https://newneek.co/',
@@ -108,7 +107,7 @@ export const SUGGESTED_STIES: Record<FieldType, AllowedSiteType[]> = {
 			siteUrl: 'https://www.mezzomedia.co.kr/',
 		},
 		{
-			favicon: 'https://www.nasmedia.co.kr/wp-content/themes/nasmedia/images/favicon/r-01.png',
+			favicon: 'https://www.nasmedia.co.kr/wp-content/themes/nasmedia/images/favicon/favicon-180.png',
 			siteName: '나스 미디어',
 			pageName: 'Nas Media',
 			siteUrl: 'https://www.nasmedia.co.kr/',
@@ -116,7 +115,7 @@ export const SUGGESTED_STIES: Record<FieldType, AllowedSiteType[]> = {
 	],
 	기획: [
 		{
-			favicon: 'https://disquiet.io/favicon.ico',
+			favicon: 'https://disquiet.io/favicons/favicon-96.png',
 			siteName: '디스콰이엇',
 			pageName: 'Disquiet',
 			siteUrl: 'https://disquiet.io/',
@@ -128,13 +127,13 @@ export const SUGGESTED_STIES: Record<FieldType, AllowedSiteType[]> = {
 			siteUrl: 'https://brunch.co.kr/',
 		},
 		{
-			favicon: 'https://www.notion.so/images/favicon.ico',
+			favicon: 'https://www.notion.so/images/logo-ios.png',
 			siteName: '노션',
 			pageName: 'Notion',
 			siteUrl: 'https://www.notion.so/',
 		},
 		{
-			favicon: 'https://www.producthunt.com/favicon.ico',
+			favicon: 'https://ph-static.imgix.net/ph-favicon-brand-500.ico?auto=format',
 			siteName: 'Product Hunt',
 			pageName: 'Product Hunt',
 			siteUrl: 'https://www.producthunt.com/',
@@ -180,19 +179,19 @@ export const SUGGESTED_STIES: Record<FieldType, AllowedSiteType[]> = {
 	],
 	공부: [
 		{
-			favicon: 'https://www.notion.so/images/favicon.ico',
+			favicon: 'https://www.notion.so/images/logo-ios.png',
 			siteName: '노션',
 			pageName: 'Notion',
 			siteUrl: 'https://www.notion.so/',
 		},
 		{
-			favicon: 'https://www.copykiller.com/favicon.ico',
+			favicon: 'https://www.copykiller.com/common/img/logo/favicon_ck_platform_32x32.png', // 더 개선 필요
 			siteName: '카피킬러라이트',
 			pageName: 'CopyKiller Lite',
 			siteUrl: 'https://www.copykiller.com/',
 		},
 		{
-			favicon: 'https://www.riss.kr/favicon.ico',
+			favicon: 'https://www.riss.kr/commons/images/favicon.ico',
 			siteName: 'RISS',
 			pageName: 'RISS',
 			siteUrl: 'https://www.riss.kr/',

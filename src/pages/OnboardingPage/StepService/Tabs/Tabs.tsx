@@ -57,8 +57,10 @@ const TabsTrigger = ({ value }: TabsTriggerProps) => {
 
 	return (
 		<button
-			className={`flex h-[7rem] items-center justify-center text-white subhead-reg-22 ${
-				isActive ? 'border-b-[2px] border-b-mint-01' : 'border-b-[3px] border-b-gray-02'
+			className={`flex h-[7rem] items-center justify-center text-white hover:border-b-[0.3rem] hover:border-b-gray-03 ${
+				isActive
+					? 'border-b-[0.3rem] border-b-mint-01 head-bold-24'
+					: 'border-b-[0.2rem] border-b-gray-02 subhead-reg-22'
 			}`}
 			onClick={() => onChangeActiveTab(value)}
 		>

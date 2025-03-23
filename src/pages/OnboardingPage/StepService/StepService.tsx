@@ -38,15 +38,17 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 
 	const navigate = useNavigate();
 
-	const { mutateAsync: getUrlInfo, reset: resetGetUrlInfo, isError, error, isPending } = useGetUrlInfo();
+	const { mutateAsync: getUrlInfo, reset: resetGetUrlInfo, isError, isPending } = useGetUrlInfo();
 	const { mutate: postInterestArea } = usePostInterestArea();
 
-	const isSelectedUrl = (siteUrl: string) => {
-		return selectedServices.some((service) => service.siteUrl === siteUrl);
+	const checkIsSelectedUrl = (siteUrl: string) => {
+		return selectedServices.some(
+			(service) => service.siteUrl.replace(/^https?:\/\//, '') === siteUrl.replace(/^https?:\/\//, ''),
+		);
 	};
 
 	const handleAddSelectedService = async (siteUrl: string) => {
-		const selected = isSelectedUrl(siteUrl);
+		const selected = checkIsSelectedUrl(siteUrl);
 
 		if (!siteUrl || selected) return;
 
@@ -56,12 +58,15 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 		const urlInfo = response?.data;
 
 		setSelectedServices((prev) => [...prev, urlInfo]);
+		setInputUrl('');
 	};
 
 	const handleAddRecommendedService = (urlInfo: AllowedSiteType) => {
-		const selected = isSelectedUrl(urlInfo.siteUrl);
+		const selected = checkIsSelectedUrl(urlInfo.siteUrl);
 
-		if (selected) return;
+		if (selected) {
+			return handleRemoveSelectedService(urlInfo.siteUrl);
+		}
 
 		setSelectedServices((prev) => [...prev, urlInfo]);
 	};
@@ -75,6 +80,7 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 			setInputSuccess(false);
 		}
 
+		resetGetUrlInfo();
 		setInputUrl(e.target.value);
 	};
 
@@ -161,9 +167,15 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 						value={inputUrl}
 						onKeyDown={handleKeyDown}
 						onChange={handleChangeInputUrl}
-						isError={(inputUrl.length > 0 && !isUrlValid(inputUrl)) || isError}
-						errorMessage={isError ? error.response?.data.message : '알맞은 형식의 url을 입력해 주세요.'}
-						isSuccess={inputUrl.length > 0 && inputSuccess}
+						isError={(inputUrl.length > 0 && !isUrlValid(inputUrl)) || isError || checkIsSelectedUrl(inputUrl)}
+						errorMessage={
+							isError
+								? '유효하지 않은 주소입니다.'
+								: checkIsSelectedUrl(inputUrl)
+									? '이미 등록된 url입니다.'
+									: '알맞은 형식의 url을 입력해 주세요.'
+						}
+						isSuccess={inputSuccess}
 						successMessage={'url 입력에 성공했어요.'}
 						placeholder="직접 url 입력하기"
 					>
