@@ -5,8 +5,6 @@ import utc from 'dayjs/plugin/utc';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useQueryClient } from '@tanstack/react-query';
-
 import { splitTasksByCompletion } from '@/shared/utils/timer';
 import { getBaseUrl } from '@/shared/utils/url';
 
@@ -19,7 +17,7 @@ import HomeIcon from '@/shared/assets/svgs/btn_home.svg?react';
 
 import { ROUTES_CONFIG } from '@/router/routesConfig';
 
-import { usePostStopTimer } from '@/shared/apisV2/timer/timer.mutations';
+import { usePostUpdateTimerInfo, usePostUpdateTimerInfoWithPolling } from '@/shared/apisV2/timer/timer.mutations';
 import { useGetPopoverAllowedServiceList, useGetTimerTodos } from '@/shared/apisV2/timer/timer.queries';
 
 import Carousel from './Carousel/Carousel';
@@ -39,7 +37,6 @@ const TimerPage = () => {
 	const formattedTodayDate = todayDate.format(DATE_FORMAT);
 
 	const navigate = useNavigate();
-	const queryClient = useQueryClient();
 
 	const { data: todosData } = useGetTimerTodos({ targetDate: formattedTodayDate });
 
@@ -66,7 +63,8 @@ const TimerPage = () => {
 		isPlaying,
 		previousTime: sumTodayElapsedTime,
 	});
-	const { mutate: stopTimer } = usePostStopTimer();
+
+	const { mutate: updateTimerInfo } = usePostUpdateTimerInfo();
 
 	const urls = useMemo(() => allowedSitesUrl.map((url) => url.trim()) || [], [allowedSitesUrl]);
 
@@ -78,9 +76,8 @@ const TimerPage = () => {
 	useUrlHandler({
 		isPlaying,
 		selectedTodo: selectedTodoId,
-		selectedTodoName: selectedTodoData?.name || '',
 		baseUrls,
-		stopTimer,
+		stopTimer: updateTimerInfo,
 		formattedTodayDate,
 		timerIncreasedTime,
 		setIsPlaying,
@@ -151,69 +148,78 @@ const TimerPage = () => {
 		}
 	}, [allowedServiceList]);
 
+	usePostUpdateTimerInfoWithPolling({
+		taskId: selectedTodoId,
+		elapsedTime: timerIncreasedTime,
+		targetDate: formattedTodayDate,
+		timerStatus: isPlaying ? 'RUNNING' : 'PAUSED',
+	});
+
 	return (
-		<div className="relative flex h-screen w-screen min-w-[750px] flex-col overflow-hidden bg-gray-bg-01">
-			<TitleAllowedService
-				onClick={handleMoribSetTitleClick}
-				registeredNames={registeredNames}
-				isAllowedServiceVisible={isAllowedServiceVisible}
-			/>
+		<div className="fixed">
+			<div className="relative flex h-screen w-screen min-w-[750px] flex-col overflow-hidden bg-gray-bg-01">
+				<TitleAllowedService
+					onClick={handleMoribSetTitleClick}
+					registeredNames={registeredNames}
+					isAllowedServiceVisible={isAllowedServiceVisible}
+				/>
 
-			{isAllowedServiceVisible && (
-				<div className="absolute left-[3.2rem] top-[9rem] z-10 flex">
-					<PopoverAllowedService onCancel={handleCancelClick} />
+				{isAllowedServiceVisible && (
+					<div className="absolute left-[3.2rem] top-[9rem] z-10 flex">
+						<PopoverAllowedService onCancel={handleCancelClick} />
+					</div>
+				)}
+
+				<div className="absolute right-[3.2rem] top-[3.2rem] flex w-[10.8rem] items-center">
+					<button className="h-[5.4rem] w-[5.4rem] rounded-[1.5rem] hover:bg-gray-bg-04">
+						<HomeIcon onClick={() => navigate(ROUTES_CONFIG.home.path)} />
+					</button>
+					<button onClick={handleSidebarToggle} className="h-[5.4rem] w-[5.4rem] rounded-[1.5rem] hover:bg-gray-bg-04">
+						<HamburgerIcon />
+					</button>
 				</div>
-			)}
 
-			<div className="absolute right-[3.2rem] top-[3.2rem] flex w-[10.8rem] items-center">
-				<button className="h-[5.4rem] w-[5.4rem] rounded-[1.5rem] hover:bg-gray-bg-04">
-					<HomeIcon onClick={() => navigate(ROUTES_CONFIG.home.path)} />
-				</button>
-				<button onClick={handleSidebarToggle} className="h-[5.4rem] w-[5.4rem] rounded-[1.5rem] hover:bg-gray-bg-04">
-					<HamburgerIcon />
-				</button>
-			</div>
+				<div
+					className={`flex h-full flex-col items-center justify-center gap-[4.5rem] transition-[padding-right] duration-300 ${isSidebarOpen ? 'pr-0 2xl:pr-[40.2rem]' : 'pr-0'}`}
+				>
+					<header className="flex flex-col items-center gap-[0.4rem]">
+						<h1 className="text-white title-semibold-48">{selectedTodoData?.name || ''}</h1>
+						<h2 className="text-gray-04 head-bold-30">{selectedTodoData?.categoryName || ''}</h2>
+					</header>
+					<Timer
+						selectedCategoryName={selectedTodoData?.categoryName || ''}
+						selectedTodo={selectedTodoId}
+						onPlayToggle={handlePlayToggle}
+						isPlaying={isPlaying}
+						formattedTodayDate={formattedTodayDate}
+						timerTime={timerTime}
+						timerIncreasedTime={timerIncreasedTime}
+						resetTimerIncreasedTime={resetTimerIncreasedTime}
+						accumulatedTime={accumulatedTime}
+						resetAccumulatedIncreasedTime={resetAccumulatedIncreasedTime}
+						updateElapsedTime={updateElapsedTime}
+					/>
 
-			<div
-				className={`flex h-full flex-col items-center justify-center gap-[4.5rem] transition-[padding-right] duration-300 ${isSidebarOpen ? 'pr-0 2xl:pr-[40.2rem]' : 'pr-0'}`}
-			>
-				<header className="flex flex-col items-center gap-[0.4rem]">
-					<h1 className="text-white title-semibold-48">{selectedTodoData?.name || ''}</h1>
-					<h2 className="text-gray-04 head-bold-30">{selectedTodoData?.categoryName || ''}</h2>
-				</header>
-				<Timer
-					selectedCategoryName={selectedTodoData?.categoryName || ''}
+					<Carousel />
+				</div>
+
+				<SideBarTimer
+					elapsedTime={elapsedTime}
+					ongoingTodos={ongoingTodos}
+					completedTodos={completedTodos}
+					isSideOpen={isSidebarOpen}
+					toggleSidebar={handleSidebarToggle}
+					onTodoSelection={handleTodoSelection}
 					selectedTodo={selectedTodoId}
+					selectedTodoName={selectedTodoData?.name || ''}
 					onPlayToggle={handlePlayToggle}
 					isPlaying={isPlaying}
 					formattedTodayDate={formattedTodayDate}
-					timerTime={timerTime}
-					timerIncreasedTime={timerIncreasedTime}
 					resetTimerIncreasedTime={resetTimerIncreasedTime}
-					accumulatedTime={accumulatedTime}
+					timerIncreasedTime={timerIncreasedTime}
 					resetAccumulatedIncreasedTime={resetAccumulatedIncreasedTime}
-					updateElapsedTime={updateElapsedTime}
 				/>
-
-				<Carousel />
 			</div>
-
-			<SideBarTimer
-				elapsedTime={elapsedTime}
-				ongoingTodos={ongoingTodos}
-				completedTodos={completedTodos}
-				isSideOpen={isSidebarOpen}
-				toggleSidebar={handleSidebarToggle}
-				onTodoSelection={handleTodoSelection}
-				selectedTodo={selectedTodoId}
-				selectedTodoName={selectedTodoData?.name || ''}
-				onPlayToggle={handlePlayToggle}
-				isPlaying={isPlaying}
-				formattedTodayDate={formattedTodayDate}
-				resetTimerIncreasedTime={resetTimerIncreasedTime}
-				timerIncreasedTime={timerIncreasedTime}
-				resetAccumulatedIncreasedTime={resetAccumulatedIncreasedTime}
-			/>
 		</div>
 	);
 };

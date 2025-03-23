@@ -5,7 +5,7 @@ import { formatSeconds } from '@/shared/utils/time';
 import InnerCircleIcon from '@/shared/assets/svgs/timer/ic_timer_inner_circle.svg?react';
 
 import { timerKeys } from '@/shared/apisV2/timer/timer.keys';
-import { usePostStartTimer, usePostStopTimer } from '@/shared/apisV2/timer/timer.mutations';
+import { usePostUpdateTimerInfo } from '@/shared/apisV2/timer/timer.mutations';
 
 import ButtonTimerPlay from './ButtonTimerPlay/ButtonTimerPlay';
 import ProgressCircle from './ProgressCircle/ProgressCircle';
@@ -39,20 +39,19 @@ const Timer = ({
 }: TaskTotalTimeProps) => {
 	const queryClient = useQueryClient();
 
-	const { mutate: stopTimer, isError, error } = usePostStopTimer();
-	const { mutate: startTimer } = usePostStartTimer();
+	const { mutate: updateTimerInfo, isError, error } = usePostUpdateTimerInfo();
 
 	const handlePlayPauseToggle = () => {
 		if (selectedTodo !== null) {
 			if (isPlaying && selectedCategoryName.length > 0) {
 				updateElapsedTime(timerTime);
 
-				stopTimer(
+				updateTimerInfo(
 					{
 						taskId: selectedTodo,
 						elapsedTime: timerIncreasedTime,
 						targetDate: formattedTodayDate,
-						runningCategoryName: selectedCategoryName,
+						timerStatus: 'PAUSED',
 					},
 					{
 						onSuccess: () => {
@@ -64,11 +63,12 @@ const Timer = ({
 					},
 				);
 			} else {
-				startTimer(
+				updateTimerInfo(
 					{
 						taskId: selectedTodo,
 						elapsedTime: timerIncreasedTime,
-						runningCategoryName: selectedCategoryName,
+						targetDate: formattedTodayDate,
+						timerStatus: 'PAUSED',
 					},
 					{
 						onSuccess: () => {
