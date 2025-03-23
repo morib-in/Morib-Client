@@ -145,7 +145,7 @@ const Calendar = ({
 
 					<hr className={STYLES.divideLine} />
 					<div className={`${STYLES.defaultToggle}`}>
-						<h3 className={STYLES.toggleText}>종료 날짜</h3>
+						<h3 className={STYLES.toggleText}>기간 설정</h3>
 						<ButtonStatusToggle isToggleOn={isPeriodOn} onToggle={onPeriodToggle} />
 					</div>
 				</div>

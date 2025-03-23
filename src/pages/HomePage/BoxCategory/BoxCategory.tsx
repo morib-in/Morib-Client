@@ -90,9 +90,7 @@ const BoxCategory = ({
 			} else {
 				setCalendarEndDate(null);
 
-				if (isPeriodOn) {
-					handlePeriodToggle();
-				}
+				handlePeriodEnd();
 			}
 		}
 		setSelectedTaskId(taskId);
@@ -216,6 +214,15 @@ const BoxCategory = ({
 		}
 	};
 
+	const handlePeriodToggleWrapper = () => {
+		if (!isPeriodOn) {
+			handlePeriodToggle();
+			setCalendarStartDate(null);
+		} else {
+			handlePeriodToggle();
+		}
+	};
+
 	return (
 		<Spacer.Height
 			as="article"
@@ -291,7 +298,7 @@ const BoxCategory = ({
 									>
 										<Calendar
 											isPeriodOn={isPeriodOn}
-											selectedStartDate={calendarStartDate ?? defaultDate}
+											selectedStartDate={isPeriodOn ? calendarStartDate : calendarStartDate ?? defaultDate}
 											selectedEndDate={calendarEndDate}
 											onStartDateInput={(newDate) => {
 												setCalendarStartDate(newDate);
@@ -308,7 +315,7 @@ const BoxCategory = ({
 												}
 											}}
 											isCalendarOpened={isCalendarOpened}
-											onPeriodToggle={handlePeriodToggle}
+											onPeriodToggle={handlePeriodToggleWrapper}
 											clickOutSideCallback={handleCalendarToggle}
 										/>
 									</div>
