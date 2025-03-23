@@ -86,7 +86,7 @@ const HomePage = () => {
 	const { mutate: addTodayTodos } = usePostAddTodayTodos();
 	const { mutate: deleteCategory } = useDeleteCategory();
 	const { mutate: addCategory } = useAddCategory();
-	const { mutate: modifyCategory } = usePatchCategory();
+	const { mutate: patchCategory } = usePatchCategory();
 
 	const navigate = useNavigate();
 
@@ -212,7 +212,7 @@ const HomePage = () => {
 
 	const handleModifyCategory = (categoryId: number, name: string) => {
 		if (!name.trim()) return;
-		modifyCategory({ categoryId, name: name });
+		patchCategory({ categoryId, name: name });
 	};
 
 	useEffect(() => {
