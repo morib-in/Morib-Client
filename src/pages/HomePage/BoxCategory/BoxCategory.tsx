@@ -1,4 +1,4 @@
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 
 import { KeyboardEvent, Suspense, lazy, useRef, useState } from 'react';
 
@@ -69,9 +69,32 @@ const BoxCategory = ({
 	const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 	const [selectedTaskId, setSelectedTaskId] = useState<number | null>(null);
 
+	const [calendarStartDate, setCalendarStartDate] = useState<Dayjs | null>(selectedDate);
+	const [calendarEndDate, setCalendarEndDate] = useState<Dayjs | null>(null);
+
 	const { mutate: patchTask } = usePatchTask();
 
 	const handleOpenTaskCalendar = (taskId: number) => {
+		const targetTask =
+			ongoingTodos.find((task) => task.id === taskId) || completedTodos.find((task) => task.id === taskId);
+
+		if (targetTask) {
+			setCalendarStartDate(dayjs(targetTask.startDate));
+
+			if (targetTask.endDate) {
+				setCalendarEndDate(dayjs(targetTask.endDate));
+
+				if (!isPeriodOn) {
+					handlePeriodToggle();
+				}
+			} else {
+				setCalendarEndDate(null);
+
+				if (isPeriodOn) {
+					handlePeriodToggle();
+				}
+			}
+		}
 		setSelectedTaskId(taskId);
 		setIsCalendarOpen(true);
 	};
@@ -102,8 +125,6 @@ const BoxCategory = ({
 
 	const handleCalendarToggle = () => {
 		setIsCalendarOpen((prev) => !prev);
-		handleEndDateInput(null);
-		handlePeriodEnd();
 	};
 
 	const handleOngoingTodoToggle = () => {
@@ -270,16 +291,20 @@ const BoxCategory = ({
 									>
 										<Calendar
 											isPeriodOn={isPeriodOn}
-											selectedStartDate={selectedDate ?? defaultDate}
-											selectedEndDate={selectedEndDate ?? null}
+											selectedStartDate={calendarStartDate ?? defaultDate}
+											selectedEndDate={calendarEndDate}
 											onStartDateInput={(newDate) => {
+												setCalendarStartDate(newDate);
 												if (!isPeriodOn) {
 													handleTaskDateChange(newDate, null);
+												} else {
+													setCalendarEndDate(null);
 												}
 											}}
 											onEndDateInput={(endDate) => {
-												if (isPeriodOn && selectedDate && endDate) {
-													handleTaskDateChange(selectedDate, endDate);
+												setCalendarEndDate(endDate);
+												if (isPeriodOn && calendarStartDate && endDate) {
+													handleTaskDateChange(calendarStartDate, endDate);
 												}
 											}}
 											isCalendarOpened={isCalendarOpened}
