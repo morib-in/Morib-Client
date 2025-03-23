@@ -37,7 +37,6 @@ import {
 	useAddCategory,
 	useDeleteCategory,
 	usePatchCategory,
-	usePatchTask,
 	usePostAddTodayTodos,
 } from '@/shared/apisV2/home/home.mutations';
 import { useGetCategoryTask, useGetWorkTime } from '@/shared/apisV2/home/home.queries';
@@ -88,7 +87,6 @@ const HomePage = () => {
 	const { mutate: deleteCategory } = useDeleteCategory();
 	const { mutate: addCategory } = useAddCategory();
 	const { mutate: patchCategory } = usePatchCategory();
-	const { mutate: patchTask } = usePatchTask();
 
 	const navigate = useNavigate();
 
@@ -217,10 +215,6 @@ const HomePage = () => {
 		patchCategory({ categoryId, name: name });
 	};
 
-	const handlePatchTask = (taskId: number, name: string, startDate: string, endDate: string | null) => {
-		patchTask({ taskId, name, startDate, endDate });
-	};
-
 	useEffect(() => {
 		setTodayTodos(todayTodosStorageData);
 
@@ -338,7 +332,6 @@ const HomePage = () => {
 												onModifyCategory={handleModifyCategory}
 												isSelectedTodoExist={todayTodos.length > 0}
 												selectedDate={selectedDate}
-												onPatchTask={handlePatchTask}
 											/>
 										);
 									})}

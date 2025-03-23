@@ -71,7 +71,12 @@ const Calendar = ({
 	const handleDateChange = (date: Date | null) => {
 		if (date) {
 			const dayjsDate = dayjs(date);
+
 			onStartDateInput(dayjsDate);
+
+			if (!isPeriodOn && onEndDateInput) {
+				onEndDateInput(null);
+			}
 		} else {
 			onStartDateInput(null);
 		}
@@ -79,8 +84,14 @@ const Calendar = ({
 
 	const handlePeriodChange = (dates: [Date | null, Date | null]) => {
 		const [start, end] = dates;
-		onStartDateInput(start ? dayjs(start) : null);
-		onEndDateInput(end ? dayjs(end) : null);
+		const startDayjs = start ? dayjs(start) : null;
+		const endDayjs = end ? dayjs(end) : null;
+
+		onStartDateInput(startDayjs);
+
+		if (startDayjs && endDayjs) {
+			onEndDateInput(endDayjs);
+		}
 	};
 
 	return (

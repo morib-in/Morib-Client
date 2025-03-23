@@ -15,7 +15,7 @@ import MeatballDefaultIcon from '@/shared/assets/svgs/common/ic_meatball_default
 import PlusIcon from '@/shared/assets/svgs/home/ic_plus.svg?react';
 
 import { usePostToggleTaskStatus } from '@/shared/apisV2/common/common.mutations';
-import { usePostCreateTask } from '@/shared/apisV2/home/home.mutations';
+import { usePatchTask, usePostCreateTask } from '@/shared/apisV2/home/home.mutations';
 
 import { useCalendar } from '../hooks/useCalendar';
 import BoxTodoInput from './BoxTodoInput/BoxTodoInput';
@@ -35,7 +35,6 @@ interface BoxCategoryProps {
 	addingComplete: boolean;
 	onDeleteCategory: (categoryId: number) => void;
 	onModifyCategory: (categoryId: number, newName: string) => void;
-	onPatchTask: (categoryId: number, name: string, startDate: string, endDate: string | null) => void;
 	isSelectedTodoExist?: boolean;
 	selectedDate: Dayjs;
 }
@@ -61,7 +60,6 @@ const BoxCategory = ({
 	onModifyCategory,
 	isSelectedTodoExist,
 	selectedDate,
-	onPatchTask,
 }: BoxCategoryProps) => {
 	const { mutate, isError, error } = usePostCreateTask();
 	const [ongoingTodoToggle, setOngoingTodoToggle] = useState(true);
@@ -69,6 +67,38 @@ const BoxCategory = ({
 	const [isCategoryEditing, setIsCategoryEditing] = useState(false);
 	const [editedCategoryName, setEditedCategoryName] = useState(title);
 	const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+	const [selectedTaskId, setSelectedTaskId] = useState<number | null>(null);
+
+	const { mutate: patchTask } = usePatchTask();
+
+	const handleOpenTaskCalendar = (taskId: number) => {
+		setSelectedTaskId(taskId);
+		setIsCalendarOpen(true);
+	};
+
+	const handleTaskDateChange = (newDate: Dayjs | null, endDate?: Dayjs | null) => {
+		if (selectedTaskId) {
+			const targetTask =
+				ongoingTodos.find((task) => task.id === selectedTaskId) ||
+				completedTodos.find((task) => task.id === selectedTaskId);
+
+			if (targetTask) {
+				const newStartDate = newDate ? (format(newDate) as string) : targetTask.startDate;
+
+				const newEndDate = isPeriodOn ? (endDate ? (format(endDate) as string) : targetTask.endDate) : null;
+
+				patchTask({
+					taskId: selectedTaskId,
+					name: targetTask.name,
+					startDate: newStartDate,
+					endDate: newEndDate,
+				});
+			}
+		}
+		setIsCalendarOpen(false);
+		setSelectedTaskId(null);
+		handlePeriodEnd();
+	};
 
 	const handleCalendarToggle = () => {
 		setIsCalendarOpen((prev) => !prev);
@@ -105,7 +135,6 @@ const BoxCategory = ({
 		isCalendarOpened,
 		defaultDate,
 		handlePeriodToggle,
-		handleStartDateInput,
 		handleEndDateInput,
 		handlePeriodEnd,
 	} = useCalendar();
@@ -136,6 +165,10 @@ const BoxCategory = ({
 		import('@/shared/components/Calendar/Calendar').catch((error) => {
 			console.error('캘린더를 받아오는데 오류가 발생했습니다.', error);
 		});
+	};
+
+	const handlePatchTask = (taskId: number, name: string, startDate: string, endDate: string | null) => {
+		patchTask({ taskId, name, startDate, endDate });
 	};
 
 	const handleCalendarKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
@@ -239,8 +272,16 @@ const BoxCategory = ({
 											isPeriodOn={isPeriodOn}
 											selectedStartDate={selectedDate ?? defaultDate}
 											selectedEndDate={selectedEndDate ?? null}
-											onStartDateInput={handleStartDateInput}
-											onEndDateInput={handleEndDateInput}
+											onStartDateInput={(newDate) => {
+												if (!isPeriodOn) {
+													handleTaskDateChange(newDate, null);
+												}
+											}}
+											onEndDateInput={(endDate) => {
+												if (isPeriodOn && selectedDate && endDate) {
+													handleTaskDateChange(selectedDate, endDate);
+												}
+											}}
 											isCalendarOpened={isCalendarOpened}
 											onPeriodToggle={handlePeriodToggle}
 											clickOutSideCallback={handleCalendarToggle}
@@ -282,8 +323,8 @@ const BoxCategory = ({
 										clickable={addingTodayTodoStatus}
 										addingComplete={addingComplete}
 										isSelectedTodoExist={isSelectedTodoExist}
-										handleCalendarToggle={handleCalendarToggle}
-										onPatchTask={onPatchTask}
+										handleCalendarToggle={() => handleOpenTaskCalendar(id)}
+										onPatchTask={handlePatchTask}
 									/>
 								);
 							})}
@@ -306,8 +347,7 @@ const BoxCategory = ({
 										clickable={addingTodayTodoStatus}
 										addingComplete={addingComplete}
 										isSelectedTodoExist={isSelectedTodoExist}
-										handleCalendarToggle={handleCalendarToggle}
-										onPatchTask={onPatchTask}
+										handleCalendarToggle={() => handleOpenTaskCalendar(id)}
 									/>
 								))}
 							</ButtonTodoToggle>
