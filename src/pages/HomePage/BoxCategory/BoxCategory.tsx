@@ -83,15 +83,11 @@ const BoxCategory = ({
 
 		if (targetTask) {
 			setCalendarStartDate(dayjs(targetTask.startDate));
+			setCalendarEndDate(targetTask.endDate ? dayjs(targetTask.endDate) : null);
 
 			if (targetTask.endDate) {
-				setCalendarEndDate(dayjs(targetTask.endDate));
-
-				if (!isPeriodOn) {
-					handlePeriodToggle();
-				}
+				if (!isPeriodOn) handlePeriodToggle();
 			} else {
-				setCalendarEndDate(null);
 				handlePeriodEnd();
 			}
 		}
@@ -217,14 +213,10 @@ const BoxCategory = ({
 	};
 
 	const handlePeriodToggleWrapper = () => {
-		if (!isPeriodOn) {
-			handlePeriodToggle();
-			if (!calendarEndDate) {
-				setCalendarStartDate(null);
-			}
-		} else {
-			handlePeriodToggle();
+		if (!isPeriodOn && !calendarEndDate) {
+			setCalendarStartDate(null);
 		}
+		handlePeriodToggle();
 	};
 
 	return (
