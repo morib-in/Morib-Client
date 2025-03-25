@@ -74,9 +74,12 @@ const BoxCategory = ({
 
 	const { mutate: patchTask } = usePatchTask();
 
+	const getTargetTaskById = (taskId: number) => {
+		return ongoingTodos.find((task) => task.id === taskId) || completedTodos.find((task) => task.id === taskId);
+	};
+
 	const handleOpenTaskCalendar = (taskId: number) => {
-		const targetTask =
-			ongoingTodos.find((task) => task.id === taskId) || completedTodos.find((task) => task.id === taskId);
+		const targetTask = getTargetTaskById(taskId);
 
 		if (targetTask) {
 			setCalendarStartDate(dayjs(targetTask.startDate));
@@ -89,19 +92,17 @@ const BoxCategory = ({
 				}
 			} else {
 				setCalendarEndDate(null);
-
 				handlePeriodEnd();
 			}
 		}
+
 		setSelectedTaskId(taskId);
 		setIsCalendarOpen(true);
 	};
 
 	const handleTaskDateChange = (newDate: Dayjs | null, endDate?: Dayjs | null) => {
 		if (selectedTaskId) {
-			const targetTask =
-				ongoingTodos.find((task) => task.id === selectedTaskId) ||
-				completedTodos.find((task) => task.id === selectedTaskId);
+			const targetTask = getTargetTaskById(selectedTaskId);
 
 			if (targetTask) {
 				const newStartDate = newDate ? (format(newDate) as string) : targetTask.startDate;
@@ -116,6 +117,7 @@ const BoxCategory = ({
 				});
 			}
 		}
+
 		setIsCalendarOpen(false);
 		setSelectedTaskId(null);
 		handlePeriodEnd();
