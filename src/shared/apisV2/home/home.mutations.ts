@@ -4,7 +4,8 @@ import { timerKeys } from '../timer/timer.keys';
 import {
 	deleteCategory,
 	deleteTask,
-	modifyCategory,
+	patchCategory,
+	patchTask,
 	postAddCategory,
 	postAddTodayTodos,
 	postCreateTask,
@@ -62,11 +63,22 @@ export const useDeleteTask = () => {
 	});
 };
 
-export const useModifyCategory = () => {
+export const usePatchCategory = () => {
 	const queryClient = useQueryClient();
 
 	return useMutation({
-		mutationFn: modifyCategory,
+		mutationFn: patchCategory,
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: homeKeys.task });
+		},
+	});
+};
+
+export const usePatchTask = () => {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: patchTask,
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: homeKeys.task });
 		},

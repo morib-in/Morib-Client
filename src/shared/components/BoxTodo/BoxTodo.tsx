@@ -1,3 +1,5 @@
+import { ChangeEvent, KeyboardEvent, MouseEvent, useState } from 'react';
+
 import { formatSeconds } from '@/shared/utils/time';
 
 import type { TaskType } from '@/shared/types/tasks';
@@ -31,7 +33,9 @@ interface BoxTodoProps {
 	timerIncreasedTime?: number;
 	isSelectedTodoExist?: boolean;
 	handleCalendarToggle?: () => void;
+	onPatchTask?: (taskId: number, name: string, startDate: string, endDate: string | null) => void;
 }
+
 const BoxTodo = ({
 	id,
 	name,
@@ -49,6 +53,7 @@ const BoxTodo = ({
 	timerIncreasedTime,
 	isSelectedTodoExist,
 	handleCalendarToggle,
+	onPatchTask,
 }: BoxTodoProps) => {
 	const { mutate: deleteTask } = useDeleteTask();
 
@@ -58,7 +63,6 @@ const BoxTodo = ({
 
 	const nameStyle = isComplete ? 'line-through' : '';
 	const CheckBoxIcon = isComplete ? <CheckBoxFillIcon /> : <CheckBoxBlankIcon />;
-
 	const TimeIcon = elapsedTime ? <TimeFillIcon /> : <TimeLineIcon />;
 	const timeTextClass = elapsedTime ? 'text-mint-01' : 'text-gray-04';
 
@@ -70,19 +74,44 @@ const BoxTodo = ({
 				: ' bg-gray-bg-01';
 
 	const duration = formattedendDate ? `${formattedstartDate}~${formattedendDate}` : formattedstartDate;
-
 	const clickStyle = clickable && !addingComplete ? 'cursor-pointer' : 'cursor-default';
 
 	const handleClickTodo = () => {
 		if (addingComplete) return;
-
 		if (clickable && updateTodayTodos) updateTodayTodos({ id, name, startDate, endDate, elapsedTime });
-		else if (onClick) {
-			onClick();
-		}
+		else if (onClick) onClick();
 	};
 
 	const disableBtnStyle = clickable !== addingComplete ? 'pointer-events-none' : '';
+
+	const [isEditing, setIsEditing] = useState(false);
+	const [editedName, setEditedName] = useState(name);
+
+	const handleNameClick = (e: MouseEvent<HTMLHeadingElement>) => {
+		e.stopPropagation();
+		setIsEditing(true);
+	};
+
+	const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setEditedName(e.target.value);
+	};
+
+	const finishEditing = () => {
+		if (editedName.trim() && editedName !== name && onPatchTask) {
+			onPatchTask(id, editedName, startDate, endDate);
+		}
+		setIsEditing(false);
+	};
+
+	const handleNameBlur = () => {
+		finishEditing();
+	};
+
+	const handleNameKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+		if (e.key === 'Enter') {
+			finishEditing();
+		}
+	};
 
 	return (
 		<div
@@ -95,7 +124,23 @@ const BoxTodo = ({
 						<button onClick={onToggleComplete} className={disableBtnStyle}>
 							{CheckBoxIcon}
 						</button>
-						<h3 className={`mt-[0.42rem] text-white body-semibold-16 ${nameStyle} truncate`}>{name}</h3>
+						{isEditing ? (
+							<input
+								className="mt-[0.42rem] w-[27.8rem] border-b-[0.1rem] border-b-white bg-transparent text-gray-04 detail-reg-14 placeholder:text-gray-04 focus:outline-none"
+								value={editedName}
+								onChange={handleNameChange}
+								onBlur={handleNameBlur}
+								onKeyDown={handleNameKeyDown}
+								autoFocus
+							/>
+						) : (
+							<h3
+								className={`mt-[0.42rem] text-white body-semibold-16 ${nameStyle} truncate`}
+								onClick={handleNameClick}
+							>
+								{name}
+							</h3>
+						)}
 					</div>
 					{!isSelectedTodoExist && !addingComplete && (
 						<Dropdown>
@@ -120,7 +165,6 @@ const BoxTodo = ({
 						<ButtonCalendarIcon />
 						<p className="mt-[0.3rem] text-gray-04 detail-reg-12">{duration}</p>
 					</button>
-
 					<div className="flex items-center gap-[0.6rem]">
 						{TimeIcon}
 						<p className={`mt-[0.3rem] detail-reg-12 ${timeTextClass}`}>{formattedTime}</p>

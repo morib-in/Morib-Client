@@ -71,16 +71,32 @@ const Calendar = ({
 	const handleDateChange = (date: Date | null) => {
 		if (date) {
 			const dayjsDate = dayjs(date);
+
 			onStartDateInput(dayjsDate);
+
+			if (!isPeriodOn && onEndDateInput) {
+				onEndDateInput(null);
+			}
 		} else {
 			onStartDateInput(null);
 		}
 	};
 
 	const handlePeriodChange = (dates: [Date | null, Date | null]) => {
-		const [start, end] = dates;
-		onStartDateInput(start ? dayjs(start) : null);
-		onEndDateInput(end ? dayjs(end) : null);
+		const [newStart, newEnd] = dates;
+
+		if (selectedStartDate && selectedEndDate && newStart) {
+			onStartDateInput(dayjs(newStart));
+			onEndDateInput(null);
+			return;
+		}
+
+		const startDayjs = newStart ? dayjs(newStart) : null;
+		const endDayjs = newEnd ? dayjs(newEnd) : null;
+		onStartDateInput(startDayjs);
+		if (startDayjs && endDayjs) {
+			onEndDateInput(endDayjs);
+		}
 	};
 
 	return (
@@ -129,7 +145,7 @@ const Calendar = ({
 
 					<hr className={STYLES.divideLine} />
 					<div className={`${STYLES.defaultToggle}`}>
-						<h3 className={STYLES.toggleText}>종료 날짜</h3>
+						<h3 className={STYLES.toggleText}>기간 설정</h3>
 						<ButtonStatusToggle isToggleOn={isPeriodOn} onToggle={onPeriodToggle} />
 					</div>
 				</div>

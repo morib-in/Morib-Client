@@ -36,7 +36,7 @@ import { friendKeys } from '@/shared/apisV2/friends/friends.keys';
 import {
 	useAddCategory,
 	useDeleteCategory,
-	useModifyCategory,
+	usePatchCategory,
 	usePostAddTodayTodos,
 } from '@/shared/apisV2/home/home.mutations';
 import { useGetCategoryTask, useGetWorkTime } from '@/shared/apisV2/home/home.queries';
@@ -86,7 +86,7 @@ const HomePage = () => {
 	const { mutate: addTodayTodos } = usePostAddTodayTodos();
 	const { mutate: deleteCategory } = useDeleteCategory();
 	const { mutate: addCategory } = useAddCategory();
-	const { mutate: modifyCategory } = useModifyCategory();
+	const { mutate: patchCategory } = usePatchCategory();
 
 	const navigate = useNavigate();
 
@@ -210,9 +210,9 @@ const HomePage = () => {
 		deleteCategory({ categoryId });
 	};
 
-	const handleModifyCategory = (categoryId: number, name: string) => {
+	const handlePatchCategory = (categoryId: number, name: string) => {
 		if (!name.trim()) return;
-		modifyCategory({ categoryId, name: name });
+		patchCategory({ categoryId, name: name });
 	};
 
 	useEffect(() => {
@@ -329,7 +329,7 @@ const HomePage = () => {
 												getSelectedNumber={getSelectedNumber}
 												addingComplete={addingComplete}
 												onDeleteCategory={handleDeleteCategory}
-												onModifyCategory={handleModifyCategory}
+												onPatchCategory={handlePatchCategory}
 												isSelectedTodoExist={todayTodos.length > 0}
 												selectedDate={selectedDate}
 											/>
