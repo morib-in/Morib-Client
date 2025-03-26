@@ -3,6 +3,8 @@ import { ButtonHTMLAttributes, ReactNode, useRef } from 'react';
 import ButtonArrowSVG from '@/shared/components/ButtonArrowSVG/ButtonArrowSVG';
 import Spacer from '@/shared/components/Spacer/Spacer';
 
+import useCarousel from '@/shared/hooks/useCarousel';
+
 import { RecommendSiteType } from '@/shared/types/allowedService';
 import { Direction } from '@/shared/types/global';
 
@@ -33,24 +35,7 @@ interface RecommendServiceRootProps {
 
 const RecommendServiceRoot = ({ children }: RecommendServiceRootProps) => {
 	const carouselRef = useRef<HTMLDivElement>(null);
-
-	const handleNext = () => {
-		if (carouselRef.current) {
-			carouselRef.current.scrollBy({
-				left: carouselRef.current.offsetWidth,
-				behavior: 'smooth',
-			});
-		}
-	};
-
-	const handlePrev = () => {
-		if (carouselRef.current) {
-			carouselRef.current.scrollBy({
-				left: -carouselRef.current.offsetWidth,
-				behavior: 'smooth',
-			});
-		}
-	};
+	const { handleNext, handlePrev } = useCarousel({ carouselRef });
 
 	return (
 		<Spacer.Width className="relative h-[18.8rem] flex-shrink-0 rounded-[16px] bg-gray-bg-03 px-[2.8rem] py-[2.4rem]">

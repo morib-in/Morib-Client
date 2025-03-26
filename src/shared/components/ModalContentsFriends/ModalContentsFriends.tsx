@@ -2,8 +2,6 @@ import { forwardRef, useEffect, useState } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
 
-import { useSSE } from '@/shared/apisV2/SSE/useSSE';
-import { useSSEEvent } from '@/shared/apisV2/SSE/useSSEEvent';
 import { friendKeys } from '@/shared/apisV2/friends/friends.keys';
 
 import FriendsRequest from './FriendRequest/FriendsRequest';
@@ -32,31 +30,10 @@ const ModalContentsFriends = forwardRef<HTMLDivElement, ModalContentsFriendsProp
 	useEffect(() => {
 		if (!isModalOpen) {
 			resetActiveTab();
+		} else {
+			queryClient.invalidateQueries({ queryKey: friendKeys.friend });
 		}
 	}, [isModalOpen]);
-
-	// NOTE: SSE 연결
-	useSSE();
-
-	// NOTE: SSE 이벤트 구독
-	const event = useSSEEvent();
-
-	useEffect(() => {
-		if (event) {
-			switch (event.type) {
-				case 'friendRequest':
-					console.log('친구 요청 이벤트 수신', event.data);
-					queryClient.invalidateQueries({ queryKey: friendKeys.friend });
-					break;
-				case 'friendRequestAccept':
-					console.log('친구 요청 수락 이벤트 수신', event.data);
-					queryClient.invalidateQueries({ queryKey: friendKeys.friend });
-					break;
-				default:
-					break;
-			}
-		}
-	}, [event]);
 
 	return (
 		<div

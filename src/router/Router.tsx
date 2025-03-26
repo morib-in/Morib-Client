@@ -4,6 +4,7 @@ import { Suspense, lazy } from 'react';
 import { Outlet, createBrowserRouter } from 'react-router-dom';
 
 import ErrorBoundary from '@/shared/components/ErrorBoundary/ErrorBoundary';
+import HeartBeatBoundary from '@/shared/components/HeartBeatBoundary/HeartBeatBoundary';
 import LoadingOverlay from '@/shared/components/LoadingOverlay/LoadingOverlay';
 
 import AllowedServicePage from '@/pages/AllowedServicePage/AllowedServicePage';
@@ -50,36 +51,42 @@ const router: Router = createBrowserRouter([
 		element: <ProtectedRoute />,
 		children: [
 			{
-				path: ROUTES_CONFIG.home.path,
-				element: (
-					<Layout>
-						<HomePage />
-					</Layout>
-				),
-			},
-			{
-				path: ROUTES_CONFIG.onboarding.path,
-				element: (
-					<Layout>
-						<OnboardingPage />
-					</Layout>
-				),
-			},
-			{
-				path: ROUTES_CONFIG.timer.path,
-				element: (
-					<Suspense fallback={<LoadingOverlay isLoading dim={false} />}>
-						<TimerPage />
-					</Suspense>
-				),
-			},
-			{
-				path: ROUTES_CONFIG.allowedService.path,
-				element: (
-					<Layout>
-						<AllowedServicePage />
-					</Layout>
-				),
+				path: '',
+				element: <HeartBeatBoundary />,
+				children: [
+					{
+						path: ROUTES_CONFIG.home.path,
+						element: (
+							<Layout>
+								<HomePage />
+							</Layout>
+						),
+					},
+					{
+						path: ROUTES_CONFIG.onboarding.path,
+						element: (
+							<Layout>
+								<OnboardingPage />
+							</Layout>
+						),
+					},
+					{
+						path: ROUTES_CONFIG.timer.path,
+						element: (
+							<Suspense fallback={<LoadingOverlay isLoading dim={false} />}>
+								<TimerPage />
+							</Suspense>
+						),
+					},
+					{
+						path: ROUTES_CONFIG.allowedService.path,
+						element: (
+							<Layout>
+								<AllowedServicePage />
+							</Layout>
+						),
+					},
+				],
 			},
 		],
 	},

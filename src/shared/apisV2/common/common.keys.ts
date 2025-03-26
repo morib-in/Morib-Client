@@ -15,3 +15,8 @@ NOTE: queryKey 작성 예시
  post: (req: PostInterestAreaReq) => [...interestAreaKeys.all, 'post', req] as const,
  }
 */
+
+export const commonKeys = {
+	common: ['common'] as const,
+	heartBeat: () => [...commonKeys.common, 'heartBeat'] as const,
+};

@@ -1,13 +1,12 @@
 import { useEffect } from 'react';
 
-import { PostStopTimerReq } from '@/shared/types/api/timer';
+import { PostUpdateTimerInfoReq } from '@/shared/types/api/timer';
 
 interface UseUrlHandlerProps {
 	isPlaying: boolean;
 	selectedTodo: number | null;
-	selectedTodoName: string;
 	baseUrls: string[];
-	stopTimer: (params: PostStopTimerReq, options: { onSuccess: () => void }) => void;
+	stopTimer: (params: PostUpdateTimerInfoReq, options: { onSuccess: () => void }) => void;
 	timerIncreasedTime: number;
 	setIsPlaying: (isPlaying: boolean) => void;
 	getBaseUrl: (url: string) => string;
@@ -17,7 +16,6 @@ interface UseUrlHandlerProps {
 export const useUrlHandler = ({
 	isPlaying,
 	selectedTodo,
-	selectedTodoName,
 	baseUrls,
 	stopTimer,
 	timerIncreasedTime,
@@ -38,7 +36,7 @@ export const useUrlHandler = ({
 								taskId: selectedTodo,
 								elapsedTime: timerIncreasedTime,
 								targetDate: formattedTodayDate,
-								runningCategoryName: selectedTodoName,
+								timerStatus: 'PAUSED',
 							},
 							{
 								onSuccess: () => {

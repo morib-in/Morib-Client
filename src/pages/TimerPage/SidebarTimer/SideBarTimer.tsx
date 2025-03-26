@@ -6,13 +6,14 @@ import { useQueryClient } from '@tanstack/react-query';
 import BoxTodo from '@/shared/components/BoxTodo/BoxTodo';
 import ButtonRadius5 from '@/shared/components/ButtonRadius5/ButtonRadius5';
 import ButtonTodoToggle from '@/shared/components/ButtonTodayToggle/ButtonTodoToggle';
+import Spacer from '@/shared/components/Spacer/Spacer';
 
 import { TimerTodoType } from '@/shared/types/tasks';
 
 import BtnListIcon from '@/shared/assets/svgs/btn_list.svg?react';
 
 import { usePostToggleTaskStatus } from '@/shared/apisV2/common/common.mutations';
-import { usePostStopTimer } from '@/shared/apisV2/timer/timer.mutations';
+import { usePostUpdateTimerInfo } from '@/shared/apisV2/timer/timer.mutations';
 
 interface CategoryBoxProps {
 	completedTodos: TimerTodoType[];
@@ -36,7 +37,6 @@ const SideBarTimer = ({
 	completedTodos = [],
 	toggleSidebar,
 	onTodoSelection,
-	selectedTodoName,
 	selectedTodo,
 	onPlayToggle,
 	isPlaying,
@@ -57,17 +57,17 @@ const SideBarTimer = ({
 	const queryClient = useQueryClient();
 
 	const { mutate, isError, error } = usePostToggleTaskStatus();
-	const { mutate: stopTimer } = usePostStopTimer();
+	const { mutate: updateTimerInfo } = usePostUpdateTimerInfo();
 
 	const handleTodoClick = (id: number, time: number, name: string, categoryName: string) => {
 		if (isPlaying) {
 			if (selectedTodo !== null) {
-				stopTimer(
+				updateTimerInfo(
 					{
 						taskId: selectedTodo,
 						elapsedTime: timerIncreasedTime,
 						targetDate: formattedTodayDate,
-						runningCategoryName: selectedTodoName,
+						timerStatus: 'PAUSED',
 					},
 					{
 						onSuccess: () => {
@@ -86,12 +86,12 @@ const SideBarTimer = ({
 
 	const handleNavigateHome = () => {
 		if (isPlaying && selectedTodo !== null) {
-			stopTimer(
+			updateTimerInfo(
 				{
 					taskId: selectedTodo,
 					elapsedTime: timerIncreasedTime,
 					targetDate: formattedTodayDate,
-					runningCategoryName: selectedTodoName,
+					timerStatus: 'PAUSED',
 				},
 				{
 					onSuccess: () => {
@@ -126,7 +126,7 @@ const SideBarTimer = ({
 					<BtnListIcon />
 				</button>
 			</div>
-			<div className="h-[82.6rem] overflow-auto pb-[2rem]">
+			<Spacer.Height className="overflow-auto pb-[2rem]">
 				{ongoingTodos.map((todo) => (
 					<BoxTodo
 						key={todo.id}
@@ -157,7 +157,7 @@ const SideBarTimer = ({
 						/>
 					))}
 				</ButtonTodoToggle>
-			</div>
+			</Spacer.Height>
 			<div className="flex flex-col items-start gap-[1rem] pb-[2rem] pt-[4rem]">
 				<ButtonRadius5.Xl color="main" onClick={handleNavigateHome} onMouseEnter={handleMouseEnter}>
 					홈으로 나가기

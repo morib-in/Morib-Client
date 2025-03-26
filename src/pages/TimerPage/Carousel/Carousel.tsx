@@ -5,6 +5,8 @@ import ButtonRadius8 from '@/shared/components/ButtonRadius8/ButtonRadius8';
 import ModalContentsFriends from '@/shared/components/ModalContentsFriends/ModalContentsFriends';
 import ModalWrapper, { ModalWrapperRef } from '@/shared/components/ModalWrapper/ModalWrapper';
 
+import useCarousel from '@/shared/hooks/useCarousel';
+
 import { Direction } from '@/shared/types/global';
 
 import { useGetTimerFriends } from '@/shared/apisV2/timer/timer.queries';
@@ -13,7 +15,11 @@ import ContainerCarousel from './ContainerCarousel/ContainerCarousel';
 
 const Carousel = () => {
 	const friendsModalRef = useRef<ModalWrapperRef>(null);
+	const carouselRef = useRef<HTMLDivElement>(null);
+
 	const { data: friendsList } = useGetTimerFriends();
+
+	const { handleNext, handlePrev } = useCarousel({ carouselRef });
 
 	const handleOpenFriendsModal = () => {
 		friendsModalRef.current?.open();
@@ -21,8 +27,8 @@ const Carousel = () => {
 
 	return (
 		<div className="flex h-[15rem] w-full max-w-[86.6rem] items-center justify-between gap-[6rem]">
-			<ButtonArrowSVG direction={Direction.LEFT} />
-			<div className="flex w-full min-w-0 justify-between">
+			<ButtonArrowSVG direction={Direction.LEFT} onClick={handlePrev} />
+			<div ref={carouselRef} className="flex w-[65.8rem] min-w-0 gap-x-[4.2rem] overflow-x-auto">
 				{friendsList?.data.length === 0 ? (
 					<div className="flex h-full w-full flex-col items-center justify-center gap-y-[1.6rem]">
 						<h3 className="text-gray-04 subhead-bold-20">함께 몰입할 친구를 추가해보아요!</h3>
@@ -37,13 +43,14 @@ const Carousel = () => {
 								time={friend.elapsedTime}
 								name={friend.name}
 								categoryname={friend.categoryName || ''}
-								isPlaying={friend.isOnline}
+								isPlaying={friend.timerStatus === 'RUNNING'}
+								isOnline={friend.isOnline}
 							/>
 						))}
 					</>
 				)}
 			</div>
-			<ButtonArrowSVG direction={Direction.RIGHT} />
+			<ButtonArrowSVG direction={Direction.RIGHT} onClick={handleNext} />
 			<ModalWrapper ref={friendsModalRef} backdrop={true}>
 				{({ isModalOpen }) => <ModalContentsFriends isModalOpen={isModalOpen} />}
 			</ModalWrapper>

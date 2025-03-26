@@ -1,12 +1,5 @@
 import { ColorPaletteType } from '../allowedService';
 
-export interface PostStopTimerReq {
-	taskId: number;
-	targetDate: string;
-	elapsedTime: number;
-	runningCategoryName: string;
-}
-
 export interface GetTimerTodosReq {
 	targetDate: string;
 }
@@ -38,13 +31,8 @@ export interface GetTimerFriendsRes {
 		elapsedTime: number;
 		categoryName: string | null;
 		isOnline: boolean;
+		timerStatus: 'RUNNING' | 'PAUSED';
 	}[];
-}
-
-export interface PostStartTimerReq {
-	elapsedTime: number;
-	runningCategoryName: string;
-	taskId: number;
 }
 
 export interface GetPopoverAllowedServiceListRes {
@@ -65,4 +53,11 @@ export interface GetPopoverAllowedServiceListRes {
 
 export interface PostApplyAllowedServiceGroupReq {
 	allowedGroupIdList: number[];
+}
+
+export interface PostUpdateTimerInfoReq {
+	taskId: number;
+	elapsedTime: number;
+	targetDate: string;
+	timerStatus: 'RUNNING' | 'PAUSED';
 }
