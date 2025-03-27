@@ -64,6 +64,7 @@ const AllowedServicePage = () => {
 		setActiveGroupId(null);
 		setTitleInput('');
 		setSelectedColor('#868C93');
+		resetUrlInput();
 	};
 
 	const { data: allowedServiceList } = useGetAllowedServiceList({ connectType: currentTap });
@@ -88,6 +89,7 @@ const AllowedServicePage = () => {
 
 	const handleSelectActiveGroupId = (activeGroupId: number | null) => {
 		setActiveGroupId(activeGroupId);
+		resetUrlInput();
 	};
 
 	const handleSelectColor = (hashColor: ColorPaletteType) => {
@@ -114,10 +116,27 @@ const AllowedServicePage = () => {
 
 	const handleAddAllowedServiceGroup = () => {
 		if (titleInput.length > 0) {
-			postAddAllowedServiceGroup({
-				name: titleInput,
-				colorCode: selectedColor,
-			});
+			postAddAllowedServiceGroup(
+				{
+					name: titleInput,
+					colorCode: selectedColor,
+				},
+				{
+					onSuccess: (response) => {
+						setActiveGroupId(response.data.id);
+					},
+				},
+			);
+		}
+	};
+
+	const handleKeyDownTitleInput = (e: KeyboardEvent<HTMLInputElement>) => {
+		if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
+			if (activeGroupId === null) {
+				handleAddAllowedServiceGroup();
+			} else {
+				handleChangeAllowedServiceGroupName();
+			}
 		}
 	};
 
@@ -171,7 +190,7 @@ const AllowedServicePage = () => {
 		});
 	};
 
-	const handleKeyDownTitleInput = (e: KeyboardEvent<HTMLInputElement>) => {
+	const handleKeyDownUrlInput = (e: KeyboardEvent<HTMLInputElement>) => {
 		if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
 			handleAddAllowedService(urlInput, activeGroupId);
 		}
@@ -179,7 +198,7 @@ const AllowedServicePage = () => {
 
 	// NOTE: 첫 렌더링 시 api를 통해 받은 첫번째 allowed service group id를 activeGroupId로 설정
 	useEffect(() => {
-		if (!activeGroupId && allowedServiceList && allowedServiceList?.data.length > 0) {
+		if (activeGroupId === null && allowedServiceList && allowedServiceList?.data.length > 0) {
 			setActiveGroupId(allowedServiceList.data[0].id);
 		}
 	}, [allowedServiceList]);
@@ -248,6 +267,7 @@ const AllowedServicePage = () => {
 							<AllowedServiceGroupDetail.Input
 								value={titleInput}
 								onChange={handleChangeTitleInput}
+								onKeyDown={handleKeyDownTitleInput}
 								placeholder="허용서비스 세트의 이름을 입력해주세요."
 							/>
 						</AllowedServiceGroupDetail.Header>
@@ -264,7 +284,7 @@ const AllowedServicePage = () => {
 						<AllowedServiceGroupDetail.Content>
 							<TextField
 								value={urlInput}
-								onKeyDown={handleKeyDownTitleInput}
+								onKeyDown={handleKeyDownUrlInput}
 								onChange={handleChangeUrlInput}
 								isError={(urlInput.length > 0 && !isUrlValid(urlInput)) || isError}
 								errorMessage={isError ? error.response?.data.message : '알맞은 형식의 url을 입력해 주세요.'}
