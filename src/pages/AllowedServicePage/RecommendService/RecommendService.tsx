@@ -17,7 +17,7 @@ const RecommendServiceItem = ({ recommendSite, ...props }: RecommendServiceItemP
 	return (
 		<button
 			{...props}
-			className="flex w-[23.9rem] flex-shrink-0 items-center gap-[1.5rem] rounded-[8px] bg-gray-bg-01 p-[2rem]"
+			className="flex w-[23.9rem] flex-shrink-0 items-center gap-[1.5rem] rounded-[8px] bg-gray-bg-01 p-[2rem] hover:bg-gray-bg-04 active:bg-gray-bg-02"
 		>
 			<img
 				src={getServiceFavicon(recommendSite.siteUrl)}
