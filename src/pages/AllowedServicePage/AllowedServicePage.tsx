@@ -64,6 +64,7 @@ const AllowedServicePage = () => {
 		setActiveGroupId(null);
 		setTitleInput('');
 		setSelectedColor('#868C93');
+		resetUrlInput();
 	};
 
 	const { data: allowedServiceList } = useGetAllowedServiceList({ connectType: currentTap });
@@ -88,6 +89,7 @@ const AllowedServicePage = () => {
 
 	const handleSelectActiveGroupId = (activeGroupId: number | null) => {
 		setActiveGroupId(activeGroupId);
+		resetUrlInput();
 	};
 
 	const handleSelectColor = (hashColor: ColorPaletteType) => {
