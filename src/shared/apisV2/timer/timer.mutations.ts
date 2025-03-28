@@ -42,7 +42,7 @@ export const usePostUpdateTimerInfoWithPolling = ({
 		if (taskId) {
 			const intervalId = setInterval(() => {
 				updateTimerInfo({ taskId, elapsedTime, targetDate, timerStatus });
-			}, 60000);
+			}, 1000);
 
 			return () => clearInterval(intervalId);
 		}
