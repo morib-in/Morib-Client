@@ -7,7 +7,7 @@ export const useGetHeartBeat = () => {
 	return useQuery({
 		queryKey: commonKeys.heartBeat(),
 		queryFn: getHeartBeat,
-		refetchInterval: 60000,
+		refetchInterval: 1000,
 		refetchIntervalInBackground: true,
 	});
 };
