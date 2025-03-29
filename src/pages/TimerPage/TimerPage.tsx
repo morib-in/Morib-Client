@@ -40,7 +40,7 @@ const TimerPage = () => {
 
 	const { data: todosData } = useGetTimerTodos({ targetDate: formattedTodayDate });
 
-	const { task: todos = [], sumTodayElapsedTime = 0 } = todosData?.data || {};
+	const { task: todos = [], totalTimeOfToday = 0 } = todosData?.data || {};
 	const { ongoingTodos, completedTodos } = splitTasksByCompletion(todos);
 	const [selectedTodoId, setSelectedTodoId] = useState<number | null>(null);
 	const [selectedTodoData, setSelectedTodoData] = useState<TimerTodoType | undefined>(undefined);
@@ -61,7 +61,7 @@ const TimerPage = () => {
 	} = useTimerCount({ isPlaying, previousTime: elapsedTime });
 	const { timer: accumulatedTime, resetIncreasedTime: resetAccumulatedIncreasedTime } = useTimerCount({
 		isPlaying,
-		previousTime: sumTodayElapsedTime,
+		previousTime: totalTimeOfToday,
 	});
 
 	const { mutate: updateTimerInfo } = usePostUpdateTimerInfo();

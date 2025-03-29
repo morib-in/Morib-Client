@@ -24,7 +24,7 @@ export const usePostUpdateTimerInfo = () => {
 	return useMutation({
 		mutationFn: postUpdateTimerInfo,
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: timerKeys.friends() });
+			queryClient.invalidateQueries({ queryKey: timerKeys.timer });
 		},
 	});
 };

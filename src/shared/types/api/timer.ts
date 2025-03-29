@@ -8,7 +8,7 @@ export interface GetTimerTodosRes {
 	status: number;
 	message: string;
 	data: {
-		sumTodayElapsedTime: number;
+		totalTimeOfToday: number;
 		task: {
 			id: number;
 			name: string;
