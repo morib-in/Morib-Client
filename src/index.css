@@ -10,7 +10,16 @@
   html {
     font-size: 62.5%;
     font-family: 'Pretendard';
-
+  }
+  
+  /* 스크롤바 디자인 제거 */
+  ::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari, Opera에서 스크롤바 숨김 */
+  }
+  
+  * {
+    -ms-overflow-style: none;  /* IE, Edge에서 스크롤바 숨김 */
+    scrollbar-width: none;  /* Firefox에서 스크롤바 숨김 */
   }
 }
 

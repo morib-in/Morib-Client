@@ -163,7 +163,9 @@ const BoxCategory = ({
 			startDate: format(selectedDate) as string,
 			endDate: format(selectedEndDate),
 		};
-		mutate(dataToPost);
+		if (name.length > 0) {
+			mutate(dataToPost);
+		}
 
 		setName('');
 		setIsAdding(false);
@@ -235,7 +237,7 @@ const BoxCategory = ({
 						onKeyDown={handleKeyDown}
 					/>
 				) : (
-					<h2 className="text-white subhead-semibold-18" onClick={handleStartEditing}>
+					<h2 className="truncate text-white subhead-semibold-18" onClick={handleStartEditing}>
 						{title}
 					</h2>
 				)}
