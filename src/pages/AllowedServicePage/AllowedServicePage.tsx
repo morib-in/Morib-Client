@@ -267,7 +267,7 @@ const AllowedServicePage = () => {
 							<AllowedServiceGroupDetail.Input
 								value={titleInput}
 								onChange={handleChangeTitleInput}
-								onKeyDown={handleKeyDownTitleInput}
+								onKeyPress={handleKeyDownTitleInput}
 								placeholder="허용서비스 세트의 이름을 입력해주세요."
 							/>
 						</AllowedServiceGroupDetail.Header>
