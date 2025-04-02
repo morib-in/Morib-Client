@@ -61,3 +61,10 @@ export interface PostUpdateTimerInfoReq {
 	targetDate: string;
 	timerStatus: 'RUNNING' | 'PAUSED';
 }
+
+export interface GetUpdateTimerInfoReq {
+	taskId: number;
+	elapsedTime: number;
+	targetDate: string;
+	timerStatus: 'RUNNING' | 'PAUSED';
+}
