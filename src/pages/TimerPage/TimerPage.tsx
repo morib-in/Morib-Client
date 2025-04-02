@@ -17,8 +17,12 @@ import HomeIcon from '@/shared/assets/svgs/btn_home.svg?react';
 
 import { ROUTES_CONFIG } from '@/router/routesConfig';
 
-import { usePostUpdateTimerInfo, usePostUpdateTimerInfoWithPolling } from '@/shared/apisV2/timer/timer.mutations';
-import { useGetPopoverAllowedServiceList, useGetTimerTodos } from '@/shared/apisV2/timer/timer.queries';
+import { usePostUpdateTimerInfo } from '@/shared/apisV2/timer/timer.mutations';
+import {
+	useGetPopoverAllowedServiceList,
+	useGetTimerTodos,
+	useGetUpdateTimerInfo,
+} from '@/shared/apisV2/timer/timer.queries';
 
 import Carousel from './Carousel/Carousel';
 import PopoverAllowedService from './PopoverAllowedService/PopoverAllowedService';
@@ -148,8 +152,8 @@ const TimerPage = () => {
 		}
 	}, [allowedServiceList]);
 
-	usePostUpdateTimerInfoWithPolling({
-		taskId: selectedTodoId,
+	useGetUpdateTimerInfo({
+		taskId: selectedTodoId!,
 		elapsedTime: timerIncreasedTime,
 		targetDate: formattedTodayDate,
 		timerStatus: isPlaying ? 'RUNNING' : 'PAUSED',
