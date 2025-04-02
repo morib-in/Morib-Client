@@ -1,8 +1,9 @@
-import {
+import type {
 	GetPopoverAllowedServiceListRes,
 	GetTimerFriendsRes,
 	GetTimerTodosReq,
 	GetTimerTodosRes,
+	GetUpdateTimerInfoReq,
 	PostApplyAllowedServiceGroupReq,
 	PostUpdateTimerInfoReq,
 } from '@/shared/types/api/timer';
@@ -15,6 +16,7 @@ const TIMER_ENDPOINT = {
 	GET_POPOVER_ALLOWED_SERVICE_LIST: 'api/v2/timer/allowedGroups',
 	POST_APPLY_ALLOWED_SERVICE_GROUP: 'api/v2/timer/allowedGroups',
 	POST_TIMER_INFO_UPDATE: 'api/v2/timer/sync',
+	GET_TIMER_INFO_UPDATE: 'api/v2/timer/ping',
 };
 
 export const getTimerTodos = async ({ targetDate }: GetTimerTodosReq): Promise<GetTimerTodosRes> => {
@@ -43,6 +45,13 @@ export const postUpdateTimerInfo = async ({ taskId, elapsedTime, targetDate, tim
 		elapsedTime,
 		targetDate,
 		timerStatus,
+	});
+	return data;
+};
+
+export const getUpdateTimerInfo = async ({ taskId, elapsedTime, targetDate, timerStatus }: GetUpdateTimerInfoReq) => {
+	const { data } = await authClient.get(TIMER_ENDPOINT.GET_TIMER_INFO_UPDATE, {
+		params: { taskId, elapsedTime, targetDate, timerStatus },
 	});
 	return data;
 };

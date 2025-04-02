@@ -1,8 +1,6 @@
-import { useEffect } from 'react';
-
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { PostApplyAllowedServiceGroupReq, PostUpdateTimerInfoReq } from '@/shared/types/api/timer';
+import { PostApplyAllowedServiceGroupReq } from '@/shared/types/api/timer';
 
 import { postApplyAllowedServiceGroup, postUpdateTimerInfo } from './timer.api';
 import { timerKeys } from './timer.keys';
@@ -27,26 +25,4 @@ export const usePostUpdateTimerInfo = () => {
 			queryClient.invalidateQueries({ queryKey: timerKeys.timer });
 		},
 	});
-};
-
-export const usePostUpdateTimerInfoWithPolling = ({
-	taskId,
-	elapsedTime,
-	targetDate,
-	timerStatus,
-}: Omit<PostUpdateTimerInfoReq, 'taskId'> & { taskId: number | null }) => {
-	const mutation = usePostUpdateTimerInfo();
-	const { mutate: updateTimerInfo } = mutation;
-
-	useEffect(() => {
-		if (taskId) {
-			const intervalId = setInterval(() => {
-				updateTimerInfo({ taskId, elapsedTime, targetDate, timerStatus });
-			}, 1000);
-
-			return () => clearInterval(intervalId);
-		}
-	}, [taskId, elapsedTime, targetDate, timerStatus, updateTimerInfo]);
-
-	return mutation;
 };
