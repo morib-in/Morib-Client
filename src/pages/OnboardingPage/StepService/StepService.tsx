@@ -43,7 +43,8 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 
 	const checkIsSelectedUrl = (siteUrl: string) => {
 		return selectedServices.some(
-			(service) => service.siteUrl.replace(/^https?:\/\//, '') === siteUrl.replace(/^https?:\/\//, ''),
+			(service) =>
+				service.siteUrl.replace(/^(https?:\/\/)?(www\.)?/, '') === siteUrl.replace(/^(https?:\/\/)?(www\.)?/, ''),
 		);
 	};
 
