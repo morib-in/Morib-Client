@@ -49,6 +49,12 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 		);
 	};
 
+	if (isError) {
+		setTimeout(() => {
+			resetGetUrlInfo();
+		}, 3000);
+	}
+
 	const handleAddSelectedService = async (siteUrl: string) => {
 		const selected = checkIsSelectedUrl(siteUrl);
 
@@ -58,9 +64,13 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 
 		setInputSuccess(true);
 		const urlInfo = response?.data;
-
 		setSelectedServices((prev) => [...prev, urlInfo]);
 		setInputUrl('');
+
+		setTimeout(() => {
+			setInputSuccess(false);
+			resetGetUrlInfo();
+		}, 3000);
 	};
 
 	const handleAddRecommendedService = (urlInfo: AllowedSiteType) => {
@@ -174,12 +184,12 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 							isError
 								? '유효하지 않은 주소입니다.'
 								: checkIsSelectedUrl(inputUrl)
-									? '이미 등록된 url입니다.'
-									: '알맞은 형식의 url을 입력해 주세요.'
+									? '이미 등록된 URL입니다.'
+									: '알맞은 형식의 URL을 입력해 주세요.'
 						}
 						isSuccess={inputSuccess}
-						successMessage={'url 입력에 성공했어요.'}
-						placeholder="직접 url 입력하기"
+						successMessage={'URL 입력에 성공했어요.'}
+						placeholder="직접 URL 입력하기"
 					>
 						<TextField.ClearButton onClick={handleClickClearButton} />
 						<TextField.ConfirmButton
