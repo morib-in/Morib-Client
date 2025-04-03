@@ -10,8 +10,8 @@ const ButtonService = ({ title, url, favicon, onAddSelectedService, isSelected }
 	return (
 		<button
 			onClick={onAddSelectedService}
-			className={`flex h-[11rem] w-[34rem] items-center gap-x-[2rem] rounded-[8px] border-[1px] bg-gray-bg-03 p-[2rem] ${
-				isSelected ? 'border-mint-01' : 'border-transparent'
+			className={`flex h-[11rem] w-[34rem] items-center gap-x-[2rem] rounded-[8px] border-[1px] p-[2rem] ${
+				isSelected ? 'border-mint-01 bg-gray-bg-02' : 'border-transparent bg-gray-bg-03'
 			}`}
 		>
 			<img src={favicon} alt={`${title} 아이콘`} className="h-[7rem] w-[7rem] rounded-full" />
