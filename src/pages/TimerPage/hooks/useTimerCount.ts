@@ -25,14 +25,18 @@ export const useTimerCount = ({ isPlaying, previousTime, callback }: UseTimerCou
 		if (isPlaying) {
 			if (timerIntervalId.current === null) {
 				timerIntervalId.current = setInterval(() => {
-					const totalTime = previousTime + increasedTime;
-					const currentMilestone = Math.floor(totalTime / 40);
+					setIncreasedTime((prevTime) => {
+						const newTime = prevTime + 1;
+						const totalTime = previousTime + newTime;
+						const currentMilestone = Math.floor(totalTime / 40);
 
-					if (totalTime % 40 === 0 && currentMilestone !== lastMilestoneRef.current) {
-						callback?.();
-						lastMilestoneRef.current = currentMilestone;
-					}
-					setIncreasedTime((prevTime) => prevTime + 1);
+						if (totalTime % 40 === 0 && currentMilestone !== lastMilestoneRef.current) {
+							callback?.();
+							lastMilestoneRef.current = currentMilestone;
+						}
+
+						return newTime;
+					});
 				}, 1000);
 			}
 		} else {
