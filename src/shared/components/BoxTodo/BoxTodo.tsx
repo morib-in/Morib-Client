@@ -80,7 +80,7 @@ const BoxTodo = ({
 		else if (onClick) onClick();
 	};
 
-	const disableBtnStyle = clickable !== addingComplete ? 'pointer-events-none' : '';
+	const disableBtnStyle = clickable || addingComplete ? 'pointer-events-none' : '';
 
 	const [isEditing, setIsEditing] = useState(false);
 	const [editedName, setEditedName] = useState(name);
@@ -160,7 +160,7 @@ const BoxTodo = ({
 				</div>
 				<div className="ml-[0.8rem] mt-[0.7rem] flex flex-col gap-[0.2rem]">
 					<button
-						className={`flex items-center gap-[0.6rem] ${!addingComplete ? 'pointer-events-none' : ''}`}
+						className={`flex items-center gap-[0.6rem] ${!clickable ? '' : 'pointer-events-none'}`}
 						onClick={handleCalendarToggle}
 					>
 						<ButtonCalendarIcon />
