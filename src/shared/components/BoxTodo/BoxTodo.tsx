@@ -161,7 +161,7 @@ const BoxTodo = ({
 				<div className="ml-[0.8rem] mt-[0.7rem] flex flex-col gap-[0.2rem]">
 					<button
 						className={`flex items-center gap-[0.6rem] ${!addingComplete ? 'pointer-events-none' : ''}`}
-						onClick={!addingComplete && !isSelected ? handleCalendarToggle : undefined}
+						onClick={handleCalendarToggle}
 					>
 						<ButtonCalendarIcon />
 						<p className="mt-[0.3rem] text-gray-04 detail-reg-12">{duration}</p>
