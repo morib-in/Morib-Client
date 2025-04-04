@@ -1,6 +1,6 @@
 import dayjs, { Dayjs } from 'dayjs';
 
-import { KeyboardEvent, Suspense, lazy, useRef, useState } from 'react';
+import React, { KeyboardEvent, Suspense, lazy, useRef, useState } from 'react';
 
 import BoxTodo from '@/shared/components/BoxTodo/BoxTodo';
 import ButtonTodoToggle from '@/shared/components/ButtonTodayToggle/ButtonTodoToggle';
@@ -67,6 +67,7 @@ const BoxCategory = ({
 	const [editedCategoryName, setEditedCategoryName] = useState(title);
 	const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 	const [selectedTaskId, setSelectedTaskId] = useState<number | null>(null);
+	const [calendarPosition, setCalendarPosition] = useState({ top: 0, left: 0 });
 
 	const [calendarStartDate, setCalendarStartDate] = useState<Dayjs | null>(selectedDate);
 	const [calendarEndDate, setCalendarEndDate] = useState<Dayjs | null>(null);
@@ -77,7 +78,17 @@ const BoxCategory = ({
 		return ongoingTodos.find((task) => task.id === taskId) || completedTodos.find((task) => task.id === taskId);
 	};
 
-	const handleOpenTaskCalendar = (taskId: number) => {
+	const {
+		isPeriodOn,
+		selectedEndDate,
+		isCalendarOpened,
+		defaultDate,
+		handlePeriodToggle,
+		handleEndDateInput,
+		handlePeriodEnd,
+	} = useCalendar();
+
+	const handleOpenTaskCalendar = (taskId: number, e: React.MouseEvent<HTMLButtonElement>) => {
 		const targetTask = getTargetTaskById(taskId);
 
 		if (targetTask) {
@@ -90,6 +101,9 @@ const BoxCategory = ({
 				handlePeriodEnd();
 			}
 		}
+
+		const rect = e.currentTarget.getBoundingClientRect();
+		setCalendarPosition({ top: rect.top + 25, left: rect.right - 225 });
 
 		setSelectedTaskId(taskId);
 		setIsCalendarOpen(true);
@@ -139,16 +153,6 @@ const BoxCategory = ({
 
 	const todoRef = useRef<HTMLDivElement>(null);
 	useClickOutside(todoRef, cancelAddingTodo, isAdding && editable);
-
-	const {
-		isPeriodOn,
-		selectedEndDate,
-		isCalendarOpened,
-		defaultDate,
-		handlePeriodToggle,
-		handleEndDateInput,
-		handlePeriodEnd,
-	} = useCalendar();
 
 	const handleCreatePost = () => {
 		const dataToPost = {
@@ -269,45 +273,8 @@ const BoxCategory = ({
 								/>
 							)}
 
-							{isCalendarOpen && (
-								<Suspense fallback={<div>Loading...</div>}>
-									<div
-										className="absolute left-[7.25rem] top-[9.5rem]"
-										tabIndex={0}
-										ref={(node) => {
-											if (node) {
-												node.focus();
-											}
-										}}
-										onKeyDown={handleCalendarKeyDown}
-									>
-										<Calendar
-											isPeriodOn={isPeriodOn}
-											selectedStartDate={isPeriodOn ? calendarStartDate : calendarStartDate ?? defaultDate}
-											selectedEndDate={calendarEndDate}
-											onStartDateInput={(newDate) => {
-												setCalendarStartDate(newDate);
-												if (isPeriodOn) setCalendarEndDate(null);
-											}}
-											onEndDateInput={(newEndDate) => {
-												setCalendarEndDate(newEndDate);
-											}}
-											isCalendarOpened={isCalendarOpened}
-											onPeriodToggle={handlePeriodToggle}
-											clickOutSideCallback={handleCloseCalendar}
-										/>
-									</div>
-								</Suspense>
-							)}
-
 							{ongoingTodos.map(({ id, name, startDate, endDate, elapsedTime }) => {
-								const todo = {
-									id,
-									name,
-									startDate,
-									endDate,
-									elapsedTime,
-								};
+								const todo = { id, name, startDate, endDate, elapsedTime };
 								const selectedNumber = getSelectedNumber(id);
 								return (
 									<BoxTodo
@@ -332,7 +299,7 @@ const BoxCategory = ({
 										updateTodayTodos={() => updateTodayTodos(todo)}
 										clickable={addingTodayTodoStatus}
 										addingComplete={addingComplete}
-										handleCalendarToggle={() => handleOpenTaskCalendar(id)}
+										handleCalendarToggle={(e: React.MouseEvent<HTMLButtonElement>) => handleOpenTaskCalendar(id, e)}
 										onPatchTask={handlePatchTask}
 									/>
 								);
@@ -355,13 +322,44 @@ const BoxCategory = ({
 										}}
 										clickable={addingTodayTodoStatus}
 										addingComplete={addingComplete}
-										handleCalendarToggle={() => handleOpenTaskCalendar(id)}
+										handleCalendarToggle={(e: React.MouseEvent<HTMLButtonElement>) => handleOpenTaskCalendar(id, e)}
 									/>
 								))}
 							</ButtonTodoToggle>
 						)}
 					</Spacer.Height>
 				</Spacer.Height>
+			)}
+
+			{isCalendarOpen && (
+				<Suspense fallback={<div>Loading...</div>}>
+					<div
+						style={{ position: 'fixed', top: calendarPosition.top, left: calendarPosition.left }}
+						tabIndex={0}
+						ref={(node) => {
+							if (node) {
+								node.focus();
+							}
+						}}
+						onKeyDown={handleCalendarKeyDown}
+					>
+						<Calendar
+							isPeriodOn={isPeriodOn}
+							selectedStartDate={isPeriodOn ? calendarStartDate : calendarStartDate ?? defaultDate}
+							selectedEndDate={calendarEndDate}
+							onStartDateInput={(newDate) => {
+								setCalendarStartDate(newDate);
+								if (isPeriodOn) setCalendarEndDate(null);
+							}}
+							onEndDateInput={(newEndDate) => {
+								setCalendarEndDate(newEndDate);
+							}}
+							isCalendarOpened={isCalendarOpened}
+							onPeriodToggle={handlePeriodToggle}
+							clickOutSideCallback={handleCloseCalendar}
+						/>
+					</div>
+				</Suspense>
 			)}
 		</Spacer.Height>
 	);
