@@ -41,12 +41,12 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 	const { mutateAsync: getUrlInfo, reset: resetGetUrlInfo, isError, isPending } = useGetUrlInfo();
 	const { mutate: postInterestArea } = usePostInterestArea();
 
+	const getDomainFromUrl = (url: string) => {
+		return url.replace(/^(https?:\/\/)?(www\.)?/, '').toLowerCase();
+	};
+
 	const checkIsSelectedUrl = (siteUrl: string) => {
-		return selectedServices.some(
-			(service) =>
-				service.siteUrl.replace(/^(https?:\/\/)?(www\.)?/, '').toLowerCase() ===
-				siteUrl.replace(/^(https?:\/\/)?(www\.)?/, '').toLowerCase(),
-		);
+		return selectedServices.some((service) => getDomainFromUrl(service.siteUrl) === getDomainFromUrl(siteUrl));
 	};
 
 	if (isError) {
