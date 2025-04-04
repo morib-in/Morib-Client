@@ -31,7 +31,6 @@ interface BoxTodoProps {
 	clickable?: boolean;
 	addingComplete?: boolean;
 	timerIncreasedTime?: number;
-	isSelectedTodoExist?: boolean;
 	handleCalendarToggle?: () => void;
 	onPatchTask?: (taskId: number, name: string, startDate: string, endDate: string | null) => void;
 }
@@ -51,7 +50,6 @@ const BoxTodo = ({
 	elapsedTime,
 	addingComplete,
 	timerIncreasedTime,
-	isSelectedTodoExist,
 	handleCalendarToggle,
 	onPatchTask,
 }: BoxTodoProps) => {
@@ -142,7 +140,7 @@ const BoxTodo = ({
 							</h3>
 						)}
 					</div>
-					{!isSelectedTodoExist && !addingComplete && (
+					{!addingComplete && !isSelected && (
 						<Dropdown>
 							<Dropdown.Trigger>
 								<MeatballIcon className="opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
@@ -161,7 +159,10 @@ const BoxTodo = ({
 					)}
 				</div>
 				<div className="ml-[0.8rem] mt-[0.7rem] flex flex-col gap-[0.2rem]">
-					<button className="flex items-center gap-[0.6rem]" onClick={handleCalendarToggle}>
+					<button
+						className={`flex items-center gap-[0.6rem] ${!addingComplete ? 'pointer-events-none' : ''}`}
+						onClick={handleCalendarToggle}
+					>
 						<ButtonCalendarIcon />
 						<p className="mt-[0.3rem] text-gray-04 detail-reg-12">{duration}</p>
 					</button>
