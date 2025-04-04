@@ -8,7 +8,7 @@ const ButtonSkip = () => {
 		navigate(ROUTES_CONFIG.home.path);
 	};
 	return (
-		<button onClick={handleNavigateToHome} className="subhead-reg-20 text-gray-04 underline underline-offset-[0.6rem]">
+		<button onClick={handleNavigateToHome} className="text-gray-04 underline underline-offset-[0.6rem] subhead-med-18">
 			건너뛰기
 		</button>
 	);
