@@ -58,7 +58,6 @@ const BoxCategory = ({
 	addingComplete,
 	onDeleteCategory,
 	onPatchCategory,
-	isSelectedTodoExist,
 	selectedDate,
 }: BoxCategoryProps) => {
 	const { mutate, isError, error } = usePostCreateTask();
@@ -253,7 +252,7 @@ const BoxCategory = ({
 						<Dropdown.Trigger>
 							<MeatballDefaultIcon className="rounded-full hover:bg-gray-bg-04 active:bg-gray-bg-05" />
 						</Dropdown.Trigger>
-						<Dropdown.Content className="top-[3.2rem]">
+						<Dropdown.Content className="right-0 top-[3.2rem]">
 							<Dropdown.Item label="카테고리 이름 수정" onClick={handleStartEditing} />
 							<Dropdown.Item label="카테고리 삭제" textColor="red" onClick={() => onDeleteCategory(id)} />
 						</Dropdown.Content>
@@ -352,7 +351,6 @@ const BoxCategory = ({
 										updateTodayTodos={() => updateTodayTodos(todo)}
 										clickable={addingTodayTodoStatus}
 										addingComplete={addingComplete}
-										isSelectedTodoExist={isSelectedTodoExist}
 										handleCalendarToggle={() => handleOpenTaskCalendar(id)}
 										onPatchTask={handlePatchTask}
 									/>
@@ -376,7 +374,6 @@ const BoxCategory = ({
 										}}
 										clickable={addingTodayTodoStatus}
 										addingComplete={addingComplete}
-										isSelectedTodoExist={isSelectedTodoExist}
 										handleCalendarToggle={() => handleOpenTaskCalendar(id)}
 									/>
 								))}
