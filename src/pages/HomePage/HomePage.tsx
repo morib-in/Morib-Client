@@ -207,10 +207,6 @@ const HomePage = () => {
 
 	useEffect(() => {
 		setTodayTodos(todayTodosStorageData);
-
-		if (todayTodosStorageData.length > 0) {
-			setAddingTodayTodoStatus(true);
-		}
 	}, [todayTodosStorageData]);
 
 	useEffect(() => {

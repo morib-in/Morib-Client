@@ -13,7 +13,8 @@ const StatusDefaultBoxTodayTodo = ({ hasTodos, onEnableAddStatus }: StatusDefaul
 				<p className="text-center text-gray-03 body-med-16">아직 오늘 할 일이 없어요</p>
 				<p className="mb-[2.2rem] mt-[1.2rem] text-center text-gray-05 subhead-semibold-18">
 					할 일을 추가하려면
-					<br />+ 아이콘을 선택해주세요.
+					<br />
+					아래 버튼을 선택해주세요.
 				</p>
 				<div className="mx-auto">
 					<ButtonRadius8.Md disabled={!hasTodos} onClick={onEnableAddStatus}>
