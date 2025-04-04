@@ -95,14 +95,13 @@ const BoxCategory = ({
 		setIsCalendarOpen(true);
 	};
 
-	const handleTaskDateChange = (newDate: Dayjs | null, endDate?: Dayjs | null) => {
+	const handleCloseCalendar = () => {
 		if (selectedTaskId) {
 			const targetTask = getTargetTaskById(selectedTaskId);
-
 			if (targetTask) {
-				const newStartDate = newDate ? (format(newDate) as string) : targetTask.startDate;
-
-				const newEndDate = isPeriodOn ? (endDate ? (format(endDate) as string) : targetTask.endDate) : null;
+				const newStartDate = calendarStartDate ? (format(calendarStartDate) as string) : targetTask.startDate;
+				const newEndDate =
+					isPeriodOn && calendarStartDate && calendarEndDate ? (format(calendarEndDate) as string) : null;
 
 				patchTask({
 					taskId: selectedTaskId,
@@ -116,10 +115,6 @@ const BoxCategory = ({
 		setIsCalendarOpen(false);
 		setSelectedTaskId(null);
 		handlePeriodEnd();
-	};
-
-	const handleCalendarToggle = () => {
-		setIsCalendarOpen((prev) => !prev);
 	};
 
 	const handleOngoingTodoToggle = () => {
@@ -213,13 +208,6 @@ const BoxCategory = ({
 		}
 	};
 
-	const handlePeriodToggleWrapper = () => {
-		if (!isPeriodOn && !calendarEndDate) {
-			setCalendarStartDate(null);
-		}
-		handlePeriodToggle();
-	};
-
 	return (
 		<Spacer.Height
 			as="article"
@@ -299,21 +287,14 @@ const BoxCategory = ({
 											selectedEndDate={calendarEndDate}
 											onStartDateInput={(newDate) => {
 												setCalendarStartDate(newDate);
-												if (!isPeriodOn) {
-													handleTaskDateChange(newDate, null);
-												} else {
-													setCalendarEndDate(null);
-												}
+												if (isPeriodOn) setCalendarEndDate(null);
 											}}
-											onEndDateInput={(endDate) => {
-												setCalendarEndDate(endDate);
-												if (isPeriodOn && calendarStartDate && endDate) {
-													handleTaskDateChange(calendarStartDate, endDate);
-												}
+											onEndDateInput={(newEndDate) => {
+												setCalendarEndDate(newEndDate);
 											}}
 											isCalendarOpened={isCalendarOpened}
-											onPeriodToggle={handlePeriodToggleWrapper}
-											clickOutSideCallback={handleCalendarToggle}
+											onPeriodToggle={handlePeriodToggle}
+											clickOutSideCallback={handleCloseCalendar}
 										/>
 									</div>
 								</Suspense>
