@@ -59,7 +59,7 @@ const TimerPage = () => {
 	const handleUpdateTimerInfo = () => {
 		updateTimerInfo({
 			taskId: selectedTodoId!,
-			elapsedTime: timerTime,
+			elapsedTime: accumulatedTime,
 			targetDate: formattedTodayDate,
 			timerStatus: isPlaying ? 'RUNNING' : 'PAUSED',
 		});
