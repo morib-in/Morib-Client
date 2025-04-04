@@ -206,10 +206,6 @@ const HomePage = () => {
 	};
 
 	useEffect(() => {
-		setTodayTodos(todayTodosStorageData);
-	}, [todayTodosStorageData]);
-
-	useEffect(() => {
 		handleCategoryScroll();
 	}, [isAddingCategory, dailyCategoryTask.length]);
 
