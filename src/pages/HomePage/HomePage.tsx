@@ -1,7 +1,6 @@
 import dayjs, { Dayjs } from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
-import { useAtomValue } from 'jotai';
 
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -31,7 +30,6 @@ import {
 	usePostAddTodayTodos,
 } from '@/shared/apisV2/home/home.mutations';
 import { useGetCategoryTask, useGetWorkTime } from '@/shared/apisV2/home/home.queries';
-import { todayTodoAtom } from '@/shared/stores/atoms/todayTodoAtom';
 
 import BoxAddCategory from './BoxAddCategory/BoxAddCategory';
 import BoxCategory from './BoxCategory/BoxCategory';
