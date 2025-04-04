@@ -69,7 +69,6 @@ const HomePage = () => {
 	// NOTE: 추후 사용 예정
 	// const addTodayTodosOverlayStyle = addingTodayTodoStatus && !addingComplete ? 'opacity-30 pointer-events-none' : '';
 
-	const todayTodosStorageData = useAtomValue(todayTodoAtom);
 	const [todayTodos, setTodayTodos] = useState<Omit<TaskType, 'isComplete'>[]>([]);
 	const [categoryInput, setCategoryInput] = useState('');
 
