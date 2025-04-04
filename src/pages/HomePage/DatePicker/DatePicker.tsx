@@ -35,7 +35,7 @@ const DatePicker = ({ todayDate, selectedDate, onSelectedDateChange }: DatePicke
 
 	return (
 		<header className="mb-[1.6rem] w-full 2xl:mb-[2.8rem]">
-			<section className="relative">
+			<section className="relative z-[51]">
 				<Dropdown>
 					<Dropdown.Trigger>
 						<div className="mb-[0.7rem] flex items-center gap-[2rem]">
