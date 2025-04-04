@@ -1,5 +1,3 @@
-import { useSetAtom } from 'jotai';
-
 import BoxTodo from '@/shared/components/BoxTodo/BoxTodo';
 import ButtonRadius5 from '@/shared/components/ButtonRadius5/ButtonRadius5';
 import Spacer from '@/shared/components/Spacer/Spacer';
@@ -7,8 +5,6 @@ import Spacer from '@/shared/components/Spacer/Spacer';
 import type { TaskType } from '@/shared/types/tasks';
 
 import { LARGE_BTN_TEXT, SMALL_BTN_TEXT } from '@/shared/constants/btnText';
-
-import { todayTodoAtom } from '@/shared/stores/atoms/todayTodoAtom';
 
 interface StatusAddBoxTodayTodoProps {
 	selectedTodayTodos: Omit<TaskType, 'isComplete'>[];
@@ -31,8 +27,6 @@ const StatusAddBoxTodayTodo = ({
 	addingComplete,
 	onCreateTodayTodos,
 }: StatusAddBoxTodayTodoProps) => {
-	const dispatchTodayTodos = useSetAtom(todayTodoAtom);
-
 	const hasTodayTodos = !(selectedTodayTodos.length === 0);
 	const clickable = addingComplete ? '' : 'pointer-events-none cursor-default ';
 	const handleMouseEnter = () => {
@@ -42,12 +36,10 @@ const StatusAddBoxTodayTodo = ({
 	};
 
 	const handleCancelComplete = () => {
-		dispatchTodayTodos([]);
 		onDisableAddStatus();
 	};
 
 	const handleStartTimer = () => {
-		dispatchTodayTodos(selectedTodayTodos);
 		onCreateTodayTodos();
 	};
 
