@@ -22,7 +22,7 @@ const BoxAddCategory = forwardRef<HTMLDivElement, BoxAddCategoryProps>(function 
 	};
 
 	const handleKeydown = (e: KeyboardEvent) => {
-		if (e.key === 'Enter') {
+		if (e.key === 'Enter' && categoryInput.trim() !== '') {
 			onCategoryInputKeydown();
 		}
 	};
