@@ -28,7 +28,7 @@ export const useTimerCount = ({ isPlaying, previousTime, callback }: UseTimerCou
 					const totalTime = previousTime + increasedTime;
 					const currentMilestone = Math.floor(totalTime / 40);
 
-					if ((previousTime + increasedTime) % 40 === 0 && currentMilestone !== lastMilestoneRef.current) {
+					if (totalTime % 40 === 0 && currentMilestone !== lastMilestoneRef.current) {
 						callback?.();
 						lastMilestoneRef.current = currentMilestone;
 					}
