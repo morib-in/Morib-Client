@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 interface UseTimerCountProps {
 	isPlaying: boolean;
 	previousTime: number;
+	callback?: () => void;
 }
 
 interface UseTimerCountReturn {
@@ -11,7 +12,7 @@ interface UseTimerCountReturn {
 	resetIncreasedTime: () => void;
 }
 
-export const useTimerCount = ({ isPlaying, previousTime }: UseTimerCountProps): UseTimerCountReturn => {
+export const useTimerCount = ({ isPlaying, previousTime, callback }: UseTimerCountProps): UseTimerCountReturn => {
 	const [increasedTime, setIncreasedTime] = useState(0);
 	const timerIntervalId = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -23,6 +24,9 @@ export const useTimerCount = ({ isPlaying, previousTime }: UseTimerCountProps): 
 		if (isPlaying) {
 			if (timerIntervalId.current === null) {
 				timerIntervalId.current = setInterval(() => {
+					if ((previousTime + increasedTime) % 40 === 0) {
+						callback?.();
+					}
 					setIncreasedTime((prevTime) => prevTime + 1);
 				}, 1000);
 			}

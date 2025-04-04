@@ -18,11 +18,7 @@ import HomeIcon from '@/shared/assets/svgs/btn_home.svg?react';
 import { ROUTES_CONFIG } from '@/router/routesConfig';
 
 import { usePostUpdateTimerInfo } from '@/shared/apisV2/timer/timer.mutations';
-import {
-	useGetPopoverAllowedServiceList,
-	useGetTimerTodos,
-	useGetUpdateTimerInfo,
-} from '@/shared/apisV2/timer/timer.queries';
+import { useGetPopoverAllowedServiceList, useGetTimerTodos } from '@/shared/apisV2/timer/timer.queries';
 
 import Carousel from './Carousel/Carousel';
 import PopoverAllowedService from './PopoverAllowedService/PopoverAllowedService';
@@ -58,17 +54,26 @@ const TimerPage = () => {
 
 	const { data: allowedServiceList } = useGetPopoverAllowedServiceList();
 	const { isSidebarOpen, handleSidebarToggle } = useToggleSidebar();
+	const { mutate: updateTimerInfo } = usePostUpdateTimerInfo();
+
+	const handleUpdateTimerInfo = () => {
+		updateTimerInfo({
+			taskId: selectedTodoId!,
+			elapsedTime: timerTime,
+			targetDate: formattedTodayDate,
+			timerStatus: isPlaying ? 'RUNNING' : 'PAUSED',
+		});
+	};
+
 	const {
 		timer: timerTime,
 		increasedTime: timerIncreasedTime,
 		resetIncreasedTime: resetTimerIncreasedTime,
-	} = useTimerCount({ isPlaying, previousTime: elapsedTime });
+	} = useTimerCount({ isPlaying, previousTime: elapsedTime, callback: handleUpdateTimerInfo });
 	const { timer: accumulatedTime, resetIncreasedTime: resetAccumulatedIncreasedTime } = useTimerCount({
 		isPlaying,
 		previousTime: totalTimeOfToday,
 	});
-
-	const { mutate: updateTimerInfo } = usePostUpdateTimerInfo();
 
 	const urls = useMemo(() => allowedSitesUrl.map((url) => url.trim()) || [], [allowedSitesUrl]);
 
@@ -151,13 +156,6 @@ const TimerPage = () => {
 			setAllowedSitesUrl(uniqueAllowedSites);
 		}
 	}, [allowedServiceList]);
-
-	useGetUpdateTimerInfo({
-		taskId: selectedTodoId!,
-		elapsedTime: timerIncreasedTime,
-		targetDate: formattedTodayDate,
-		timerStatus: isPlaying ? 'RUNNING' : 'PAUSED',
-	});
 
 	return (
 		<div className="fixed">

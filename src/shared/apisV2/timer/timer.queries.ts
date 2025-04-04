@@ -27,7 +27,7 @@ export const useGetPopoverAllowedServiceList = () => {
 	});
 };
 
-export const useGetUpdateTimerInfo = ({ taskId, elapsedTime, targetDate, timerStatus }: GetUpdateTimerInfoReq) => {
+export const useGetUpdateTimerInfoPing = ({ taskId, elapsedTime, targetDate, timerStatus }: GetUpdateTimerInfoReq) => {
 	return useQuery({
 		queryKey: timerKeys.updateTimerInfo({ taskId, elapsedTime, targetDate, timerStatus }),
 		queryFn: () => getUpdateTimerInfo({ taskId, elapsedTime, targetDate, timerStatus }),
