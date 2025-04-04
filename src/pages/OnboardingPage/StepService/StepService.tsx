@@ -1,4 +1,4 @@
-import { ChangeEvent, KeyboardEvent, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import AutoFixedGrid from '@/shared/components/AutoFixedGrid/AutoFixedGrid';
@@ -49,12 +49,6 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 		return selectedServices.some((service) => getDomainFromUrl(service.siteUrl) === getDomainFromUrl(siteUrl));
 	};
 
-	if (isError) {
-		setTimeout(() => {
-			resetGetUrlInfo();
-		}, 3000);
-	}
-
 	const handleAddSelectedService = async (siteUrl: string) => {
 		const selected = checkIsSelectedUrl(siteUrl);
 
@@ -66,11 +60,6 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 		const urlInfo = response?.data;
 		setSelectedServices((prev) => [...prev, urlInfo]);
 		setInputUrl('');
-
-		setTimeout(() => {
-			setInputSuccess(false);
-			resetGetUrlInfo();
-		}, 3000);
 	};
 
 	const handleAddRecommendedService = (urlInfo: AllowedSiteType) => {
@@ -139,6 +128,25 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 			);
 		}
 	};
+
+	useEffect(() => {
+		if (isError) {
+			const timer = setTimeout(() => {
+				resetGetUrlInfo();
+			}, 3000);
+			return () => clearTimeout(timer);
+		}
+	}, [isError]);
+
+	useEffect(() => {
+		if (inputSuccess) {
+			const timer = setTimeout(() => {
+				setInputSuccess(false);
+				resetGetUrlInfo();
+			}, 3000);
+			return () => clearTimeout(timer);
+		}
+	}, [inputSuccess]);
 
 	return (
 		<AutoFixedGrid type="onboarding" className="relative gap-[2rem] bg-gray-bg-01 px-[6rem] pb-[5rem] pt-[11rem]">
