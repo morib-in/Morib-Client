@@ -79,7 +79,7 @@ const TimerPage = () => {
 	useEffect(() => {
 		const currentUpdateRef = Math.floor(accumulatedTime / 40); // JavaScript의 타이머는 완벽하게 정확하지 않아서 40.001초나 39.999초와 같은 값이 될 수도 있으므로 Math.floor를 사용하여 소수점 이하를 버림
 
-		if (accumulatedTime % 40 === 0 && currentUpdateRef !== isUpdatingRef.current) {
+		if (selectedTodoData && accumulatedTime % 40 === 0 && currentUpdateRef !== isUpdatingRef.current) {
 			handleUpdateTimerInfo();
 			isUpdatingRef.current = currentUpdateRef;
 		}
