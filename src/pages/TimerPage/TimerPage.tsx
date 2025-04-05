@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { splitTasksByCompletion } from '@/shared/utils/timer';
@@ -37,6 +37,7 @@ const TimerPage = () => {
 	const formattedTodayDate = todayDate.format(DATE_FORMAT);
 
 	const navigate = useNavigate();
+	const isUpdatingRef = useRef<number | null>(null);
 
 	const { data: todosData } = useGetTimerTodos({ targetDate: formattedTodayDate });
 
@@ -69,11 +70,20 @@ const TimerPage = () => {
 		timer: timerTime,
 		increasedTime: timerIncreasedTime,
 		resetIncreasedTime: resetTimerIncreasedTime,
-	} = useTimerCount({ isPlaying, previousTime: elapsedTime, callback: handleUpdateTimerInfo });
+	} = useTimerCount({ isPlaying, previousTime: elapsedTime });
 	const { timer: accumulatedTime, resetIncreasedTime: resetAccumulatedIncreasedTime } = useTimerCount({
 		isPlaying,
 		previousTime: totalTimeOfToday,
 	});
+
+	useEffect(() => {
+		const currentUpdateRef = Math.floor(accumulatedTime / 40); // JavaScript의 타이머는 완벽하게 정확하지 않아서 40.001초나 39.999초와 같은 값이 될 수도 있으므로 Math.floor를 사용하여 소수점 이하를 버림
+
+		if (accumulatedTime % 40 === 0 && currentUpdateRef !== isUpdatingRef.current) {
+			handleUpdateTimerInfo();
+			isUpdatingRef.current = currentUpdateRef;
+		}
+	}, [accumulatedTime]);
 
 	const urls = useMemo(() => allowedSitesUrl.map((url) => url.trim()) || [], [allowedSitesUrl]);
 
