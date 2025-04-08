@@ -27,7 +27,7 @@ const StepField = ({ setStep, onSelectField, selectedField }: StepFieldProps) =>
 						<li key={field.label}>
 							<button
 								onClick={() => onSelectField(field.label)}
-								className={`flex h-[26rem] w-[19rem] flex-col items-center justify-center gap-y-[0.8rem] rounded-[8px] text-white head-bold-24 ${selectedField === field.label ? 'border border-mint-01 bg-gray-bg-02' : 'bg-gray-bg-03'}`}
+								className={`flex h-[26rem] w-[19rem] flex-col items-center justify-center gap-y-[0.8rem] rounded-[8px] text-white head-bold-24 hover:bg-gray-bg-04 ${selectedField === field.label ? 'border border-mint-01 bg-gray-bg-02' : 'bg-gray-bg-03'}`}
 							>
 								<img src={field.img} alt={field.label} />
 								<p>{field.label}</p>

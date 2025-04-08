@@ -4,7 +4,6 @@ interface UseTimerCountProps {
 	isPlaying: boolean;
 	previousTime: number;
 }
-
 interface UseTimerCountReturn {
 	timer: number;
 	increasedTime: number;

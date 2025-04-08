@@ -1,4 +1,4 @@
-import { ChangeEvent, KeyboardEvent, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import AutoFixedGrid from '@/shared/components/AutoFixedGrid/AutoFixedGrid';
@@ -41,10 +41,12 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 	const { mutateAsync: getUrlInfo, reset: resetGetUrlInfo, isError, isPending } = useGetUrlInfo();
 	const { mutate: postInterestArea } = usePostInterestArea();
 
+	const getDomainFromUrl = (url: string) => {
+		return url.replace(/^(https?:\/\/)?(www\.)?/, '').toLowerCase();
+	};
+
 	const checkIsSelectedUrl = (siteUrl: string) => {
-		return selectedServices.some(
-			(service) => service.siteUrl.replace(/^https?:\/\//, '') === siteUrl.replace(/^https?:\/\//, ''),
-		);
+		return selectedServices.some((service) => getDomainFromUrl(service.siteUrl) === getDomainFromUrl(siteUrl));
 	};
 
 	const handleAddSelectedService = async (siteUrl: string) => {
@@ -56,7 +58,6 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 
 		setInputSuccess(true);
 		const urlInfo = response?.data;
-
 		setSelectedServices((prev) => [...prev, urlInfo]);
 		setInputUrl('');
 	};
@@ -128,6 +129,25 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 		}
 	};
 
+	useEffect(() => {
+		if (isError) {
+			const timer = setTimeout(() => {
+				resetGetUrlInfo();
+			}, 3000);
+			return () => clearTimeout(timer);
+		}
+	}, [isError]);
+
+	useEffect(() => {
+		if (inputSuccess) {
+			const timer = setTimeout(() => {
+				setInputSuccess(false);
+				resetGetUrlInfo();
+			}, 3000);
+			return () => clearTimeout(timer);
+		}
+	}, [inputSuccess]);
+
 	return (
 		<AutoFixedGrid type="onboarding" className="relative gap-[2rem] bg-gray-bg-01 px-[6rem] pb-[5rem] pt-[11rem]">
 			<AutoFixedGrid.Slot className="h-full min-h-0">
@@ -172,12 +192,12 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 							isError
 								? '유효하지 않은 주소입니다.'
 								: checkIsSelectedUrl(inputUrl)
-									? '이미 등록된 url입니다.'
-									: '알맞은 형식의 url을 입력해 주세요.'
+									? '이미 등록된 URL입니다.'
+									: '알맞은 형식의 URL을 입력해 주세요.'
 						}
 						isSuccess={inputSuccess}
-						successMessage={'url 입력에 성공했어요.'}
-						placeholder="직접 url 입력하기"
+						successMessage={'URL 입력에 성공했어요.'}
+						placeholder="직접 URL 입력하기"
 					>
 						<TextField.ClearButton onClick={handleClickClearButton} />
 						<TextField.ConfirmButton

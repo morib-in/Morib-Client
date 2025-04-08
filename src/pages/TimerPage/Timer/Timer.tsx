@@ -49,7 +49,7 @@ const Timer = ({
 				updateTimerInfo(
 					{
 						taskId: selectedTodo,
-						elapsedTime: timerIncreasedTime,
+						elapsedTime: accumulatedTime,
 						targetDate: formattedTodayDate,
 						timerStatus: 'PAUSED',
 					},
@@ -66,7 +66,7 @@ const Timer = ({
 				updateTimerInfo(
 					{
 						taskId: selectedTodo,
-						elapsedTime: timerIncreasedTime,
+						elapsedTime: accumulatedTime,
 						targetDate: formattedTodayDate,
 						timerStatus: 'PAUSED',
 					},
