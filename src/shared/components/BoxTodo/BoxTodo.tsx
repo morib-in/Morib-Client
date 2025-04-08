@@ -140,7 +140,7 @@ const BoxTodo = ({
 							</h3>
 						)}
 					</div>
-					{!addingComplete && !isSelected && (
+					{!addingComplete && !isSelected && !clickable && (
 						<Dropdown>
 							<Dropdown.Trigger>
 								<MeatballIcon className="opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
