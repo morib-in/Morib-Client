@@ -133,7 +133,7 @@ const BoxTodo = ({
 							/>
 						) : (
 							<h3
-								className={`mt-[0.42rem] text-white body-semibold-16 ${nameStyle} truncate`}
+								className={`mt-[0.42rem] text-white body-semibold-16 ${nameStyle} truncate ${!clickable ? '' : 'pointer-events-none'}`}
 								onClick={handleNameClick}
 							>
 								{name}
