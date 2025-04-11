@@ -1,6 +1,6 @@
 import dayjs, { Dayjs } from 'dayjs';
 
-import React, { KeyboardEvent, Suspense, lazy, useRef, useState } from 'react';
+import { type KeyboardEvent, type MouseEvent, Suspense, lazy, useRef, useState } from 'react';
 
 import BoxTodo from '@/shared/components/BoxTodo/BoxTodo';
 import ButtonTodoToggle from '@/shared/components/ButtonTodayToggle/ButtonTodoToggle';
@@ -88,7 +88,7 @@ const BoxCategory = ({
 		handlePeriodEnd,
 	} = useCalendar();
 
-	const handleOpenTaskCalendar = (taskId: number, e: React.MouseEvent<HTMLButtonElement>) => {
+	const handleOpenTaskCalendar = (taskId: number, e: MouseEvent<HTMLButtonElement>) => {
 		const targetTask = getTargetTaskById(taskId);
 
 		if (targetTask) {
@@ -299,7 +299,7 @@ const BoxCategory = ({
 										updateTodayTodos={() => updateTodayTodos(todo)}
 										clickable={addingTodayTodoStatus}
 										addingComplete={addingComplete}
-										handleCalendarToggle={(e: React.MouseEvent<HTMLButtonElement>) => handleOpenTaskCalendar(id, e)}
+										handleCalendarToggle={(e: MouseEvent<HTMLButtonElement>) => handleOpenTaskCalendar(id, e)}
 										onPatchTask={handlePatchTask}
 									/>
 								);
@@ -322,7 +322,7 @@ const BoxCategory = ({
 										}}
 										clickable={addingTodayTodoStatus}
 										addingComplete={addingComplete}
-										handleCalendarToggle={(e: React.MouseEvent<HTMLButtonElement>) => handleOpenTaskCalendar(id, e)}
+										handleCalendarToggle={(e: MouseEvent<HTMLButtonElement>) => handleOpenTaskCalendar(id, e)}
 									/>
 								))}
 							</ButtonTodoToggle>

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, KeyboardEvent, MouseEvent, useState } from 'react';
+import { type ChangeEvent, type KeyboardEvent, type MouseEvent, useState } from 'react';
 
 import { formatSeconds } from '@/shared/utils/time';
 
@@ -31,7 +31,7 @@ interface BoxTodoProps {
 	clickable?: boolean;
 	addingComplete?: boolean;
 	timerIncreasedTime?: number;
-	handleCalendarToggle?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+	handleCalendarToggle?: (e: MouseEvent<HTMLButtonElement>) => void;
 	onPatchTask?: (taskId: number, name: string, startDate: string, endDate: string | null) => void;
 }
 
