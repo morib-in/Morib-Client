@@ -1,4 +1,4 @@
-import { ChangeEvent, KeyboardEvent, forwardRef } from 'react';
+import { type ChangeEvent, type KeyboardEvent, forwardRef } from 'react';
 
 import Spacer from '@/shared/components/Spacer/Spacer';
 
@@ -22,7 +22,7 @@ const BoxAddCategory = forwardRef<HTMLDivElement, BoxAddCategoryProps>(function 
 	};
 
 	const handleKeydown = (e: KeyboardEvent) => {
-		if (e.key === 'Enter' && categoryInput.trim() !== '') {
+		if (e.key === 'Enter' && categoryInput.trim().length > 0) {
 			onCategoryInputKeydown();
 		}
 	};
