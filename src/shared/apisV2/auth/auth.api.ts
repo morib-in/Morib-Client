@@ -11,7 +11,7 @@ const AUTH_ENDPOINT = {
 	POST_LOGOUT: 'api/v2/users/logout',
 };
 
-export const postReissueToken = async (): Promise<reissueRes> => {
+export const patchReissueToken = async (): Promise<reissueRes> => {
 	const accessToken = getAccessToken();
 
 	const { data } = await axios.post(AUTH_ENDPOINT.POST_REISSUE_TOKEN, {

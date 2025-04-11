@@ -136,6 +136,7 @@ const AllowedServicePage = () => {
 				handleAddAllowedServiceGroup();
 			} else {
 				handleChangeAllowedServiceGroupName();
+				handleEditingTitleStatus(false);
 			}
 		}
 	};
