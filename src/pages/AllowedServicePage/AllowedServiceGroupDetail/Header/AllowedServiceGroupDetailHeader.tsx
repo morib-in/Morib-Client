@@ -122,7 +122,7 @@ const AllowedServiceGroupDetailHeaderInput = ({ ...props }: AllowedServiceGroupD
 					{...props}
 				/>
 			) : (
-				<h1 onDoubleClick={handleEnableEditing} className="w-full bg-transparent text-white title-bold-32">
+				<h1 onClick={handleEnableEditing} className="w-full bg-transparent text-white title-bold-32">
 					{props.value}
 				</h1>
 			)}
