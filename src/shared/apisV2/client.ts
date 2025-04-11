@@ -2,7 +2,7 @@ import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
 import { getAccessToken, reloginWithoutLogout, setAccessToken } from '@/shared/utils/auth';
 
-import { patchReissueToken } from './auth/auth.api';
+import { postReissueToken } from '@/shared/apisV2/auth/auth.api';
 
 export const API_URL = `${import.meta.env.VITE_BASE_URL}`;
 
@@ -40,7 +40,7 @@ const addAuthInterceptor = (axiosClient: AxiosInstance) => {
 				prevRequest.sent = true;
 				// 401 에러가 떴을 때 토큰 재발급
 				try {
-					const { data } = await patchReissueToken();
+					const { data } = await postReissueToken();
 					setAccessToken(data.accessToken);
 					return axiosClient(prevRequest);
 				} catch (reissueError) {
