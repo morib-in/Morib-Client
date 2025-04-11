@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 import { type ChangeEvent, type KeyboardEvent, type MouseEvent, useState } from 'react';
 
 import { formatSeconds } from '@/shared/utils/time';
@@ -71,7 +73,13 @@ const BoxTodo = ({
 				? ' bg-gray-bg-02'
 				: ' bg-gray-bg-01';
 
-	const duration = formattedendDate ? `${formattedstartDate}~${formattedendDate}` : formattedstartDate;
+	const isToday = dayjs().format('YYYY.MM.DD') === formattedstartDate;
+	const duration = formattedendDate
+		? `${formattedstartDate}~${formattedendDate}`
+		: isToday
+			? '오늘'
+			: formattedstartDate;
+
 	const clickStyle = clickable && !addingComplete ? 'cursor-pointer' : 'cursor-default';
 
 	const handleClickTodo = () => {
