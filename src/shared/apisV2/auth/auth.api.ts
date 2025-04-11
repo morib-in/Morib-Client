@@ -14,15 +14,11 @@ const AUTH_ENDPOINT = {
 export const patchReissueToken = async (): Promise<reissueRes> => {
 	const accessToken = getAccessToken();
 
-	const { data } = await axios.post(
-		AUTH_ENDPOINT.POST_REISSUE_TOKEN,
-		{},
-		{
-			headers: {
-				Authorization: `Bearer ${accessToken}`,
-			},
+	const { data } = await axios.post(AUTH_ENDPOINT.POST_REISSUE_TOKEN, {
+		headers: {
+			Authorization: `Bearer ${accessToken}`,
 		},
-	);
+	});
 
 	return data;
 };
