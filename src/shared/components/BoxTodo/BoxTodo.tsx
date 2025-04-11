@@ -160,7 +160,7 @@ const BoxTodo = ({
 				</div>
 				<div className="ml-[0.8rem] mt-[0.7rem] flex flex-col gap-[0.2rem]">
 					<button
-						className={`flex items-center gap-[0.6rem] ${!clickable ? '' : 'pointer-events-none'}`}
+						className={`flex w-[14.5rem] items-center gap-[0.6rem] rounded-[0.3rem] hover:bg-gray-bg-03 ${!clickable ? '' : 'pointer-events-none'}`}
 						onClick={handleCalendarToggle}
 					>
 						<ButtonCalendarIcon />
