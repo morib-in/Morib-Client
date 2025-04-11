@@ -120,6 +120,7 @@ const AllowedServiceGroupDetailHeaderInput = ({ ...props }: AllowedServiceGroupD
 					className={`placeholder-text-gray-03 w-full bg-transparent text-white title-bold-32 focus:outline-none ${props.className}`}
 					onKeyPress={handleKeydown}
 					{...props}
+					autoFocus
 				/>
 			) : (
 				<h1 onClick={handleEnableEditing} className="w-full bg-transparent text-white title-bold-32">
