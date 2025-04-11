@@ -22,8 +22,7 @@ export const useDeleteAccount = () => {
 	return useMutation({
 		mutationFn: deleteAccount,
 		onSuccess: () => {
-			queryClient.invalidateQueries();
-			reloginWithoutLogout();
+			queryClient.clear();
 		},
 	});
 };
