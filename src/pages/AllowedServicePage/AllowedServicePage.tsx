@@ -198,7 +198,7 @@ const AllowedServicePage = () => {
 	};
 
 	useEffect(() => {
-		if ((urlInput.length > 0 && !isUrlValid(urlInput)) || isError) {
+		if (isError) {
 			const timer = setTimeout(() => {
 				resetUrlInput();
 			}, 5000);
