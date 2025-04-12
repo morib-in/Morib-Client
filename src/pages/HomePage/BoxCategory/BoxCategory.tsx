@@ -1,6 +1,6 @@
 import dayjs, { Dayjs } from 'dayjs';
 
-import { type KeyboardEvent, type MouseEvent, Suspense, lazy, useRef, useState } from 'react';
+import { type KeyboardEvent, Suspense, lazy, useRef, useState } from 'react';
 
 import BoxTodo from '@/shared/components/BoxTodo/BoxTodo';
 import ButtonTodoToggle from '@/shared/components/ButtonTodayToggle/ButtonTodoToggle';
@@ -67,7 +67,6 @@ const BoxCategory = ({
 	const [editedCategoryName, setEditedCategoryName] = useState(title);
 	const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 	const [selectedTaskId, setSelectedTaskId] = useState<number | null>(null);
-	const [calendarPosition, setCalendarPosition] = useState({ top: 0, left: 0 });
 
 	const [calendarStartDate, setCalendarStartDate] = useState<Dayjs | null>(selectedDate);
 	const [calendarEndDate, setCalendarEndDate] = useState<Dayjs | null>(null);
@@ -88,7 +87,7 @@ const BoxCategory = ({
 		handlePeriodEnd,
 	} = useCalendar();
 
-	const handleOpenTaskCalendar = (taskId: number, e: MouseEvent<HTMLButtonElement>) => {
+	const handleOpenTaskCalendar = (taskId: number) => {
 		const targetTask = getTargetTaskById(taskId);
 
 		if (targetTask) {
@@ -101,9 +100,6 @@ const BoxCategory = ({
 				handlePeriodEnd();
 			}
 		}
-
-		const rect = e.currentTarget.getBoundingClientRect();
-		setCalendarPosition({ top: rect.top + 25, left: rect.right - 225 });
 
 		setSelectedTaskId(taskId);
 		setIsCalendarOpen(true);
@@ -215,7 +211,7 @@ const BoxCategory = ({
 	return (
 		<Spacer.Height
 			as="article"
-			className="flex w-[31.6rem] flex-shrink-0 flex-col rounded-[16px] bg-gray-bg-03 p-[1.8rem]"
+			className="relative flex w-[31.6rem] flex-shrink-0 flex-col rounded-[16px] bg-gray-bg-03 p-[1.8rem]"
 		>
 			<div className="mt-[0.4rem] flex items-center justify-between">
 				{isCategoryEditing ? (
@@ -299,7 +295,7 @@ const BoxCategory = ({
 										updateTodayTodos={() => updateTodayTodos(todo)}
 										clickable={addingTodayTodoStatus}
 										addingComplete={addingComplete}
-										handleCalendarToggle={(e: MouseEvent<HTMLButtonElement>) => handleOpenTaskCalendar(id, e)}
+										handleCalendarToggle={() => handleOpenTaskCalendar(id)}
 										onPatchTask={handlePatchTask}
 									/>
 								);
@@ -322,7 +318,7 @@ const BoxCategory = ({
 										}}
 										clickable={addingTodayTodoStatus}
 										addingComplete={addingComplete}
-										handleCalendarToggle={(e: MouseEvent<HTMLButtonElement>) => handleOpenTaskCalendar(id, e)}
+										handleCalendarToggle={() => handleOpenTaskCalendar(id)}
 									/>
 								))}
 							</ButtonTodoToggle>
@@ -334,7 +330,11 @@ const BoxCategory = ({
 			{isCalendarOpen && (
 				<Suspense fallback={<div>Loading...</div>}>
 					<div
-						style={{ position: 'fixed', top: calendarPosition.top, left: calendarPosition.left }}
+						style={{
+							position: 'absolute',
+							top: '16rem',
+							left: '25rem',
+						}}
 						tabIndex={0}
 						ref={(node) => {
 							if (node) {
