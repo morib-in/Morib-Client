@@ -197,6 +197,16 @@ const AllowedServicePage = () => {
 		}
 	};
 
+	useEffect(() => {
+		if ((urlInput.length > 0 && !isUrlValid(urlInput)) || isError) {
+			const timer = setTimeout(() => {
+				resetUrlInput();
+			}, 5000);
+
+			return () => clearTimeout(timer);
+		}
+	}, [isError]);
+
 	// NOTE: 첫 렌더링 시 api를 통해 받은 첫번째 allowed service group id를 activeGroupId로 설정
 	useEffect(() => {
 		if (activeGroupId === null && allowedServiceList && allowedServiceList?.data.length > 0) {
