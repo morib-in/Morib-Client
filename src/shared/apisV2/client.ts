@@ -2,7 +2,7 @@ import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
 import { getAccessToken, reloginWithoutLogout, setAccessToken } from '@/shared/utils/auth';
 
-import { postReissueToken } from './auth/auth.api';
+import { postReissueToken } from '@/shared/apisV2/auth/auth.api';
 
 export const API_URL = `${import.meta.env.VITE_BASE_URL}`;
 
