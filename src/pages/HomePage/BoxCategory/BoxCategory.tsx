@@ -1,6 +1,6 @@
 import dayjs, { Dayjs } from 'dayjs';
 
-import { KeyboardEvent, Suspense, lazy, useRef, useState } from 'react';
+import { type KeyboardEvent, Suspense, lazy, useRef, useState } from 'react';
 
 import BoxTodo from '@/shared/components/BoxTodo/BoxTodo';
 import ButtonTodoToggle from '@/shared/components/ButtonTodayToggle/ButtonTodoToggle';
@@ -77,6 +77,16 @@ const BoxCategory = ({
 		return ongoingTodos.find((task) => task.id === taskId) || completedTodos.find((task) => task.id === taskId);
 	};
 
+	const {
+		isPeriodOn,
+		selectedEndDate,
+		isCalendarOpened,
+		defaultDate,
+		handlePeriodToggle,
+		handleEndDateInput,
+		handlePeriodEnd,
+	} = useCalendar();
+
 	const handleOpenTaskCalendar = (taskId: number) => {
 		const targetTask = getTargetTaskById(taskId);
 
@@ -95,14 +105,13 @@ const BoxCategory = ({
 		setIsCalendarOpen(true);
 	};
 
-	const handleTaskDateChange = (newDate: Dayjs | null, endDate?: Dayjs | null) => {
+	const handleCloseCalendar = () => {
 		if (selectedTaskId) {
 			const targetTask = getTargetTaskById(selectedTaskId);
-
 			if (targetTask) {
-				const newStartDate = newDate ? (format(newDate) as string) : targetTask.startDate;
-
-				const newEndDate = isPeriodOn ? (endDate ? (format(endDate) as string) : targetTask.endDate) : null;
+				const newStartDate = calendarStartDate ? (format(calendarStartDate) as string) : targetTask.startDate;
+				const newEndDate =
+					isPeriodOn && calendarStartDate && calendarEndDate ? (format(calendarEndDate) as string) : null;
 
 				patchTask({
 					taskId: selectedTaskId,
@@ -116,10 +125,6 @@ const BoxCategory = ({
 		setIsCalendarOpen(false);
 		setSelectedTaskId(null);
 		handlePeriodEnd();
-	};
-
-	const handleCalendarToggle = () => {
-		setIsCalendarOpen((prev) => !prev);
 	};
 
 	const handleOngoingTodoToggle = () => {
@@ -144,16 +149,6 @@ const BoxCategory = ({
 
 	const todoRef = useRef<HTMLDivElement>(null);
 	useClickOutside(todoRef, cancelAddingTodo, isAdding && editable);
-
-	const {
-		isPeriodOn,
-		selectedEndDate,
-		isCalendarOpened,
-		defaultDate,
-		handlePeriodToggle,
-		handleEndDateInput,
-		handlePeriodEnd,
-	} = useCalendar();
 
 	const handleCreatePost = () => {
 		const dataToPost = {
@@ -213,17 +208,10 @@ const BoxCategory = ({
 		}
 	};
 
-	const handlePeriodToggleWrapper = () => {
-		if (!isPeriodOn && !calendarEndDate) {
-			setCalendarStartDate(null);
-		}
-		handlePeriodToggle();
-	};
-
 	return (
 		<Spacer.Height
 			as="article"
-			className="flex w-[31.6rem] flex-shrink-0 flex-col rounded-[16px] bg-gray-bg-03 p-[1.8rem]"
+			className="relative flex w-[31.6rem] flex-shrink-0 flex-col rounded-[16px] bg-gray-bg-03 p-[1.8rem]"
 		>
 			<div className="mt-[0.4rem] flex items-center justify-between">
 				{isCategoryEditing ? (
@@ -281,52 +269,8 @@ const BoxCategory = ({
 								/>
 							)}
 
-							{isCalendarOpen && (
-								<Suspense fallback={<div>Loading...</div>}>
-									<div
-										className="absolute left-[7.25rem] top-[9.5rem]"
-										tabIndex={0}
-										ref={(node) => {
-											if (node) {
-												node.focus();
-											}
-										}}
-										onKeyDown={handleCalendarKeyDown}
-									>
-										<Calendar
-											isPeriodOn={isPeriodOn}
-											selectedStartDate={isPeriodOn ? calendarStartDate : calendarStartDate ?? defaultDate}
-											selectedEndDate={calendarEndDate}
-											onStartDateInput={(newDate) => {
-												setCalendarStartDate(newDate);
-												if (!isPeriodOn) {
-													handleTaskDateChange(newDate, null);
-												} else {
-													setCalendarEndDate(null);
-												}
-											}}
-											onEndDateInput={(endDate) => {
-												setCalendarEndDate(endDate);
-												if (isPeriodOn && calendarStartDate && endDate) {
-													handleTaskDateChange(calendarStartDate, endDate);
-												}
-											}}
-											isCalendarOpened={isCalendarOpened}
-											onPeriodToggle={handlePeriodToggleWrapper}
-											clickOutSideCallback={handleCalendarToggle}
-										/>
-									</div>
-								</Suspense>
-							)}
-
 							{ongoingTodos.map(({ id, name, startDate, endDate, elapsedTime }) => {
-								const todo = {
-									id,
-									name,
-									startDate,
-									endDate,
-									elapsedTime,
-								};
+								const todo = { id, name, startDate, endDate, elapsedTime };
 								const selectedNumber = getSelectedNumber(id);
 								return (
 									<BoxTodo
@@ -381,6 +325,41 @@ const BoxCategory = ({
 						)}
 					</Spacer.Height>
 				</Spacer.Height>
+			)}
+
+			{isCalendarOpen && (
+				<Suspense fallback={<div>Loading...</div>}>
+					<div
+						style={{
+							position: 'absolute',
+							top: '16rem',
+							left: '25rem',
+						}}
+						tabIndex={0}
+						ref={(node) => {
+							if (node) {
+								node.focus();
+							}
+						}}
+						onKeyDown={handleCalendarKeyDown}
+					>
+						<Calendar
+							isPeriodOn={isPeriodOn}
+							selectedStartDate={isPeriodOn ? calendarStartDate : calendarStartDate ?? defaultDate}
+							selectedEndDate={calendarEndDate}
+							onStartDateInput={(newDate) => {
+								setCalendarStartDate(newDate);
+								if (isPeriodOn) setCalendarEndDate(null);
+							}}
+							onEndDateInput={(newEndDate) => {
+								setCalendarEndDate(newEndDate);
+							}}
+							isCalendarOpened={isCalendarOpened}
+							onPeriodToggle={handlePeriodToggle}
+							clickOutSideCallback={handleCloseCalendar}
+						/>
+					</div>
+				</Suspense>
 			)}
 		</Spacer.Height>
 	);

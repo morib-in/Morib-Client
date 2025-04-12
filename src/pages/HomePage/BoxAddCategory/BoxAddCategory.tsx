@@ -1,4 +1,4 @@
-import { ChangeEvent, KeyboardEvent, forwardRef } from 'react';
+import { type ChangeEvent, type KeyboardEvent, forwardRef } from 'react';
 
 import Spacer from '@/shared/components/Spacer/Spacer';
 
@@ -22,7 +22,7 @@ const BoxAddCategory = forwardRef<HTMLDivElement, BoxAddCategoryProps>(function 
 	};
 
 	const handleKeydown = (e: KeyboardEvent) => {
-		if (e.key === 'Enter') {
+		if (e.key === 'Enter' && categoryInput.trim().length > 0) {
 			onCategoryInputKeydown();
 		}
 	};
@@ -39,7 +39,7 @@ const BoxAddCategory = forwardRef<HTMLDivElement, BoxAddCategoryProps>(function 
 						onChange={handleChangeInput}
 						/* NOTE: onKeydown 사용했을 때, 한글 입력이 이상하게 적용되어 onKeyPress 적용 */
 						onKeyPress={handleKeydown}
-						placeholder="프로젝트 제목"
+						placeholder="카테고리 이름"
 						className="w-full bg-transparent text-white subhead-semibold-18 focus:outline-none"
 						autoFocus
 					/>

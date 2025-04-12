@@ -1,4 +1,6 @@
-import { ChangeEvent, KeyboardEvent, MouseEvent, useState } from 'react';
+import dayjs from 'dayjs';
+
+import { type ChangeEvent, type KeyboardEvent, type MouseEvent, useState } from 'react';
 
 import { formatSeconds } from '@/shared/utils/time';
 
@@ -31,7 +33,7 @@ interface BoxTodoProps {
 	clickable?: boolean;
 	addingComplete?: boolean;
 	timerIncreasedTime?: number;
-	handleCalendarToggle?: () => void;
+	handleCalendarToggle?: (e: MouseEvent<HTMLButtonElement>) => void;
 	onPatchTask?: (taskId: number, name: string, startDate: string, endDate: string | null) => void;
 }
 
@@ -71,7 +73,13 @@ const BoxTodo = ({
 				? ' bg-gray-bg-02'
 				: ' bg-gray-bg-01';
 
-	const duration = formattedendDate ? `${formattedstartDate}~${formattedendDate}` : formattedstartDate;
+	const isToday = dayjs().format('YYYY.MM.DD') === formattedstartDate;
+	const duration = formattedendDate
+		? `${formattedstartDate}~${formattedendDate}`
+		: isToday
+			? '오늘'
+			: formattedstartDate;
+
 	const clickStyle = clickable && !addingComplete ? 'cursor-pointer' : 'cursor-default';
 
 	const handleClickTodo = () => {
@@ -80,7 +88,7 @@ const BoxTodo = ({
 		else if (onClick) onClick();
 	};
 
-	const disableBtnStyle = clickable !== addingComplete ? 'pointer-events-none' : '';
+	const disableBtnStyle = clickable || addingComplete ? 'pointer-events-none' : '';
 
 	const [isEditing, setIsEditing] = useState(false);
 	const [editedName, setEditedName] = useState(name);
@@ -113,7 +121,7 @@ const BoxTodo = ({
 
 	return (
 		<div
-			className={`group relative mt-[1rem] h-[9.5rem] w-[28rem] transform rounded-[8px] bg-gray-bg-01 p-[1.4rem] transition-transform duration-300 hover:-translate-y-2 ${selectedStyle} ${clickStyle} `}
+			className={`group relative mt-[1rem] h-[9.5rem] w-[28rem] transform rounded-[8px] bg-gray-bg-01 p-[1.4rem] transition-transform duration-300 hover:-translate-y-2 ${selectedStyle} ${clickStyle}`}
 			onClick={handleClickTodo}
 		>
 			<div className="flex flex-col justify-center">
@@ -133,14 +141,14 @@ const BoxTodo = ({
 							/>
 						) : (
 							<h3
-								className={`mt-[0.42rem] text-white body-semibold-16 ${nameStyle} truncate`}
+								className={`mt-[0.42rem] text-white body-semibold-16 ${nameStyle} truncate ${!clickable ? '' : 'pointer-events-none'}`}
 								onClick={handleNameClick}
 							>
 								{name}
 							</h3>
 						)}
 					</div>
-					{!addingComplete && !isSelected && (
+					{!addingComplete && !isSelected && !clickable && (
 						<Dropdown>
 							<Dropdown.Trigger>
 								<MeatballIcon className="opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
@@ -160,7 +168,7 @@ const BoxTodo = ({
 				</div>
 				<div className="ml-[0.8rem] mt-[0.7rem] flex flex-col gap-[0.2rem]">
 					<button
-						className={`flex items-center gap-[0.6rem] ${!addingComplete ? 'pointer-events-none' : ''}`}
+						className={`flex max-w-max items-center gap-[0.6rem] rounded-[0.3rem] pr-[0.2rem] hover:bg-gray-bg-03 ${!clickable ? '' : 'pointer-events-none'}`}
 						onClick={handleCalendarToggle}
 					>
 						<ButtonCalendarIcon />
