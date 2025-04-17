@@ -297,6 +297,7 @@ const BoxCategory = ({
 										addingComplete={addingComplete}
 										handleCalendarToggle={() => handleOpenTaskCalendar(id)}
 										onPatchTask={handlePatchTask}
+										activeCalendarTask={isCalendarOpen && selectedTaskId === id}
 									/>
 								);
 							})}
