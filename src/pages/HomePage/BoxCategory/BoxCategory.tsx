@@ -1,6 +1,6 @@
 import dayjs, { Dayjs } from 'dayjs';
 
-import { type KeyboardEvent, Suspense, lazy, useRef, useState } from 'react';
+import { type KeyboardEvent, type MouseEvent, Suspense, lazy, useRef, useState } from 'react';
 
 import BoxTodo from '@/shared/components/BoxTodo/BoxTodo';
 import ButtonTodoToggle from '@/shared/components/ButtonTodayToggle/ButtonTodoToggle';
@@ -70,12 +70,10 @@ const BoxCategory = ({
 
 	const [calendarStartDate, setCalendarStartDate] = useState<Dayjs | null>(selectedDate);
 	const [calendarEndDate, setCalendarEndDate] = useState<Dayjs | null>(null);
+	const [calendarPosition, setCalendarPosition] = useState({ top: 0, left: 0 });
+	const boxCategoryRef = useRef<HTMLDivElement>(null);
 
 	const { mutate: patchTask } = usePatchTask();
-
-	const getTargetTaskById = (taskId: number) => {
-		return ongoingTodos.find((task) => task.id === taskId) || completedTodos.find((task) => task.id === taskId);
-	};
 
 	const {
 		isPeriodOn,
@@ -87,7 +85,14 @@ const BoxCategory = ({
 		handlePeriodEnd,
 	} = useCalendar();
 
-	const handleOpenTaskCalendar = (taskId: number) => {
+	const CALENDAR_ESTIMATED_HEIGHT = 389;
+	const CALENDAR_TOP_OFFSET = 4;
+
+	const getTargetTaskById = (taskId: number) => {
+		return ongoingTodos.find((task) => task.id === taskId) || completedTodos.find((task) => task.id === taskId);
+	};
+
+	const handleOpenTaskCalendar = (taskId: number, e: MouseEvent<HTMLButtonElement>) => {
 		const targetTask = getTargetTaskById(taskId);
 
 		if (targetTask) {
@@ -100,6 +105,19 @@ const BoxCategory = ({
 				handlePeriodEnd();
 			}
 		}
+		const buttonRect = e.currentTarget.getBoundingClientRect();
+		const containerRect = boxCategoryRef.current?.getBoundingClientRect();
+
+		let top = buttonRect.top;
+		const left = buttonRect.right;
+
+		if (containerRect) {
+			const maxTop = containerRect.bottom - CALENDAR_ESTIMATED_HEIGHT;
+			const minTop = containerRect.top;
+			top = Math.max(minTop, Math.min(buttonRect.top, maxTop)) + CALENDAR_TOP_OFFSET;
+		}
+
+		setCalendarPosition({ top, left });
 
 		setSelectedTaskId(taskId);
 		setIsCalendarOpen(true);
@@ -213,129 +231,128 @@ const BoxCategory = ({
 			as="article"
 			className="relative flex w-[31.6rem] flex-shrink-0 flex-col rounded-[16px] bg-gray-bg-03 p-[1.8rem]"
 		>
-			<div className="mt-[0.4rem] flex items-center justify-between">
-				{isCategoryEditing ? (
-					<input
-						autoFocus
-						className="w-full rounded-md bg-gray-bg-04 bg-transparent text-white subhead-semibold-18 focus:outline-none"
-						value={editedCategoryName}
-						onChange={(e) => setEditedCategoryName(e.target.value)}
-						onBlur={handleFinishEditing}
-						onKeyDown={handleKeyDown}
-					/>
-				) : (
-					<h2 className="truncate text-white subhead-semibold-18" onClick={handleStartEditing}>
-						{title}
-					</h2>
-				)}
-				<div className="flex items-center gap-[1rem]">
-					<button
-						onMouseEnter={handleMouseEnter}
-						onClick={startAddingTodo}
-						className="rounded-full hover:bg-gray-bg-04 active:bg-gray-bg-05"
-					>
-						<PlusIcon />
-					</button>
-					<Dropdown>
-						<Dropdown.Trigger>
-							<MeatballDefaultIcon className="rounded-full hover:bg-gray-bg-04 active:bg-gray-bg-05" />
-						</Dropdown.Trigger>
-						<Dropdown.Content className="right-0 top-[3.2rem]">
-							<Dropdown.Item label="카테고리 이름 수정" onClick={handleStartEditing} />
-							<Dropdown.Item label="카테고리 삭제" textColor="red" onClick={() => onDeleteCategory(id)} />
-						</Dropdown.Content>
-					</Dropdown>
+			<div ref={boxCategoryRef} className="h-full w-full">
+				<div className="mt-[0.4rem] flex items-center justify-between">
+					{isCategoryEditing ? (
+						<input
+							autoFocus
+							className="w-full rounded-md bg-gray-bg-04 bg-transparent text-white subhead-semibold-18 focus:outline-none"
+							value={editedCategoryName}
+							onChange={(e) => setEditedCategoryName(e.target.value)}
+							onBlur={handleFinishEditing}
+							onKeyDown={handleKeyDown}
+						/>
+					) : (
+						<h2 className="truncate text-white subhead-semibold-18" onClick={handleStartEditing}>
+							{title}
+						</h2>
+					)}
+					<div className="flex items-center gap-[1rem]">
+						<button
+							onMouseEnter={handleMouseEnter}
+							onClick={startAddingTodo}
+							className="rounded-full hover:bg-gray-bg-04 active:bg-gray-bg-05"
+						>
+							<PlusIcon />
+						</button>
+						<Dropdown>
+							<Dropdown.Trigger>
+								<MeatballDefaultIcon className="rounded-full hover:bg-gray-bg-04 active:bg-gray-bg-05" />
+							</Dropdown.Trigger>
+							<Dropdown.Content className="right-0 top-[3.2rem]">
+								<Dropdown.Item label="카테고리 이름 수정" onClick={handleStartEditing} />
+								<Dropdown.Item label="카테고리 삭제" textColor="red" onClick={() => onDeleteCategory(id)} />
+							</Dropdown.Content>
+						</Dropdown>
+					</div>
 				</div>
-			</div>
 
-			{ongoingTodos.length === 0 && completedTodos.length === 0 && isAdding === false ? (
-				<StatusDefaultBoxCategory />
-			) : (
-				<Spacer.Height className="relative flex">
-					<Spacer.Height className="flex flex-col overflow-y-auto">
-						<ButtonTodoToggle isCompleted onClick={handleOngoingTodoToggle} isToggled={ongoingTodoToggle}>
-							{isAdding && !isCalendarOpen && (
-								<BoxTodoInput
-									ref={todoRef}
-									editable={editable}
-									onEditComplete={() => {
-										handleEditComplete();
-										handleCreatePost();
-									}}
-									name={name}
-									onInputChange={handleInputChange}
-									selectedStartDate={selectedDate}
-									selectedEndDate={selectedEndDate}
-								/>
-							)}
-
-							{ongoingTodos.map(({ id, name, startDate, endDate, elapsedTime }) => {
-								const todo = { id, name, startDate, endDate, elapsedTime };
-								const selectedNumber = getSelectedNumber(id);
-								return (
-									<BoxTodo
-										id={id}
-										key={id}
-										name={name}
-										startDate={startDate}
-										endDate={endDate}
-										elapsedTime={elapsedTime}
-										isSelected={!!selectedNumber}
-										selectedNumber={selectedNumber}
-										onToggleComplete={() =>
-											toggleTodoStatus(
-												{ taskId: id },
-												{
-													onSuccess: () => {
-														setCompletedTodoToggle(true);
-													},
-												},
-											)
-										}
-										updateTodayTodos={() => updateTodayTodos(todo)}
-										clickable={addingTodayTodoStatus}
-										addingComplete={addingComplete}
-										handleCalendarToggle={() => handleOpenTaskCalendar(id)}
-										onPatchTask={handlePatchTask}
-										activeCalendarTask={isCalendarOpen && selectedTaskId === id}
-									/>
-								);
-							})}
-						</ButtonTodoToggle>
-
-						{completedTodos.length !== 0 && (
-							<ButtonTodoToggle onClick={handleCompletedTodoToggle} isToggled={completedTodoToggle}>
-								{completedTodos.map(({ id, name, startDate, endDate, elapsedTime }) => (
-									<BoxTodo
-										id={id}
-										key={id}
-										isComplete
-										name={name}
-										startDate={startDate}
-										endDate={endDate}
-										elapsedTime={elapsedTime}
-										onToggleComplete={() => {
-											toggleTodoStatus({ taskId: id });
+				{ongoingTodos.length === 0 && completedTodos.length === 0 && isAdding === false ? (
+					<StatusDefaultBoxCategory />
+				) : (
+					<Spacer.Height className="relative flex">
+						<Spacer.Height className="flex flex-col overflow-y-auto">
+							<ButtonTodoToggle isCompleted onClick={handleOngoingTodoToggle} isToggled={ongoingTodoToggle}>
+								{isAdding && !isCalendarOpen && (
+									<BoxTodoInput
+										ref={todoRef}
+										editable={editable}
+										onEditComplete={() => {
+											handleEditComplete();
+											handleCreatePost();
 										}}
-										clickable={addingTodayTodoStatus}
-										addingComplete={addingComplete}
-										handleCalendarToggle={() => handleOpenTaskCalendar(id)}
+										name={name}
+										onInputChange={handleInputChange}
+										selectedStartDate={selectedDate}
+										selectedEndDate={selectedEndDate}
 									/>
-								))}
+								)}
+
+								{ongoingTodos.map(({ id, name, startDate, endDate, elapsedTime }) => {
+									const todo = { id, name, startDate, endDate, elapsedTime };
+									const selectedNumber = getSelectedNumber(id);
+									return (
+										<BoxTodo
+											id={id}
+											key={id}
+											name={name}
+											startDate={startDate}
+											endDate={endDate}
+											elapsedTime={elapsedTime}
+											isSelected={!!selectedNumber}
+											selectedNumber={selectedNumber}
+											onToggleComplete={() =>
+												toggleTodoStatus(
+													{ taskId: id },
+													{
+														onSuccess: () => {
+															setCompletedTodoToggle(true);
+														},
+													},
+												)
+											}
+											updateTodayTodos={() => updateTodayTodos(todo)}
+											clickable={addingTodayTodoStatus}
+											addingComplete={addingComplete}
+											handleCalendarToggle={(e: MouseEvent<HTMLButtonElement>) => handleOpenTaskCalendar(id, e)}
+											onPatchTask={handlePatchTask}
+											activeCalendarTask={isCalendarOpen && selectedTaskId === id}
+										/>
+									);
+								})}
 							</ButtonTodoToggle>
-						)}
+
+							{completedTodos.length !== 0 && (
+								<ButtonTodoToggle onClick={handleCompletedTodoToggle} isToggled={completedTodoToggle}>
+									{completedTodos.map(({ id, name, startDate, endDate, elapsedTime }) => (
+										<BoxTodo
+											id={id}
+											key={id}
+											isComplete
+											name={name}
+											startDate={startDate}
+											endDate={endDate}
+											elapsedTime={elapsedTime}
+											onToggleComplete={() => {
+												toggleTodoStatus({ taskId: id });
+											}}
+											clickable={addingTodayTodoStatus}
+											addingComplete={addingComplete}
+											handleCalendarToggle={(e: MouseEvent<HTMLButtonElement>) => handleOpenTaskCalendar(id, e)}
+										/>
+									))}
+								</ButtonTodoToggle>
+							)}
+						</Spacer.Height>
 					</Spacer.Height>
-				</Spacer.Height>
-			)}
+				)}
+			</div>
 
 			{isCalendarOpen && (
 				<Suspense fallback={<div>Loading...</div>}>
 					<div
-						style={{
-							position: 'absolute',
-							top: '16rem',
-							left: '25rem',
-						}}
+						className="fixed z-10"
+						style={{ top: calendarPosition.top, left: calendarPosition.left }}
 						tabIndex={0}
 						ref={(node) => {
 							if (node) {
