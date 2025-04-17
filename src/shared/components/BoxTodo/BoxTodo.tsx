@@ -144,8 +144,8 @@ const BoxTodo = ({
 							/>
 						) : (
 							<h3
-								className={`mt-[0.42rem] text-white body-semibold-16 ${nameStyle} truncate ${!clickable ? '' : 'pointer-events-none'}`}
-								onClick={handleNameClick}
+								className={`mt-[0.42rem] text-white body-semibold-16 ${nameStyle} truncate ${clickable || isComplete ? 'pointer-events-none' : ''}`}
+								onClick={handleNameClick} // handler now no‑ops if isComplete
 							>
 								{name}
 							</h3>
@@ -171,7 +171,7 @@ const BoxTodo = ({
 				</div>
 				<div className="ml-[0.8rem] mt-[0.7rem] flex flex-col gap-[0.2rem]">
 					<button
-						className={`flex max-w-max gap-[0.6rem] rounded-[0.3rem] pr-[0.2rem] ${activeCalendarTask ? 'bg-mint-01' : 'hover:bg-gray-bg-03'} ${!clickable ? '' : 'pointer-events-none'}`}
+						className={`flex max-w-max gap-[0.6rem] rounded-[0.3rem] pr-[0.2rem] ${activeCalendarTask ? 'bg-mint-01' : 'hover:bg-gray-bg-03'} ${clickable || isComplete ? 'pointer-events-none' : ''}`}
 						onClick={handleCalendarToggle}
 					>
 						{activeCalendarTask ? <ButtonCalendartBlackIcon /> : <ButtonCalendarIcon />}
