@@ -69,11 +69,10 @@ const StatusAddBoxTodayTodo = ({
 					})}
 				</Spacer.Height>
 			) : (
-				<p className="mx-auto mt-[22.2rem] text-center text-gray-05 subhead-semibold-18">
-					할 일 카드를 선택하여
-					<br />
-					오늘 할 일을 추가해 보세요.
-				</p>
+				<div className="mx-auto mt-[22.2rem] flex flex-col gap-[0.5rem]">
+					<p className="text-center text-gray-05 subhead-semibold-18">할 일 카드를 선택하여</p>
+					<p className="text-center text-gray-05 subhead-semibold-18">오늘 할 일을 추가해 보세요.</p>
+				</div>
 			)}
 
 			<span className="mt-[1rem] flex justify-between">
