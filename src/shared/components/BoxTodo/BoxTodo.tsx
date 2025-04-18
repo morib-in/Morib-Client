@@ -145,7 +145,7 @@ const BoxTodo = ({
 						) : (
 							<h3
 								className={`mt-[0.42rem] text-white body-semibold-16 ${nameStyle} truncate ${clickable || isComplete ? 'pointer-events-none' : ''}`}
-								onClick={handleNameClick} // handler now no‑ops if isComplete
+								onClick={handleNameClick}
 							>
 								{name}
 							</h3>
