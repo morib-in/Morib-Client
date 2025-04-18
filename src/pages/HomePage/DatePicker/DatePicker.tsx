@@ -29,8 +29,10 @@ const DatePicker = ({ todayDate, selectedDate, onSelectedDateChange }: DatePicke
 
 	const homeDropdownData = getHomeDropdownData(todayDate);
 
-	const handleClickTodayBtn = () => {
-		handleToday();
+	const selectedItemRefCallback = (node: HTMLLIElement | null) => {
+		if (node) {
+			node.scrollIntoView();
+		}
 	};
 
 	return (
@@ -49,16 +51,19 @@ const DatePicker = ({ todayDate, selectedDate, onSelectedDateChange }: DatePicke
 						boxShadow="shadow-[0_4px_4.8px_0_rgba(0,0,0,0.25)]"
 						className="top-[4.4rem]"
 					>
-						{homeDropdownData.map((item) => (
-							<li
-								key={item.format('YYYY년 MM월')}
-								className="flex h-[4.6rem] w-[22.5rem] items-center justify-center border-none bg-mint-01"
-							>
-								<ButtonDropdownOptions onClick={() => handleYearMonthClick(item)}>
-									{item.format('YYYY년 MM월')}
-								</ButtonDropdownOptions>
-							</li>
-						))}
+						{homeDropdownData.map((item) => {
+							const label = item.format('YYYY년 MM월');
+							const isCurrent = label === selectedDate.format('YYYY년 MM월');
+							return (
+								<li
+									key={label}
+									ref={isCurrent ? selectedItemRefCallback : null}
+									className="flex h-[4.6rem] w-[22.5rem] items-center justify-center border-none bg-mint-01"
+								>
+									<ButtonDropdownOptions onClick={() => handleYearMonthClick(item)}>{label}</ButtonDropdownOptions>
+								</li>
+							);
+						})}
 					</Dropdown.Content>
 				</Dropdown>
 			</section>
@@ -82,7 +87,7 @@ const DatePicker = ({ todayDate, selectedDate, onSelectedDateChange }: DatePicke
 				</nav>
 				<div className="ml-[4.7rem] flex gap-[1rem]">
 					<ButtonArrowSVG direction={Direction.LEFT} onClick={handlePreviousWeek} />
-					<button onClick={handleClickTodayBtn}>
+					<button onClick={handleToday}>
 						<ButtonTodayIcon className="rounded-[37px] bg-gray-bg-03 hover:bg-gray-bg-05" />
 					</button>
 					<ButtonArrowSVG direction={Direction.RIGHT} onClick={handleNextWeek} />
