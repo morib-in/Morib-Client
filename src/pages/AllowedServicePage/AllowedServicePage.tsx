@@ -192,7 +192,12 @@ const AllowedServicePage = () => {
 			},
 			{
 				onSuccess: () => {
-					if (deleteUrl === urlInput) {
+					if (
+						isError &&
+						error?.response?.data.message &&
+						error.response.data.message.includes('존재하는') &&
+						deleteUrl === urlInput
+					) {
 						resetAllowedService();
 					}
 				},
