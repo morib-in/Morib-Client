@@ -185,10 +185,19 @@ const AllowedServicePage = () => {
 		}
 	};
 
-	const handleDeleteAllowedService = (id: number) => {
-		deleteAllowedService({
-			allowedSiteId: String(id),
-		});
+	const handleDeleteAllowedService = (id: number, deleteUrl: string) => {
+		deleteAllowedService(
+			{
+				allowedSiteId: String(id),
+			},
+			{
+				onSuccess: () => {
+					if (deleteUrl === urlInput) {
+						resetAllowedService();
+					}
+				},
+			},
+		);
 	};
 
 	const handleKeyDownUrlInput = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -196,16 +205,6 @@ const AllowedServicePage = () => {
 			handleAddAllowedService(urlInput, activeGroupId);
 		}
 	};
-
-	useEffect(() => {
-		if (isError) {
-			const timer = setTimeout(() => {
-				resetUrlInput();
-			}, 5000);
-
-			return () => clearTimeout(timer);
-		}
-	}, [isError]);
 
 	// NOTE: 첫 렌더링 시 api를 통해 받은 첫번째 allowed service group id를 activeGroupId로 설정
 	useEffect(() => {
@@ -315,7 +314,9 @@ const AllowedServicePage = () => {
 									allowedServiceGroupDetail.data.allowedSites.map((allowedSiteData, index) => (
 										<AllowedServiceGroupDetail.TableRow
 											key={`${index}-${allowedSiteData.id}`}
-											onDeleteAllowedSite={() => handleDeleteAllowedService(allowedSiteData.id)}
+											onDeleteAllowedSite={() =>
+												handleDeleteAllowedService(allowedSiteData.id, allowedSiteData.siteUrl)
+											}
 											{...allowedSiteData}
 										/>
 									))}
