@@ -7,6 +7,7 @@ import { formatSeconds } from '@/shared/utils/time';
 import type { TaskType } from '@/shared/types/tasks';
 
 import ButtonCalendarIcon from '@/shared/assets/svgs/btn_cal.svg?react';
+import ButtonCalendartBlackIcon from '@/shared/assets/svgs/btn_cal_black.svg?react';
 import CheckBoxBlankIcon from '@/shared/assets/svgs/check_box_blank.svg?react';
 import CheckBoxFillIcon from '@/shared/assets/svgs/check_box_fill.svg?react';
 import MeatballIcon from '@/shared/assets/svgs/common/ic_meatball_default.svg?react';
@@ -35,6 +36,7 @@ interface BoxTodoProps {
 	timerIncreasedTime?: number;
 	handleCalendarToggle?: (e: MouseEvent<HTMLButtonElement>) => void;
 	onPatchTask?: (taskId: number, name: string, startDate: string, endDate: string | null) => void;
+	activeCalendarTask?: boolean;
 }
 
 const BoxTodo = ({
@@ -54,6 +56,7 @@ const BoxTodo = ({
 	timerIncreasedTime,
 	handleCalendarToggle,
 	onPatchTask,
+	activeCalendarTask,
 }: BoxTodoProps) => {
 	const { mutate: deleteTask } = useDeleteTask();
 
@@ -141,7 +144,7 @@ const BoxTodo = ({
 							/>
 						) : (
 							<h3
-								className={`mt-[0.42rem] text-white body-semibold-16 ${nameStyle} truncate ${!clickable ? '' : 'pointer-events-none'}`}
+								className={`mt-[0.42rem] text-white body-semibold-16 ${nameStyle} truncate ${clickable || isComplete ? 'pointer-events-none' : ''}`}
 								onClick={handleNameClick}
 							>
 								{name}
@@ -168,13 +171,15 @@ const BoxTodo = ({
 				</div>
 				<div className="ml-[0.8rem] mt-[0.7rem] flex flex-col gap-[0.2rem]">
 					<button
-						className={`flex max-w-max items-center gap-[0.6rem] rounded-[0.3rem] pr-[0.2rem] hover:bg-gray-bg-03 ${!clickable ? '' : 'pointer-events-none'}`}
+						className={`flex max-w-max gap-[0.6rem] rounded-[0.3rem] pr-[0.2rem] ${activeCalendarTask ? 'bg-mint-01' : 'hover:bg-gray-bg-03'} ${clickable || isComplete ? 'pointer-events-none' : ''}`}
 						onClick={handleCalendarToggle}
 					>
-						<ButtonCalendarIcon />
-						<p className="mt-[0.3rem] text-gray-04 detail-reg-12">{duration}</p>
+						{activeCalendarTask ? <ButtonCalendartBlackIcon /> : <ButtonCalendarIcon />}
+						<p className={`mt-[0.3rem] detail-reg-12 ${activeCalendarTask ? 'text-gray-01' : 'text-gray-04'}`}>
+							{duration}
+						</p>
 					</button>
-					<div className="flex items-center gap-[0.6rem]">
+					<div className="flex gap-[0.6rem]">
 						{TimeIcon}
 						<p className={`mt-[0.3rem] detail-reg-12 ${timeTextClass}`}>{formattedTime}</p>
 					</div>

@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, ReactNode, createContext, useContext, useRef, useState } from 'react';
+import { ButtonHTMLAttributes, ReactNode, createContext, forwardRef, useContext, useRef, useState } from 'react';
 
 import useClickOutside from '../../hooks/useClickOutside';
 
@@ -7,14 +7,13 @@ interface DropdownContextProps {
 	handleToggleOpen: () => void;
 	handleToggleClose: () => void;
 }
-
 const DropdownContext = createContext<DropdownContextProps | null>(null);
 
 // useDropdownContext: Select 컴포넌트 외부에서 서브 컴포넌트들이 사용됐을 때 에러 처리
 const useDropdownContext = () => {
 	const context = useContext(DropdownContext);
 	if (!context) {
-		throw new Error('Select 컴포넌트는 Select  내에서 사용되어야 합니다.');
+		throw new Error('Select 컴포넌트는 Select 내에서 사용되어야 합니다.');
 	}
 	return context;
 };
@@ -22,14 +21,24 @@ const useDropdownContext = () => {
 // Dropdown root 컴포넌트
 interface DropdownRootProps {
 	children: ReactNode;
+	onOpenChange?: (open: boolean) => void;
 }
-const DropdownRoot = ({ children }: DropdownRootProps) => {
+const DropdownRoot = ({ children, onOpenChange }: DropdownRootProps) => {
 	const [open, setOpen] = useState(false);
+	const ref = useRef<HTMLDivElement>(null);
 
-	const handleToggleOpen = () => setOpen((prev) => !prev);
-	const handleClose = () => setOpen(false);
+	const handleToggleOpen = () => {
+		setOpen((prev) => {
+			const next = !prev;
+			onOpenChange?.(next);
+			return next;
+		});
+	};
+	const handleClose = () => {
+		setOpen(false);
+		onOpenChange?.(false);
+	};
 
-	const ref = useRef(null);
 	useClickOutside(ref, handleClose);
 
 	const contextValue: DropdownContextProps = {
@@ -77,35 +86,36 @@ interface DropdownContentProps {
 	className?: string;
 }
 
-const DropdownContent = ({ children, maxHeight, boxShadow, className }: DropdownContentProps) => {
-	const { open, handleToggleClose } = useDropdownContext();
+const DropdownContent = forwardRef<HTMLUListElement, DropdownContentProps>(
+	({ children, maxHeight, boxShadow, className }, ref) => {
+		const { open, handleToggleClose } = useDropdownContext();
+		const shadowStyle = boxShadow ?? 'shadow-[0_3px_30px_0_rgba(0,0,0,0.4)]';
 
-	const shadowStyle = boxShadow ? boxShadow : 'shadow-[0_3px_30px_0_rgba(0,0,0,0.4)]';
-
-	return (
-		<ul
-			onClick={handleToggleClose}
-			className={`absolute overflow-y-scroll rounded-[4px] ${shadowStyle} ${maxHeight} ${className}`}
-		>
-			{open && children}
-		</ul>
-	);
-};
+		return (
+			<ul
+				ref={ref}
+				onClick={handleToggleClose}
+				className={`absolute overflow-y-scroll rounded-[4px] ${shadowStyle} ${maxHeight} ${className}`}
+			>
+				{open && children}
+			</ul>
+		);
+	},
+);
+DropdownContent.displayName = 'DropdownContent';
 
 // Dropdown의 메뉴 리스트 아이템 컴포넌트
 interface DropdownItemProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	label: string;
 	textColor?: 'default' | 'red';
 }
-
 const DropdownItem = ({ label, textColor = 'default', ...props }: DropdownItemProps) => {
 	const textStyle = textColor === 'red' ? 'text-error-01' : 'text-white';
-
 	return (
 		<li className="z-50 border-t border-t-gray-bg-04 first:border-none">
 			<button
 				{...props}
-				className={`flex bg-gray-bg-02 px-[1.6rem] py-[0.4rem] hover:bg-gray-bg-03 active:bg-gray-bg-04`}
+				className="flex bg-gray-bg-02 px-[1.6rem] py-[0.4rem] hover:bg-gray-bg-03 active:bg-gray-bg-04"
 			>
 				<p className={`flex h-[2.2rem] min-w-[13.5rem] items-center detail-reg-12 ${textStyle}`}>{label}</p>
 			</button>
@@ -118,5 +128,4 @@ const Dropdown = Object.assign(DropdownRoot, {
 	Content: DropdownContent,
 	Item: DropdownItem,
 });
-
 export default Dropdown;
