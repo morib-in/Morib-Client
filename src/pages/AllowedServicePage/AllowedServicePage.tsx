@@ -185,10 +185,24 @@ const AllowedServicePage = () => {
 		}
 	};
 
-	const handleDeleteAllowedService = (id: number) => {
-		deleteAllowedService({
-			allowedSiteId: String(id),
-		});
+	const handleDeleteAllowedService = (id: number, deleteUrl: string) => {
+		deleteAllowedService(
+			{
+				allowedSiteId: String(id),
+			},
+			{
+				onSuccess: () => {
+					if (
+						isError &&
+						error?.response?.data.message &&
+						error.response.data.message.includes('존재하는') &&
+						deleteUrl === urlInput
+					) {
+						resetAllowedService();
+					}
+				},
+			},
+		);
 	};
 
 	const handleKeyDownUrlInput = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -305,7 +319,9 @@ const AllowedServicePage = () => {
 									allowedServiceGroupDetail.data.allowedSites.map((allowedSiteData, index) => (
 										<AllowedServiceGroupDetail.TableRow
 											key={`${index}-${allowedSiteData.id}`}
-											onDeleteAllowedSite={() => handleDeleteAllowedService(allowedSiteData.id)}
+											onDeleteAllowedSite={() =>
+												handleDeleteAllowedService(allowedSiteData.id, allowedSiteData.siteUrl)
+											}
 											{...allowedSiteData}
 										/>
 									))}
