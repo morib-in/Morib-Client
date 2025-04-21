@@ -16,7 +16,7 @@ import AllowedServicesTitle from './AllowedServices/AllowedServicesTitle';
 import Carousel from './Carousel/Carousel';
 import MainTimer from './MainTimer/MainTimer';
 import NavigationButtons from './NavigationButtons/NavigationButtons';
-import SideBarTimer from './SideBarTimer';
+import SideMenuTimer from './SideMenuTimer/SideMenuTimer';
 import { TimerProvider, useTimerContext } from './contexts/TimerContext';
 
 // 날짜 설정 플러그인 초기화
@@ -78,8 +78,8 @@ const TimerPageContent = () => {
 					</div>
 				</div>
 
-				{/* 사이드바 */}
-				<SideBarTimer ongoingTodos={ongoingTodos} completedTodos={completedTodos} />
+				{/* 사이드 메뉴 */}
+				<SideMenuTimer ongoingTodos={ongoingTodos} completedTodos={completedTodos} />
 			</div>
 		</div>
 	);

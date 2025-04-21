@@ -18,7 +18,7 @@ import { timerKeys } from '@/shared/apisV2/timer/timer.keys';
 
 import { useTimerContext } from '../contexts/TimerContext';
 
-interface SideBarTimerProps {
+interface SideMenuTimerProps {
 	completedTodos: TimerTodoType[];
 	ongoingTodos: TimerTodoType[];
 }
@@ -26,7 +26,7 @@ interface SideBarTimerProps {
 /**
  * 타이머 사이드바 컴포넌트
  */
-const SideBarTimer = ({ ongoingTodos = [], completedTodos = [] }: SideBarTimerProps) => {
+const SideMenuTimer = ({ ongoingTodos = [], completedTodos = [] }: SideMenuTimerProps) => {
 	const { todayFormattedDate, timer, isPlaying, selectedTask, isSidebarOpen, actions } = useTimerContext();
 
 	const [completedTodoToggle, setCompletedTodoToggle] = useState(false);
@@ -160,4 +160,4 @@ const SideBarTimer = ({ ongoingTodos = [], completedTodos = [] }: SideBarTimerPr
 	);
 };
 
-export default SideBarTimer;
+export default SideMenuTimer;
