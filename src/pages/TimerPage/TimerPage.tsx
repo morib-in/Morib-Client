@@ -7,8 +7,6 @@ import { useNavigate } from 'react-router-dom';
 
 import { splitTasksByCompletion } from '@/shared/utils/timer';
 
-import { GetTimerTodosRes, TimerReq } from '@/shared/types/api/timer';
-
 import { ROUTES_CONFIG } from '@/router/routesConfig';
 
 import { useGetTimerTodos } from '@/shared/apisV2/timer/timer.queries';
