@@ -16,7 +16,7 @@ import AllowedServicesTitle from './AllowedServices/AllowedServicesTitle';
 import Carousel from './Carousel/Carousel';
 import MainTimer from './MainTimer/MainTimer';
 import NavigationButtons from './NavigationButtons/NavigationButtons';
-import SideBarTimer from './SideBarTimer/SideBarTimer';
+import SideBarTimer from './SideBarTimer';
 import { TimerProvider, useTimerContext } from './contexts/TimerContext';
 
 // 날짜 설정 플러그인 초기화
