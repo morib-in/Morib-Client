@@ -60,14 +60,16 @@ const BoxTodo = ({
 }: BoxTodoProps) => {
 	const { mutate: deleteTask } = useDeleteTask();
 
-	const formattedTime = formatSeconds(timerIncreasedTime ? elapsedTime + timerIncreasedTime : elapsedTime);
+	// timerIncreasedTime이 제공되면 그 값을 사용하고, 아니면 기본 elapsedTime 사용
+	const displayTime = timerIncreasedTime !== undefined ? elapsedTime + timerIncreasedTime : elapsedTime;
+	const formattedTime = formatSeconds(displayTime);
 	const formattedstartDate = startDate.replace(/-/g, '.');
 	const formattedendDate = endDate ? endDate.replace(/-/g, '.') : '';
 
 	const nameStyle = isComplete ? 'line-through' : '';
 	const CheckBoxIcon = isComplete ? <CheckBoxFillIcon /> : <CheckBoxBlankIcon />;
-	const TimeIcon = elapsedTime ? <TimeFillIcon /> : <TimeLineIcon />;
-	const timeTextClass = elapsedTime ? 'text-mint-01' : 'text-gray-04';
+	const TimeIcon = displayTime ? <TimeFillIcon /> : <TimeLineIcon />;
+	const timeTextClass = displayTime ? 'text-mint-01' : 'text-gray-04';
 
 	const selectedStyle =
 		isSelected && !addingComplete

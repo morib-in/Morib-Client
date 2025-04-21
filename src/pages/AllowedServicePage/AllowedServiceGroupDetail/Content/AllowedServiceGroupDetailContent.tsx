@@ -2,13 +2,9 @@ import { ReactNode } from 'react';
 
 import Spacer from '@/shared/components/Spacer/Spacer';
 
-import { getMainDomain } from '@/shared/utils/url';
-
 import { AllowedServiceGroupDetailSiteType } from '@/shared/types/allowedService';
 
 import MinusBtn from '@/shared/assets/svgs/minus_btn.svg?react';
-
-import { getServiceFavicon } from '@/pages/OnboardingPage/utils/serviceUrl';
 
 export interface AllowedServiceGroupDetailContentProps {
 	children: ReactNode;

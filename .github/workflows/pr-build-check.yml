@@ -16,8 +16,6 @@ jobs:
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 9
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
@@ -27,6 +25,15 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install
+
+      - name: Clear TypeScript build info
+        run: |
+          echo "TypeScript 빌드 캐시 삭제"
+          rm -rf node_modules/.tmp
+          rm -rf node_modules/.cache
+
+      - name: Check TypeScript compilation
+        run: pnpm tsc -b
 
       - name: Build project
         run: pnpm run build
