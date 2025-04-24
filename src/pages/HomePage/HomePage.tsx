@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import AutoFixedGrid from '@/shared/components/AutoFixedGrid/AutoFixedGrid';
 import ModalContentsFriends from '@/shared/components/ModalContentsFriends/ModalContentsFriends';
 import ModalWrapper, { ModalWrapperRef } from '@/shared/components/ModalWrapper/ModalWrapper';
+import NotificationPanel from '@/shared/components/NotificationPanel/NotificationPanel';
 import Spacer from '@/shared/components/Spacer/Spacer';
 
 import useClickOutside from '@/shared/hooks/useClickOutside';
@@ -52,6 +53,10 @@ const HomePage = () => {
 
 	const boxAddCategoryRef = useRef<HTMLDivElement>(null);
 	const friendsModalRef = useRef<ModalWrapperRef>(null);
+	const notificationPanelRef = useRef<HTMLDivElement>(null);
+	const bellIconRef = useRef<HTMLButtonElement>(null);
+
+	const [isNotificationVisible, setIsNotificationVisible] = useState(false);
 
 	const MAX_VISIBLE_FRIENDS = 5;
 
@@ -145,7 +150,24 @@ const HomePage = () => {
 		friendsModalRef.current?.open();
 	};
 
+	const toggleNotification = () => {
+		setIsNotificationVisible((prev) => !prev);
+	};
+
 	useClickOutside(boxAddCategoryRef, handleOutsideClickWhileAddingCategory);
+	useClickOutside(
+		notificationPanelRef,
+		(event) => {
+			if (!isNotificationVisible) return;
+
+			if (bellIconRef.current && event && bellIconRef.current.contains(event.target as Node)) {
+				return;
+			}
+
+			setIsNotificationVisible(false);
+		},
+		isNotificationVisible,
+	);
 
 	const deleteTodayTodos = (todo: Omit<TaskType, 'isComplete'>) => {
 		setTodayTodos((prev) => prev.filter((prevTodo) => prevTodo.id !== todo.id));
@@ -233,12 +255,14 @@ const HomePage = () => {
 				<ButtonMoreFriends friendsCount={friendList.length - MAX_VISIBLE_FRIENDS} />
 			</div>
 
-			<div className={`absolute right-[4.2rem] top-[4rem] flex gap-[0.8rem] 2xl:top-[5.4rem]`}>
+			<div className={`absolute right-[3.2rem] top-[4rem] flex gap-[0.8rem] 2xl:top-[5.4rem]`}>
 				<button onClick={handleOpenFriendsModal}>
 					<FriendSettingIcon className="rounded-[1.6rem] hover:bg-gray-bg-04 active:bg-gray-bg-05" />
 				</button>
-				<button>
-					<BellIcon className="rounded-[1.6rem] hover:bg-gray-bg-04 active:bg-gray-bg-05" />
+				<button ref={bellIconRef} onClick={toggleNotification}>
+					<BellIcon
+						className={`rounded-[1.6rem] ${isNotificationVisible ? 'bg-gray-bg-04' : ''} hover:bg-gray-bg-04 active:bg-gray-bg-05`}
+					/>
 				</button>
 			</div>
 
@@ -342,6 +366,8 @@ const HomePage = () => {
 			<ModalWrapper ref={friendsModalRef} backdrop={true}>
 				{({ isModalOpen }) => <ModalContentsFriends isModalOpen={isModalOpen} />}
 			</ModalWrapper>
+
+			{isNotificationVisible && <NotificationPanel ref={notificationPanelRef} />}
 		</AutoFixedGrid>
 	);
 };
