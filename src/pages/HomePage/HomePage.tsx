@@ -20,6 +20,7 @@ import { TaskType } from '@/shared/types/tasks';
 import BellIcon from '@/shared/assets/svgs/bell.svg?react';
 import FriendSettingIcon from '@/shared/assets/svgs/friend_setting.svg?react';
 import LargePlusIcon from '@/shared/assets/svgs/large_plus.svg?react';
+import PopoverAddCategoryIcon from '@/shared/assets/svgs/popover_add_category.svg?react';
 
 import { ROUTES_CONFIG } from '@/router/routesConfig';
 
@@ -283,7 +284,12 @@ const HomePage = () => {
 									)}
 
 									{dailyCategoryTask.length <= 2 && (
-										<div className="flex flex-col">
+										<div className="relative">
+											{dailyCategoryTask.length === 1 && !isAddingCategory && (
+												<button className="absolute left-[6rem] top-[1rem]">
+													<PopoverAddCategoryIcon />
+												</button>
+											)}
 											<button className="flex-shrink-0" onClick={handleAddCategory}>
 												<LargePlusIcon className="rounded-full bg-gray-bg-03 hover:bg-gray-bg-05" />
 											</button>
