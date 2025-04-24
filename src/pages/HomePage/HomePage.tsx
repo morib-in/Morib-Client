@@ -24,6 +24,7 @@ import PopoverAddCategoryIcon from '@/shared/assets/svgs/popover_add_category.sv
 
 import { ROUTES_CONFIG } from '@/router/routesConfig';
 
+import { useGetFriendList } from '@/shared/apisV2/friends/friends.queries';
 import {
 	useAddCategory,
 	useDeleteCategory,
@@ -31,6 +32,7 @@ import {
 	usePostAddTodayTodos,
 } from '@/shared/apisV2/home/home.mutations';
 import { useGetCategoryTask, useGetWorkTime } from '@/shared/apisV2/home/home.queries';
+import { useGetProfile } from '@/shared/apisV2/setting/setting.queries';
 
 import BoxAddCategory from './BoxAddCategory/BoxAddCategory';
 import BoxCategory from './BoxCategory/BoxCategory';
@@ -51,13 +53,18 @@ const HomePage = () => {
 	const boxAddCategoryRef = useRef<HTMLDivElement>(null);
 	const friendsModalRef = useRef<ModalWrapperRef>(null);
 
+	const MAX_VISIBLE_FRIENDS = 5;
+
 	const [initialAdding, setInitialAdding] = useState(true);
 	const [selectedDate, setSelectedDate] = useState(todayDate);
 	const { startDate, endDate } = getThisWeekRange(selectedDate);
 
 	const { data: categoriesData } = useGetCategoryTask({ startDate, endDate });
+	const { data: userProfile } = useGetProfile();
+	const { data: friendListData } = useGetFriendList();
 
 	const categories = categoriesData?.data || [];
+	const friendList = friendListData?.data || [];
 
 	const dailyCategoryTask = getDailyCategoryTask(selectedDate, categories);
 
@@ -215,19 +222,15 @@ const HomePage = () => {
 			<div className="absolute left-[3.2rem] top-[4rem] flex items-center gap-[0.8rem] 2xl:top-[5.4rem] 2xl:gap-[1.8rem]">
 				<ul className="flex gap-[0.8rem] 2xl:gap-[1.8rem]">
 					<li>
-						<ButtonUserProfile isMyProfile />
+						<ButtonUserProfile isMyProfile imageUrl={userProfile?.data?.imageUrl} />
 					</li>
-					<li>
-						<ButtonUserProfile isConnecting />
-					</li>
-					<li>
-						<ButtonUserProfile isConnecting />
-					</li>
-					<li>
-						<ButtonUserProfile isConnecting />
-					</li>
+					{friendList.slice(0, MAX_VISIBLE_FRIENDS).map((friend) => (
+						<li key={friend.id}>
+							<ButtonUserProfile isConnecting isOnline={friend.isOnline} imageUrl={friend.imageUrl} />
+						</li>
+					))}
 				</ul>
-				<ButtonMoreFriends friendsCount={13} />
+				<ButtonMoreFriends friendsCount={friendList.length - MAX_VISIBLE_FRIENDS} />
 			</div>
 
 			<div className={`absolute right-[4.2rem] top-[4rem] flex gap-[0.8rem] 2xl:top-[5.4rem]`}>
