@@ -288,7 +288,7 @@ const HomePage = () => {
 
 									{dailyCategoryTask.length <= 2 && (
 										<div className="relative">
-											{dailyCategoryTask.length === 1 && !isAddingCategory && (
+											{!isAddingCategory && (
 												<button className="absolute left-[6rem] top-[1rem]">
 													<PopoverAddCategoryIcon />
 												</button>
