@@ -25,6 +25,7 @@ import PopoverAddCategoryIcon from '@/shared/assets/svgs/popover_add_category.sv
 
 import { ROUTES_CONFIG } from '@/router/routesConfig';
 
+import TooltipFriendInfo from '@/pages/HomePage/TooltipFriendInfo/TooltipFriendInfo';
 import { useGetFriendList } from '@/shared/apisV2/friends/friends.queries';
 import {
 	useAddCategory,
@@ -34,6 +35,7 @@ import {
 } from '@/shared/apisV2/home/home.mutations';
 import { useGetCategoryTask, useGetWorkTime } from '@/shared/apisV2/home/home.queries';
 import { useGetProfile } from '@/shared/apisV2/setting/setting.queries';
+import { useGetTimerFriends } from '@/shared/apisV2/timer/timer.queries';
 
 import BoxAddCategory from './BoxAddCategory/BoxAddCategory';
 import BoxCategory from './BoxCategory/BoxCategory';
@@ -67,9 +69,14 @@ const HomePage = () => {
 	const { data: categoriesData } = useGetCategoryTask({ startDate, endDate });
 	const { data: userProfile } = useGetProfile();
 	const { data: friendListData } = useGetFriendList();
+	const { data: timerFriendsData } = useGetTimerFriends();
 
 	const categories = categoriesData?.data || [];
 	const friendList = friendListData?.data || [];
+	const timerFriends = timerFriendsData?.data || [];
+
+	// 현재 접속 중인 친구만 필터링
+	const onlineFriends = friendList.filter((friend) => friend.isOnline);
 
 	const dailyCategoryTask = getDailyCategoryTask(selectedDate, categories);
 
@@ -246,13 +253,36 @@ const HomePage = () => {
 					<li>
 						<ButtonUserProfile isMyProfile imageUrl={userProfile?.data?.imageUrl} />
 					</li>
-					{friendList.slice(0, MAX_VISIBLE_FRIENDS).map((friend) => (
-						<li key={friend.id}>
-							<ButtonUserProfile isConnecting isOnline={friend.isOnline} imageUrl={friend.imageUrl} />
-						</li>
-					))}
+					{onlineFriends.slice(0, MAX_VISIBLE_FRIENDS).map((friend) => {
+						const timerFriend = timerFriends.find((tf) => tf.id === friend.id);
+
+						return (
+							<li key={friend.id} className="group relative">
+								<div className="transition-transform duration-300 group-hover:-translate-y-[1rem]">
+									<ButtonUserProfile isConnecting isOnline={friend.isOnline} imageUrl={friend.imageUrl} />
+								</div>
+								<div className="absolute left-[-9.3rem] top-[8rem] z-[52] hidden transform group-hover:block">
+									{timerFriend ? (
+										<TooltipFriendInfo
+											key={friend.id}
+											id={friend.id}
+											image={timerFriend.imageUrl}
+											time={timerFriend.elapsedTime}
+											name={timerFriend.name}
+											categoryName={timerFriend.categoryName || ''}
+											isPlaying={timerFriend.timerStatus === 'RUNNING'}
+											isOnline={timerFriend.isOnline}
+										/>
+									) : (
+										''
+									)}
+								</div>
+							</li>
+						);
+					})}
 				</ul>
-				<ButtonMoreFriends friendsCount={friendList.length - MAX_VISIBLE_FRIENDS} />
+
+				<ButtonMoreFriends friendsCount={friendList.length - onlineFriends.length} />
 			</div>
 
 			<div className={`absolute right-[3.2rem] top-[4rem] flex gap-[0.8rem] 2xl:top-[5.4rem]`}>

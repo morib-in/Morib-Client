@@ -32,7 +32,7 @@ const ButtonUserProfile = ({
 						src={profileImage}
 						alt="프로필 이미지"
 					/>
-					{(isMyProfile || isOnline) && (
+					{isOnline && (
 						<ConnectionIcon className="absolute bottom-[0.45rem] left-[3.6rem] rounded-full border-[0.2rem] border-gray-bg-01 2xl:bottom-[0.5rem] 2xl:left-[4.3rem]" />
 					)}
 				</div>
