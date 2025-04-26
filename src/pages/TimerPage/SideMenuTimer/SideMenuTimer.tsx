@@ -58,11 +58,10 @@ const SideMenuTimer = ({ ongoingTodos = [], completedTodos = [] }: SideMenuTimer
 			// 타이머가 실행 중인 경우 먼저 정지
 			if (isPlaying && selectedTask.id !== null && actions.stopCurrentTimer) {
 				await actions.stopCurrentTimer(selectedTask.id);
+				navigate('/home');
 			}
-			navigate('/home');
 		} catch (error) {
 			console.error('홈으로 이동 중 오류 발생:', error);
-			navigate('/home');
 		}
 	}, [isPlaying, selectedTask.id, actions, navigate]);
 
@@ -105,6 +104,7 @@ const SideMenuTimer = ({ ongoingTodos = [], completedTodos = [] }: SideMenuTimer
 				onClick={() => handleTodoClick(todo)}
 				onToggleComplete={() => handleToggleTodoComplete(todo.id, isOngoing)}
 				timerIncreasedTime={getTimerIncreasedTime(todo.id, todo.elapsedTime, selectedTask.id, timer)}
+				undeletable={true}
 			/>
 		),
 		[handleTodoClick, handleToggleTodoComplete, selectedTask.id, timer],
