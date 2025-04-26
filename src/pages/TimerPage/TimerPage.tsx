@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { splitTasksByCompletion } from '@/shared/utils/timer';
@@ -41,10 +41,20 @@ const TimerPageContent = () => {
 		return splitTasksByCompletion(todos);
 	}, [todosData]);
 
+	const { isPlaying, selectedTask } = useTimerContext();
+
 	// 홈 네비게이션 핸들러
-	const navigateToHome = () => {
-		navigate(ROUTES_CONFIG.home.path);
-	};
+	const navigateToHome = useCallback(async () => {
+		try {
+			// 타이머가 실행 중인 경우 먼저 정지
+			if (isPlaying && selectedTask.id !== null && actions.stopCurrentTimer) {
+				await actions.stopCurrentTimer(selectedTask.id);
+			}
+			navigate('/home');
+		} catch (error) {
+			console.error('홈으로 이동 중 오류 발생:', error);
+		}
+	}, [isPlaying, selectedTask.id, actions, navigate]);
 
 	return (
 		<div className="fixed">
