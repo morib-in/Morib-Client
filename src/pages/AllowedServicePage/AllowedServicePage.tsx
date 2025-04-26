@@ -58,6 +58,7 @@ const AllowedServicePage = () => {
 
 	const handleChangeUrlInput = (e: ChangeEvent<HTMLInputElement>) => {
 		setUrlInput(e.target.value);
+		resetAllowedService();
 	};
 
 	const handleEnableAddingAllowedServiceGroup = () => {
