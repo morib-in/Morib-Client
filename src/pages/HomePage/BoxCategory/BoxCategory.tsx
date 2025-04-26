@@ -13,6 +13,7 @@ import type { TaskListType, TaskType } from '@/shared/types/tasks';
 
 import MeatballDefaultIcon from '@/shared/assets/svgs/common/ic_meatball_default.svg?react';
 import PlusIcon from '@/shared/assets/svgs/home/ic_plus.svg?react';
+import PopoverAddTodoIcon from '@/shared/assets/svgs/popover_add_todo.svg?react';
 
 import { usePostToggleTaskStatus } from '@/shared/apisV2/common/common.mutations';
 import { usePatchTask, usePostCreateTask } from '@/shared/apisV2/home/home.mutations';
@@ -247,7 +248,12 @@ const BoxCategory = ({
 							{title}
 						</h2>
 					)}
-					<div className="flex items-center gap-[1rem]">
+					<div className="relative flex items-center gap-[1rem]">
+						{ongoingTodos.length === 0 && !isAdding && (
+							<button className="absolute right-[0rem] top-[3rem]">
+								<PopoverAddTodoIcon />
+							</button>
+						)}
 						<button
 							onMouseEnter={handleMouseEnter}
 							onClick={startAddingTodo}

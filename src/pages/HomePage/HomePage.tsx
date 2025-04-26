@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import AutoFixedGrid from '@/shared/components/AutoFixedGrid/AutoFixedGrid';
 import ModalContentsFriends from '@/shared/components/ModalContentsFriends/ModalContentsFriends';
 import ModalWrapper, { ModalWrapperRef } from '@/shared/components/ModalWrapper/ModalWrapper';
+import NotificationPanel from '@/shared/components/NotificationPanel/NotificationPanel';
 import Spacer from '@/shared/components/Spacer/Spacer';
 
 import useClickOutside from '@/shared/hooks/useClickOutside';
@@ -20,9 +21,12 @@ import { TaskType } from '@/shared/types/tasks';
 import BellIcon from '@/shared/assets/svgs/bell.svg?react';
 import FriendSettingIcon from '@/shared/assets/svgs/friend_setting.svg?react';
 import LargePlusIcon from '@/shared/assets/svgs/large_plus.svg?react';
+import PopoverAddCategoryIcon from '@/shared/assets/svgs/popover_add_category.svg?react';
 
 import { ROUTES_CONFIG } from '@/router/routesConfig';
 
+import TooltipFriendInfo from '@/pages/HomePage/TooltipFriendInfo/TooltipFriendInfo';
+import { useGetFriendList } from '@/shared/apisV2/friends/friends.queries';
 import {
 	useAddCategory,
 	useDeleteCategory,
@@ -30,6 +34,8 @@ import {
 	usePostAddTodayTodos,
 } from '@/shared/apisV2/home/home.mutations';
 import { useGetCategoryTask, useGetWorkTime } from '@/shared/apisV2/home/home.queries';
+import { useGetProfile } from '@/shared/apisV2/setting/setting.queries';
+import { useGetTimerFriends } from '@/shared/apisV2/timer/timer.queries';
 
 import BoxAddCategory from './BoxAddCategory/BoxAddCategory';
 import BoxCategory from './BoxCategory/BoxCategory';
@@ -49,14 +55,28 @@ const HomePage = () => {
 
 	const boxAddCategoryRef = useRef<HTMLDivElement>(null);
 	const friendsModalRef = useRef<ModalWrapperRef>(null);
+	const notificationPanelRef = useRef<HTMLDivElement>(null);
+	const bellIconRef = useRef<HTMLButtonElement>(null);
+
+	const [isNotificationVisible, setIsNotificationVisible] = useState(false);
+
+	const MAX_VISIBLE_FRIENDS = 5;
 
 	const [initialAdding, setInitialAdding] = useState(true);
 	const [selectedDate, setSelectedDate] = useState(todayDate);
 	const { startDate, endDate } = getThisWeekRange(selectedDate);
 
 	const { data: categoriesData } = useGetCategoryTask({ startDate, endDate });
+	const { data: userProfile } = useGetProfile();
+	const { data: friendListData } = useGetFriendList();
+	const { data: timerFriendsData } = useGetTimerFriends();
 
 	const categories = categoriesData?.data || [];
+	const friendList = friendListData?.data || [];
+	const timerFriends = timerFriendsData?.data || [];
+
+	// 현재 접속 중인 친구만 필터링
+	const onlineFriends = friendList.filter((friend) => friend.isOnline);
 
 	const dailyCategoryTask = getDailyCategoryTask(selectedDate, categories);
 
@@ -137,7 +157,24 @@ const HomePage = () => {
 		friendsModalRef.current?.open();
 	};
 
+	const toggleNotification = () => {
+		setIsNotificationVisible((prev) => !prev);
+	};
+
 	useClickOutside(boxAddCategoryRef, handleOutsideClickWhileAddingCategory);
+	useClickOutside(
+		notificationPanelRef,
+		(event) => {
+			if (!isNotificationVisible) return;
+
+			if (bellIconRef.current && event && bellIconRef.current.contains(event.target as Node)) {
+				return;
+			}
+
+			setIsNotificationVisible(false);
+		},
+		isNotificationVisible,
+	);
 
 	const deleteTodayTodos = (todo: Omit<TaskType, 'isComplete'>) => {
 		setTodayTodos((prev) => prev.filter((prevTodo) => prevTodo.id !== todo.id));
@@ -214,27 +251,46 @@ const HomePage = () => {
 			<div className="absolute left-[3.2rem] top-[4rem] flex items-center gap-[0.8rem] 2xl:top-[5.4rem] 2xl:gap-[1.8rem]">
 				<ul className="flex gap-[0.8rem] 2xl:gap-[1.8rem]">
 					<li>
-						<ButtonUserProfile isMyProfile />
+						<ButtonUserProfile isMyProfile imageUrl={userProfile?.data?.imageUrl} />
 					</li>
-					<li>
-						<ButtonUserProfile isConnecting />
-					</li>
-					<li>
-						<ButtonUserProfile isConnecting />
-					</li>
-					<li>
-						<ButtonUserProfile isConnecting />
-					</li>
+					{timerFriends.slice(0, MAX_VISIBLE_FRIENDS).map((friend) => {
+						const timerFriend = timerFriends.find((tf) => tf.id === friend.id);
+
+						return (
+							<li key={friend.id} className="group relative">
+								<div className="transition-transform duration-300 group-hover:-translate-y-[1rem]">
+									<ButtonUserProfile isConnecting isOnline={friend.isOnline} imageUrl={friend.imageUrl} />
+								</div>
+								<div className="absolute left-[-9.3rem] top-[8rem] z-[52] hidden transform group-hover:block">
+									{timerFriend && (
+										<TooltipFriendInfo
+											key={friend.id}
+											id={friend.id}
+											image={timerFriend.imageUrl}
+											time={timerFriend.elapsedTime}
+											name={timerFriend.name}
+											categoryName={timerFriend.categoryName || ''}
+											isPlaying={timerFriend.timerStatus === 'RUNNING'}
+											isOnline={timerFriend.isOnline}
+										/>
+									)}
+								</div>
+							</li>
+						);
+					})}
 				</ul>
-				<ButtonMoreFriends friendsCount={13} />
+
+				<ButtonMoreFriends friendsCount={friendList.length - onlineFriends.length} />
 			</div>
 
-			<div className={`absolute right-[4.2rem] top-[4rem] flex gap-[0.8rem] 2xl:top-[5.4rem]`}>
+			<div className={`absolute right-[3.2rem] top-[4rem] flex gap-[0.8rem] 2xl:top-[5.4rem]`}>
 				<button onClick={handleOpenFriendsModal}>
 					<FriendSettingIcon className="rounded-[1.6rem] hover:bg-gray-bg-04 active:bg-gray-bg-05" />
 				</button>
-				<button>
-					<BellIcon className="rounded-[1.6rem] hover:bg-gray-bg-04 active:bg-gray-bg-05" />
+				<button ref={bellIconRef} onClick={toggleNotification}>
+					<BellIcon
+						className={`rounded-[1.6rem] ${isNotificationVisible ? 'bg-gray-bg-04' : ''} hover:bg-gray-bg-04 active:bg-gray-bg-05`}
+					/>
 				</button>
 			</div>
 
@@ -283,7 +339,12 @@ const HomePage = () => {
 									)}
 
 									{dailyCategoryTask.length <= 2 && (
-										<div className="flex flex-col">
+										<div className="relative">
+											{!isAddingCategory && (
+												<button className="absolute left-[6rem] top-[1rem]">
+													<PopoverAddCategoryIcon />
+												</button>
+											)}
 											<button className="flex-shrink-0" onClick={handleAddCategory}>
 												<LargePlusIcon className="rounded-full bg-gray-bg-03 hover:bg-gray-bg-05" />
 											</button>
@@ -333,6 +394,8 @@ const HomePage = () => {
 			<ModalWrapper ref={friendsModalRef} backdrop={true}>
 				{({ isModalOpen }) => <ModalContentsFriends isModalOpen={isModalOpen} />}
 			</ModalWrapper>
+
+			{isNotificationVisible && <NotificationPanel ref={notificationPanelRef} />}
 		</AutoFixedGrid>
 	);
 };
