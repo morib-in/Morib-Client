@@ -1,12 +1,14 @@
 import { ColorPaletteType } from '../allowedService';
 import { FieldType } from '../fileds';
 
-export interface PostInterestAreaReq {
-	name: string;
-	colorCode: ColorPaletteType;
-	interestArea: FieldType;
-	allowedSites: { favicon: string; siteName: string; pageName: string; siteUrl: string }[];
-}
+export type PostInterestAreaReq =
+	| {
+			name: string;
+			colorCode: ColorPaletteType;
+			interestArea: FieldType;
+			allowedSites: { favicon: string; siteName: string; pageName: string; siteUrl: string }[];
+	  }
+	| unknown;
 
 export interface PostInterestAreaRes {
 	status: number;
