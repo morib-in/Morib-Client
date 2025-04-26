@@ -253,7 +253,7 @@ const HomePage = () => {
 					<li>
 						<ButtonUserProfile isMyProfile imageUrl={userProfile?.data?.imageUrl} />
 					</li>
-					{onlineFriends.slice(0, MAX_VISIBLE_FRIENDS).map((friend) => {
+					{timerFriends.slice(0, MAX_VISIBLE_FRIENDS).map((friend) => {
 						const timerFriend = timerFriends.find((tf) => tf.id === friend.id);
 
 						return (
@@ -262,7 +262,7 @@ const HomePage = () => {
 									<ButtonUserProfile isConnecting isOnline={friend.isOnline} imageUrl={friend.imageUrl} />
 								</div>
 								<div className="absolute left-[-9.3rem] top-[8rem] z-[52] hidden transform group-hover:block">
-									{timerFriend ? (
+									{timerFriend && (
 										<TooltipFriendInfo
 											key={friend.id}
 											id={friend.id}
@@ -273,8 +273,6 @@ const HomePage = () => {
 											isPlaying={timerFriend.timerStatus === 'RUNNING'}
 											isOnline={timerFriend.isOnline}
 										/>
-									) : (
-										''
 									)}
 								</div>
 							</li>
