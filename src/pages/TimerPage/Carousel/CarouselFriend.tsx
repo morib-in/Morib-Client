@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 
-import { formatSeconds } from '@/shared/utils/time';
+import { formatMinutes } from '@/shared/utils/time';
 
 import DefaultProfileIcon from '@/shared/assets/svgs/default_profile.svg';
 import ActivatedClockIcon from '@/shared/assets/svgs/icon_clock.svg?react';
@@ -37,7 +37,7 @@ const CarouselFriend = memo(function CarouselFriend({
 		shouldRun: isPlaying,
 	});
 
-	const formattedTime = formatSeconds(timer);
+	const formattedTime = formatMinutes(timer);
 	const ClockIcon = isPlaying ? ActivatedClockIcon : DeactivatedClockIcon;
 
 	return (
