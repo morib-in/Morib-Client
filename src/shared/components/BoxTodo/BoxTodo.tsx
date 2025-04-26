@@ -37,6 +37,7 @@ interface BoxTodoProps {
 	handleCalendarToggle?: (e: MouseEvent<HTMLButtonElement>) => void;
 	onPatchTask?: (taskId: number, name: string, startDate: string, endDate: string | null) => void;
 	activeCalendarTask?: boolean;
+	undeletable?: boolean;
 }
 
 const BoxTodo = ({
@@ -57,6 +58,7 @@ const BoxTodo = ({
 	handleCalendarToggle,
 	onPatchTask,
 	activeCalendarTask,
+	undeletable = false,
 }: BoxTodoProps) => {
 	const { mutate: deleteTask } = useDeleteTask();
 
@@ -153,7 +155,7 @@ const BoxTodo = ({
 							</h3>
 						)}
 					</div>
-					{!isComplete && !isSelected && !clickable && (
+					{!isComplete && !isSelected && !clickable && !undeletable && (
 						<Dropdown>
 							<Dropdown.Trigger>
 								<MeatballIcon className="opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
