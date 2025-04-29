@@ -152,7 +152,6 @@ const AllowedServicePage = () => {
 						(oldData: GetAllowedServiceListRes) => {
 							if (!oldData) return oldData;
 							return {
-								...oldData,
 								data: oldData.data.filter((group) => group.id !== groupId),
 							};
 						},
