@@ -280,7 +280,9 @@ const HomePage = () => {
 					})}
 				</ul>
 
-				<ButtonMoreFriends friendsCount={friendList.length - onlineFriends.length} />
+				{friendList.length - timerFriends.length > 0 && (
+					<ButtonMoreFriends friendsCount={friendList.length - timerFriends.length} />
+				)}
 			</div>
 
 			<div className={`absolute right-[3.2rem] top-[4rem] flex gap-[0.8rem] 2xl:top-[5.4rem]`}>
