@@ -253,35 +253,86 @@ const HomePage = () => {
 					<li>
 						<ButtonUserProfile isMyProfile imageUrl={userProfile?.data?.imageUrl} />
 					</li>
-					{timerFriends.slice(0, MAX_VISIBLE_FRIENDS).map((friend) => {
-						const timerFriend = timerFriends.find((tf) => tf.id === friend.id);
+					{onlineFriends.slice(0, MAX_VISIBLE_FRIENDS).map((friend) => {
+						const onlineFriend = timerFriends.find((of) => of.id === friend.id);
 
 						return (
 							<li key={friend.id} className="group relative">
 								<div className="transition-transform duration-300 group-hover:-translate-y-[1rem]">
-									<ButtonUserProfile isConnecting isOnline={friend.isOnline} imageUrl={friend.imageUrl} />
+									<ButtonUserProfile isConnecting isOnline={true} imageUrl={friend.imageUrl} />
 								</div>
 								<div className="absolute left-[-9.3rem] top-[8rem] z-[52] hidden transform group-hover:block">
-									{timerFriend && (
+									{onlineFriend ? (
 										<TooltipFriendInfo
 											key={friend.id}
 											id={friend.id}
-											image={timerFriend.imageUrl}
-											time={timerFriend.elapsedTime}
-											name={timerFriend.name}
-											categoryName={timerFriend.categoryName || ''}
-											isPlaying={timerFriend.timerStatus === 'RUNNING'}
-											isOnline={timerFriend.isOnline}
+											image={onlineFriend.imageUrl}
+											time={onlineFriend.elapsedTime}
+											name={onlineFriend.name}
+											categoryName={onlineFriend.categoryName || ''}
+											isPlaying={onlineFriend.timerStatus === 'RUNNING'}
+											isOnline={onlineFriend.isOnline}
+										/>
+									) : (
+										<TooltipFriendInfo
+											key={friend.id}
+											id={friend.id}
+											image={friend.imageUrl}
+											time={0}
+											name={friend.name}
+											categoryName=""
+											isPlaying={false}
+											isOnline={false}
 										/>
 									)}
 								</div>
 							</li>
 						);
 					})}
+					{onlineFriends.length < MAX_VISIBLE_FRIENDS &&
+						friendList
+							.filter((friend) => !friend.isOnline)
+							.slice(0, MAX_VISIBLE_FRIENDS - onlineFriends.length)
+							.map((friend) => {
+								const offlineFriend = timerFriends.find((of) => of.id === friend.id);
+
+								return (
+									<li key={friend.id} className="group relative">
+										<div className="transition-transform duration-300 group-hover:-translate-y-[1rem]">
+											<ButtonUserProfile isConnecting isOnline={false} imageUrl={friend.imageUrl} />
+										</div>
+										<div className="absolute left-[-9.3rem] top-[8rem] z-[52] hidden transform group-hover:block">
+											{offlineFriend ? (
+												<TooltipFriendInfo
+													key={friend.id}
+													id={friend.id}
+													image={offlineFriend.imageUrl}
+													time={offlineFriend.elapsedTime}
+													name={offlineFriend.name}
+													categoryName={offlineFriend.categoryName || ''}
+													isPlaying={offlineFriend.timerStatus === 'RUNNING'}
+													isOnline={offlineFriend.isOnline}
+												/>
+											) : (
+												<TooltipFriendInfo
+													key={friend.id}
+													id={friend.id}
+													image={friend.imageUrl}
+													time={0}
+													name={friend.name}
+													categoryName=""
+													isPlaying={false}
+													isOnline={false}
+												/>
+											)}
+										</div>
+									</li>
+								);
+							})}
 				</ul>
 
-				{friendList.length - timerFriends.length > 0 && (
-					<ButtonMoreFriends friendsCount={friendList.length - timerFriends.length} />
+				{friendList.length > MAX_VISIBLE_FRIENDS && (
+					<ButtonMoreFriends friendsCount={friendList.length - MAX_VISIBLE_FRIENDS} />
 				)}
 			</div>
 
