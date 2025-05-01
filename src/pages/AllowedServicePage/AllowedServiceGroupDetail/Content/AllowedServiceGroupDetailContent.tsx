@@ -62,7 +62,11 @@ export const AllowedServiceGroupDetailContentTableRow = ({
 	return (
 		<div className="flex h-[5rem] items-center border-b-[0.1rem] border-gray-bg-04 px-[1rem]">
 			<div className="flex w-[24rem] flex-shrink-0 items-center gap-x-[0.5rem] truncate pr-[1rem] text-left text-white body-med-16">
-				<FaviconImage src={allowedSiteData.favicon} className="mr-[0.6rem]" />
+				<FaviconImage
+					src={allowedSiteData.favicon}
+					className="mr-[0.6rem]"
+					alt={`${allowedSiteData.siteName} 아이콘`}
+				/>
 				<p className="truncate">{allowedSiteData.siteName}</p>
 			</div>
 			<div className="w-[31rem] flex-shrink-0 truncate pr-[1rem] text-left text-gray-04 body-reg-16">
