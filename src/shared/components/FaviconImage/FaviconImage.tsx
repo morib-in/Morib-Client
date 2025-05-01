@@ -1,28 +1,20 @@
-import { useState } from 'react';
+import { ImgHTMLAttributes } from 'react';
 
-import LogoIcon from '@/shared/assets/svgs/logo_icon.svg?react';
+import LogoPath from '@/shared/assets/svgs/logo_icon.svg';
 
-interface FaviconImageProps {
-	src: string;
-	className?: string;
-	size?: string;
-	alt?: string;
-}
-
-export const FaviconImage = ({ src, className = '', size = '2rem', alt = '사이트 파비콘' }: FaviconImageProps) => {
-	const [imgError, setImgError] = useState(false);
-
-	const handleImageError = () => {
-		setImgError(true);
-	};
-
-	const defaultStyle = `h-[${size}] w-[${size}] ${className} `;
-
-	if (!src || imgError) {
-		return <LogoIcon className={defaultStyle} role="img" aria-label="모립 로고 아이콘" />;
-	}
-
-	return <img src={src} alt={alt} className={defaultStyle} onError={handleImageError} />;
+export const FaviconImage = ({ src, className = '', alt, ...rest }: ImgHTMLAttributes<HTMLImageElement>) => {
+	return (
+		<img
+			{...rest}
+			src={src}
+			className={`h-[2rem] w-[2rem] ${className}`}
+			alt={alt}
+			onError={(e) => {
+				e.currentTarget.src = LogoPath;
+				e.currentTarget.alt = '모립 로고 아이콘';
+			}}
+		/>
+	);
 };
 
 export default FaviconImage;
