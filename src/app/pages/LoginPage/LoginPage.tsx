@@ -58,6 +58,7 @@ const LoginPage = () => {
 					onClick={handleClick}
 					className={`ml-[12rem] transition-opacity duration-300 ${isAnimationComplete ? 'opacity-100' : 'opacity-0'}`}
 				>
+					adasdas
 					<GoogleLoginIcon />
 				</button>
 			</div>

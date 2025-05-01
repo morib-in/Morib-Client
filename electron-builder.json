@@ -1,0 +1,22 @@
+{
+    "appId": "com.morib.client",
+    "productName": "Morib Client",
+    "icon": "public/logo_icon.png",
+    "files": [
+        "dist-react",
+        "dist-electron"
+    ],
+    "extraResources": [
+        "dist-electron/preload.cjs"
+    ],
+    "mac": {
+        "target":"dmg"
+    },
+    "linux": {
+        "target": "AppImage",
+        "category": "Utility"
+    },
+    "win": {
+        "target": ["portable","msi"]
+    }
+}

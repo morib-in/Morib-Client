@@ -3,11 +3,18 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "main": "dist-electron/main.js",
   "scripts": {
-    "dev": "vite",
+    "dev": "pnpm dev:react & pnpm dev:electron",
+    "dev:react": "vite",
+    "dev:electron": "pnpm transpile:electron && cross-env NODE_ENV=development electron .",
     "build": "tsc -b && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "transpile:electron": "tsc --project src/electron/tsconfig.json",
+    "dist:mac": "pnpm transpile:electron && pnpm build && electron-builder --mac --arm64",
+    "dist:win": "pnpm transpile:electron && pnpm build && electron-builder --win --x64",
+    "dist:linux": "pnpm transpile:electron && pnpm build && electron-builder --linux --x64"
   },
   "dependencies": {
     "@remix-run/router": "^1.17.0",
@@ -39,6 +46,9 @@
     "@typescript-eslint/parser": "^7.14.1",
     "@vitejs/plugin-react-swc": "^3.7.0",
     "autoprefixer": "^10.4.19",
+    "cross-env": "^7.0.3",
+    "electron": "^35.1.5",
+    "electron-builder": "^26.0.12",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-jsx-a11y": "^6.9.0",
@@ -59,5 +69,6 @@
     "workerDirectory": [
       "public"
     ]
-  }
+  },
+  "packageManager": "pnpm@9.15.4+sha512.b2dc20e2fc72b3e18848459b37359a32064663e5627a51e4c74b2c29dd8e8e0491483c3abb40789cfd578bf362fb6ba8261b05f0387d76792ed6e23ea3b1b6a0"
 }
