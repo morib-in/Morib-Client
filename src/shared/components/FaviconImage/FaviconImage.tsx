@@ -16,7 +16,7 @@ export const FaviconImage = ({ src, className = '', size = '2rem', alt = 'favico
 		setImgError(true);
 	};
 
-	const defaultStyle = `h-[${size}] w-[${size}] rounded-full ${className}`;
+	const defaultStyle = `h-[${size}] w-[${size}] ${className}`;
 
 	if (!src || imgError) {
 		return <LogoIcon className={defaultStyle} />;
