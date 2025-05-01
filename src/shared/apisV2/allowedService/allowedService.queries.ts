@@ -1,6 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { GetAllowedServiceGroupDetailReq, GetAllowedServiceListReq } from '@/shared/types/api/allowedService';
+import {
+	GetAllowedServiceGroupDetailReq,
+	GetAllowedServiceListReq,
+	GetRecommendedSitesReq,
+} from '@/shared/types/api/allowedService';
 
 import { getAllowedServiceGroupDetail, getAllowedServiceList, getRecommendedSites } from './allowedService.api';
 import { allowedServiceKeys } from './allowedService.keys';
@@ -20,9 +24,9 @@ export const useGetAllowedServiceGroupDetail = ({ allowedGroupId, connectType }:
 	});
 };
 
-export const useGetRecommendedSites = () => {
+export const useGetRecommendedSites = ({ allowedGroupId }: GetRecommendedSitesReq) => {
 	return useQuery({
-		queryKey: allowedServiceKeys.recommendedSites(),
-		queryFn: getRecommendedSites,
+		queryKey: allowedServiceKeys.recommendedSites({ allowedGroupId }),
+		queryFn: () => getRecommendedSites({ allowedGroupId }),
 	});
 };

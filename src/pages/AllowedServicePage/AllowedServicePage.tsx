@@ -74,13 +74,21 @@ const AllowedServicePage = () => {
 		allowedGroupId: activeGroupId!,
 		connectType: currentTap,
 	});
-	const { data: recommendedSites } = useGetRecommendedSites();
+	const { data: recommendedSites } = useGetRecommendedSites({
+		allowedGroupId: activeGroupId!,
+	});
 
 	const { mutate: patchChangeAllowedServiceGroupName } = usePatchChangeAllowedServiceGroupName();
 	const { mutate: patchChangeAllowedServiceGroupColor } = usePatchChangeAllowedServiceGroupColor();
 	const { mutate: postAddAllowedServiceGroup } = usePostAddAllowedServiceGroup();
 	const { mutate: deleteAllowedServiceGroup } = useDeleteAllowedServiceGroup();
-	const { mutate: postAddAllowedService, reset: resetAllowedService, isError, error } = usePostAddAllowedService();
+	const {
+		mutate: postAddAllowedService,
+		reset: resetAllowedService,
+		isPending,
+		isError,
+		error,
+	} = usePostAddAllowedService();
 	const { mutate: deleteAllowedService } = useDeleteAllowedService();
 
 	const resetUrlInput = () => {
@@ -171,7 +179,7 @@ const AllowedServicePage = () => {
 	};
 
 	const handleAddAllowedService = (urlInput: string, activeGroupId: number | null) => {
-		if (activeGroupId) {
+		if (activeGroupId && !isPending) {
 			postAddAllowedService(
 				{
 					siteUrl: urlInput,
@@ -308,7 +316,7 @@ const AllowedServicePage = () => {
 							>
 								<TextField.ClearButton onClick={resetUrlInput} />
 								<TextField.ConfirmButton
-									disabled={urlInput.length === 0}
+									disabled={urlInput.trim().length === 0 || isPending}
 									onClick={() => handleAddAllowedService(urlInput, activeGroupId)}
 								>
 									사이트 등록하기
