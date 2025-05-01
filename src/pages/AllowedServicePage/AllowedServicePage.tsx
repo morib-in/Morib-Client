@@ -315,7 +315,7 @@ const AllowedServicePage = () => {
 							>
 								<TextField.ClearButton onClick={resetUrlInput} />
 								<TextField.ConfirmButton
-									disabled={urlInput.length === 0 && isPending}
+									disabled={urlInput.length === 0 || isPending}
 									onClick={() => handleAddAllowedService(urlInput, activeGroupId)}
 								>
 									사이트 등록하기
