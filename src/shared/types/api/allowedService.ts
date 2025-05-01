@@ -76,3 +76,7 @@ export interface PostAddAllowedServiceReq {
 export interface DeleteAllowedServiceReq {
 	allowedSiteId: string;
 }
+
+export interface GetRecommendedSitesReq {
+	allowedGroupId: number;
+}

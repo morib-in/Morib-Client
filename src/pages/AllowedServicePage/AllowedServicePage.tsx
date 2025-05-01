@@ -75,7 +75,9 @@ const AllowedServicePage = () => {
 		allowedGroupId: activeGroupId!,
 		connectType: currentTap,
 	});
-	const { data: recommendedSites } = useGetRecommendedSites();
+	const { data: recommendedSites } = useGetRecommendedSites({
+		allowedGroupId: activeGroupId!,
+	});
 
 	const { mutate: patchChangeAllowedServiceGroupName } = usePatchChangeAllowedServiceGroupName();
 	const { mutate: patchChangeAllowedServiceGroupColor } = usePatchChangeAllowedServiceGroupColor();
