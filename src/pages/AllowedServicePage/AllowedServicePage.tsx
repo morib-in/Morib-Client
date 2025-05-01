@@ -43,6 +43,7 @@ const AllowedServicePage = () => {
 	const [isEditingTitle, setIsEditingTitle] = useState(false);
 	const [urlInput, setUrlInput] = useState('');
 	const [selectedColor, setSelectedColor] = useState<ColorPaletteType>('#868C93');
+	const isProcessingRef = useRef(false);
 
 	const queryClient = useQueryClient();
 
@@ -170,7 +171,8 @@ const AllowedServicePage = () => {
 	};
 
 	const handleAddAllowedService = (urlInput: string, activeGroupId: number | null) => {
-		if (activeGroupId) {
+		if (activeGroupId && !isProcessingRef.current && urlInput.trim() !== '') {
+			isProcessingRef.current = true;
 			postAddAllowedService(
 				{
 					siteUrl: urlInput,
@@ -179,6 +181,7 @@ const AllowedServicePage = () => {
 				{
 					onSuccess: () => {
 						setUrlInput('');
+						isProcessingRef.current = false;
 					},
 				},
 			);
