@@ -160,6 +160,7 @@ const AllowedServicePage = () => {
 						(oldData: GetAllowedServiceListRes) => {
 							if (!oldData) return oldData;
 							return {
+								...oldData,
 								data: oldData.data.filter((group) => group.id !== groupId),
 							};
 						},
@@ -178,7 +179,7 @@ const AllowedServicePage = () => {
 	};
 
 	const handleAddAllowedService = (urlInput: string, activeGroupId: number | null) => {
-		if (activeGroupId && !isPending && urlInput.trim() !== '') {
+		if (activeGroupId && !isPending) {
 			postAddAllowedService(
 				{
 					siteUrl: urlInput,
@@ -315,7 +316,7 @@ const AllowedServicePage = () => {
 							>
 								<TextField.ClearButton onClick={resetUrlInput} />
 								<TextField.ConfirmButton
-									disabled={urlInput.length === 0 || isPending}
+									disabled={urlInput.trim().length === 0 || isPending}
 									onClick={() => handleAddAllowedService(urlInput, activeGroupId)}
 								>
 									사이트 등록하기
