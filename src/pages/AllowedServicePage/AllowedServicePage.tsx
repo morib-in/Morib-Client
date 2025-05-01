@@ -43,7 +43,6 @@ const AllowedServicePage = () => {
 	const [isEditingTitle, setIsEditingTitle] = useState(false);
 	const [urlInput, setUrlInput] = useState('');
 	const [selectedColor, setSelectedColor] = useState<ColorPaletteType>('#868C93');
-	const isProcessingRef = useRef(false);
 
 	const queryClient = useQueryClient();
 
@@ -83,7 +82,13 @@ const AllowedServicePage = () => {
 	const { mutate: patchChangeAllowedServiceGroupColor } = usePatchChangeAllowedServiceGroupColor();
 	const { mutate: postAddAllowedServiceGroup } = usePostAddAllowedServiceGroup();
 	const { mutate: deleteAllowedServiceGroup } = useDeleteAllowedServiceGroup();
-	const { mutate: postAddAllowedService, reset: resetAllowedService, isError, error } = usePostAddAllowedService();
+	const {
+		mutate: postAddAllowedService,
+		reset: resetAllowedService,
+		isPending,
+		isError,
+		error,
+	} = usePostAddAllowedService();
 	const { mutate: deleteAllowedService } = useDeleteAllowedService();
 
 	const resetUrlInput = () => {
@@ -173,8 +178,7 @@ const AllowedServicePage = () => {
 	};
 
 	const handleAddAllowedService = (urlInput: string, activeGroupId: number | null) => {
-		if (activeGroupId && !isProcessingRef.current && urlInput.trim() !== '') {
-			isProcessingRef.current = true;
+		if (activeGroupId && !isPending && urlInput.trim() !== '') {
 			postAddAllowedService(
 				{
 					siteUrl: urlInput,
@@ -183,10 +187,6 @@ const AllowedServicePage = () => {
 				{
 					onSuccess: () => {
 						setUrlInput('');
-						isProcessingRef.current = false;
-					},
-					onError: () => {
-						isProcessingRef.current = false;
 					},
 				},
 			);
@@ -315,7 +315,7 @@ const AllowedServicePage = () => {
 							>
 								<TextField.ClearButton onClick={resetUrlInput} />
 								<TextField.ConfirmButton
-									disabled={urlInput.length === 0 && isProcessingRef.current}
+									disabled={urlInput.length === 0 && isPending}
 									onClick={() => handleAddAllowedService(urlInput, activeGroupId)}
 								>
 									사이트 등록하기
