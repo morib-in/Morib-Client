@@ -185,6 +185,9 @@ const AllowedServicePage = () => {
 						setUrlInput('');
 						isProcessingRef.current = false;
 					},
+					onError: () => {
+						isProcessingRef.current = false;
+					},
 				},
 			);
 		}
