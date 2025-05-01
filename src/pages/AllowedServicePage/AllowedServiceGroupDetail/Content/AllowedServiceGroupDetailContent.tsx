@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 
+import FaviconImage from '@/shared/components/FaviconImage/FaviconImage';
 import Spacer from '@/shared/components/Spacer/Spacer';
 
 import { AllowedServiceGroupDetailSiteType } from '@/shared/types/allowedService';
@@ -61,7 +62,7 @@ export const AllowedServiceGroupDetailContentTableRow = ({
 	return (
 		<div className="flex h-[5rem] items-center border-b-[0.1rem] border-gray-bg-04 px-[1rem]">
 			<div className="flex w-[24rem] flex-shrink-0 items-center gap-x-[0.5rem] truncate pr-[1rem] text-left text-white body-med-16">
-				<img src={allowedSiteData.favicon} alt="favicon" className="mr-[0.6rem] h-[2rem] w-[2rem]" />
+				<FaviconImage src={allowedSiteData.favicon} className="mr-[0.6rem]" />
 				<p className="truncate">{allowedSiteData.siteName}</p>
 			</div>
 			<div className="w-[31rem] flex-shrink-0 truncate pr-[1rem] text-left text-gray-04 body-reg-16">
