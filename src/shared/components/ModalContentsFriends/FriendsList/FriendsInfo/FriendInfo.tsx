@@ -25,7 +25,7 @@ const FriendInfo = ({ friendsData }: FriendsInfoProp) => {
 						<div className="flex w-[40rem] flex-shrink-0">
 							<FriendUserProfile isConnecting={friend.isOnline} imgSrc={friend.imageUrl} />
 							<div className="ml-[2rem] flex flex-col justify-center">
-								<p className="text-white subhead-bold-20">{friend.name}</p>
+								<p className="w-[30rem] truncate text-white subhead-bold-20">{friend.name}</p>
 								<p className="text-gray-04 body-reg-16">{friend.email}</p>
 							</div>
 						</div>

@@ -65,8 +65,8 @@ const CarouselFriend = memo(function CarouselFriend({
 			</div>
 
 			{/* 이름 및 카테고리 표시 */}
-			<span className="text-white detail-semibold-14">{name}</span>
-			<span className="text-gray-04 detail-reg-12">{categoryName}</span>
+			<span className="w-full truncate text-center text-white detail-semibold-14">{name}</span>
+			<span className="w-full truncate text-center text-gray-04 detail-reg-12">{categoryName}</span>
 		</div>
 	);
 });
