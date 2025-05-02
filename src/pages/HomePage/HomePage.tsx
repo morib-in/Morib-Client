@@ -187,6 +187,7 @@ const HomePage = () => {
 
 	const enableAddingTodayTodo = () => {
 		setAddingTodayTodoStatus(true);
+		setSelectedDate(todayDate);
 	};
 
 	const handleSelectedDateChange = (date: Dayjs) => {
