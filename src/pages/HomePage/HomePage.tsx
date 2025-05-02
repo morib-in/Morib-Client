@@ -43,6 +43,7 @@ import BoxTodayTodo from './BoxTodayTodo/BoxTodayTodo';
 import ButtonMoreFriends from './ButtonMoreFriends/ButtonMoreFriends';
 import ButtonUserProfile from './ButtonUserProfile/ButtonUserProfile';
 import DatePicker from './DatePicker/DatePicker';
+import TimerRestriction from './ModalContentsAlert/TimerRestriction/TimerRestriction';
 import StatusDefaultHome from './StatusDefaultHome/StatusDefaultHome';
 
 dayjs.extend(utc);
@@ -57,6 +58,7 @@ const HomePage = () => {
 	const friendsModalRef = useRef<ModalWrapperRef>(null);
 	const notificationPanelRef = useRef<HTMLDivElement>(null);
 	const bellIconRef = useRef<HTMLButtonElement>(null);
+	const timerRestrictionModalRef = useRef<ModalWrapperRef>(null);
 
 	const [isNotificationVisible, setIsNotificationVisible] = useState(false);
 
@@ -191,6 +193,10 @@ const HomePage = () => {
 	};
 
 	const handleSelectedDateChange = (date: Dayjs) => {
+		if (addingTodayTodoStatus && !todayDate.isSame(date, 'day')) {
+			timerRestrictionModalRef.current?.open();
+			return;
+		}
 		setSelectedDate(date);
 	};
 
@@ -447,6 +453,16 @@ const HomePage = () => {
 
 			<ModalWrapper ref={friendsModalRef} backdrop={true}>
 				{({ isModalOpen }) => <ModalContentsFriends isModalOpen={isModalOpen} />}
+			</ModalWrapper>
+
+			<ModalWrapper ref={timerRestrictionModalRef} backdrop={true}>
+				{() => (
+					<TimerRestriction
+						onConfirm={() => {
+							timerRestrictionModalRef.current?.close();
+						}}
+					/>
+				)}
 			</ModalWrapper>
 
 			{isNotificationVisible && <NotificationPanel ref={notificationPanelRef} />}
