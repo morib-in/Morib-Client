@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import LoadingOverlay from '@/shared/components/LoadingOverlay/LoadingOverlay';
+
 import { setAccessToken, setRefreshToken } from '@/shared/utils/auth';
 
 import { ROUTES_CONFIG } from '@/router/routesConfig';
@@ -20,7 +22,7 @@ const RedirectPage = () => {
 
 		if (!accessToken || !refreshToken || !온보딩완료여부) {
 			navigate(`${ROUTES_CONFIG.login.path}`, { replace: true });
-		}else{
+		} else {
 			setAccessToken(accessToken);
 			setRefreshToken(refreshToken);
 		}
@@ -34,7 +36,7 @@ const RedirectPage = () => {
 		}
 	}, [navigate, search]);
 
-	return null;
+	return <LoadingOverlay isLoading dim={false} />;
 };
 
 export default RedirectPage;
