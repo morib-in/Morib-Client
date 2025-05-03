@@ -40,7 +40,11 @@ const router: Router = createBrowserRouter([
 			},
 			{
 				path: ROUTES_CONFIG.redirect.path,
-				element: <RedirectPage />,
+				element: (
+					<Suspense fallback={<LoadingOverlay isLoading dim={false} />}>
+						<RedirectPage />
+					</Suspense>
+				),
 			},
 		],
 	},
