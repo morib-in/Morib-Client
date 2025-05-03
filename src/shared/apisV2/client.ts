@@ -40,6 +40,7 @@ const addAuthInterceptor = (axiosClient: AxiosInstance) => {
 				prevRequest.sent = true;
 				// 401 에러가 떴을 때 토큰 재발급
 				try {
+					// NOTE: 추후에 로컬스토리지에 저장된 refreshToken을 사용하게끔 고치는 것이 필요할수있음
 					const { data } = await postReissueToken();
 					setAccessToken(data.accessToken);
 					return axiosClient(prevRequest);
