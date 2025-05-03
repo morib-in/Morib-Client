@@ -18,19 +18,16 @@ const RedirectPage = () => {
 		const refreshToken = params.get('refreshToken');
 		const 온보딩완료여부 = params.get('isOnboardingCompleted');
 
-		if (accessToken && refreshToken) {
-			setAccessToken(accessToken);
-			setRefreshToken(refreshToken);
-
-			if (온보딩완료여부 === 'false') {
-				localStorage.setItem('isOnboardingCompleted', 온보딩완료여부);
-				navigate(`${ROUTES_CONFIG.onboarding.path}?step=start`, { replace: true });
-			} else if (온보딩완료여부 === 'true') {
-				localStorage.setItem('isOnboardingCompleted', 온보딩완료여부);
-				navigate(`${ROUTES_CONFIG.home.path}`, { replace: true });
-			}
-		} else {
+		if (!accessToken || !refreshToken || !온보딩완료여부) {
 			navigate(`${ROUTES_CONFIG.login.path}`, { replace: true });
+		}
+
+		if (온보딩완료여부 === 'false') {
+			localStorage.setItem('isOnboardingCompleted', 온보딩완료여부);
+			navigate(`${ROUTES_CONFIG.onboarding.path}?step=start`, { replace: true });
+		} else if (온보딩완료여부 === 'true') {
+			localStorage.setItem('isOnboardingCompleted', 온보딩완료여부);
+			navigate(`${ROUTES_CONFIG.home.path}`, { replace: true });
 		}
 	}, [navigate, search]);
 
