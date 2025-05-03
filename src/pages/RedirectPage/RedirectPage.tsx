@@ -20,6 +20,9 @@ const RedirectPage = () => {
 
 		if (!accessToken || !refreshToken || !온보딩완료여부) {
 			navigate(`${ROUTES_CONFIG.login.path}`, { replace: true });
+		}else{
+			setAccessToken(accessToken);
+			setRefreshToken(refreshToken);
 		}
 
 		if (온보딩완료여부 === 'false') {
