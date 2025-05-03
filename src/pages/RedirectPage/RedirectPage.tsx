@@ -31,9 +31,9 @@ const RedirectPage = () => {
 		} else {
 			navigate(`${ROUTES_CONFIG.login.path}`, { replace: true });
 		}
-	}, [navigate, search]);
+	}, []);
 
-	return <></>;
+	return null;
 };
 
 export default RedirectPage;
