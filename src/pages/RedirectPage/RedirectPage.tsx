@@ -10,7 +10,10 @@ const RedirectPage = () => {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		const params = new URLSearchParams(search);
+		// @ts-expect-error
+		const params = window.electron
+			? new URLSearchParams(window.location.hash.substring(1))
+			: new URLSearchParams(search);
 		const accessToken = params.get('accessToken');
 		const refreshToken = params.get('refreshToken');
 		const 온보딩완료여부 = params.get('isOnboardingComplete');
