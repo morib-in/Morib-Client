@@ -1,10 +1,19 @@
+import { useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import BoxTodo from '@/shared/components/BoxTodo/BoxTodo';
 import ButtonRadius5 from '@/shared/components/ButtonRadius5/ButtonRadius5';
+import ModalWrapper, { ModalWrapperRef } from '@/shared/components/ModalWrapper/ModalWrapper';
 import Spacer from '@/shared/components/Spacer/Spacer';
 
 import type { TaskType } from '@/shared/types/tasks';
 
 import { LARGE_BTN_TEXT, SMALL_BTN_TEXT } from '@/shared/constants/btnText';
+
+import { ROUTES_CONFIG } from '@/router/routesConfig';
+
+import RegisterAllowedService from '@/pages/HomePage/ModalContentsAlert/RegisterAllowedService/RegisterAllowedService';
+import { useGetPopoverAllowedServiceList } from '@/shared/apisV2/timer/timer.queries';
 
 interface StatusAddBoxTodayTodoProps {
 	selectedTodayTodos: Omit<TaskType, 'isComplete'>[];
@@ -27,6 +36,12 @@ const StatusAddBoxTodayTodo = ({
 	addingComplete,
 	onCreateTodayTodos,
 }: StatusAddBoxTodayTodoProps) => {
+	const { data: allowedServiceList } = useGetPopoverAllowedServiceList();
+	const registerServiceModalRef = useRef<ModalWrapperRef>(null);
+	const navigate = useNavigate();
+
+	const allowedServicePath = ROUTES_CONFIG.allowedService.path;
+
 	const hasTodayTodos = !(selectedTodayTodos.length === 0);
 	const clickable = addingComplete ? '' : 'pointer-events-none cursor-default ';
 	const handleMouseEnter = () => {
@@ -40,7 +55,11 @@ const StatusAddBoxTodayTodo = ({
 	};
 
 	const handleStartTimer = () => {
-		onCreateTodayTodos();
+		if (allowedServiceList && allowedServiceList.data.length === 0) {
+			registerServiceModalRef.current?.open();
+		} else {
+			onCreateTodayTodos();
+		}
 	};
 
 	return (
@@ -102,6 +121,21 @@ const StatusAddBoxTodayTodo = ({
 					</ButtonRadius5.Sm>
 				</div>
 			</span>
+
+			<ModalWrapper ref={registerServiceModalRef} backdrop>
+				{() => (
+					<RegisterAllowedService
+						onCloseModal={() => {
+							registerServiceModalRef.current?.close();
+							onCreateTodayTodos();
+						}}
+						onConfirm={() => {
+							registerServiceModalRef.current?.close();
+							navigate(allowedServicePath);
+						}}
+					/>
+				)}
+			</ModalWrapper>
 		</Spacer.Height>
 	);
 };

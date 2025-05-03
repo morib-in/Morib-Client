@@ -25,8 +25,8 @@ const TimerHeader = ({ selectedTaskName, selectedTaskCategoryName, hasSelectedTa
 
 	return (
 		<header className="flex flex-col items-center gap-[0.4rem]">
-			<h1 className="text-white title-semibold-48">{selectedTaskName}</h1>
-			<h2 className="text-gray-04 head-bold-30">{selectedTaskCategoryName}</h2>
+			<h1 className="w-[120rem] truncate text-center text-white title-semibold-48">{selectedTaskName}</h1>
+			<h2 className="w-[80rem] truncate text-center text-gray-04 head-bold-30">{selectedTaskCategoryName}</h2>
 		</header>
 	);
 };

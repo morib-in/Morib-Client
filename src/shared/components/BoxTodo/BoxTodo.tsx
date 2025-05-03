@@ -128,7 +128,7 @@ const BoxTodo = ({
 
 	return (
 		<div
-			className={`group relative mt-[1rem] h-[9.5rem] w-[28rem] transform rounded-[8px] bg-gray-bg-01 p-[1.4rem] transition-transform duration-300 hover:-translate-y-2 ${selectedStyle} ${clickStyle}`}
+			className={`group relative mt-[1rem] h-[9.5rem] w-[28rem] transform rounded-[8px] bg-gray-bg-01 px-[1.4rem] py-[1.2rem] transition-transform duration-300 hover:-translate-y-2 ${selectedStyle} ${clickStyle}`}
 			onClick={handleClickTodo}
 		>
 			<div className="flex flex-col justify-center">
@@ -173,7 +173,7 @@ const BoxTodo = ({
 						</Dropdown>
 					)}
 				</div>
-				<div className="ml-[0.8rem] mt-[0.7rem] flex flex-col gap-[0.2rem]">
+				<div className="ml-[0.8rem] mt-[0.6rem] flex flex-col gap-[0.2rem]">
 					<button
 						className={`flex max-w-max gap-[0.6rem] rounded-[0.3rem] pr-[0.2rem] ${activeCalendarTask ? 'bg-mint-01' : 'hover:bg-gray-bg-03'} ${clickable || isComplete ? 'pointer-events-none' : ''}`}
 						onClick={handleCalendarToggle}

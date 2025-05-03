@@ -41,10 +41,14 @@ const TooltipFriendInfo = ({ image, name, time, categoryName, isPlaying, isOnlin
 						)}
 					</div>
 					<div className="flex w-[14.8rem] flex-col justify-center gap-[0.5rem]">
-						<p className="text-white body-semibold-16">{name}</p>
+						<p className="truncate text-white body-semibold-16">{name}</p>
 						<div className="flex items-center justify-start gap-[0.8rem]">
-							<p className="text-gray-05 detail-reg-14">{categoryName || '카테고리 없음'}</p>
-							<LineIcon />
+							{categoryName && (
+								<>
+									<p className="max-w-[7.7rem] truncate text-gray-05 detail-reg-14">{categoryName}</p>
+									<LineIcon />
+								</>
+							)}
 							<p className={`detail-reg-14 ${isPlaying ? 'text-mint-01' : 'text-gray-05'}`}>{formattedTime}</p>
 						</div>
 					</div>
