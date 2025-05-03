@@ -4,7 +4,8 @@ import { Component, ErrorInfo, ReactNode } from 'react';
 
 import { AxiosError, isAxiosError } from 'axios';
 
-import { getErrorCategory, getErrorMessage, shouldShowFallbackUI } from '@/shared/utils/error';
+import { getErrorCategory, shouldShowFallbackUI } from '@/shared/utils/error';
+import { getErrorMessage } from '@/shared/utils/error';
 
 import FallbackApiError from '../FallbackApiError/FallbackApiError';
 

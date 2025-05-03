@@ -1,7 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
 
-import { AxiosError } from 'axios';
-
 import { ApiErrorResponseType } from '@/shared/types/api/error';
 import { PostInterestAreaReq, PostInterestAreaRes } from '@/shared/types/api/onboarding';
 

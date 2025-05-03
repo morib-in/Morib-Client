@@ -58,6 +58,7 @@ const AllowedServicePage = () => {
 
 	const handleChangeUrlInput = (e: ChangeEvent<HTMLInputElement>) => {
 		setUrlInput(e.target.value);
+		resetAllowedService();
 	};
 
 	const handleEnableAddingAllowedServiceGroup = () => {
@@ -73,13 +74,21 @@ const AllowedServicePage = () => {
 		allowedGroupId: activeGroupId!,
 		connectType: currentTap,
 	});
-	const { data: recommendedSites } = useGetRecommendedSites();
+	const { data: recommendedSites } = useGetRecommendedSites({
+		allowedGroupId: activeGroupId!,
+	});
 
 	const { mutate: patchChangeAllowedServiceGroupName } = usePatchChangeAllowedServiceGroupName();
 	const { mutate: patchChangeAllowedServiceGroupColor } = usePatchChangeAllowedServiceGroupColor();
 	const { mutate: postAddAllowedServiceGroup } = usePostAddAllowedServiceGroup();
 	const { mutate: deleteAllowedServiceGroup } = useDeleteAllowedServiceGroup();
-	const { mutate: postAddAllowedService, reset: resetAllowedService, isError, error } = usePostAddAllowedService();
+	const {
+		mutate: postAddAllowedService,
+		reset: resetAllowedService,
+		isPending,
+		isError,
+		error,
+	} = usePostAddAllowedService();
 	const { mutate: deleteAllowedService } = useDeleteAllowedService();
 
 	const resetUrlInput = () => {
@@ -170,7 +179,7 @@ const AllowedServicePage = () => {
 	};
 
 	const handleAddAllowedService = (urlInput: string, activeGroupId: number | null) => {
-		if (activeGroupId) {
+		if (activeGroupId && !isPending) {
 			postAddAllowedService(
 				{
 					siteUrl: urlInput,
@@ -185,10 +194,24 @@ const AllowedServicePage = () => {
 		}
 	};
 
-	const handleDeleteAllowedService = (id: number) => {
-		deleteAllowedService({
-			allowedSiteId: String(id),
-		});
+	const handleDeleteAllowedService = (id: number, deleteUrl: string) => {
+		deleteAllowedService(
+			{
+				allowedSiteId: String(id),
+			},
+			{
+				onSuccess: () => {
+					if (
+						isError &&
+						error?.response?.data.message &&
+						error.response.data.message.includes('존재하는') &&
+						deleteUrl === urlInput
+					) {
+						resetAllowedService();
+					}
+				},
+			},
+		);
 	};
 
 	const handleKeyDownUrlInput = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -293,7 +316,7 @@ const AllowedServicePage = () => {
 							>
 								<TextField.ClearButton onClick={resetUrlInput} />
 								<TextField.ConfirmButton
-									disabled={urlInput.length === 0}
+									disabled={urlInput.trim().length === 0 || isPending}
 									onClick={() => handleAddAllowedService(urlInput, activeGroupId)}
 								>
 									사이트 등록하기
@@ -305,7 +328,9 @@ const AllowedServicePage = () => {
 									allowedServiceGroupDetail.data.allowedSites.map((allowedSiteData, index) => (
 										<AllowedServiceGroupDetail.TableRow
 											key={`${index}-${allowedSiteData.id}`}
-											onDeleteAllowedSite={() => handleDeleteAllowedService(allowedSiteData.id)}
+											onDeleteAllowedSite={() =>
+												handleDeleteAllowedService(allowedSiteData.id, allowedSiteData.siteUrl)
+											}
 											{...allowedSiteData}
 										/>
 									))}

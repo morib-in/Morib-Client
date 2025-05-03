@@ -27,7 +27,7 @@ const HeaderCalendar: React.FC<CustomHeaderProps> = ({
 	return (
 		<div className="mt-[2.1rem] flex flex-col">
 			<div className="mb-[1.3rem] flex">
-				<p className="ml-[1.5rem] mr-[0.8rem] text-white body-med-16">
+				<p className="body-med-16 ml-[1.5rem] mr-[0.8rem] text-white">
 					{year}년 {month}월
 				</p>
 				<button onClick={decreaseMonth} disabled={prevMonthButtonDisabled} aria-label="Previous Month">
@@ -38,7 +38,7 @@ const HeaderCalendar: React.FC<CustomHeaderProps> = ({
 				</button>
 			</div>
 			<div className="p-[1rem]">
-				<div className="mx-[1rem] flex justify-between text-gray-03 detail-reg-12">
+				<div className="detail-reg-12 mx-[1rem] flex justify-between text-gray-03">
 					{WEEK_DAYS.map((day) => (
 						<span key={day}>{day}</span>
 					))}

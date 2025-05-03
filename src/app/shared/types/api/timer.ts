@@ -55,16 +55,39 @@ export interface PostApplyAllowedServiceGroupReq {
 	allowedGroupIdList: number[];
 }
 
-export interface PostUpdateTimerInfoReq {
+export interface GetUpdateTimerInfoReq {
 	taskId: number;
 	elapsedTime: number;
 	targetDate: string;
 	timerStatus: 'RUNNING' | 'PAUSED';
 }
 
-export interface GetUpdateTimerInfoReq {
-	taskId: number;
-	elapsedTime: number;
+export type TimerReq = { taskId: number; targetDate: string };
+
+export type PostTimerRunReq = TimerReq;
+
+export type PostTimerPauseReq = TimerReq;
+
+export type PostSelectTimerTaskReq = TimerReq;
+
+export interface GetSelectedTimerTaskReq {
 	targetDate: string;
-	timerStatus: 'RUNNING' | 'PAUSED';
+}
+
+export interface GetSelectedTimerTaskRes {
+	status: number;
+	message: string;
+	data: {
+		runningCategoryName: string;
+		taskName: string;
+		selectedTaskId: number;
+		elapsedTime: number;
+		totalElapsedTimeOfToday: number;
+		timerStatus: 'PAUSED' | 'RUNNING';
+		targetDate: string;
+	};
+}
+
+export interface GetTimerHeartBeatReq {
+	targetDate: string;
 }

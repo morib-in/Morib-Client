@@ -7,6 +7,7 @@ import { formatSeconds } from '@/shared/utils/time';
 import type { TaskType } from '@/shared/types/tasks';
 
 import ButtonCalendarIcon from '@/shared/assets/svgs/btn_cal.svg?react';
+import ButtonCalendartBlackIcon from '@/shared/assets/svgs/btn_cal_black.svg?react';
 import CheckBoxBlankIcon from '@/shared/assets/svgs/check_box_blank.svg?react';
 import CheckBoxFillIcon from '@/shared/assets/svgs/check_box_fill.svg?react';
 import MeatballIcon from '@/shared/assets/svgs/common/ic_meatball_default.svg?react';
@@ -35,6 +36,8 @@ interface BoxTodoProps {
 	timerIncreasedTime?: number;
 	handleCalendarToggle?: (e: MouseEvent<HTMLButtonElement>) => void;
 	onPatchTask?: (taskId: number, name: string, startDate: string, endDate: string | null) => void;
+	activeCalendarTask?: boolean;
+	undeletable?: boolean;
 }
 
 const BoxTodo = ({
@@ -54,17 +57,21 @@ const BoxTodo = ({
 	timerIncreasedTime,
 	handleCalendarToggle,
 	onPatchTask,
+	activeCalendarTask,
+	undeletable = false,
 }: BoxTodoProps) => {
 	const { mutate: deleteTask } = useDeleteTask();
 
-	const formattedTime = formatSeconds(timerIncreasedTime ? elapsedTime + timerIncreasedTime : elapsedTime);
+	// timerIncreasedTime이 제공되면 그 값을 사용하고, 아니면 기본 elapsedTime 사용
+	const displayTime = timerIncreasedTime !== undefined ? elapsedTime + timerIncreasedTime : elapsedTime;
+	const formattedTime = formatSeconds(displayTime);
 	const formattedstartDate = startDate.replace(/-/g, '.');
 	const formattedendDate = endDate ? endDate.replace(/-/g, '.') : '';
 
 	const nameStyle = isComplete ? 'line-through' : '';
 	const CheckBoxIcon = isComplete ? <CheckBoxFillIcon /> : <CheckBoxBlankIcon />;
-	const TimeIcon = elapsedTime ? <TimeFillIcon /> : <TimeLineIcon />;
-	const timeTextClass = elapsedTime ? 'text-mint-01' : 'text-gray-04';
+	const TimeIcon = displayTime ? <TimeFillIcon /> : <TimeLineIcon />;
+	const timeTextClass = displayTime ? 'text-mint-01' : 'text-gray-04';
 
 	const selectedStyle =
 		isSelected && !addingComplete
@@ -121,7 +128,7 @@ const BoxTodo = ({
 
 	return (
 		<div
-			className={`group relative mt-[1rem] h-[9.5rem] w-[28rem] transform rounded-[8px] bg-gray-bg-01 p-[1.4rem] transition-transform duration-300 hover:-translate-y-2 ${selectedStyle} ${clickStyle}`}
+			className={`group relative mt-[1rem] h-[9.5rem] w-[28rem] transform rounded-[8px] bg-gray-bg-01 px-[1.4rem] py-[1.2rem] transition-transform duration-300 hover:-translate-y-2 ${selectedStyle} ${clickStyle}`}
 			onClick={handleClickTodo}
 		>
 			<div className="flex flex-col justify-center">
@@ -141,14 +148,14 @@ const BoxTodo = ({
 							/>
 						) : (
 							<h3
-								className={`mt-[0.42rem] text-white body-semibold-16 ${nameStyle} truncate ${!clickable ? '' : 'pointer-events-none'}`}
+								className={`mt-[0.42rem] text-white body-semibold-16 ${nameStyle} truncate ${clickable || isComplete ? 'pointer-events-none' : ''}`}
 								onClick={handleNameClick}
 							>
 								{name}
 							</h3>
 						)}
 					</div>
-					{!addingComplete && !isSelected && !clickable && (
+					{!isComplete && !isSelected && !clickable && !undeletable && (
 						<Dropdown>
 							<Dropdown.Trigger>
 								<MeatballIcon className="opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
@@ -166,15 +173,17 @@ const BoxTodo = ({
 						</Dropdown>
 					)}
 				</div>
-				<div className="ml-[0.8rem] mt-[0.7rem] flex flex-col gap-[0.2rem]">
+				<div className="ml-[0.8rem] mt-[0.6rem] flex flex-col gap-[0.2rem]">
 					<button
-						className={`flex max-w-max items-center gap-[0.6rem] rounded-[0.3rem] pr-[0.2rem] hover:bg-gray-bg-03 ${!clickable ? '' : 'pointer-events-none'}`}
+						className={`flex max-w-max gap-[0.6rem] rounded-[0.3rem] pr-[0.2rem] ${activeCalendarTask ? 'bg-mint-01' : 'hover:bg-gray-bg-03'} ${clickable || isComplete ? 'pointer-events-none' : ''}`}
 						onClick={handleCalendarToggle}
 					>
-						<ButtonCalendarIcon />
-						<p className="mt-[0.3rem] text-gray-04 detail-reg-12">{duration}</p>
+						{activeCalendarTask ? <ButtonCalendartBlackIcon /> : <ButtonCalendarIcon />}
+						<p className={`mt-[0.3rem] detail-reg-12 ${activeCalendarTask ? 'text-gray-01' : 'text-gray-04'}`}>
+							{duration}
+						</p>
 					</button>
-					<div className="flex items-center gap-[0.6rem]">
+					<div className="flex gap-[0.6rem]">
 						{TimeIcon}
 						<p className={`mt-[0.3rem] detail-reg-12 ${timeTextClass}`}>{formattedTime}</p>
 					</div>

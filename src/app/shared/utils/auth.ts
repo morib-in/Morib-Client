@@ -13,3 +13,12 @@ export const reloginWithoutLogout = () => {
 	localStorage.removeItem('accessToken');
 	location.href = ROUTES_CONFIG.login.path;
 };
+
+export const getRefreshToken = () => {
+	const refreshToken = localStorage.getItem('refreshToken');
+	return refreshToken;
+};
+
+export const setRefreshToken = (refreshToken: string) => {
+	localStorage.setItem('refreshToken', refreshToken);
+};

@@ -44,7 +44,7 @@ const Sidebar = () => {
 					/>
 				</button>
 
-				<section className="flex w-full flex-col items-center justify-center">
+				<section className="flex w-full flex-col items-center justify-center gap-[0.4rem]">
 					<button onClick={navigateAllowedService} className="relative flex w-full gap-[0.8rem]">
 						<hr
 							className={`h-[54px] w-[2px] rounded-r-[8px] ${pathName === ROUTES_CONFIG.allowedService.path ? 'bg-white' : 'border-transparent bg-transparent'}`}

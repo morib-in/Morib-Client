@@ -1,6 +1,7 @@
 import { ButtonHTMLAttributes, MouseEvent, ReactNode } from 'react';
 
 import Dropdown from '@/shared/components/Dropdown/Dropdown';
+import FaviconImage from '@/shared/components/FaviconImage/FaviconImage';
 import Spacer from '@/shared/components/Spacer/Spacer';
 
 import { AllowedServiceGroupType, ColorPaletteType } from '@/shared/types/allowedService';
@@ -122,7 +123,7 @@ const AllowedServiceListItem = ({
 
 			<div className="mt-[0.4rem] flex items-center gap-[0.6rem]">
 				{allowedServiceGroupData?.favicons.map((siteUrl) => (
-					<img key={siteUrl} src={siteUrl} alt="favicon" className="h-[2rem] w-[2rem] rounded-full" />
+					<FaviconImage key={siteUrl} src={siteUrl} className="rounded-full" alt="사이트 아이콘" />
 				))}
 				{allowedServiceGroupData?.extraCnt > 0 && (
 					<div className="body-detail-reg-12 flex h-[2rem] w-[2rem] items-center justify-center rounded-[57px] bg-date-active text-white">

@@ -10,12 +10,6 @@ import { queryClient } from '@/shared/apisV2/queryClient';
 import router from './router/Router';
 
 const App = () => {
-	// @ts-expect-error test
-	if (window.electron) {
-		// @ts-expect-error test
-		window.electron.getStatisticData();
-	}
-
 	return (
 		<QueryClientProvider client={queryClient}>
 			<div style={{ fontSize: '16px' }}>

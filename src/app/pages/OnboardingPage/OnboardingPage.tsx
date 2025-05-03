@@ -21,9 +21,9 @@ const OnboardingPage = () => {
 	};
 
 	useEffect(() => {
-		const isSignUp = localStorage.getItem('isSignUp');
+		const 온보딩완료여부 = localStorage.getItem('isOnboardingComplete');
 
-		if (isSignUp !== 'true') {
+		if (온보딩완료여부 !== 'true') {
 			navigate(ROUTES_CONFIG.home.path, { replace: true });
 		}
 	});

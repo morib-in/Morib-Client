@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { setAccessToken } from '@/shared/utils/auth';
+import { setAccessToken, setRefreshToken } from '@/shared/utils/auth';
 
 import { ROUTES_CONFIG } from '@/router/routesConfig';
 
@@ -10,18 +10,26 @@ const RedirectPage = () => {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		const params = new URLSearchParams(search);
+		// @ts-expect-error
+		const params = window.electron
+			? new URLSearchParams(window.location.hash.substring(1))
+			: new URLSearchParams(search);
 		const accessToken = params.get('accessToken');
-		const isSignUp = params.get('isSignUp');
+		const refreshToken = params.get('refreshToken');
+		const 온보딩완료여부 = params.get('isOnboardingComplete');
 
-		if (accessToken) {
+		if (accessToken && refreshToken) {
 			setAccessToken(accessToken);
-			if (isSignUp === 'true') {
-				localStorage.setItem('isSignUp', isSignUp);
+			setRefreshToken(refreshToken);
+
+			if (온보딩완료여부 === 'true') {
+				localStorage.setItem('isOnboardingComplete', 온보딩완료여부);
 				navigate(`${ROUTES_CONFIG.onboarding.path}?step=start`, { replace: true });
 			} else {
 				navigate(`${ROUTES_CONFIG.home.path}`, { replace: true });
 			}
+		} else {
+			navigate(`${ROUTES_CONFIG.login.path}`, { replace: true });
 		}
 	}, [navigate, search]);
 

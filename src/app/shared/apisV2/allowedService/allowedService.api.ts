@@ -5,6 +5,7 @@ import {
 	GetAllowedServiceGroupDetailRes,
 	GetAllowedServiceListReq,
 	GetAllowedServiceListRes,
+	GetRecommendedSitesReq,
 	GetRecommendedSitesRes,
 	PatchChangeAllowedServiceGroupColorReq,
 	PatchChangeAllowedServiceGroupNameReq,
@@ -21,7 +22,7 @@ const ALLOWED_SERVICE_ENDPOINT = {
 	PATCH_CHANGE_ALLOWED_SERVICE_GROUP_NAME: 'api/v2/allowedGroup/:allowedGroupId/name',
 	PATCH_CHANGE_ALLOWED_SERVICE_GROUP_COLOR: 'api/v2/allowedGroup/:allowedGroupId/colorCode',
 	DELETE_ALLOWED_SERVICE_GROUP: 'api/v2/allowedGroup/:allowedGroupId',
-	GET_RECOMMENDED_STIES: 'api/v2/recommendSite',
+	GET_RECOMMENDED_SITES: 'api/v2/recommendSite',
 	POST_ADD_ALLOWED_SERVICE: 'api/v2/allowedSite/:allowedGroupId',
 	DELETE_ALLOWED_SERVICE: 'api/v2/allowedSite/:allowedSiteId',
 };
@@ -81,8 +82,10 @@ export const deleteAllowedServiceGroup = async ({ allowedGroupId }: DeleteAllowe
 	return data;
 };
 
-export const getRecommendedSites = async (): Promise<GetRecommendedSitesRes> => {
-	const { data } = await authClient.get(ALLOWED_SERVICE_ENDPOINT.GET_RECOMMENDED_STIES);
+export const getRecommendedSites = async ({
+	allowedGroupId,
+}: GetRecommendedSitesReq): Promise<GetRecommendedSitesRes> => {
+	const { data } = await authClient.get(ALLOWED_SERVICE_ENDPOINT.GET_RECOMMENDED_SITES, { params: { allowedGroupId } });
 	return data;
 };
 

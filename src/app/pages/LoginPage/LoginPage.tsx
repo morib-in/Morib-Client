@@ -1,13 +1,7 @@
-import { useEffect } from 'react';
 import Lottie from 'react-lottie';
-import { useNavigate } from 'react-router-dom';
-
-import { getAccessToken } from '@/shared/utils/auth';
 
 import LottieData from '@/shared/assets/lotties/morib_logo_motion.json';
 import GoogleLoginIcon from '@/shared/assets/svgs/google_login.svg?react';
-
-import { ROUTES_CONFIG } from '@/router/routesConfig';
 
 import { useLottieAnimation } from '@/pages/LoginPage/hooks/useLottieAnimation';
 
@@ -58,7 +52,6 @@ const LoginPage = () => {
 					onClick={handleClick}
 					className={`ml-[12rem] transition-opacity duration-300 ${isAnimationComplete ? 'opacity-100' : 'opacity-0'}`}
 				>
-					adasdas
 					<GoogleLoginIcon />
 				</button>
 			</div>
