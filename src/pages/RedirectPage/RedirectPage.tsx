@@ -33,7 +33,7 @@ const RedirectPage = () => {
 		}
 	}, [navigate, search]);
 
-	return null;
+	return <></>;
 };
 
 export default RedirectPage;
