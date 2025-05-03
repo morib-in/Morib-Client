@@ -25,13 +25,14 @@ const RedirectPage = () => {
 			if (온보딩완료여부 === 'false') {
 				localStorage.setItem('isOnboardingCompleted', 온보딩완료여부);
 				navigate(`${ROUTES_CONFIG.onboarding.path}?step=start`, { replace: true });
-			} else {
+			} else if (온보딩완료여부 === 'true') {
+				localStorage.setItem('isOnboardingCompleted', 온보딩완료여부);
 				navigate(`${ROUTES_CONFIG.home.path}`, { replace: true });
 			}
 		} else {
 			navigate(`${ROUTES_CONFIG.login.path}`, { replace: true });
 		}
-	}, []);
+	}, [navigate, search]);
 
 	return null;
 };
