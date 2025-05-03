@@ -8,14 +8,14 @@ import { usePostInterestArea } from '@/shared/apisV2/onboarding/onboarding.mutat
 
 const ButtonSkip = () => {
 	const { mutate: postInterestArea } = usePostInterestArea();
-	postInterestArea({} as PostInterestAreaReq, {
-		onSuccess: () => {
-			navigate('/home');
-		},
-	});
+
 	const navigate = useNavigate();
 	const handleNavigateToHome = () => {
-		navigate(ROUTES_CONFIG.home.path);
+		postInterestArea({} as PostInterestAreaReq, {
+			onSuccess: () => {
+				navigate(ROUTES_CONFIG.home.path);
+			},
+		});
 	};
 	return (
 		<button onClick={handleNavigateToHome} className="text-gray-04 underline underline-offset-[0.6rem] subhead-med-18">
