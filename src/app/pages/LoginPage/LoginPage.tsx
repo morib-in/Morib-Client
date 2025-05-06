@@ -15,12 +15,17 @@ const defaultOptions = {
 };
 
 const API_URL = `${import.meta.env.VITE_GOOGLE_URL}`;
+const ELECTRON_URL = `${import.meta.env.VITE_ELECTRON_AUTH_URL}`;
 
 const LoginPage = () => {
 	const { isAnimationComplete, lottieRef, handleAnimationComplete } = useLottieAnimation();
 
 	const handleClick = () => {
-		window.location.href = API_URL;
+		if (window.electron) {
+			window.open(ELECTRON_URL, '_blank');
+		} else {
+			window.location.href = API_URL;
+		}
 	};
 
 	const handleMouseEnter = () => {
