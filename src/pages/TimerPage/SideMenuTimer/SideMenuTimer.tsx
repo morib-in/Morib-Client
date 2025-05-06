@@ -83,9 +83,19 @@ const SideMenuTimer = ({ ongoingTodos = [], completedTodos = [] }: SideMenuTimer
 						if (isOngoing) {
 							setCompletedTodoToggle(true);
 
-							// 현재 선택된 할 일이 완료된 경우 타이머 정지
-							if (selectedTask.id === taskId && isPlaying && actions.stopCurrentTimer) {
-								actions.stopCurrentTimer(taskId);
+							// 현재 선택된 할 일이 완료된 경우
+							if (selectedTask.id === taskId) {
+								// 타이머 정지
+								if (isPlaying && actions.stopCurrentTimer) {
+									actions.stopCurrentTimer(taskId);
+								}
+
+								// 남아있는 진행 중인 할 일 중 첫 번째를 선택
+								const remainingTodos = ongoingTodos.filter((todo) => todo.id !== taskId);
+								if (remainingTodos.length > 0) {
+									const nextTodo = remainingTodos[0];
+									actions.selectTask(nextTodo.id, nextTodo.elapsedTime, nextTodo.name, nextTodo.categoryName);
+								}
 							}
 						}
 
@@ -96,7 +106,7 @@ const SideMenuTimer = ({ ongoingTodos = [], completedTodos = [] }: SideMenuTimer
 				},
 			);
 		},
-		[toggleTaskStatus, todayFormattedDate, queryClient, selectedTask.id, isPlaying, actions],
+		[toggleTaskStatus, todayFormattedDate, queryClient, selectedTask.id, isPlaying, actions, ongoingTodos],
 	);
 
 	// 할일 항목 렌더링 함수 - 최적화됨
