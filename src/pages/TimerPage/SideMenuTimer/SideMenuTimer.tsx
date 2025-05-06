@@ -82,6 +82,11 @@ const SideMenuTimer = ({ ongoingTodos = [], completedTodos = [] }: SideMenuTimer
 						// 진행 중인 할일을 완료 처리했으면 완료 목록 토글 활성화
 						if (isOngoing) {
 							setCompletedTodoToggle(true);
+
+							// 현재 선택된 할 일이 완료된 경우 타이머 정지
+							if (selectedTask.id === taskId && isPlaying && actions.stopCurrentTimer) {
+								actions.stopCurrentTimer(taskId);
+							}
 						}
 
 						queryClient.invalidateQueries({
@@ -91,7 +96,7 @@ const SideMenuTimer = ({ ongoingTodos = [], completedTodos = [] }: SideMenuTimer
 				},
 			);
 		},
-		[toggleTaskStatus, todayFormattedDate, queryClient],
+		[toggleTaskStatus, todayFormattedDate, queryClient, selectedTask.id, isPlaying, actions],
 	);
 
 	// 할일 항목 렌더링 함수 - 최적화됨
