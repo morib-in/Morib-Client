@@ -110,6 +110,7 @@ const SideMenuTimer = ({ ongoingTodos = [], completedTodos = [] }: SideMenuTimer
 				onToggleComplete={() => handleToggleTodoComplete(todo.id, isOngoing)}
 				timerIncreasedTime={getTimerIncreasedTime(todo.id, todo.elapsedTime, selectedTask.id, timer)}
 				undeletable={true}
+				disableHoverCalendar={true}
 			/>
 		),
 		[handleTodoClick, handleToggleTodoComplete, selectedTask.id, timer],
