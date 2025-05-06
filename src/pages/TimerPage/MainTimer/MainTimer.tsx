@@ -55,6 +55,7 @@ const MainTimer = () => {
 				selectedTaskName={selectedTask.name}
 				selectedTaskCategoryName={selectedTask.categoryName}
 				hasSelectedTask={hasSelectedTask}
+				isCompleted={isSelectedTaskCompleted()}
 			/>
 
 			{/* 타이머 디스플레이 - 시간 표시 및 제어 버튼 */}
