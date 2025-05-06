@@ -150,7 +150,9 @@ const BoxTodo = ({
 							/>
 						) : (
 							<h3
-								className={`mt-[0.42rem] text-white body-semibold-16 ${nameStyle} truncate ${clickable || isComplete ? 'pointer-events-none' : ''}`}
+								className={`mt-[0.42rem] text-white body-semibold-16 ${nameStyle} truncate ${
+									clickable || isComplete || undeletable ? 'pointer-events-none' : ''
+								}`}
 								onClick={handleNameClick}
 							>
 								{name}
