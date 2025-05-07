@@ -3,12 +3,14 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 
 import { usePostAddAllowedService } from '@/shared/apisV2/allowedService/allowedService.mutations';
+import { timerKeys } from '@/shared/apisV2/timer/timer.keys';
 import { useGetPopoverAllowedServiceList } from '@/shared/apisV2/timer/timer.queries';
 
 interface UseBrowserMonitorProps {
 	allowedServices: string[];
 	isTimerActive: boolean;
 	onStopTimer: () => void;
+	onStartTimer: () => void;
 }
 
 /**
@@ -61,11 +63,6 @@ export function useBrowserMonitor(props: UseBrowserMonitorProps) {
 		// 허용 서비스 목록 가공
 		const domains = processAllowedServices();
 		console.log('모니터링 시작. 허용 도메인:', domains);
-
-		if (domains.length === 0) {
-			console.warn('허용된 서비스가 없습니다. 모니터링을 시작하지 않습니다.');
-			return;
-		}
 
 		// 허용 서비스 목록을 메인 프로세스로 전송
 		window.electron.browserMonitor.startMonitoring(domains);
@@ -147,9 +144,9 @@ export function useBrowserMonitor(props: UseBrowserMonitorProps) {
 	const queryClient = useQueryClient();
 
 	// 시스템 알림 띄우기 함수
-	const showSystemNotification = (message: string) => {
+	const showSystemNotification = (title: string, message: string) => {
 		if ('Notification' in window) {
-			new window.Notification('알림', { body: message });
+			new window.Notification(title, { body: message });
 		}
 	};
 
@@ -193,16 +190,18 @@ export function useBrowserMonitor(props: UseBrowserMonitorProps) {
 						{ allowedGroupId: selectedGroups[0].id, siteUrl: url },
 						{
 							onSuccess: () => {
-								queryClient.invalidateQueries();
-								showSystemNotification('허용서비스에 추가되었습니다.');
+								const queryKey = timerKeys.popover();
+								queryClient.invalidateQueries({ queryKey });
+
+								showSystemNotification('허용서비스에 추가에 성공했어요.', `허용서비스 세트에 ${url}이 추가되었어요.`);
 							},
 							onError: () => {
-								showSystemNotification('허용서비스 추가에 실패했습니다.');
+								showSystemNotification('허용서비스 추가에 실패했어요.', '다시 시도해주세요.');
 							},
 						},
 					);
 				} else {
-					showSystemNotification('허용서비스 그룹을 먼저 선택해주세요.');
+					showSystemNotification('허용서비스 추가에 실패했어요.', '타이머에서 허용 서비스 세트를 먼저 선택해주세요.');
 				}
 			}
 		});
