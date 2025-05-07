@@ -75,30 +75,46 @@ function isAllowedURL(url: string, allowedServices: string[]): boolean {
 	try {
 		if (!url || !allowedServices.length) return false;
 
-		const { hostname } = new URL(url);
+		// 현재 URL 분석
+		const currentUrl = new URL(url);
+		const currentHostname = currentUrl.hostname.toLowerCase();
+		const currentPathname = currentUrl.pathname.toLowerCase();
+		const currentFullPath = currentHostname + currentPathname;
 
 		// 디버깅용
 		console.log('Checking URL:', url);
-		console.log('Hostname:', hostname);
+		console.log('Current hostname:', currentHostname);
+		console.log('Current pathname:', currentPathname);
 		console.log('Allowed services:', allowedServices);
 
-		// 호스트명이 허용 서비스 목록의 도메인과 일치하는지 확인
+		// 호스트명이나 전체 경로가 허용 서비스 목록과 일치하는지 확인
 		return allowedServices.some((service) => {
-			// 프로토콜 제거 (service가 URL 형식으로 들어올 경우)
-			let serviceDomain = service.toLowerCase().trim();
+			// 서비스 도메인 정규화
+			const serviceDomain = service.toLowerCase().trim();
 
-			// URL 형식인 경우 호스트명만 추출
+			// URL 형식인 경우 처리
 			if (serviceDomain.startsWith('http://') || serviceDomain.startsWith('https://')) {
 				try {
-					serviceDomain = new URL(serviceDomain).hostname;
+					// URL 객체로 파싱하여 호스트명과 경로 추출
+					const serviceUrl = new URL(serviceDomain);
+					const serviceHostname = serviceUrl.hostname;
+					const servicePathname = serviceUrl.pathname;
+
+					// 경로가 있는 경우 호스트명+경로까지 비교, 없는 경우 호스트명만 비교
+					if (servicePathname && servicePathname !== '/') {
+						return currentFullPath.includes(serviceHostname + servicePathname);
+					} else {
+						return currentHostname === serviceHostname || currentHostname.endsWith('.' + serviceHostname);
+					}
 				} catch (e) {
 					console.warn('허용 서비스 URL 파싱 오류:', e);
 				}
+			} else if (serviceDomain.includes('/')) {
+				// 프로토콜이 없지만 경로가 포함된 경우 (예: youtube.com/watch)
+				return currentFullPath.includes(serviceDomain);
 			}
 
-			const currentHostname = hostname.toLowerCase();
-
-			// 도메인이 정확히 일치하거나 서브도메인인 경우 (예: naver.com, mail.naver.com)
+			// 단순 도메인만 있는 경우 (예: youtube.com)
 			return currentHostname === serviceDomain || currentHostname.endsWith('.' + serviceDomain);
 		});
 	} catch (error) {
@@ -140,20 +156,58 @@ export function startBrowserMonitoring(win: BrowserWindow, allowedServices: stri
 			console.log('허용 여부:', isAllowed);
 
 			if (!isAllowed) {
-				console.log('허용되지 않은 URL! 타이머 중지 및 알림 표시:', currentURL);
+				console.log('허용되지 않은 URL 감지:', currentURL);
+
+				// 검증에 실패한 모든 서비스 목록과 실패 이유 상세 로깅
+				console.log('상세 검증 결과:');
+				try {
+					const currentUrl = new URL(currentURL);
+					const currentHostname = currentUrl.hostname.toLowerCase();
+					const currentPathname = currentUrl.pathname.toLowerCase();
+
+					allowedServicesList.forEach((service) => {
+						let result = '불일치';
+						let reason = '';
+
+						if (service.includes('/')) {
+							// 경로 포함된 서비스
+							const fullPath = currentHostname + currentPathname;
+							const serviceMatches = fullPath.includes(service.toLowerCase());
+
+							if (serviceMatches) {
+								result = '일치';
+							} else {
+								reason = `"${fullPath}"에 "${service}"가 포함되지 않음`;
+							}
+						} else {
+							// 도메인만 있는 서비스
+							const hostnameMatches =
+								currentHostname === service.toLowerCase() || currentHostname.endsWith('.' + service.toLowerCase());
+
+							if (hostnameMatches) {
+								result = '일치';
+							} else {
+								reason = `호스트명 "${currentHostname}"이 "${service}"와 일치하지 않음`;
+							}
+						}
+
+						console.log(`검증: "${service}" - ${result}${reason ? ' (' + reason + ')' : ''}`);
+					});
+				} catch (error) {
+					console.error('상세 검증 로깅 중 오류:', error);
+				}
+
+				// 알림 표시
+				showNotification(currentURL);
 
 				// 렌더러에 타이머 중지 이벤트 전송
 				if (mainWindow && !mainWindow.isDestroyed()) {
-					// 명확한 이벤트 이름과 데이터 형식으로 전송
 					mainWindow.webContents.send('timer:stop-by-url', {
 						url: currentURL,
 						timestamp: Date.now(),
 					});
 					console.log('타이머 중지 신호 전송 완료');
 				}
-
-				// 시스템 알림 표시
-				showNotification(currentURL);
 			}
 		}
 	}, 500);
@@ -205,17 +259,6 @@ function showNotification(url: string) {
 
 		notification.show();
 		console.log('알림 표시 완료');
-
-		// 5초 후에만 타이머 정지 신호 전송
-		setTimeout(() => {
-			if (mainWindow && !mainWindow.isDestroyed()) {
-				mainWindow.webContents.send('timer:stop-by-url', {
-					url,
-					timestamp: Date.now(),
-				});
-				console.log('타이머 중지 신호(5초 지연) 전송 완료');
-			}
-		}, 5000);
 	} catch (error) {
 		console.error('알림 표시 오류:', error);
 	}
