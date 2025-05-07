@@ -2,6 +2,7 @@ import { ButtonHTMLAttributes, InputHTMLAttributes, KeyboardEvent, ReactNode, us
 
 import HomeLargeBtn from '@/shared/components/ButtonHomeLarge/ButtonHomeLarge';
 import ColorPalette from '@/shared/components/ColorPallete/ColorPallete';
+import FaviconImage from '@/shared/components/FaviconImage/FaviconImage';
 import Spacer from '@/shared/components/Spacer/Spacer';
 
 import useClickOutside from '@/shared/hooks/useClickOutside';
@@ -155,11 +156,11 @@ const AllowedServiceItem = ({ onClick, ...props }: AllowedServiceItemProps) => {
 	return (
 		<li className="flex h-[5.3rem] w-full min-w-0 items-center border-b border-b-gray-bg-04 py-[1.2rem]">
 			<span className="flex w-[12rem] gap-[1.2rem]">
-				<img src={props.favicon} alt={`${props.siteName} 아이콘`} className="h-[2rem] w-[2rem] flex-shrink-0" />
+				<FaviconImage src={props.favicon} alt={`${props.siteName} 아이콘`} className="flex-shrink-0" />
 				<h3 className="w-[6rem] flex-shrink-0 truncate p-0 text-white body-med-16">{props.siteName}</h3>
 			</span>
 			<div className="ml-[1rem] h-[3.1rem] w-[20.4rem] flex-shrink-0 truncate rounded-[20px] bg-gray-bg-04 px-[1rem] py-[0.6rem] text-gray-04 body-reg-16">
-				{props.siteUrl}
+				{props.siteUrl}a
 			</div>
 			<button
 				onClick={() => {
