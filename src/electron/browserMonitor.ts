@@ -170,36 +170,52 @@ export function stopBrowserMonitoring() {
 // 시스템 알림 표시
 function showNotification(url: string) {
 	try {
-		// 앱 아이콘 경로 (실제 존재하는 경로인지 확인 필요)
+		const hostname = new URL(url).hostname;
 		const iconPath = path.join(app.getAppPath(), 'dist-electron/morib_logo.png');
 		console.log('알림 아이콘 경로:', iconPath);
 
 		const notification = new Notification({
-			title: '허용 서비스에서 벗어나 타이머가 중지됐어요.',
+			title: '허용 서비스에서 벗어나 타이머가 중지됩니다.',
 			body: `이 사이트를 허용 서비스로 등록할까요?`,
 			icon: iconPath,
-			actions: [{ type: 'button', text: '타이머로 돌아가기' }],
+			actions: [
+				{ type: 'button', text: '타이머로 돌아가기' },
+				{ type: 'button', text: '허용서비스 추가' },
+			],
 			silent: false,
 			closeButtonText: '닫기',
 		});
 
-		// 알림 클릭 시 메인 윈도우 포커스 (단순 화면 포커싱만 수행)
+		// 알림 클릭 시 메인 윈도우 포커스
 		notification.on('click', () => {
-			console.log('알림 클릭됨 - 앱 포커스');
 			focusMainWindow();
 		});
 
-		// 알림 액션 버튼 클릭 시 처리 (단순 화면 포커싱만 수행)
+		// 알림 액션 버튼 클릭 시 처리
 		notification.on('action', (_, index) => {
-			console.log('알림 액션 클릭:', index);
-			if (index === 0) {
-				// 타이머로 돌아가기
-				focusMainWindow();
+			if (mainWindow && !mainWindow.isDestroyed()) {
+				if (index === 0) {
+					focusMainWindow();
+					mainWindow.webContents.send('browser-monitor:notification-action', 'timer', url);
+				} else if (index === 1) {
+					mainWindow.webContents.send('browser-monitor:notification-action', 'register', url);
+				}
 			}
 		});
 
 		notification.show();
 		console.log('알림 표시 완료');
+
+		// 5초 후에만 타이머 정지 신호 전송
+		setTimeout(() => {
+			if (mainWindow && !mainWindow.isDestroyed()) {
+				mainWindow.webContents.send('timer:stop-by-url', {
+					url,
+					timestamp: Date.now(),
+				});
+				console.log('타이머 중지 신호(5초 지연) 전송 완료');
+			}
+		}, 5000);
 	} catch (error) {
 		console.error('알림 표시 오류:', error);
 	}
@@ -208,9 +224,7 @@ function showNotification(url: string) {
 // 메인 윈도우 포커스 함수 (코드 재사용을 위한 분리)
 function focusMainWindow() {
 	if (mainWindow && !mainWindow.isDestroyed()) {
-		if (mainWindow.isMinimized()) {
-			mainWindow.restore();
-		}
+		if (mainWindow.isMinimized()) mainWindow.restore();
 		mainWindow.focus();
 	} else {
 		console.warn('메인 윈도우가 없거나 파괴되어 포커스할 수 없습니다.');

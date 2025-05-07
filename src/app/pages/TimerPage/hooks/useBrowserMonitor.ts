@@ -1,5 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+import { useQueryClient } from '@tanstack/react-query';
+
+import { usePostAddAllowedService } from '@/shared/apisV2/allowedService/allowedService.mutations';
+import { useGetPopoverAllowedServiceList } from '@/shared/apisV2/timer/timer.queries';
+
 interface UseBrowserMonitorProps {
 	allowedServices: string[];
 	isTimerActive: boolean;
@@ -8,7 +13,7 @@ interface UseBrowserMonitorProps {
 
 /**
  * 브라우저 URL 모니터링 훅
- * 허용된 서비스 외의 URL에 접속하면 타이머를 자동으로 정지합니다.
+ * 허용된 서비스 외의 URL에 접속하면 타이머를 자동으로 정지
  */
 export function useBrowserMonitor(props: UseBrowserMonitorProps) {
 	const { allowedServices, isTimerActive, onStopTimer } = props;
@@ -16,7 +21,7 @@ export function useBrowserMonitor(props: UseBrowserMonitorProps) {
 	const [isActive, setIsActive] = useState(false);
 	const [lastUnallowedUrl, setLastUnallowedUrl] = useState<string | null>(null);
 
-	// 이벤트 처리 상태 관리 (무한 루프 방지용)
+	// 이벤트 처리 상태 관리 (타이머 리렌더링 이슈로 ref로 이벤트 임시 처리)
 	const isStoppingTimer = useRef(false);
 
 	// useRef로 최신 값 참조를 위한 설정
@@ -135,6 +140,19 @@ export function useBrowserMonitor(props: UseBrowserMonitorProps) {
 		}
 	}, [stopMonitoring]);
 
+	// 허용서비스 그룹 목록 쿼리
+	const { data: allowedServiceList } = useGetPopoverAllowedServiceList();
+	// 허용서비스 추가 mutation
+	const { mutate: postAddAllowedService } = usePostAddAllowedService();
+	const queryClient = useQueryClient();
+
+	// 시스템 알림 띄우기 함수
+	const showSystemNotification = (message: string) => {
+		if ('Notification' in window) {
+			new window.Notification('알림', { body: message });
+		}
+	};
+
 	// 허용되지 않은 URL 발견 시 처리와 타이머 중지 처리
 	useEffect(() => {
 		if (!window.electron?.browserMonitor || listenersRegistered.current) return;
@@ -168,6 +186,25 @@ export function useBrowserMonitor(props: UseBrowserMonitorProps) {
 		console.log('알림 액션 이벤트 리스너 등록');
 		const unsubscribeNotification = browserMonitor.onNotificationAction((action, url) => {
 			console.log('알림 액션 수신:', action, url);
+			if (action === 'register') {
+				const selectedGroups = allowedServiceList?.data.filter((group) => group.selected) ?? [];
+				if (selectedGroups.length > 0) {
+					postAddAllowedService(
+						{ allowedGroupId: selectedGroups[0].id, siteUrl: url },
+						{
+							onSuccess: () => {
+								queryClient.invalidateQueries();
+								showSystemNotification('허용서비스에 추가되었습니다.');
+							},
+							onError: () => {
+								showSystemNotification('허용서비스 추가에 실패했습니다.');
+							},
+						},
+					);
+				} else {
+					showSystemNotification('허용서비스 그룹을 먼저 선택해주세요.');
+				}
+			}
 		});
 
 		// 리스너 등록 완료 표시

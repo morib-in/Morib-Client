@@ -1,4 +1,4 @@
-import { BrowserWindow, app, dialog, globalShortcut, ipcMain, shell } from 'electron';
+import { BrowserWindow, app, ipcMain, shell } from 'electron';
 import path from 'path';
 
 import { startBrowserMonitoring, stopBrowserMonitoring } from './browserMonitor.js';
@@ -99,7 +99,6 @@ function setupBrowserMonitorHandlers() {
 }
 
 function createWindow() {
-	// mainWindow 할당 (변수 재선언 없이)
 	mainWindow = new BrowserWindow({
 		webPreferences: {
 			preload: getPreloadPath(),
