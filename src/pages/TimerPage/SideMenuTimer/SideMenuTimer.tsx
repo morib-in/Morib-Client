@@ -82,20 +82,15 @@ const SideMenuTimer = ({ ongoingTodos = [], completedTodos = [] }: SideMenuTimer
 						// 진행 중인 할일을 완료 처리했으면 완료 목록 토글 활성화
 						if (isOngoing) {
 							setCompletedTodoToggle(true);
+						}
 
-							// 현재 선택된 할 일이 완료된 경우
-							if (selectedTask.id === taskId) {
-								// 타이머 정지
-								if (isPlaying && actions.stopCurrentTimer) {
-									actions.stopCurrentTimer(taskId);
-								}
-
-								// 남아있는 진행 중인 할 일 중 첫 번째를 선택
-								const remainingTodos = ongoingTodos.filter((todo) => todo.id !== taskId);
-								if (remainingTodos.length > 0) {
-									const nextTodo = remainingTodos[0];
-									actions.selectTask(nextTodo.id, nextTodo.elapsedTime, nextTodo.name, nextTodo.categoryName);
-								}
+						// 선택된 할 일의 상태가 변경되면 타이머 정지 및 남은 할 일 중 첫번 째 할 일 선택
+						if (selectedTask.id === taskId && actions.stopCurrentTimer) {
+							actions.stopCurrentTimer(taskId);
+							const remainingTodos = ongoingTodos.filter((todo) => todo.id !== taskId);
+							if (remainingTodos.length > 0) {
+								const next = remainingTodos[0];
+								actions.selectTask(next.id, next.elapsedTime, next.name, next.categoryName);
 							}
 						}
 
@@ -106,7 +101,7 @@ const SideMenuTimer = ({ ongoingTodos = [], completedTodos = [] }: SideMenuTimer
 				},
 			);
 		},
-		[toggleTaskStatus, todayFormattedDate, queryClient, selectedTask.id, isPlaying, actions, ongoingTodos],
+		[toggleTaskStatus, todayFormattedDate, queryClient, selectedTask.id, actions, ongoingTodos],
 	);
 
 	// 할일 항목 렌더링 함수 - 최적화됨
@@ -116,8 +111,11 @@ const SideMenuTimer = ({ ongoingTodos = [], completedTodos = [] }: SideMenuTimer
 				key={todo.id}
 				{...todo}
 				isSelected={todo.id === selectedTask.id}
-				onClick={() => handleTodoClick(todo)}
-				onToggleComplete={() => handleToggleTodoComplete(todo.id, isOngoing)}
+				onClick={isOngoing ? () => handleTodoClick(todo) : undefined}
+				onToggleComplete={(e) => {
+					e.stopPropagation();
+					handleToggleTodoComplete(todo.id, isOngoing);
+				}}
 				timerIncreasedTime={getTimerIncreasedTime(todo.id, todo.elapsedTime, selectedTask.id, timer)}
 				undeletable={true}
 				disableHoverCalendar={true}

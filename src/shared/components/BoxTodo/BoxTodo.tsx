@@ -29,7 +29,7 @@ interface BoxTodoProps {
 	isSelected?: boolean;
 	selectedNumber?: number;
 	onClick?: () => void;
-	onToggleComplete?: () => void;
+	onToggleComplete?: (e: MouseEvent<HTMLButtonElement>) => void;
 	updateTodayTodos?: (todo: Omit<TaskType, 'isComplete'>) => void;
 	clickable?: boolean;
 	addingComplete?: boolean;
@@ -136,7 +136,13 @@ const BoxTodo = ({
 			<div className="flex flex-col justify-center">
 				<div className="flex items-center justify-between">
 					<div className="flex w-[22.2rem] items-center gap-[0.6rem]">
-						<button onClick={onToggleComplete} className={disableBtnStyle}>
+						<button
+							onClick={(e) => {
+								e.stopPropagation();
+								onToggleComplete?.(e);
+							}}
+							className={disableBtnStyle}
+						>
 							{CheckBoxIcon}
 						</button>
 						{isEditing ? (
