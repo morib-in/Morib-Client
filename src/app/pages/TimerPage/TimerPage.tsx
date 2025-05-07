@@ -2,12 +2,10 @@ import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 
-import React, { useCallback, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { splitTasksByCompletion } from '@/shared/utils/timer';
-
-import { ROUTES_CONFIG } from '@/router/routesConfig';
 
 import { useGetTimerTodos } from '@/shared/apisV2/timer/timer.queries';
 
@@ -29,7 +27,16 @@ dayjs.extend(timezone);
  */
 const TimerPageContent = () => {
 	const navigate = useNavigate();
-	const { todayFormattedDate, isSidebarOpen, isAllowedServiceVisible, allowedServices, actions } = useTimerContext();
+	const {
+		todayFormattedDate,
+		isSidebarOpen,
+		isAllowedServiceVisible,
+		allowedServices,
+		isPlaying,
+		selectedTask,
+		browserMonitor,
+		actions,
+	} = useTimerContext();
 
 	// 할일 데이터 조회
 	const { data: todosData } = useGetTimerTodos({ targetDate: todayFormattedDate });
@@ -41,7 +48,17 @@ const TimerPageContent = () => {
 		return splitTasksByCompletion(todos);
 	}, [todosData]);
 
-	const { isPlaying, selectedTask } = useTimerContext();
+	// 허용되지 않은 URL 감지 시 처리
+	const handleRegisterAllowedService = useCallback(
+		(url: string) => {
+			// 허용 서비스로 등록
+			actions.registerAllowedService(url);
+
+			// 허용 서비스 팝업 표시
+			actions.showAllowedServices();
+		},
+		[actions],
+	);
 
 	// 홈 네비게이션 핸들러
 	const navigateToHome = useCallback(async () => {
@@ -50,11 +67,17 @@ const TimerPageContent = () => {
 			if (isPlaying && selectedTask.id !== null && actions.stopCurrentTimer) {
 				await actions.stopCurrentTimer(selectedTask.id);
 			}
+
+			// URL 모니터링 중지
+			if (browserMonitor.isActive) {
+				actions.stopUrlMonitoring();
+			}
+
 			navigate('/home');
 		} catch (error) {
 			console.error('홈으로 이동 중 오류 발생:', error);
 		}
-	}, [isPlaying, selectedTask.id, actions, navigate]);
+	}, [isPlaying, selectedTask.id, browserMonitor.isActive, actions, navigate]);
 
 	return (
 		<div className="fixed">

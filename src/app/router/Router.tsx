@@ -1,7 +1,7 @@
 import type { Router } from '@remix-run/router';
 
 import { Suspense, lazy } from 'react';
-import { Outlet, createHashRouter } from 'react-router-dom';
+import { Outlet, createBrowserRouter, createHashRouter } from 'react-router-dom';
 
 import ErrorBoundary from '@/shared/components/ErrorBoundary/ErrorBoundary';
 import HeartBeatBoundary from '@/shared/components/HeartBeatBoundary/HeartBeatBoundary';
@@ -20,7 +20,7 @@ const RedirectPage = lazy(() => import('@/pages/RedirectPage/RedirectPage'));
 const OnboardingPage = lazy(() => import('@/pages/OnboardingPage/OnboardingPage'));
 const TimerPage = lazy(() => import('@/pages/TimerPage/TimerPage'));
 
-const router: Router = createHashRouter([
+const routerInfo = [
 	{
 		//public 라우트들
 		path: '/',
@@ -100,6 +100,8 @@ const router: Router = createHashRouter([
 			</Layout>
 		),
 	},
-]);
+];
+
+const router: Router = window.electron ? createHashRouter(routerInfo) : createBrowserRouter(routerInfo);
 
 export default router;

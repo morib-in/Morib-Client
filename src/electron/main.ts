@@ -1,6 +1,7 @@
 import { BrowserWindow, app, dialog, globalShortcut, ipcMain, shell } from 'electron';
 import path from 'path';
 
+import { startBrowserMonitoring, stopBrowserMonitoring } from './browserMonitor.js';
 import { getAuthenticatedWindowPath, getPreloadPath, parseTokensFromUrl } from './pathResolver.js';
 import { isDev } from './util.js';
 
@@ -51,7 +52,49 @@ if (!gotTheLock) {
 
 			// dialog.showErrorBox('Welcome Back', `You arrived from: ${url}`); // NOTE: 디버깅용 Dialog 주석 처리
 			createAuthenticatedWindow(accessToken, refreshToken, isOnboardingCompleted);
+			// 브라우저 URL 모니터링을 위한 IPC 핸들러 등록
+			setupBrowserMonitorHandlers();
 		}
+	});
+}
+
+// 브라우저 URL 모니터링 IPC 핸들러 설정
+function setupBrowserMonitorHandlers() {
+	// 모니터링 시작 요청
+	ipcMain.on('browser-monitor:start', (_, allowedServices: string[]) => {
+		console.log('브라우저 URL 모니터링 시작 요청 수신:', allowedServices);
+
+		// 도메인 형식 확인 및 정제
+		const processedServices = allowedServices.map((service) => {
+			// URL 형식인 경우 호스트명만 추출
+			if (service.startsWith('http://') || service.startsWith('https://')) {
+				try {
+					return new URL(service).hostname;
+				} catch (e) {
+					console.warn('허용 서비스 URL 파싱 오류:', e);
+					return service;
+				}
+			}
+			return service;
+		});
+
+		if (processedServices.length === 0) {
+			console.warn('허용 서비스 목록이 비어 있습니다. 모니터링을 시작하지 않습니다.');
+			return;
+		}
+
+		if (authWindow) {
+			console.log(`${processedServices.length}개의 허용 서비스로 모니터링 시작:`, processedServices);
+			startBrowserMonitoring(authWindow, processedServices);
+		} else {
+			console.error('메인 창이 없어 모니터링을 시작할 수 없습니다.');
+		}
+	});
+
+	// 모니터링 중지 요청
+	ipcMain.on('browser-monitor:stop', () => {
+		console.log('브라우저 URL 모니터링 중지 요청 수신');
+		stopBrowserMonitoring();
 	});
 }
 
@@ -98,6 +141,11 @@ function createAuthenticatedWindow(
 // explicitly with Cmd + Q.
 app.on('window-all-closed', function () {
 	if (process.platform !== 'darwin') app.quit();
+});
+
+// 앱 종료 시 모니터링 중지
+app.on('will-quit', () => {
+	stopBrowserMonitoring();
 });
 
 // Handle window controls via IPC

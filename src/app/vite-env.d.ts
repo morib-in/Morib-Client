@@ -14,5 +14,12 @@ interface ImportMeta {
 interface Window {
 	electron?: {
 		openExternal: (url: string) => void;
+		browserMonitor?: {
+			startMonitoring: (allowedServices: string[]) => void;
+			stopMonitoring: () => void;
+			onUnallowedUrl: (callback: (url: string, action?: string) => void) => (() => void) | undefined;
+			onTimerStop: (callback: (data: { url: string; timestamp: number }) => void) => (() => void) | undefined;
+			onNotificationAction: (callback: (action: 'timer' | 'register', url: string) => void) => (() => void) | undefined;
+		};
 	};
 }

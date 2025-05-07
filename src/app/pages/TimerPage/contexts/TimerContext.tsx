@@ -1,10 +1,11 @@
 import dayjs from 'dayjs';
 
-import React, { ReactNode, createContext, useContext } from 'react';
+import React, { ReactNode, createContext, useContext, useEffect } from 'react';
 
 import { DATE_FORMAT, TIMEZONE } from '@/shared/constants/timerPageText';
 
 import { useAllowedServices } from '../hooks/useAllowedServices';
+import { useBrowserMonitor } from '../hooks/useBrowserMonitor';
 import { useTimerActions } from '../hooks/useTimerActions';
 import { useTimerState } from '../hooks/useTimerState';
 import { useUIState } from '../hooks/useUIState';
@@ -30,6 +31,11 @@ interface TimerContextType {
 		allowedSiteUrls: string[];
 		baseUrls: string[];
 	};
+	// URL 모니터링 상태 추가
+	browserMonitor: {
+		isActive: boolean;
+		lastUnallowedUrl: string | null;
+	};
 	actions: {
 		togglePlay: (isPlaying: boolean) => void;
 		updateElapsedTime: (newTime: number) => void;
@@ -38,6 +44,10 @@ interface TimerContextType {
 		showAllowedServices: () => void;
 		hideAllowedServices: () => void;
 		stopCurrentTimer?: (taskId: number) => Promise<boolean | undefined>;
+		// URL 모니터링 액션 추가
+		startUrlMonitoring: () => void;
+		stopUrlMonitoring: () => void;
+		registerAllowedService: (url: string) => void;
 	};
 }
 
@@ -87,6 +97,42 @@ export const TimerProvider: React.FC<TimerProviderProps> = ({ children }) => {
 		isPlaying,
 	});
 
+	// 브라우저 URL 모니터링 훅
+	// 허용 서비스 목록 처리 - 중복 제거 및 형식 통일
+	const processedAllowedServices = [
+		// 기본 도메인 배열
+		...allowedServices.baseUrls,
+	];
+
+	// 브라우저 모니터링 훅 초기화
+	const browserMonitor = useBrowserMonitor({
+		allowedServices: processedAllowedServices,
+		isTimerActive: isPlaying,
+		onStopTimer: async () => {
+			// 타이머 정지 로직
+			try {
+				// 타이머가 활성화 상태이고 선택된 작업이 있을 때만 실행
+				if (isPlaying && selectedTask.id !== null) {
+					if (timerActions.stopCurrentTimer) {
+						console.log('타이머 중지 함수 호출 - 작업 ID:', selectedTask.id);
+
+						// 타이머 중지 함수 동기적으로 호출
+						const result = await timerActions.stopCurrentTimer(selectedTask.id);
+						console.log('타이머 중지 완료:', result);
+						return true;
+					} else {
+						console.error('타이머 중지 함수가 없습니다!');
+					}
+				} else {
+					console.log('타이머를 중지할 필요가 없습니다. isPlaying:', isPlaying, 'selectedTask.id:', selectedTask.id);
+				}
+			} catch (error) {
+				console.error('타이머 중지 중 예외 발생:', error);
+			}
+			return false;
+		},
+	});
+
 	// Context 값 구성
 	const contextValue: TimerContextType = {
 		todayFormattedDate,
@@ -98,6 +144,10 @@ export const TimerProvider: React.FC<TimerProviderProps> = ({ children }) => {
 		isSidebarOpen,
 		isAllowedServiceVisible,
 		allowedServices,
+		browserMonitor: {
+			isActive: browserMonitor.isActive,
+			lastUnallowedUrl: browserMonitor.lastUnallowedUrl,
+		},
 		actions: {
 			togglePlay: timerActions.togglePlay,
 			updateElapsedTime,
@@ -106,6 +156,9 @@ export const TimerProvider: React.FC<TimerProviderProps> = ({ children }) => {
 			showAllowedServices: uiActions.showAllowedServices,
 			hideAllowedServices: uiActions.hideAllowedServices,
 			stopCurrentTimer: timerActions.stopCurrentTimer,
+			startUrlMonitoring: browserMonitor.startMonitoring,
+			stopUrlMonitoring: browserMonitor.stopMonitoring,
+			registerAllowedService: browserMonitor.registerAllowedService,
 		},
 	};
 
