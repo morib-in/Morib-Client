@@ -7,6 +7,8 @@ import { isDev } from './util.js';
 
 let mainWindow: BrowserWindow | null = null;
 let authWindow: BrowserWindow | null = null;
+// 앱 종료 상태를 추적하는 변수
+let isAppQuitting = false;
 
 // NOTE: 기본 프로토콜 설정 (morib://)
 if (process.defaultApp) {
@@ -25,7 +27,7 @@ if (!gotTheLock) {
 } else {
 	app.on('second-instance', (event: any, commandLine: string[], workingDirectory: string) => {
 		// Someone tried to run a second instance, we should focus our window.
-		if (mainWindow) {
+		if (mainWindow && !mainWindow.isDestroyed()) {
 			if (mainWindow.isMinimized()) mainWindow.restore();
 			mainWindow.focus();
 		}
@@ -38,14 +40,32 @@ if (!gotTheLock) {
 	// Create mainWindow, load the rest of the app, etc...
 	app.whenReady().then(() => {
 		createWindow();
+
+		// macOS에서 dock 아이콘 클릭 시 창 복원
+		app.on('activate', () => {
+			// On macOS it's common to re-create a window in the app when the
+			// dock icon is clicked and there are no other windows open.
+			if (BrowserWindow.getAllWindows().length === 0) {
+				createWindow();
+			} else {
+				// 숨겨진 창이 있다면 표시하기
+				if (authWindow && !authWindow.isDestroyed() && !authWindow.isVisible()) {
+					authWindow.show();
+				} else if (mainWindow && !mainWindow.isDestroyed() && !mainWindow.isVisible()) {
+					mainWindow.show();
+				}
+			}
+		});
 	});
 
 	app.on('open-url', (event: any, url: string) => {
-		if (authWindow) {
+		if (authWindow && !authWindow.isDestroyed()) {
 			if (authWindow.isMinimized()) authWindow.restore();
 			authWindow.focus();
 		} else {
-			mainWindow?.close();
+			if (mainWindow && !mainWindow.isDestroyed()) {
+				mainWindow?.close();
+			}
 
 			event.preventDefault();
 			const { accessToken, refreshToken, isOnboardingCompleted } = parseTokensFromUrl(url);
@@ -88,7 +108,7 @@ function setupBrowserMonitorHandlers() {
 			})
 			.filter((s) => s.length > 0); // 빈 항목 제거
 
-		if (authWindow) {
+		if (authWindow && !authWindow.isDestroyed()) {
 			console.log(`${processedServices.length}개의 허용 서비스로 모니터링 시작:`, processedServices);
 			startBrowserMonitoring(authWindow, processedServices);
 		} else {
@@ -117,6 +137,18 @@ function createWindow() {
 		return { action: 'deny' }; // Prevent the app from opening the URL.
 	});
 
+	// 닫기 버튼 클릭 시 앱을 종료하지 않고 숨김(hide) 처리
+	mainWindow.on('close', (event) => {
+		// 앱이 실제로 종료되려는 경우는 처리하지 않음
+		if (!isAppQuitting && authWindow !== null && !authWindow.isDestroyed() && mainWindow && !mainWindow.isDestroyed()) {
+			event.preventDefault();
+			mainWindow.hide(); // 최소화 대신 숨김 처리
+			return false;
+		}
+
+		return true;
+	});
+
 	if (isDev()) {
 		mainWindow.loadURL('http://localhost:5123');
 	} else {
@@ -137,6 +169,18 @@ function createAuthenticatedWindow(
 		height: 920,
 	});
 
+	// 닫기 버튼 클릭 시 앱을 종료하지 않고 숨김 처리
+	authWindow.on('close', (event) => {
+		// 앱이 실제로 종료되려는 경우는 처리하지 않음
+		if (!isAppQuitting && authWindow && !authWindow.isDestroyed()) {
+			event.preventDefault();
+			authWindow.hide(); // 최소화 대신 숨김 처리
+			return false;
+		}
+
+		return true;
+	});
+
 	authWindow.loadURL(getAuthenticatedWindowPath(accessToken || '', refreshToken || '', isOnboardingCompleted || ''));
 }
 
@@ -145,6 +189,12 @@ function createAuthenticatedWindow(
 // explicitly with Cmd + Q.
 app.on('window-all-closed', function () {
 	if (process.platform !== 'darwin') app.quit();
+});
+
+// 실제 앱 종료 처리
+app.on('before-quit', () => {
+	// 앱 종료 플래그를 true로 설정
+	isAppQuitting = true;
 });
 
 // 앱 종료 시 모니터링 중지
