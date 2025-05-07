@@ -192,6 +192,7 @@ export function useBrowserMonitor(props: UseBrowserMonitorProps) {
 							onSuccess: () => {
 								const queryKey = timerKeys.popover();
 								queryClient.invalidateQueries({ queryKey });
+								props.onStartTimer();
 
 								showSystemNotification('허용서비스에 추가에 성공했어요.', `허용서비스 세트에 ${url}이 추가되었어요.`);
 							},

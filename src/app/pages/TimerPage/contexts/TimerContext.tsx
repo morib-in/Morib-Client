@@ -131,6 +131,9 @@ export const TimerProvider: React.FC<TimerProviderProps> = ({ children }) => {
 			}
 			return false;
 		},
+		onStartTimer: () => {
+			timerActions.togglePlay(true);
+		},
 	});
 
 	// Context 값 구성
