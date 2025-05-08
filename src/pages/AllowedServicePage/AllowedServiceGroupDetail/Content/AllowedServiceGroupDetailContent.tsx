@@ -107,7 +107,7 @@ export const AllowedServiceGroupDetailContentTableRow = ({
 				</div>
 			</div>
 			<ModalWrapper ref={domainAllowModalRef} backdrop>
-				{({ isModalOpen }) => (
+				{() => (
 					<ModalContentsAlert.DomainAllowConfirm
 						siteName={allowedSiteData.siteName}
 						onConfirm={() => {
@@ -119,7 +119,6 @@ export const AllowedServiceGroupDetailContentTableRow = ({
 							handleCloseDomainAllowModal();
 						}}
 						onCancel={handleCloseDomainAllowModal}
-						isModalOpen={isModalOpen}
 					/>
 				)}
 			</ModalWrapper>

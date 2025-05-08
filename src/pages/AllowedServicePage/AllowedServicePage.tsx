@@ -372,10 +372,9 @@ const AllowedServicePage = () => {
 				{({ isModalOpen }) => <ModalContentsFriends isModalOpen={isModalOpen} />}
 			</ModalWrapper>
 			<ModalWrapper ref={actionFeedbackRef} backdrop>
-				{({ isModalOpen }) => (
+				{() => (
 					<ModalContentsAlert.ActionFeedback
 						variant={modalState.variant}
-						isModalOpen={isModalOpen}
 						onClick={handleCloseActionFeedbackModal}
 						pageName={modalState.pageName}
 					/>
