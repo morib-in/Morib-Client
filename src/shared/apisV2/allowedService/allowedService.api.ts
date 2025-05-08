@@ -26,7 +26,7 @@ const ALLOWED_SERVICE_ENDPOINT = {
 	GET_RECOMMENDED_SITES: 'api/v2/recommendSite',
 	POST_ADD_ALLOWED_SERVICE: 'api/v2/allowedSite/:allowedGroupId',
 	DELETE_ALLOWED_SERVICE: 'api/v2/allowedSite/:allowedSiteId',
-	POST_MERGE_ALLOWED_SITE: 'api/v2/allowedSite/:allowedGroupId/:allowedSiteId',
+	PATCH_MERGE_ALLOWED_SITE: 'api/v2/allowedSite/:allowedGroupId/:allowedSiteId',
 };
 
 export const postAddAllowedServiceGroup = async ({ name, colorCode }: PostAddAllowedServiceGroupReq) => {
@@ -107,7 +107,7 @@ export const deleteAllowedService = async ({ allowedSiteId }: DeleteAllowedServi
 };
 
 export const patchMergeAllowedSite = async ({ allowedGroupId, allowedSiteId, siteUrl }: PostMergeAllowedSiteReq) => {
-	const url = ALLOWED_SERVICE_ENDPOINT.POST_MERGE_ALLOWED_SITE.replace(
+	const url = ALLOWED_SERVICE_ENDPOINT.PATCH_MERGE_ALLOWED_SITE.replace(
 		':allowedGroupId',
 		String(allowedGroupId),
 	).replace(':allowedSiteId', String(allowedSiteId));
