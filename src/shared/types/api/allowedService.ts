@@ -84,6 +84,5 @@ export interface GetRecommendedSitesReq {
 
 export interface PostMergeAllowedSiteReq {
 	allowedGroupId: number;
-	allowedSiteId: number;
 	siteUrl: string;
 }

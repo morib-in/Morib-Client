@@ -8,9 +8,9 @@ import {
 	deleteAllowedServiceGroup,
 	patchChangeAllowedServiceGroupColor,
 	patchChangeAllowedServiceGroupName,
-	patchMergeAllowedSite,
 	postAddAllowedService,
 	postAddAllowedServiceGroup,
+	postMergeAllowedSite,
 } from './allowedService.api';
 import { allowedServiceKeys } from './allowedService.keys';
 
@@ -79,11 +79,11 @@ export const useDeleteAllowedService = () => {
 	});
 };
 
-export const usePatchMergeToParentDomain = () => {
+export const usePostMergeToParentDomain = () => {
 	const queryClient = useQueryClient();
 
 	return useMutation({
-		mutationFn: patchMergeAllowedSite,
+		mutationFn: postMergeAllowedSite,
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: allowedServiceKeys.allowedService });
 		},
