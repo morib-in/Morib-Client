@@ -300,9 +300,6 @@ const AllowedServicePage = () => {
 							<AllowedServiceGroupDetail.TabButton onClick={() => setCurrentTap('WEB')} isActive={currentTap === 'WEB'}>
 								웹사이트
 							</AllowedServiceGroupDetail.TabButton>
-							<AllowedServiceGroupDetail.TabButton disabled isActive={currentTap === 'DESKTOP'}>
-								앱
-							</AllowedServiceGroupDetail.TabButton>
 						</AllowedServiceGroupDetail.Tabs>
 
 						<AllowedServiceGroupDetail.Content>
