@@ -405,8 +405,13 @@ const HomePage = () => {
 													<PopoverAddCategoryIcon />
 												</button>
 											)}
-											<button className="flex-shrink-0" onClick={handleAddCategory}>
-												<LargePlusIcon className="rounded-full bg-gray-bg-03 hover:bg-gray-bg-05" />
+											<button
+												className={`flex-shrink-0 ${addingTodayTodoStatus ? 'pointer-events-none' : ''}`}
+												onClick={handleAddCategory}
+											>
+												<LargePlusIcon
+													className={`rounded-full bg-gray-bg-03 ${addingTodayTodoStatus ? '' : 'hover:bg-gray-bg-05'}`}
+												/>
 											</button>
 										</div>
 									)}
@@ -425,8 +430,13 @@ const HomePage = () => {
 
 						{dailyCategoryTask.length > 2 && (
 							<div className="ml-[1.4rem] flex flex-col">
-								<button className="flex-shrink-0" onClick={handleAddCategory}>
-									<LargePlusIcon className="rounded-full bg-gray-bg-03 hover:bg-gray-bg-05" />
+								<button
+									className={`flex-shrink-0 ${addingTodayTodoStatus ? 'pointer-events-none' : ''}`}
+									onClick={addingTodayTodoStatus ? undefined : handleAddCategory}
+								>
+									<LargePlusIcon
+										className={`rounded-full bg-gray-bg-03 ${addingTodayTodoStatus ? '' : 'hover:bg-gray-bg-05'}`}
+									/>
 								</button>
 							</div>
 						)}

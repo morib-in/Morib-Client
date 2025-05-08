@@ -244,7 +244,10 @@ const BoxCategory = ({
 							onKeyDown={handleKeyDown}
 						/>
 					) : (
-						<h2 className="truncate text-white subhead-semibold-18" onClick={handleStartEditing}>
+						<h2
+							className={`truncate text-white subhead-semibold-18 ${addingTodayTodoStatus ? 'pointer-events-none' : ''}`}
+							onClick={handleStartEditing}
+						>
 							{title}
 						</h2>
 					)}
@@ -257,12 +260,12 @@ const BoxCategory = ({
 						<button
 							onMouseEnter={handleMouseEnter}
 							onClick={startAddingTodo}
-							className="rounded-full hover:bg-gray-bg-04 active:bg-gray-bg-05"
+							className={`rounded-full ${addingTodayTodoStatus ? 'pointer-events-none' : 'hover:bg-gray-bg-04 active:bg-gray-bg-05'}`}
 						>
 							<PlusIcon />
 						</button>
 						<Dropdown>
-							<Dropdown.Trigger>
+							<Dropdown.Trigger className={addingTodayTodoStatus ? 'pointer-events-none' : ''}>
 								<MeatballDefaultIcon className="rounded-full hover:bg-gray-bg-04 active:bg-gray-bg-05" />
 							</Dropdown.Trigger>
 							<Dropdown.Content className="right-0 top-[3.2rem]">

@@ -39,6 +39,7 @@ interface BoxTodoProps {
 	activeCalendarTask?: boolean;
 	undeletable?: boolean;
 	disableHoverCalendar?: boolean;
+	addingTodayTodoStatus?: boolean;
 }
 
 const BoxTodo = ({
@@ -61,6 +62,7 @@ const BoxTodo = ({
 	activeCalendarTask,
 	undeletable = false,
 	disableHoverCalendar = false,
+	addingTodayTodoStatus = false,
 }: BoxTodoProps) => {
 	const { mutate: deleteTask } = useDeleteTask();
 
