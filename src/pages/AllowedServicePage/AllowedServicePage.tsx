@@ -11,11 +11,11 @@ import TextField from '@/shared/components/TextField/TextField';
 import { isUrlValid } from '@/shared/utils/validation';
 
 import { ColorPaletteType } from '@/shared/types/allowedService';
-import { GetAllowedServiceListRes } from '@/shared/types/api/allowedService';
 
 import BellIcon from '@/shared/assets/svgs/bell.svg?react';
 import FriendSettingIcon from '@/shared/assets/svgs/friend_setting.svg?react';
 
+import ModalContentsAlert from '@/pages/AllowedServicePage/ModalContentsAlert/ModalContentsAlert';
 import { allowedServiceKeys } from '@/shared/apisV2/allowedService/allowedService.keys';
 import {
 	useDeleteAllowedService,
@@ -47,6 +47,7 @@ const AllowedServicePage = () => {
 	const queryClient = useQueryClient();
 
 	const friendsModalRef = useRef<ModalWrapperRef>(null);
+	const actionFeedbackRef = useRef<ModalWrapperRef>(null);
 
 	const handleChangeTitleInput = (e: ChangeEvent<HTMLInputElement>) => {
 		setTitleInput(e.target.value);
@@ -232,6 +233,14 @@ const AllowedServicePage = () => {
 		friendsModalRef.current?.open();
 	};
 
+	const handleOpenActionFeedbackModal = () => {
+		actionFeedbackRef.current?.open();
+	};
+
+	const handleCloseActionFeedbackModal = () => {
+		actionFeedbackRef.current?.close();
+	};
+
 	return (
 		<AutoFixedGrid type="allowedService" className="gap-[3rem] bg-gray-bg-01 px-[3.6rem] py-[4.2rem]">
 			<div className="absolute right-[4.2rem] top-[5.4rem] z-50 flex gap-[0.8rem]">
@@ -311,15 +320,14 @@ const AllowedServicePage = () => {
 									사이트 등록하기
 								</TextField.ConfirmButton>
 							</TextField>
-
 							<AllowedServiceGroupDetail.Table totalLength={allowedServiceGroupDetail?.data.allowedSites.length || 0}>
 								{allowedServiceGroupDetail &&
 									allowedServiceGroupDetail.data.allowedSites.map((allowedSiteData, index) => (
 										<AllowedServiceGroupDetail.TableRow
 											key={`${index}-${allowedSiteData.id}`}
-											onDeleteAllowedSite={() =>
-												handleDeleteAllowedService(allowedSiteData.id, allowedSiteData.siteUrl)
-											}
+											onDeleteAllowedSite={() => {
+												handleDeleteAllowedService(allowedSiteData.id, allowedSiteData.siteUrl);
+											}}
 											{...allowedSiteData}
 										/>
 									))}
@@ -340,6 +348,9 @@ const AllowedServicePage = () => {
 			</AutoFixedGrid.Slot>
 			<ModalWrapper ref={friendsModalRef} backdrop>
 				{({ isModalOpen }) => <ModalContentsFriends isModalOpen={isModalOpen} />}
+			</ModalWrapper>
+			<ModalWrapper ref={actionFeedbackRef} backdrop>
+				{({ isModalOpen }) => <ModalContentsAlert.ActionFeedback isModalOpen={isModalOpen} />}
 			</ModalWrapper>
 		</AutoFixedGrid>
 	);

@@ -1,11 +1,12 @@
 import { ReactNode } from 'react';
 
+import Dropdown from '@/shared/components/Dropdown/Dropdown';
 import FaviconImage from '@/shared/components/FaviconImage/FaviconImage';
 import Spacer from '@/shared/components/Spacer/Spacer';
 
 import { AllowedServiceGroupDetailSiteType } from '@/shared/types/allowedService';
 
-import MinusBtn from '@/shared/assets/svgs/minus_btn.svg?react';
+import MeatBallDefaultIcon from '@/shared/assets/svgs/common/ic_meatball_default.svg?react';
 
 export interface AllowedServiceGroupDetailContentProps {
 	children: ReactNode;
@@ -77,9 +78,14 @@ export const AllowedServiceGroupDetailContentTableRow = ({
 			</div>
 			<div>
 				<div className="pr-[2.05rem]">
-					<button type="button" onClick={onDeleteAllowedSite}>
-						<MinusBtn className="fill-gray-bg-07 hover:fill-error-01 active:fill-error-03" />
-					</button>
+					<Dropdown>
+						<Dropdown.Trigger>
+							<MeatBallDefaultIcon className="cursor-pointer hover:rounded-full hover:bg-gray-bg-05" />
+						</Dropdown.Trigger>
+						<Dropdown.Content boxShadow="shadow-none" className="absolute right-0 top-[2.4rem] w-[12.4rem]">
+							<Dropdown.Item label="리스트 삭제" textColor="red" onClick={onDeleteAllowedSite} />
+						</Dropdown.Content>
+					</Dropdown>
 				</div>
 			</div>
 		</div>
