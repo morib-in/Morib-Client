@@ -81,3 +81,9 @@ export interface DeleteAllowedServiceReq {
 export interface GetRecommendedSitesReq {
 	allowedGroupId: number;
 }
+
+export interface PostMergeAllowedSiteReq {
+	allowedGroupId: number;
+	allowedSiteId: number;
+	siteUrl: string;
+}

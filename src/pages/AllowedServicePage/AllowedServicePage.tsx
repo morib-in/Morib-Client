@@ -342,9 +342,11 @@ const AllowedServicePage = () => {
 							</TextField>
 							<AllowedServiceGroupDetail.Table totalLength={allowedServiceGroupDetail?.data.allowedSites.length || 0}>
 								{allowedServiceGroupDetail &&
+									activeGroupId &&
 									allowedServiceGroupDetail.data.allowedSites.map((allowedSiteData, index) => (
 										<AllowedServiceGroupDetail.TableRow
 											key={`${index}-${allowedSiteData.id}`}
+											activeGroupId={activeGroupId}
 											onDeleteAllowedSite={() => {
 												handleDeleteAllowedService(allowedSiteData.id, allowedSiteData.siteUrl);
 											}}

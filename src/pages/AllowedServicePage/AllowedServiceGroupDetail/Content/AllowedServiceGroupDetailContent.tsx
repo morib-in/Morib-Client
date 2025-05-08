@@ -10,6 +10,7 @@ import { AllowedServiceGroupDetailSiteType } from '@/shared/types/allowedService
 import MeatBallDefaultIcon from '@/shared/assets/svgs/common/ic_meatball_default.svg?react';
 
 import ModalContentsAlert from '@/pages/AllowedServicePage/ModalContentsAlert/ModalContentsAlert';
+import { usePatchMergeToParentDomain } from '@/shared/apisV2/allowedService/allowedService.mutations';
 
 export interface AllowedServiceGroupDetailContentProps {
 	children: ReactNode;
@@ -57,10 +58,12 @@ export const AllowedServiceGroupDetailContentTable = ({
 
 export interface AllowedServiceGroupDetailContentRootTableRowProps extends AllowedServiceGroupDetailSiteType {
 	onDeleteAllowedSite: () => void;
+	activeGroupId: number;
 }
 
 export const AllowedServiceGroupDetailContentTableRow = ({
 	onDeleteAllowedSite,
+	activeGroupId,
 	...allowedSiteData
 }: AllowedServiceGroupDetailContentRootTableRowProps) => {
 	const domainAllowModalRef = useRef<ModalWrapperRef>(null);
@@ -72,6 +75,8 @@ export const AllowedServiceGroupDetailContentTableRow = ({
 	const handleCloseDomainAllowModal = () => {
 		domainAllowModalRef.current?.close();
 	};
+	const allowToMergeParentDomain = usePatchMergeToParentDomain();
+
 	return (
 		<div className="flex h-[5rem] items-center border-b-[0.1rem] border-gray-bg-04 px-[1rem]">
 			<div className="flex w-[24rem] flex-shrink-0 items-center gap-x-[0.5rem] truncate pr-[1rem] text-left text-white body-med-16">
@@ -106,6 +111,11 @@ export const AllowedServiceGroupDetailContentTableRow = ({
 					<ModalContentsAlert.DomainAllowConfirm
 						siteName={allowedSiteData.siteName}
 						onConfirm={() => {
+							allowToMergeParentDomain.mutate({
+								allowedGroupId: activeGroupId!,
+								allowedSiteId: allowedSiteData.id,
+								siteUrl: 'https://' + allowedSiteData.siteUrl,
+							});
 							handleCloseDomainAllowModal();
 						}}
 						onCancel={handleCloseDomainAllowModal}
