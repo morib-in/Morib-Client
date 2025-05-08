@@ -41,6 +41,9 @@ if (!gotTheLock) {
 	app.whenReady().then(() => {
 		createWindow();
 
+		// 인증 관련 IPC 핸들러 설정
+		setupAuthHandlers();
+
 		// macOS에서 dock 아이콘 클릭 시 창 복원
 		app.on('activate', () => {
 			// On macOS it's common to re-create a window in the app when the
@@ -74,6 +77,38 @@ if (!gotTheLock) {
 			createAuthenticatedWindow(accessToken, refreshToken, isOnboardingCompleted);
 			// 브라우저 URL 모니터링을 위한 IPC 핸들러 등록
 			setupBrowserMonitorHandlers();
+		}
+	});
+}
+
+// 인증 관련 IPC 핸들러 설정
+function setupAuthHandlers() {
+	// 로그인 페이지로 리디렉션 요청
+	ipcMain.on('auth:relogin', () => {
+		console.log('로그인 페이지로 리디렉션 요청 수신');
+
+		// authWindow가 있으면 닫음
+		if (authWindow && !authWindow.isDestroyed()) {
+			authWindow.close();
+			authWindow = null;
+		}
+
+		// mainWindow가 없으면 생성, 있으면 로그인 페이지로 이동
+		if (!mainWindow || mainWindow.isDestroyed()) {
+			createWindow();
+		} else {
+			// 로그인 페이지로 이동
+			if (isDev()) {
+				mainWindow.loadURL('http://localhost:5123/');
+			} else {
+				mainWindow.loadFile(path.join(app.getAppPath(), 'dist-react/index.html'));
+			}
+
+			// 창이 숨겨져 있으면 표시
+			if (!mainWindow.isVisible()) {
+				mainWindow.show();
+			}
+			mainWindow.focus();
 		}
 	});
 }

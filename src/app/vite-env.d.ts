@@ -21,5 +21,8 @@ interface Window {
 			onTimerStop: (callback: (data: { url: string; timestamp: number }) => void) => (() => void) | undefined;
 			onNotificationAction: (callback: (action: 'timer' | 'register', url: string) => void) => (() => void) | undefined;
 		};
+		auth?: {
+			relogin: () => void;
+		};
 	};
 }

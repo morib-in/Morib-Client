@@ -11,7 +11,17 @@ export const setAccessToken = (accessToken: string) => {
 
 export const reloginWithoutLogout = () => {
 	localStorage.removeItem('accessToken');
-	location.href = ROUTES_CONFIG.login.path;
+	localStorage.removeItem('refreshToken');
+	localStorage.removeItem('isOnboardingCompleted');
+
+	// electron 환경인지 확인
+	if (window.electron?.auth) {
+		// electron IPC 통신을 통해 메인 프로세스에 메시지 전송
+		window.electron.auth.relogin();
+	} else {
+		// 일반 브라우저 환경인 경우 기존 방식대로 처리
+		location.href = ROUTES_CONFIG.login.path;
+	}
 };
 
 export const getRefreshToken = () => {

@@ -35,4 +35,12 @@ contextBridge.exposeInMainWorld('electron', {
 			return () => ipcRenderer.removeListener('timer:stop-by-url', handler);
 		},
 	},
+
+	// 인증 관련 API 추가
+	auth: {
+		// 로그인 페이지로 리디렉션하는 함수
+		relogin: () => {
+			ipcRenderer.send('auth:relogin');
+		},
+	},
 });
