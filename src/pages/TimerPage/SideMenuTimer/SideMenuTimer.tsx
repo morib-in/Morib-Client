@@ -111,7 +111,7 @@ const SideMenuTimer = ({ ongoingTodos = [], completedTodos = [] }: SideMenuTimer
 				key={todo.id}
 				{...todo}
 				isSelected={todo.id === selectedTask.id}
-				onClick={isOngoing ? () => handleTodoClick(todo) : undefined}
+				onClick={() => handleTodoClick(todo)}
 				onToggleComplete={(e) => {
 					e.stopPropagation();
 					handleToggleTodoComplete(todo.id, isOngoing);
