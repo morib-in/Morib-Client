@@ -1,5 +1,11 @@
 {
-  "name": "morib-client",
+  "name": "Morib",
+  "description": "Your complete immersion space. Morib",
+  "author": {
+    "name": "Morib",
+    "email": "morib0615@gmail.com",
+    "url": "https://morib.in"
+  },
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -13,6 +19,11 @@
     "preview": "vite preview",
     "transpile:electron": "tsc --project src/electron/tsconfig.json",
     "dist:mac": "pnpm transpile:electron && pnpm build && electron-builder --mac --arm64",
+    "dist:mac:intel": "pnpm transpile:electron && pnpm build && electron-builder --mac --x64",
+    "dist:mac:universal": "pnpm transpile:electron && pnpm build && electron-builder --mac --universal",
+    "dist:mac:notarize": "./scripts/build-mac.sh",
+    "dist:mac:intel:notarize": "./scripts/build-mac-intel.sh",
+    "dist:mac:universal:notarize": "./scripts/build-mac-universal.sh",
     "dist:win": "pnpm transpile:electron && pnpm build && electron-builder --win --x64",
     "dist:linux": "pnpm transpile:electron && pnpm build && electron-builder --linux --x64"
   },
