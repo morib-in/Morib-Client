@@ -82,13 +82,14 @@ export const AllowedServiceGroupDetailContentTableRow = ({
 						<Dropdown.Trigger>
 							<MeatBallDefaultIcon className="cursor-pointer hover:rounded-full hover:bg-gray-bg-05" />
 						</Dropdown.Trigger>
-						<Dropdown.Content boxShadow="shadow-none" className="absolute right-0 top-[2.4rem] w-[12.4rem]">
+						<Dropdown.Content className="absolute right-0 top-[2.4rem] w-[16.7rem]">
 							<Dropdown.Item label="상위 도메인 허용" />
 							<Dropdown.Item label="허용 사이트 삭제" textColor="red" onClick={onDeleteAllowedSite} />
 						</Dropdown.Content>
 					</Dropdown>
 				</div>
 			</div>
+			;
 		</div>
 	);
 };

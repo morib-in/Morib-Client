@@ -35,6 +35,10 @@ import AllowedServiceGroupDetail from './AllowedServiceGroupDetail/AllowedServic
 import AllowedServiceList from './AllowedServiceList/AllowedServiceList';
 import RecommendService from './RecommendService/RecommendService';
 
+interface ModalState {
+	variant: 'confirm-delete' | 'title-required';
+	pageName?: string;
+}
 // NOTE: 리렌더링 최적화 필요
 const AllowedServicePage = () => {
 	const [activeGroupId, setActiveGroupId] = useState<number | null>(null);
@@ -43,6 +47,10 @@ const AllowedServicePage = () => {
 	const [isEditingTitle, setIsEditingTitle] = useState(false);
 	const [urlInput, setUrlInput] = useState('');
 	const [selectedColor, setSelectedColor] = useState<ColorPaletteType>('#868C93');
+	const [modalState, setModalState] = useState<ModalState>({
+		variant: 'confirm-delete',
+		pageName: '',
+	});
 
 	const queryClient = useQueryClient();
 
@@ -165,6 +173,12 @@ const AllowedServicePage = () => {
 	};
 
 	const handleAddAllowedService = (urlInput: string, activeGroupId: number | null) => {
+		if (!activeGroupId) {
+			handleOpenActionFeedbackModal({
+				variant: 'title-required',
+			});
+			return;
+		}
 		if (activeGroupId && !isPending) {
 			postAddAllowedService(
 				{
@@ -195,6 +209,10 @@ const AllowedServicePage = () => {
 					) {
 						resetAllowedService();
 					}
+					handleOpenActionFeedbackModal({
+						variant: 'confirm-delete',
+						pageName: deleteUrl,
+					});
 				},
 			},
 		);
@@ -202,6 +220,7 @@ const AllowedServicePage = () => {
 
 	const handleKeyDownUrlInput = (e: KeyboardEvent<HTMLInputElement>) => {
 		if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
+			e.preventDefault();
 			handleAddAllowedService(urlInput, activeGroupId);
 		}
 	};
@@ -233,7 +252,8 @@ const AllowedServicePage = () => {
 		friendsModalRef.current?.open();
 	};
 
-	const handleOpenActionFeedbackModal = () => {
+	const handleOpenActionFeedbackModal = (state: Partial<ModalState> = {}) => {
+		setModalState((prev) => ({ ...prev, ...state }));
 		actionFeedbackRef.current?.open();
 	};
 
@@ -350,7 +370,14 @@ const AllowedServicePage = () => {
 				{({ isModalOpen }) => <ModalContentsFriends isModalOpen={isModalOpen} />}
 			</ModalWrapper>
 			<ModalWrapper ref={actionFeedbackRef} backdrop>
-				{({ isModalOpen }) => <ModalContentsAlert.ActionFeedback isModalOpen={isModalOpen} />}
+				{({ isModalOpen }) => (
+					<ModalContentsAlert.ActionFeedback
+						variant={modalState.variant}
+						isModalOpen={isModalOpen}
+						onClick={handleCloseActionFeedbackModal}
+						pageName={modalState.pageName}
+					/>
+				)}
 			</ModalWrapper>
 		</AutoFixedGrid>
 	);
