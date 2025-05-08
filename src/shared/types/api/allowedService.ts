@@ -64,6 +64,7 @@ export interface GetRecommendedSitesRes {
 		recommendSites: {
 			siteName: string;
 			siteUrl: string;
+			favicon: string;
 		}[];
 	};
 }
