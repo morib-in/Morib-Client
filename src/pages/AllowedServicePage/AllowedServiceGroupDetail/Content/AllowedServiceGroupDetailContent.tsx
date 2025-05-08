@@ -67,6 +67,7 @@ export const AllowedServiceGroupDetailContentTableRow = ({
 	...allowedSiteData
 }: AllowedServiceGroupDetailContentRootTableRowProps) => {
 	const domainAllowModalRef = useRef<ModalWrapperRef>(null);
+	const confirmDeleteModalRef = useRef<ModalWrapperRef>(null);
 
 	const handleOpenDomainAllowModal = () => {
 		domainAllowModalRef.current?.open();
@@ -75,6 +76,15 @@ export const AllowedServiceGroupDetailContentTableRow = ({
 	const handleCloseDomainAllowModal = () => {
 		domainAllowModalRef.current?.close();
 	};
+
+	const handleOpenConfirmDeleteModal = () => {
+		confirmDeleteModalRef.current?.open();
+	};
+
+	const handleCloseConfirmDeleteModal = () => {
+		confirmDeleteModalRef.current?.close();
+	};
+
 	const allowToMergeParentDomain = usePatchMergeToParentDomain();
 
 	return (
@@ -101,7 +111,13 @@ export const AllowedServiceGroupDetailContentTableRow = ({
 						</Dropdown.Trigger>
 						<Dropdown.Content className="absolute right-0 top-[2.4rem] w-[16.7rem]">
 							<Dropdown.Item label="상위 도메인 허용" onClick={handleOpenDomainAllowModal} />
-							<Dropdown.Item label="허용 사이트 삭제" textColor="red" onClick={onDeleteAllowedSite} />
+							<Dropdown.Item
+								label="허용 사이트 삭제"
+								textColor="red"
+								onClick={() => {
+									handleOpenConfirmDeleteModal();
+								}}
+							/>
 						</Dropdown.Content>
 					</Dropdown>
 				</div>
@@ -119,6 +135,17 @@ export const AllowedServiceGroupDetailContentTableRow = ({
 							handleCloseDomainAllowModal();
 						}}
 						onCancel={handleCloseDomainAllowModal}
+					/>
+				)}
+			</ModalWrapper>
+			<ModalWrapper ref={confirmDeleteModalRef} backdrop>
+				{() => (
+					<ModalContentsAlert.ConfirmDelete
+						onClick={() => {
+							handleCloseConfirmDeleteModal();
+							onDeleteAllowedSite();
+						}}
+						pageName={allowedSiteData.pageName}
 					/>
 				)}
 			</ModalWrapper>

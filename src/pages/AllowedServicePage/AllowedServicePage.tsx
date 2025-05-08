@@ -35,10 +35,6 @@ import AllowedServiceGroupDetail from './AllowedServiceGroupDetail/AllowedServic
 import AllowedServiceList from './AllowedServiceList/AllowedServiceList';
 import RecommendService from './RecommendService/RecommendService';
 
-interface ModalState {
-	variant: 'confirm-delete' | 'title-required';
-	pageName?: string;
-}
 // NOTE: 리렌더링 최적화 필요
 const AllowedServicePage = () => {
 	const [activeGroupId, setActiveGroupId] = useState<number | null>(null);
@@ -47,15 +43,11 @@ const AllowedServicePage = () => {
 	const [isEditingTitle, setIsEditingTitle] = useState(false);
 	const [urlInput, setUrlInput] = useState('');
 	const [selectedColor, setSelectedColor] = useState<ColorPaletteType>('#868C93');
-	const [modalState, setModalState] = useState<ModalState>({
-		variant: 'confirm-delete',
-		pageName: '',
-	});
 
 	const queryClient = useQueryClient();
 
 	const friendsModalRef = useRef<ModalWrapperRef>(null);
-	const actionFeedbackRef = useRef<ModalWrapperRef>(null);
+	const requireTitleModalRef = useRef<ModalWrapperRef>(null);
 
 	const handleChangeTitleInput = (e: ChangeEvent<HTMLInputElement>) => {
 		setTitleInput(e.target.value);
@@ -174,9 +166,7 @@ const AllowedServicePage = () => {
 
 	const handleAddAllowedService = (urlInput: string, activeGroupId: number | null) => {
 		if (!activeGroupId) {
-			handleOpenActionFeedbackModal({
-				variant: 'title-required',
-			});
+			handleOpenRequireTitleModal();
 			return;
 		}
 		if (activeGroupId && !isPending) {
@@ -209,10 +199,6 @@ const AllowedServicePage = () => {
 					) {
 						resetAllowedService();
 					}
-					handleOpenActionFeedbackModal({
-						variant: 'confirm-delete',
-						pageName: deleteUrl,
-					});
 				},
 			},
 		);
@@ -252,13 +238,12 @@ const AllowedServicePage = () => {
 		friendsModalRef.current?.open();
 	};
 
-	const handleOpenActionFeedbackModal = (state: Partial<ModalState> = {}) => {
-		setModalState((prev) => ({ ...prev, ...state }));
-		actionFeedbackRef.current?.open();
+	const handleOpenRequireTitleModal = () => {
+		requireTitleModalRef.current?.open();
 	};
 
-	const handleCloseActionFeedbackModal = () => {
-		actionFeedbackRef.current?.close();
+	const handleCloseRequireTitleModal = () => {
+		requireTitleModalRef.current?.close();
 	};
 
 	return (
@@ -371,14 +356,8 @@ const AllowedServicePage = () => {
 			<ModalWrapper ref={friendsModalRef} backdrop>
 				{({ isModalOpen }) => <ModalContentsFriends isModalOpen={isModalOpen} />}
 			</ModalWrapper>
-			<ModalWrapper ref={actionFeedbackRef} backdrop>
-				{() => (
-					<ModalContentsAlert.ActionFeedback
-						variant={modalState.variant}
-						onClick={handleCloseActionFeedbackModal}
-						pageName={modalState.pageName}
-					/>
-				)}
+			<ModalWrapper ref={requireTitleModalRef} backdrop>
+				{() => <ModalContentsAlert.RequireTitle onClick={handleCloseRequireTitleModal} />}
 			</ModalWrapper>
 		</AutoFixedGrid>
 	);
