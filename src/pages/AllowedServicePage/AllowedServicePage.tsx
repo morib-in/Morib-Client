@@ -150,29 +150,14 @@ const AllowedServicePage = () => {
 		}
 	};
 
-	const handleDeleteAllowedServiceGroup = (groupId: number, isActive: boolean, currentIndex: number) => {
+	const handleDeleteAllowedServiceGroup = (groupId: number) => {
 		deleteAllowedServiceGroup(
 			{ allowedGroupId: groupId },
 			{
 				onSuccess: () => {
-					queryClient.setQueryData(
-						allowedServiceKeys.allowedServiceList({ connectType: currentTap }),
-						(oldData: GetAllowedServiceListRes) => {
-							if (!oldData) return oldData;
-							return {
-								...oldData,
-								data: oldData.data.filter((group) => group.id !== groupId),
-							};
-						},
-					);
-
-					if (isActive) {
-						if (allowedServiceList && allowedServiceList.data.length > 1) {
-							setActiveGroupId(allowedServiceList.data[currentIndex + 1].id);
-						} else {
-							handleEnableAddingAllowedServiceGroup();
-						}
-					}
+					queryClient.invalidateQueries({
+						queryKey: allowedServiceKeys.allowedServiceList({ connectType: currentTap }),
+					});
 				},
 			},
 		);
@@ -221,9 +206,17 @@ const AllowedServicePage = () => {
 	};
 
 	// NOTE: 첫 렌더링 시 api를 통해 받은 첫번째 allowed service group id를 activeGroupId로 설정
+	// 리스트 삭제 후, 현재 active 그룹이 리스트에 없는 경우 첫 번째 그룹으로 설정
 	useEffect(() => {
-		if (activeGroupId === null && allowedServiceList && allowedServiceList?.data.length > 0) {
-			setActiveGroupId(allowedServiceList.data[0].id);
+		if (allowedServiceList && allowedServiceList.data.length > 0) {
+			const activeGroupExists = activeGroupId && allowedServiceList.data.some((group) => group.id === activeGroupId);
+
+			if (!activeGroupId || !activeGroupExists) {
+				setActiveGroupId(allowedServiceList.data[0].id);
+			}
+		} else if (allowedServiceList && allowedServiceList.data.length === 0 && activeGroupId !== null) {
+			// 리스트가 비어있고 선택된 그룹이 있으면 입력 모드로  전환
+			handleEnableAddingAllowedServiceGroup();
 		}
 	}, [allowedServiceList]);
 
@@ -261,10 +254,9 @@ const AllowedServicePage = () => {
 						{activeGroupId === null && (
 							<AllowedServiceList.ItemInput titleInput={titleInput} selectedColor={selectedColor} />
 						)}
-						{allowedServiceList?.data.map((allowedServiceGroupData, index) => (
+						{allowedServiceList?.data.map((allowedServiceGroupData) => (
 							<AllowedServiceList.Item
 								key={allowedServiceGroupData.id}
-								index={index}
 								activeGroupId={activeGroupId}
 								activeGroupTitleInput={titleInput}
 								onSelectActiveGroup={handleSelectActiveGroupId}
