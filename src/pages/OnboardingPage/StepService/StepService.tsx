@@ -159,7 +159,7 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 				<Spacer.Height as="main" className="flex flex-col pb-[3rem]">
 					<h1 className="mb-[2rem] text-white title-bold-36">작업 시 사용할 서비스들을 입력해주세요</h1>
 					<p className="mb-[2.3rem] text-gray-04 subhead-reg-22">
-						필요한 서비스에만 들어가고, 나의 온전한 집중 시간을 기록할 수 있어요. 만든 허용서비스 세트는 언제든 편집할
+						필요한 서비스에만 들어가고, 나의 온전한 집중 시간을 기록할 수 있어요. 만든 허용서비스 리스트는 언제든 편집할
 						수 있어요.
 					</p>
 
