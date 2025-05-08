@@ -1,12 +1,15 @@
-import { ReactNode } from 'react';
+import { ReactNode, useRef } from 'react';
 
 import Dropdown from '@/shared/components/Dropdown/Dropdown';
 import FaviconImage from '@/shared/components/FaviconImage/FaviconImage';
+import ModalWrapper, { ModalWrapperRef } from '@/shared/components/ModalWrapper/ModalWrapper';
 import Spacer from '@/shared/components/Spacer/Spacer';
 
 import { AllowedServiceGroupDetailSiteType } from '@/shared/types/allowedService';
 
 import MeatBallDefaultIcon from '@/shared/assets/svgs/common/ic_meatball_default.svg?react';
+
+import ModalContentsAlert from '@/pages/AllowedServicePage/ModalContentsAlert/ModalContentsAlert';
 
 export interface AllowedServiceGroupDetailContentProps {
 	children: ReactNode;
@@ -60,6 +63,15 @@ export const AllowedServiceGroupDetailContentTableRow = ({
 	onDeleteAllowedSite,
 	...allowedSiteData
 }: AllowedServiceGroupDetailContentRootTableRowProps) => {
+	const domainAllowModalRef = useRef<ModalWrapperRef>(null);
+
+	const handleOpenDomainAllowModal = () => {
+		domainAllowModalRef.current?.open();
+	};
+
+	const handleCloseDomainAllowModal = () => {
+		domainAllowModalRef.current?.close();
+	};
 	return (
 		<div className="flex h-[5rem] items-center border-b-[0.1rem] border-gray-bg-04 px-[1rem]">
 			<div className="flex w-[24rem] flex-shrink-0 items-center gap-x-[0.5rem] truncate pr-[1rem] text-left text-white body-med-16">
@@ -83,13 +95,24 @@ export const AllowedServiceGroupDetailContentTableRow = ({
 							<MeatBallDefaultIcon className="cursor-pointer hover:rounded-full hover:bg-gray-bg-05" />
 						</Dropdown.Trigger>
 						<Dropdown.Content className="absolute right-0 top-[2.4rem] w-[16.7rem]">
-							<Dropdown.Item label="상위 도메인 허용" />
+							<Dropdown.Item label="상위 도메인 허용" onClick={handleOpenDomainAllowModal} />
 							<Dropdown.Item label="허용 사이트 삭제" textColor="red" onClick={onDeleteAllowedSite} />
 						</Dropdown.Content>
 					</Dropdown>
 				</div>
 			</div>
-			;
+			<ModalWrapper ref={domainAllowModalRef} backdrop>
+				{({ isModalOpen }) => (
+					<ModalContentsAlert.DomainAllowConfirm
+						siteName={allowedSiteData.siteName}
+						onConfirm={() => {
+							handleCloseDomainAllowModal();
+						}}
+						onCancel={handleCloseDomainAllowModal}
+						isModalOpen={isModalOpen}
+					/>
+				)}
+			</ModalWrapper>
 		</div>
 	);
 };
