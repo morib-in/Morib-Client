@@ -165,6 +165,13 @@ function createWindow() {
 		},
 		width: 1440,
 		height: 920,
+		show: false, // 초기에는 창을 표시하지 않음
+		backgroundColor: '#181C22', // 배경색 설정 (어두운 색상 예시)
+	});
+
+	// 콘텐츠가 준비되면 창 표시
+	mainWindow.once('ready-to-show', () => {
+		mainWindow?.show();
 	});
 
 	mainWindow.webContents.setWindowOpenHandler((details) => {
@@ -185,7 +192,7 @@ function createWindow() {
 	});
 
 	if (isDev()) {
-		mainWindow.loadURL('http://localhost:5123');
+		mainWindow.loadURL('http://localhost:5123/');
 	} else {
 		mainWindow.loadFile(path.join(app.getAppPath(), 'dist-react/index.html'));
 	}
@@ -202,6 +209,13 @@ function createAuthenticatedWindow(
 		},
 		width: 1440,
 		height: 920,
+		show: false, // 초기에는 창을 표시하지 않음
+		backgroundColor: '#181C22', // 배경색 설정 (어두운 색상 예시)
+	});
+
+	// 콘텐츠가 준비되면 창 표시
+	authWindow.once('ready-to-show', () => {
+		authWindow?.show();
 	});
 
 	// 닫기 버튼 클릭 시 앱을 종료하지 않고 숨김 처리
