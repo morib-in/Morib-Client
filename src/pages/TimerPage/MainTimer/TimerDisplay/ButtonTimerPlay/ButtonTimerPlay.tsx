@@ -15,20 +15,8 @@ const ButtonTimerPlay = ({ onClick, isPlaying, disabled = false }: ButtonTimerPl
 	const IconComponent = isPlaying ? PauseIcon : PlayIcon;
 	const HoverIconComponent = isPlaying ? HoverPauseIcon : HoverPlayIcon;
 
-	const handleClick = (e: MouseEvent) => {
-		if (disabled) {
-			e.preventDefault();
-			return;
-		}
-		onClick();
-	};
-
 	return (
-		<button
-			onClick={handleClick}
-			className={`group relative ${disabled ? 'cursor-not-allowed' : ''}`}
-			disabled={disabled}
-		>
+		<button onClick={onClick} className={`group relative ${disabled ? 'cursor-not-allowed' : ''}`} disabled={disabled}>
 			<IconComponent className="block group-hover:hidden" />
 			<HoverIconComponent className="hidden group-hover:block" />
 		</button>
