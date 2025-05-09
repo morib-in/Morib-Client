@@ -17,7 +17,11 @@ const RecommendServiceItem = ({ recommendSite, ...props }: RecommendServiceItemP
 			{...props}
 			className="flex w-[23.9rem] flex-shrink-0 items-center gap-[1.5rem] rounded-[8px] bg-gray-bg-01 p-[2rem] hover:bg-gray-bg-04 active:bg-gray-bg-02"
 		>
-			<img src={recommendSite.favicon} alt="favicon" className="h-[4.2rem] w-[4.2rem] rounded-full" />
+			<img
+				src={recommendSite.favicon}
+				alt={`${recommendSite.siteName} 아이콘`}
+				className="h-[4.2rem] w-[4.2rem] rounded-full"
+			/>
 			<p className="max-h-[8.4rem] overflow-hidden text-white subhead-bold-20">{recommendSite.siteName}</p>
 		</button>
 	);

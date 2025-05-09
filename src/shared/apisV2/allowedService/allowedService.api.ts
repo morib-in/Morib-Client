@@ -107,10 +107,8 @@ export const deleteAllowedService = async ({ allowedSiteId }: DeleteAllowedServi
 };
 
 export const postMergeAllowedSite = async ({ allowedGroupId, siteUrl }: PostMergeAllowedSiteReq) => {
-	const url = ALLOWED_SERVICE_ENDPOINT.POST_MERGE_ALLOWED_SITE.replace(':allowedGroupId', String(allowedGroupId));
-
 	const { data } = await authClient.post(
-		url,
+		ALLOWED_SERVICE_ENDPOINT.POST_MERGE_ALLOWED_SITE.replace(':allowedGroupId', String(allowedGroupId)),
 		{},
 		{
 			params: {
