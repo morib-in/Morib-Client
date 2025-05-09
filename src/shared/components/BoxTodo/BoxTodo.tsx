@@ -62,7 +62,6 @@ const BoxTodo = ({
 	activeCalendarTask,
 	undeletable = false,
 	disableHoverCalendar = false,
-	addingTodayTodoStatus = false,
 }: BoxTodoProps) => {
 	const { mutate: deleteTask } = useDeleteTask();
 
@@ -188,7 +187,7 @@ const BoxTodo = ({
 				<div className="ml-[0.8rem] mt-[0.6rem] flex flex-col gap-[0.2rem]">
 					<button
 						className={`flex max-w-max gap-[0.6rem] rounded-[0.3rem] pr-[0.2rem] ${
-							activeCalendarTask ? 'bg-mint-01' : disableHoverCalendar ? '' : 'hover:bg-gray-bg-03'
+							activeCalendarTask ? 'bg-mint-01' : disableHoverCalendar ? 'cursor-default' : 'hover:bg-gray-bg-03'
 						} ${clickable || isComplete ? 'pointer-events-none' : ''}`}
 						onClick={handleCalendarToggle}
 					>

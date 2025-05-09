@@ -101,7 +101,7 @@ const AccountContent = ({ ...props }: AccountContentProps) => {
 				<div className="flex h-[9.2rem] w-full flex-col gap-[0.5rem] py-[2rem]">
 					<p className="text-error-01 subhead-semibold-18">내 계정 삭제</p>
 					<p className="text-gray-04 body-reg-16">
-						계정을 영구적으로 삭제하고 모든 워크스페이스에서 엑세스 권한을 제거합니다.
+						계정을 영구적으로 삭제하고 모든 워크스페이스에서 액세스 권한을 제거합니다.
 					</p>
 				</div>
 				<button type="button" onClick={handleOpenDeleteAccountModal}>

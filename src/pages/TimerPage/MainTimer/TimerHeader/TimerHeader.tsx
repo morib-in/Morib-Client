@@ -29,16 +29,10 @@ const TimerHeader = ({
 		);
 	}
 
-	const completedStyle = isCompleted ? 'line-through' : '';
-
 	return (
 		<header className="flex flex-col items-center gap-[0.4rem]">
-			<h1 className={`w-[120rem] truncate text-center text-white title-semibold-48 ${completedStyle}`}>
-				{selectedTaskName}
-			</h1>
-			<h2 className={`w-[80rem] truncate text-center text-gray-04 head-bold-30 ${completedStyle}`}>
-				{selectedTaskCategoryName}
-			</h2>
+			<h1 className="w-[120rem] truncate text-center text-white title-semibold-48">{selectedTaskName}</h1>
+			<h2 className="w-[80rem] truncate text-center text-gray-04 head-bold-30">{selectedTaskCategoryName}</h2>
 		</header>
 	);
 };
