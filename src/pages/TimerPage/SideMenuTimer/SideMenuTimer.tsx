@@ -86,7 +86,7 @@ const SideMenuTimer = ({ ongoingTodos = [], completedTodos = [] }: SideMenuTimer
 
 						// 선택된 할 일의 상태가 변경되면 타이머 정지 및 남은 할 일 중 첫번 째 할 일 선택
 						if (selectedTask.id === taskId && actions.stopCurrentTimer) {
-							actions.stopCurrentTimer(taskId);
+							actions.stopCurrentTimer(selectedTask.id);
 							const remainingTodos = ongoingTodos.filter((todo) => todo.id !== taskId);
 							if (remainingTodos.length > 0) {
 								const next = remainingTodos[0];
