@@ -160,7 +160,7 @@ const AllowedServiceItem = ({ onClick, ...props }: AllowedServiceItemProps) => {
 				<h3 className="w-[6rem] flex-shrink-0 truncate p-0 text-white body-med-16">{props.siteName}</h3>
 			</span>
 			<div className="ml-[1rem] h-[3.1rem] w-[20.4rem] flex-shrink-0 truncate rounded-[20px] bg-gray-bg-04 px-[1rem] py-[0.6rem] text-gray-04 body-reg-16">
-				{props.siteUrl}a
+				{props.siteUrl}
 			</div>
 			<button
 				onClick={() => {
