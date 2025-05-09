@@ -41,9 +41,9 @@ const CarouselFriend = memo(function CarouselFriend({
 	const ClockIcon = isPlaying ? ActivatedClockIcon : DeactivatedClockIcon;
 
 	return (
-		<div className="flex h-[15rem] w-[9.8rem] flex-shrink-0 flex-col items-center justify-center px-[0.8rem] py-[0.5rem]">
+		<div className="relative flex h-[15rem] w-[9.8rem] flex-shrink-0 flex-col items-center justify-center px-[0.8rem] py-[0.5rem]">
 			{/* 프로필 이미지 영역 */}
-			<span className="relative h-[7.4rem] w-[7.4rem]">
+			<span className="relative mb-[3rem] h-[7.4rem] w-[7.4rem]">
 				<img
 					src={image}
 					alt={`${name}의 프로필`}
@@ -59,7 +59,7 @@ const CarouselFriend = memo(function CarouselFriend({
 			</span>
 
 			{/* 타이머 표시 영역 */}
-			<div className="mb-[0.2rem] mt-[1rem] flex items-center gap-[0.2rem]">
+			<div className="absolute top-[8.4rem] flex items-center gap-[0.4rem]">
 				<ClockIcon />
 				<span className={`pt-[0.1rem] detail-reg-14 ${isPlaying ? 'text-mint-02' : 'text-gray-03'}`}>
 					{formattedTime}
