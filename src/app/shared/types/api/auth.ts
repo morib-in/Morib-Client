@@ -3,5 +3,6 @@ export interface reissueRes {
 	message: string;
 	data: {
 		accessToken: string;
+		refreshToken: string;
 	};
 }

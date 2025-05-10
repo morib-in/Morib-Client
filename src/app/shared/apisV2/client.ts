@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
-import { getAccessToken, reloginWithoutLogout, setAccessToken } from '@/shared/utils/auth';
+import { getAccessToken, reloginWithoutLogout, setAccessToken, setRefreshToken } from '@/shared/utils/auth';
 
 import { postReissueToken } from '@/shared/apisV2/auth/auth.api';
 
@@ -42,7 +42,10 @@ const addAuthInterceptor = (axiosClient: AxiosInstance) => {
 				try {
 					// NOTE: 추후에 로컬스토리지에 저장된 refreshToken을 사용하게끔 고치는 것이 필요할수있음
 					const { data } = await postReissueToken();
+
 					setAccessToken(data.accessToken);
+					setRefreshToken(data.refreshToken);
+
 					return axiosClient(prevRequest);
 				} catch (reissueError) {
 					reloginWithoutLogout();
