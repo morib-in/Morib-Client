@@ -201,7 +201,15 @@ function createWindow() {
 	// 화면 해상도에 따라 줌 레벨 조정
 	adjustZoomLevelIfNeeded(mainWindow);
 
-	// cmd + option + i 단축키 차단
+	// 줌 관련 설정
+	mainWindow.webContents.on('zoom-changed', (event, zoomDirection) => {
+		// cmd+ 또는 cmd- 키를 사용한 줌만 허용
+		if (zoomDirection !== 'in' && zoomDirection !== 'out') {
+			event.preventDefault();
+		}
+	});
+
+	// 마우스 휠로 인한 줌 변경 방지 (pinch-to-zoom)
 	mainWindow.webContents.on('before-input-event', (event, input) => {
 		// 개발자 도구를 열 수 있는 모든 단축키 차단
 		if (
@@ -214,7 +222,9 @@ function createWindow() {
 			// cmd + shift + c (macOS), ctrl + shift + c (Windows/Linux)
 			(input.key === 'c' && input.shift && (input.meta || input.control)) ||
 			// cmd + shift + j (macOS), ctrl + shift + j (Windows/Linux)
-			(input.key === 'j' && input.shift && (input.meta || input.control))
+			(input.key === 'j' && input.shift && (input.meta || input.control)) ||
+			// 줌 관련 키 중 cmd+ 및 cmd- 외의 다른 키 차단 (ctrl+0 등)
+			(input.key === '0' && (input.meta || input.control))
 		) {
 			event.preventDefault();
 		}
@@ -230,7 +240,17 @@ function createWindow() {
 		// 앱이 실제로 종료되려는 경우는 처리하지 않음
 		if (!isAppQuitting && authWindow !== null && !authWindow.isDestroyed() && mainWindow && !mainWindow.isDestroyed()) {
 			event.preventDefault();
-			mainWindow.hide(); // 최소화 대신 숨김 처리
+
+			// 전체화면 상태인지 확인
+			if (mainWindow.isFullScreen()) {
+				// 전체화면 상태면 먼저 전체화면 해제 후 숨김
+				mainWindow.setFullScreen(false);
+				// 전체화면 해제 애니메이션 완료 후 숨김 처리
+			} else {
+				// 전체화면이 아니면 바로 숨김
+				mainWindow.hide();
+			}
+
 			return false;
 		}
 
@@ -268,7 +288,15 @@ function createAuthenticatedWindow(
 	// 화면 해상도에 따라 줌 레벨 조정
 	adjustZoomLevelIfNeeded(authWindow);
 
-	// cmd + option + i 단축키 차단
+	// 줌 관련 설정
+	authWindow.webContents.on('zoom-changed', (event, zoomDirection) => {
+		// cmd+ 또는 cmd- 키를 사용한 줌만 허용
+		if (zoomDirection !== 'in' && zoomDirection !== 'out') {
+			event.preventDefault();
+		}
+	});
+
+	// 마우스 휠로 인한 줌 변경 방지 및 개발자 도구 단축키 차단
 	authWindow.webContents.on('before-input-event', (event, input) => {
 		// 개발자 도구를 열 수 있는 모든 단축키 차단
 		if (
@@ -281,7 +309,9 @@ function createAuthenticatedWindow(
 			// cmd + shift + c (macOS), ctrl + shift + c (Windows/Linux)
 			(input.key === 'c' && input.shift && (input.meta || input.control)) ||
 			// cmd + shift + j (macOS), ctrl + shift + j (Windows/Linux)
-			(input.key === 'j' && input.shift && (input.meta || input.control))
+			(input.key === 'j' && input.shift && (input.meta || input.control)) ||
+			// 줌 관련 키 중 cmd+ 및 cmd- 외의 다른 키 차단 (ctrl+0 등)
+			(input.key === '0' && (input.meta || input.control))
 		) {
 			event.preventDefault();
 		}
@@ -292,7 +322,17 @@ function createAuthenticatedWindow(
 		// 앱이 실제로 종료되려는 경우는 처리하지 않음
 		if (!isAppQuitting && authWindow && !authWindow.isDestroyed()) {
 			event.preventDefault();
-			authWindow.hide(); // 최소화 대신 숨김 처리
+
+			// 전체화면 상태인지 확인
+			if (authWindow.isFullScreen()) {
+				// 전체화면 상태면 먼저 전체화면 해제 후 숨김
+				authWindow.setFullScreen(false);
+				// 전체화면 해제 애니메이션 완료 후 숨김 처리
+			} else {
+				// 전체화면이 아니면 바로 숨김
+				authWindow.hide();
+			}
+
 			return false;
 		}
 
