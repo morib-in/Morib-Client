@@ -1,4 +1,4 @@
-import { BrowserWindow, app, ipcMain, shell } from 'electron';
+import { BrowserWindow, app, ipcMain, screen, shell } from 'electron';
 import path from 'path';
 
 import { startBrowserMonitoring, stopBrowserMonitoring } from './browserMonitor.js';
@@ -158,10 +158,34 @@ function setupBrowserMonitorHandlers() {
 	});
 }
 
+// 화면 해상도 확인 및 줌 레벨 설정 함수
+function adjustZoomLevelIfNeeded(window: BrowserWindow | null) {
+	if (!window) return;
+
+	// 맥북 14인치 해상도 기준 (3024x1964)
+	const MAC14_WIDTH = 3024;
+	const MAC14_HEIGHT = 1964;
+
+	const display = screen.getPrimaryDisplay();
+
+	const pixelWidth = display.workAreaSize.width * display.scaleFactor;
+	const pixelHeight = display.workAreaSize.height * display.scaleFactor;
+
+	// 해상도가 맥북 14인치보다 작은 경우
+	if (pixelWidth < MAC14_WIDTH || pixelHeight < MAC14_HEIGHT) {
+		// 콘텐츠가 로드된 후 줌 레벨 설정
+		window.webContents.once('did-finish-load', () => {
+			// 화면 비율 80%로 설정 (줌 레벨 -1.0은 약 80%에 해당)
+			window.webContents.setZoomLevel(-1.0);
+		});
+	}
+}
+
 function createWindow() {
 	mainWindow = new BrowserWindow({
 		webPreferences: {
 			preload: getPreloadPath(),
+			devTools: false, // 개발자 도구 비활성화
 		},
 		width: 1440,
 		height: 920,
@@ -172,6 +196,28 @@ function createWindow() {
 	// 콘텐츠가 준비되면 창 표시
 	mainWindow.once('ready-to-show', () => {
 		mainWindow?.show();
+	});
+
+	// 화면 해상도에 따라 줌 레벨 조정
+	adjustZoomLevelIfNeeded(mainWindow);
+
+	// cmd + option + i 단축키 차단
+	mainWindow.webContents.on('before-input-event', (event, input) => {
+		// 개발자 도구를 열 수 있는 모든 단축키 차단
+		if (
+			// cmd + option + i (macOS)
+			(input.key === 'i' && input.meta && input.alt) ||
+			// F12
+			input.key === 'F12' ||
+			// cmd + shift + i (macOS), ctrl + shift + i (Windows/Linux)
+			(input.key === 'i' && input.shift && (input.meta || input.control)) ||
+			// cmd + shift + c (macOS), ctrl + shift + c (Windows/Linux)
+			(input.key === 'c' && input.shift && (input.meta || input.control)) ||
+			// cmd + shift + j (macOS), ctrl + shift + j (Windows/Linux)
+			(input.key === 'j' && input.shift && (input.meta || input.control))
+		) {
+			event.preventDefault();
+		}
 	});
 
 	mainWindow.webContents.setWindowOpenHandler((details) => {
@@ -206,6 +252,7 @@ function createAuthenticatedWindow(
 	authWindow = new BrowserWindow({
 		webPreferences: {
 			preload: getPreloadPath(),
+			devTools: false, // 개발자 도구 비활성화
 		},
 		width: 1440,
 		height: 920,
@@ -216,6 +263,28 @@ function createAuthenticatedWindow(
 	// 콘텐츠가 준비되면 창 표시
 	authWindow.once('ready-to-show', () => {
 		authWindow?.show();
+	});
+
+	// 화면 해상도에 따라 줌 레벨 조정
+	adjustZoomLevelIfNeeded(authWindow);
+
+	// cmd + option + i 단축키 차단
+	authWindow.webContents.on('before-input-event', (event, input) => {
+		// 개발자 도구를 열 수 있는 모든 단축키 차단
+		if (
+			// cmd + option + i (macOS)
+			(input.key === 'i' && input.meta && input.alt) ||
+			// F12
+			input.key === 'F12' ||
+			// cmd + shift + i (macOS), ctrl + shift + i (Windows/Linux)
+			(input.key === 'i' && input.shift && (input.meta || input.control)) ||
+			// cmd + shift + c (macOS), ctrl + shift + c (Windows/Linux)
+			(input.key === 'c' && input.shift && (input.meta || input.control)) ||
+			// cmd + shift + j (macOS), ctrl + shift + j (Windows/Linux)
+			(input.key === 'j' && input.shift && (input.meta || input.control))
+		) {
+			event.preventDefault();
+		}
 	});
 
 	// 닫기 버튼 클릭 시 앱을 종료하지 않고 숨김 처리
