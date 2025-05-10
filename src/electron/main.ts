@@ -99,7 +99,7 @@ function setupAuthHandlers() {
 		} else {
 			// 로그인 페이지로 이동
 			if (isDev()) {
-				mainWindow.loadURL('http://localhost:5123/');
+				mainWindow.loadURL('http://localhost:5173/');
 			} else {
 				mainWindow.loadFile(path.join(app.getAppPath(), 'dist-react/index.html'));
 			}
@@ -192,7 +192,7 @@ function createWindow() {
 	});
 
 	if (isDev()) {
-		mainWindow.loadURL('http://localhost:5123/');
+		mainWindow.loadURL('http://localhost:5173/');
 	} else {
 		mainWindow.loadFile(path.join(app.getAppPath(), 'dist-react/index.html'));
 	}

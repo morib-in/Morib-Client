@@ -4,7 +4,7 @@ import { pathToFileURL } from 'url';
 
 import { isDev } from './util.js';
 
-export const LOCAL_HOST = 'http://localhost:5123';
+export const LOCAL_HOST = 'http://localhost:5173';
 export const INDEX_PATH = path.join(app.getAppPath(), 'dist-react', 'index.html');
 
 export function getPreloadPath() {
