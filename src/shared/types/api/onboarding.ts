@@ -1,14 +1,22 @@
+import { AllowedSiteType } from '@/shared/types/allowedSites';
+
 import { ColorPaletteType } from '../allowedService';
-import { FieldType } from '../fileds';
+import { FieldTypeMapped } from '../fileds';
 
 export interface PostInterestAreaReq {
 	name: string;
 	colorCode: ColorPaletteType;
-	interestArea: FieldType;
+	interestArea: FieldTypeMapped;
 	allowedSites: { favicon: string; siteName: string; pageName: string; siteUrl: string }[];
 }
 
 export interface PostInterestAreaRes {
 	status: number;
 	message: string;
+}
+
+export interface GetSuugestedSitesRes {
+	status: number;
+	message: string;
+	data: Record<FieldTypeMapped, AllowedSiteType[]>;
 }
