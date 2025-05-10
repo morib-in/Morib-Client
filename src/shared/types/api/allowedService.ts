@@ -64,6 +64,7 @@ export interface GetRecommendedSitesRes {
 		recommendSites: {
 			siteName: string;
 			siteUrl: string;
+			favicon: string;
 		}[];
 	};
 }
@@ -79,4 +80,9 @@ export interface DeleteAllowedServiceReq {
 
 export interface GetRecommendedSitesReq {
 	allowedGroupId: number;
+}
+
+export interface PostMergeAllowedSiteReq {
+	allowedGroupId: number;
+	siteUrl: string;
 }

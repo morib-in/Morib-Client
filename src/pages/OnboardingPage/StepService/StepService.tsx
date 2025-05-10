@@ -11,13 +11,13 @@ import { ColorPaletteType } from '@/shared/types/allowedService';
 import { AllowedSiteType, AllowedSitesType } from '@/shared/types/allowedSites';
 import type { FieldType } from '@/shared/types/fileds';
 
-import { FIELDS } from '@/shared/constants/fields';
-import { SUGGESTED_STIES } from '@/shared/constants/suggestedSites';
+import { FIELDS, FIELDS_MAP } from '@/shared/constants/fields';
 
 import BackIcon from '@/shared/assets/svgs/ic_back_btn.svg?react';
 
 import { useGetUrlInfo } from '@/shared/apisV2/common/common.mutations';
 import { usePostInterestArea } from '@/shared/apisV2/onboarding/onboarding.mutations';
+import { useGetSuggestedSites } from '@/shared/apisV2/onboarding/onboarding.queries';
 
 import AllowedService from './AllowedServices/AllowedServices';
 import ButtonService from './ButtonService/ButtonService';
@@ -40,6 +40,7 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 
 	const { mutateAsync: getUrlInfo, reset: resetGetUrlInfo, isError, isPending } = useGetUrlInfo();
 	const { mutate: postInterestArea } = usePostInterestArea();
+	const { data: suggestedSites } = useGetSuggestedSites();
 
 	const getDomainFromUrl = (url: string) => {
 		return url.replace(/^(https?:\/\/)?(www\.)?/, '').toLowerCase();
@@ -116,7 +117,7 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 			postInterestArea(
 				{
 					allowedSites: selectedServices,
-					interestArea: selectedField,
+					interestArea: FIELDS_MAP[selectedField],
 					name: categoryNameInput,
 					colorCode: selectedColor,
 				},
@@ -158,8 +159,8 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 				<Spacer.Height as="main" className="flex flex-col pb-[3rem]">
 					<h1 className="mb-[2rem] text-white title-bold-36">작업 시 사용할 서비스들을 입력해주세요</h1>
 					<p className="mb-[2.3rem] text-gray-04 subhead-reg-22">
-						필요한 서비스에만 들어가고, 나의 온전한 집중 시간을 기록할 수 있어요. 만든 모립세트는 언제든 편집할 수
-						있어요.
+						필요한 서비스에만 들어가고, 나의 온전한 집중 시간을 기록할 수 있어요. 만든 허용서비스 리스트는 언제든 편집할
+						수 있어요.
 					</p>
 
 					<Tabs activeTab={activeTab} onChangeActiveTab={handleChangeActiveTab}>
@@ -170,7 +171,7 @@ const StepService = ({ setStep, selectedField }: StepServiceProps) => {
 						</Tabs.TriggerList>
 
 						<Tabs.ContentList>
-							{SUGGESTED_STIES[activeTab].map((site) => (
+							{suggestedSites?.data?.[FIELDS_MAP[activeTab]].map((site: AllowedSiteType) => (
 								<ButtonService
 									key={site.siteUrl}
 									favicon={site.favicon}
