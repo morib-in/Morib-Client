@@ -29,18 +29,18 @@ const FriendInfo = ({ friendsData }: FriendsInfoProp) => {
 								<p className="text-gray-04 body-reg-16">{friend.email}</p>
 							</div>
 						</div>
-						<p className="flex w-[30rem] flex-shrink-0 pl-[0.8rem] text-white subhead-med-18">
+						<p className="flex w-[30rem] flex-shrink-0 py-[0.8rem] text-white subhead-med-18">
 							{friend.isOnline ? '온라인' : '오프라인'}
 						</p>
-						<p className="flex w-full self-center p-[0.8rem] text-white subhead-med-18">
+						<p className="flex w-full self-center py-[0.8rem] text-white subhead-med-18">
 							{formatSecondsForFriendsList(friend.elapsedTime)}
 						</p>
 
 						<Dropdown>
 							<Dropdown.Trigger>
-								<div className="flex flex-col items-center justify-center">
+								<button className="flex flex-col items-center justify-center p-[1.2rem]">
 									<DeleteBtn />
-								</div>
+								</button>
 							</Dropdown.Trigger>
 							<Dropdown.Content boxShadow="shadow-none" className="right-0 top-[26px]">
 								<Dropdown.Item onClick={() => deleteFriend({ friendId: friend.id })} label="친구삭제" textColor="red" />

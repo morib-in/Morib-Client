@@ -12,8 +12,8 @@ const StatusDefaultBoxTodayTodo = ({ hasTodos, onEnableAddStatus }: StatusDefaul
 			<div className="mb-[24%]">
 				<p className="text-center text-gray-03 body-med-16">아직 오늘 할 일이 없어요</p>
 				<div className="mb-[2.2rem] mt-[0.8rem] flex flex-col gap-[0.5rem]">
-					<p className="text-center text-gray-05 subhead-semibold-18">할 일을 추가하려면</p>
-					<p className="text-center text-gray-05 subhead-semibold-18">+ 아이콘을 선택해주세요.</p>
+					<p className="text-center text-gray-05 subhead-semibold-18">할 일을 추가해</p>
+					<p className="text-center text-gray-05 subhead-semibold-18">타이머를 시작해 보세요.</p>
 				</div>
 
 				<div className="mx-auto">

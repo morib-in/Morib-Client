@@ -14,6 +14,7 @@ interface TimerDisplayProps {
 	timer: number;
 	isPlaying: boolean;
 	onToggle: () => void;
+	disabled?: boolean;
 }
 
 /**
@@ -21,7 +22,14 @@ interface TimerDisplayProps {
  *
  * 타이머의 시간 표시, 상태 텍스트 및 재생/정지 버튼을 포함하는 UI
  */
-const TimerDisplay = ({ statusText, formattedTimeText, timer, isPlaying, onToggle }: TimerDisplayProps) => {
+const TimerDisplay = ({
+	statusText,
+	formattedTimeText,
+	timer,
+	isPlaying,
+	onToggle,
+	disabled = false,
+}: TimerDisplayProps) => {
 	return (
 		<div className="relative flex items-center justify-center">
 			<ProgressCircle isPlaying={isPlaying} timer={timer} />
@@ -32,7 +40,7 @@ const TimerDisplay = ({ statusText, formattedTimeText, timer, isPlaying, onToggl
 					<span className="text-mint-01 title-semibold-48">{formattedTimeText}</span>
 				</div>
 
-				<ButtonTimerPlay onClick={onToggle} isPlaying={isPlaying} />
+				<ButtonTimerPlay onClick={onToggle} isPlaying={isPlaying} disabled={disabled} />
 			</div>
 		</div>
 	);

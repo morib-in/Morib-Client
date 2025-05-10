@@ -84,6 +84,16 @@ const SideMenuTimer = ({ ongoingTodos = [], completedTodos = [] }: SideMenuTimer
 							setCompletedTodoToggle(true);
 						}
 
+						// 선택된 할 일의 상태가 변경되면 타이머 정지 및 남은 할 일 중 첫번 째 할 일 선택
+						if (selectedTask.id === taskId && actions.stopCurrentTimer) {
+							actions.stopCurrentTimer(selectedTask.id);
+							const remainingTodos = ongoingTodos.filter((todo) => todo.id !== taskId);
+							if (remainingTodos.length > 0) {
+								const next = remainingTodos[0];
+								actions.selectTask(next.id, next.elapsedTime, next.name, next.categoryName);
+							}
+						}
+
 						queryClient.invalidateQueries({
 							queryKey: timerKeys.todos({ targetDate: todayFormattedDate }),
 						});
@@ -91,7 +101,7 @@ const SideMenuTimer = ({ ongoingTodos = [], completedTodos = [] }: SideMenuTimer
 				},
 			);
 		},
-		[toggleTaskStatus, todayFormattedDate, queryClient],
+		[toggleTaskStatus, todayFormattedDate, queryClient, selectedTask.id, actions, ongoingTodos],
 	);
 
 	// 할일 항목 렌더링 함수 - 최적화됨
@@ -102,9 +112,13 @@ const SideMenuTimer = ({ ongoingTodos = [], completedTodos = [] }: SideMenuTimer
 				{...todo}
 				isSelected={todo.id === selectedTask.id}
 				onClick={() => handleTodoClick(todo)}
-				onToggleComplete={() => handleToggleTodoComplete(todo.id, isOngoing)}
+				onToggleComplete={(e) => {
+					e.stopPropagation();
+					handleToggleTodoComplete(todo.id, isOngoing);
+				}}
 				timerIncreasedTime={getTimerIncreasedTime(todo.id, todo.elapsedTime, selectedTask.id, timer)}
 				undeletable={true}
+				disableHoverCalendar={true}
 			/>
 		),
 		[handleTodoClick, handleToggleTodoComplete, selectedTask.id, timer],

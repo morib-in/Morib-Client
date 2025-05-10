@@ -5,8 +5,11 @@ import { useQueryClient } from '@tanstack/react-query';
 import AutoFixedGrid from '@/shared/components/AutoFixedGrid/AutoFixedGrid';
 import ModalContentsFriends from '@/shared/components/ModalContentsFriends/ModalContentsFriends';
 import ModalWrapper, { ModalWrapperRef } from '@/shared/components/ModalWrapper/ModalWrapper';
+import NotificationPanel from '@/shared/components/NotificationPanel/NotificationPanel';
 import Spacer from '@/shared/components/Spacer/Spacer';
 import TextField from '@/shared/components/TextField/TextField';
+
+import useClickOutside from '@/shared/hooks/useClickOutside';
 
 import { isUrlValid } from '@/shared/utils/validation';
 
@@ -43,11 +46,16 @@ const AllowedServicePage = () => {
 	const [isEditingTitle, setIsEditingTitle] = useState(false);
 	const [urlInput, setUrlInput] = useState('');
 	const [selectedColor, setSelectedColor] = useState<ColorPaletteType>('#868C93');
+	const [isNotificationVisible, setIsNotificationVisible] = useState(false);
 
 	const queryClient = useQueryClient();
 
 	const friendsModalRef = useRef<ModalWrapperRef>(null);
 	const requireTitleModalRef = useRef<ModalWrapperRef>(null);
+  
+	const bellIconRef = useRef<HTMLButtonElement>(null);
+	const notificationPanelRef = useRef<HTMLDivElement>(null);
+
 
 	const handleChangeTitleInput = (e: ChangeEvent<HTMLInputElement>) => {
 		setTitleInput(e.target.value);
@@ -211,6 +219,24 @@ const AllowedServicePage = () => {
 		}
 	};
 
+	const toggleNotification = () => {
+		setIsNotificationVisible((prev) => !prev);
+	};
+
+	useClickOutside(
+		notificationPanelRef,
+		(event) => {
+			if (!isNotificationVisible) return;
+
+			if (bellIconRef.current && event && bellIconRef.current.contains(event.target as Node)) {
+				return;
+			}
+
+			setIsNotificationVisible(false);
+		},
+		isNotificationVisible,
+	);
+
 	// NOTE: 첫 렌더링 시 api를 통해 받은 첫번째 allowed service group id를 activeGroupId로 설정
 	// 리스트 삭제 후, 현재 active 그룹이 리스트에 없는 경우 첫 번째 그룹으로 설정
 	useEffect(() => {
@@ -252,7 +278,7 @@ const AllowedServicePage = () => {
 				<button onClick={handleOpenFriendsModal}>
 					<FriendSettingIcon className="rounded-[1.6rem] hover:bg-gray-bg-04 active:bg-gray-bg-05" />
 				</button>
-				<button>
+				<button ref={bellIconRef} onClick={toggleNotification}>
 					<BellIcon className="rounded-[1.6rem] hover:bg-gray-bg-04 active:bg-gray-bg-05" />
 				</button>
 			</div>
@@ -356,9 +382,13 @@ const AllowedServicePage = () => {
 			<ModalWrapper ref={friendsModalRef} backdrop>
 				{({ isModalOpen }) => <ModalContentsFriends isModalOpen={isModalOpen} />}
 			</ModalWrapper>
+
 			<ModalWrapper ref={requireTitleModalRef} backdrop>
 				{() => <ModalContentsAlert.RequireTitle onClick={handleCloseRequireTitleModal} />}
-			</ModalWrapper>
+      </ModalWrapper>
+      
+			{isNotificationVisible && <NotificationPanel ref={notificationPanelRef} />}
+
 		</AutoFixedGrid>
 	);
 };

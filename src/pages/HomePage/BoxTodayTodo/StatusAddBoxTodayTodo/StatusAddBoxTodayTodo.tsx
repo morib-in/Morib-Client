@@ -24,6 +24,7 @@ interface StatusAddBoxTodayTodoProps {
 	cancelComplete: () => void;
 	addingComplete: boolean;
 	onCreateTodayTodos: () => void;
+	addingTodayTodoStatus: boolean;
 }
 
 const StatusAddBoxTodayTodo = ({
@@ -35,6 +36,7 @@ const StatusAddBoxTodayTodo = ({
 	cancelComplete,
 	addingComplete,
 	onCreateTodayTodos,
+	addingTodayTodoStatus,
 }: StatusAddBoxTodayTodoProps) => {
 	const { data: allowedServiceList } = useGetPopoverAllowedServiceList();
 	const registerServiceModalRef = useRef<ModalWrapperRef>(null);
@@ -82,6 +84,7 @@ const StatusAddBoxTodayTodo = ({
 									selectedNumber={selectedNumber}
 									updateTodayTodos={deleteTodayTodos}
 									addingComplete={addingComplete}
+									addingTodayTodoStatus={addingTodayTodoStatus}
 								/>
 							</li>
 						);
