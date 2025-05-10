@@ -75,6 +75,12 @@ function isAllowedURL(url: string, allowedServices: string[]): boolean {
 	try {
 		if (!url || !allowedServices.length) return false;
 
+		// 브라우저 새 탭 페이지 확인 (차단에서 제외)
+		if (isBrowserNewTabPage(url)) {
+			console.log('브라우저 새 탭으로 감지되어 허용됨:', url);
+			return true;
+		}
+
 		// 현재 URL 분석
 		const currentUrl = new URL(url);
 		const currentHostname = currentUrl.hostname.toLowerCase();
@@ -119,6 +125,47 @@ function isAllowedURL(url: string, allowedServices: string[]): boolean {
 		});
 	} catch (error) {
 		console.error('URL 검증 오류:', error);
+		return false;
+	}
+}
+
+// 브라우저 새 탭 페이지인지 확인하는 함수
+function isBrowserNewTabPage(url: string): boolean {
+	try {
+		// 주요 브라우저의 새 탭 URL 패턴
+		const newTabPatterns = [
+			'chrome://newtab', // Chrome
+			'chrome://new-tab-page', // Chrome
+			'about:newtab', // Firefox
+			'edge://newtab', // Edge
+			'brave://newtab', // Brave
+			'vivaldi://newtab', // Vivaldi
+			'about:start', // Some browsers
+			'about:blank', // 공통
+			'about:home', // Firefox home
+			'favorites://', // Safari favorites
+			'safari-resource://', // Safari resources
+			'arc://', // Arc browser
+		];
+
+		// 패턴 매칭
+		if (newTabPatterns.some((pattern) => url.startsWith(pattern))) {
+			return true;
+		}
+
+		// Safari의 일부 새 탭 페이지 확인 (빈 URL이거나 'data:' 형식인 경우)
+		if (url === '' || url.startsWith('data:')) {
+			return true;
+		}
+
+		// 로컬 파일 URI도 허용
+		if (url.startsWith('file://')) {
+			return true;
+		}
+
+		return false;
+	} catch (error) {
+		console.error('새 탭 확인 오류:', error);
 		return false;
 	}
 }
