@@ -55,6 +55,7 @@ const BoxTodayTodo = ({
 					cancelComplete={cancelComplete}
 					addingComplete={addingComplete}
 					onCreateTodayTodos={onCreateTodayTodos}
+					addingTodayTodoStatus={addingTodayTodoStatus}
 				/>
 			) : (
 				<StatusDefaultBoxTodayTodo hasTodos={hasTodos} onEnableAddStatus={enableAddingTodayTodo} />
