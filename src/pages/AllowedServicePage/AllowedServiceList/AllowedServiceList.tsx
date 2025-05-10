@@ -63,29 +63,26 @@ const AllowedServiceListContent = ({ children }: { children: ReactNode }) => {
 };
 
 interface AllowedServiceListItemProps extends AllowedServiceGroupType {
-	index: number;
 	activeGroupId: number | null;
 	activeGroupTitleInput: string;
 	onSelectActiveGroup: (activeGroupId: number | null) => void;
-	onDeleteAllowedServiceGroup: (groupId: number, isActive: boolean, currentIndex: number) => void;
+	onDeleteAllowedServiceGroup: (groupId: number) => void;
 	isEditingTitle: boolean;
 }
 
 const AllowedServiceListItem = ({
-	index,
 	activeGroupId,
 	activeGroupTitleInput,
 	onSelectActiveGroup,
 	onDeleteAllowedServiceGroup,
 	isEditingTitle,
-
 	...allowedServiceGroupData
 }: AllowedServiceListItemProps) => {
 	const isActive = activeGroupId === allowedServiceGroupData.id;
 
 	const handleDeleteAllowedServiceGroup = (e: MouseEvent<HTMLButtonElement>) => {
 		e.stopPropagation();
-		onDeleteAllowedServiceGroup(allowedServiceGroupData.id, isActive, index);
+		onDeleteAllowedServiceGroup(allowedServiceGroupData.id);
 	};
 
 	const handleSelectActiveGroupId = () => {

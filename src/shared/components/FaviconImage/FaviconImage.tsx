@@ -1,15 +1,15 @@
 import { ImgHTMLAttributes } from 'react';
 
-import LogoPath from '@/shared/assets/svgs/logo_icon.svg';
+import DefaultFaviconImage from '@/shared/assets/svgs/default_url_favicon.svg';
 
 export const FaviconImage = ({ src, className, ...rest }: ImgHTMLAttributes<HTMLImageElement>) => {
 	return (
 		<img
 			{...rest}
-			src={src || LogoPath}
+			src={src || DefaultFaviconImage}
 			className={`h-[2rem] w-[2rem] ${className}`}
 			onError={(e) => {
-				e.currentTarget.src = LogoPath;
+				e.currentTarget.src = DefaultFaviconImage;
 				e.currentTarget.alt = '모립 로고 아이콘';
 			}}
 		/>

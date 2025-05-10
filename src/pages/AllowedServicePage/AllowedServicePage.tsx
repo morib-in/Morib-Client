@@ -11,11 +11,11 @@ import TextField from '@/shared/components/TextField/TextField';
 import { isUrlValid } from '@/shared/utils/validation';
 
 import { ColorPaletteType } from '@/shared/types/allowedService';
-import { GetAllowedServiceListRes } from '@/shared/types/api/allowedService';
 
 import BellIcon from '@/shared/assets/svgs/bell.svg?react';
 import FriendSettingIcon from '@/shared/assets/svgs/friend_setting.svg?react';
 
+import ModalContentsAlert from '@/pages/AllowedServicePage/ModalContentsAlert/ModalContentsAlert';
 import { allowedServiceKeys } from '@/shared/apisV2/allowedService/allowedService.keys';
 import {
 	useDeleteAllowedService,
@@ -47,6 +47,7 @@ const AllowedServicePage = () => {
 	const queryClient = useQueryClient();
 
 	const friendsModalRef = useRef<ModalWrapperRef>(null);
+	const requireTitleModalRef = useRef<ModalWrapperRef>(null);
 
 	const handleChangeTitleInput = (e: ChangeEvent<HTMLInputElement>) => {
 		setTitleInput(e.target.value);
@@ -150,35 +151,24 @@ const AllowedServicePage = () => {
 		}
 	};
 
-	const handleDeleteAllowedServiceGroup = (groupId: number, isActive: boolean, currentIndex: number) => {
+	const handleDeleteAllowedServiceGroup = (groupId: number) => {
 		deleteAllowedServiceGroup(
 			{ allowedGroupId: groupId },
 			{
 				onSuccess: () => {
-					queryClient.setQueryData(
-						allowedServiceKeys.allowedServiceList({ connectType: currentTap }),
-						(oldData: GetAllowedServiceListRes) => {
-							if (!oldData) return oldData;
-							return {
-								...oldData,
-								data: oldData.data.filter((group) => group.id !== groupId),
-							};
-						},
-					);
-
-					if (isActive) {
-						if (allowedServiceList && allowedServiceList.data.length > 1) {
-							setActiveGroupId(allowedServiceList.data[currentIndex + 1].id);
-						} else {
-							handleEnableAddingAllowedServiceGroup();
-						}
-					}
+					queryClient.invalidateQueries({
+						queryKey: allowedServiceKeys.allowedServiceList({ connectType: currentTap }),
+					});
 				},
 			},
 		);
 	};
 
 	const handleAddAllowedService = (urlInput: string, activeGroupId: number | null) => {
+		if (!activeGroupId) {
+			handleOpenRequireTitleModal();
+			return;
+		}
 		if (activeGroupId && !isPending) {
 			postAddAllowedService(
 				{
@@ -216,14 +206,23 @@ const AllowedServicePage = () => {
 
 	const handleKeyDownUrlInput = (e: KeyboardEvent<HTMLInputElement>) => {
 		if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
+			e.preventDefault();
 			handleAddAllowedService(urlInput, activeGroupId);
 		}
 	};
 
 	// NOTE: 첫 렌더링 시 api를 통해 받은 첫번째 allowed service group id를 activeGroupId로 설정
+	// 리스트 삭제 후, 현재 active 그룹이 리스트에 없는 경우 첫 번째 그룹으로 설정
 	useEffect(() => {
-		if (activeGroupId === null && allowedServiceList && allowedServiceList?.data.length > 0) {
-			setActiveGroupId(allowedServiceList.data[0].id);
+		if (allowedServiceList && allowedServiceList.data.length > 0) {
+			const activeGroupExists = activeGroupId && allowedServiceList.data.some((group) => group.id === activeGroupId);
+
+			if (!activeGroupId || !activeGroupExists) {
+				setActiveGroupId(allowedServiceList.data[0].id);
+			}
+		} else if (allowedServiceList && allowedServiceList.data.length === 0 && activeGroupId !== null) {
+			// 리스트가 비어있고 선택된 그룹이 있으면 입력 모드로  전환
+			handleEnableAddingAllowedServiceGroup();
 		}
 	}, [allowedServiceList]);
 
@@ -237,6 +236,14 @@ const AllowedServicePage = () => {
 
 	const handleOpenFriendsModal = () => {
 		friendsModalRef.current?.open();
+	};
+
+	const handleOpenRequireTitleModal = () => {
+		requireTitleModalRef.current?.open();
+	};
+
+	const handleCloseRequireTitleModal = () => {
+		requireTitleModalRef.current?.close();
 	};
 
 	return (
@@ -261,10 +268,9 @@ const AllowedServicePage = () => {
 						{activeGroupId === null && (
 							<AllowedServiceList.ItemInput titleInput={titleInput} selectedColor={selectedColor} />
 						)}
-						{allowedServiceList?.data.map((allowedServiceGroupData, index) => (
+						{allowedServiceList?.data.map((allowedServiceGroupData) => (
 							<AllowedServiceList.Item
 								key={allowedServiceGroupData.id}
-								index={index}
 								activeGroupId={activeGroupId}
 								activeGroupTitleInput={titleInput}
 								onSelectActiveGroup={handleSelectActiveGroupId}
@@ -300,9 +306,6 @@ const AllowedServicePage = () => {
 							<AllowedServiceGroupDetail.TabButton onClick={() => setCurrentTap('WEB')} isActive={currentTap === 'WEB'}>
 								웹사이트
 							</AllowedServiceGroupDetail.TabButton>
-							<AllowedServiceGroupDetail.TabButton disabled isActive={currentTap === 'DESKTOP'}>
-								앱
-							</AllowedServiceGroupDetail.TabButton>
 						</AllowedServiceGroupDetail.Tabs>
 
 						<AllowedServiceGroupDetail.Content>
@@ -322,15 +325,16 @@ const AllowedServicePage = () => {
 									사이트 등록하기
 								</TextField.ConfirmButton>
 							</TextField>
-
 							<AllowedServiceGroupDetail.Table totalLength={allowedServiceGroupDetail?.data.allowedSites.length || 0}>
 								{allowedServiceGroupDetail &&
+									activeGroupId &&
 									allowedServiceGroupDetail.data.allowedSites.map((allowedSiteData, index) => (
 										<AllowedServiceGroupDetail.TableRow
 											key={`${index}-${allowedSiteData.id}`}
-											onDeleteAllowedSite={() =>
-												handleDeleteAllowedService(allowedSiteData.id, allowedSiteData.siteUrl)
-											}
+											activeGroupId={activeGroupId}
+											onDeleteAllowedSite={() => {
+												handleDeleteAllowedService(allowedSiteData.id, allowedSiteData.siteUrl);
+											}}
 											{...allowedSiteData}
 										/>
 									))}
@@ -351,6 +355,9 @@ const AllowedServicePage = () => {
 			</AutoFixedGrid.Slot>
 			<ModalWrapper ref={friendsModalRef} backdrop>
 				{({ isModalOpen }) => <ModalContentsFriends isModalOpen={isModalOpen} />}
+			</ModalWrapper>
+			<ModalWrapper ref={requireTitleModalRef} backdrop>
+				{() => <ModalContentsAlert.RequireTitle onClick={handleCloseRequireTitleModal} />}
 			</ModalWrapper>
 		</AutoFixedGrid>
 	);

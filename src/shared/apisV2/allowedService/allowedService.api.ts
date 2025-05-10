@@ -11,6 +11,7 @@ import {
 	PatchChangeAllowedServiceGroupNameReq,
 	PostAddAllowedServiceGroupReq,
 	PostAddAllowedServiceReq,
+	PostMergeAllowedSiteReq,
 } from '@/shared/types/api/allowedService';
 
 import { authClient } from '../client';
@@ -25,6 +26,7 @@ const ALLOWED_SERVICE_ENDPOINT = {
 	GET_RECOMMENDED_SITES: 'api/v2/recommendSite',
 	POST_ADD_ALLOWED_SERVICE: 'api/v2/allowedSite/:allowedGroupId',
 	DELETE_ALLOWED_SERVICE: 'api/v2/allowedSite/:allowedSiteId',
+	POST_MERGE_ALLOWED_SITE: 'api/v2/allowedSite/merge/:allowedGroupId',
 };
 
 export const postAddAllowedServiceGroup = async ({ name, colorCode }: PostAddAllowedServiceGroupReq) => {
@@ -100,6 +102,19 @@ export const postAddAllowedService = async ({ siteUrl, allowedGroupId }: PostAdd
 export const deleteAllowedService = async ({ allowedSiteId }: DeleteAllowedServiceReq) => {
 	const { data } = await authClient.delete(
 		ALLOWED_SERVICE_ENDPOINT.DELETE_ALLOWED_SERVICE.replace(':allowedSiteId', String(allowedSiteId)),
+	);
+	return data;
+};
+
+export const postMergeAllowedSite = async ({ allowedGroupId, siteUrl }: PostMergeAllowedSiteReq) => {
+	const { data } = await authClient.post(
+		ALLOWED_SERVICE_ENDPOINT.POST_MERGE_ALLOWED_SITE.replace(':allowedGroupId', String(allowedGroupId)),
+		{},
+		{
+			params: {
+				siteUrl,
+			},
+		},
 	);
 	return data;
 };
