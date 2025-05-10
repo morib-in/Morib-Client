@@ -52,10 +52,9 @@ const AllowedServicePage = () => {
 
 	const friendsModalRef = useRef<ModalWrapperRef>(null);
 	const requireTitleModalRef = useRef<ModalWrapperRef>(null);
-  
+
 	const bellIconRef = useRef<HTMLButtonElement>(null);
 	const notificationPanelRef = useRef<HTMLDivElement>(null);
-
 
 	const handleChangeTitleInput = (e: ChangeEvent<HTMLInputElement>) => {
 		setTitleInput(e.target.value);
@@ -385,10 +384,9 @@ const AllowedServicePage = () => {
 
 			<ModalWrapper ref={requireTitleModalRef} backdrop>
 				{() => <ModalContentsAlert.RequireTitle onClick={handleCloseRequireTitleModal} />}
-      </ModalWrapper>
-      
-			{isNotificationVisible && <NotificationPanel ref={notificationPanelRef} />}
+			</ModalWrapper>
 
+			{isNotificationVisible && <NotificationPanel ref={notificationPanelRef} />}
 		</AutoFixedGrid>
 	);
 };

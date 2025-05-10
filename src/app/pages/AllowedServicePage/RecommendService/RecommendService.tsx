@@ -22,7 +22,7 @@ const RecommendServiceItem = ({ recommendSite, ...props }: RecommendServiceItemP
 				alt={`${recommendSite.siteName} 아이콘`}
 				className="h-[4.2rem] w-[4.2rem] rounded-full"
 			/>
-			<p className="max-h-[8.4rem] overflow-hidden text-white subhead-bold-20">{recommendSite.siteName}</p>
+			<p className="flex w-[14.2rem] truncate text-white subhead-bold-20">{recommendSite.siteName}</p>
 		</button>
 	);
 };
