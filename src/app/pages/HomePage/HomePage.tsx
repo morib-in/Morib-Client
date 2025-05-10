@@ -3,7 +3,7 @@ import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import AutoFixedGrid from '@/shared/components/AutoFixedGrid/AutoFixedGrid';
 import ModalContentsFriends from '@/shared/components/ModalContentsFriends/ModalContentsFriends';
@@ -44,12 +44,17 @@ import ButtonMoreFriends from './ButtonMoreFriends/ButtonMoreFriends';
 import ButtonUserProfile from './ButtonUserProfile/ButtonUserProfile';
 import DatePicker from './DatePicker/DatePicker';
 import TimerRestriction from './ModalContentsAlert/TimerRestriction/TimerRestriction';
+import ModalContentsTimerError from './ModalContentsTimerError/ModalContentsTimerError';
 import StatusDefaultHome from './StatusDefaultHome/StatusDefaultHome';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
 const HomePage = () => {
+	const { search } = useLocation();
+	const params = new URLSearchParams(search);
+	const isTimerError = params.get('error') === 'true';
+
 	const todayDate = dayjs().tz('Asia/Seoul');
 	const formattedTodayDate = todayDate.format('YYYY-MM-DD');
 	const categoryRef = useRef<HTMLDivElement>(null);
@@ -59,6 +64,7 @@ const HomePage = () => {
 	const notificationPanelRef = useRef<HTMLDivElement>(null);
 	const bellIconRef = useRef<HTMLButtonElement>(null);
 	const timerRestrictionModalRef = useRef<ModalWrapperRef>(null);
+	const timerErrorModalRef = useRef<ModalWrapperRef>(null);
 
 	const [isNotificationVisible, setIsNotificationVisible] = useState(false);
 
@@ -155,6 +161,10 @@ const HomePage = () => {
 		);
 	};
 
+	const handleCloseTimerErrorModal = () => {
+		timerErrorModalRef.current?.close();
+	};
+
 	const handleOpenFriendsModal = () => {
 		friendsModalRef.current?.open();
 	};
@@ -249,6 +259,12 @@ const HomePage = () => {
 	useEffect(() => {
 		handleCategoryScroll();
 	}, [isAddingCategory, dailyCategoryTask.length]);
+
+	useEffect(() => {
+		if (isTimerError) {
+			timerErrorModalRef.current?.open();
+		}
+	}, [isTimerError]);
 
 	return (
 		<AutoFixedGrid
@@ -473,6 +489,10 @@ const HomePage = () => {
 						}}
 					/>
 				)}
+			</ModalWrapper>
+
+			<ModalWrapper ref={timerErrorModalRef} backdrop>
+				{() => <ModalContentsTimerError onClick={handleCloseTimerErrorModal} />}
 			</ModalWrapper>
 
 			{isNotificationVisible && <NotificationPanel ref={notificationPanelRef} />}

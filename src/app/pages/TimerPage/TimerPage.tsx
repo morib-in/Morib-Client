@@ -2,12 +2,12 @@ import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { splitTasksByCompletion } from '@/shared/utils/timer';
 
-import { useGetTimerTodos } from '@/shared/apisV2/timer/timer.queries';
+import { useGetSelectedTimerTask, useGetTimerTodos } from '@/shared/apisV2/timer/timer.queries';
 
 import AllowedServicesPopover from './AllowedServices/AllowedServicesPopover';
 import AllowedServicesTitle from './AllowedServices/AllowedServicesTitle';
@@ -48,6 +48,10 @@ const TimerPageContent = () => {
 		return splitTasksByCompletion(todos);
 	}, [todosData]);
 
+	const { data: selectedTimerTaskData, isError: isSelectedTimerTaskError } = useGetSelectedTimerTask({
+		targetDate: todayFormattedDate,
+	});
+
 	// 허용되지 않은 URL 감지 시 처리
 	const handleRegisterAllowedService = useCallback(
 		(url: string) => {
@@ -78,6 +82,19 @@ const TimerPageContent = () => {
 			console.error('홈으로 이동 중 오류 발생:', error);
 		}
 	}, [isPlaying, selectedTask.id, browserMonitor.isActive, actions, navigate]);
+
+	useEffect(() => {
+		if (isSelectedTimerTaskError || selectedTimerTaskData?.data.selectedTaskId === null) {
+			// 시스템 알림 띄우기 함수
+			const showSystemNotification = (title: string, message: string) => {
+				if ('Notification' in window) {
+					new window.Notification(title, { body: message });
+				}
+			};
+			showSystemNotification('타이머에서 선택된 할일이 초기화 되었어요.', '다시 할 일을 선택하고 몰입해 볼까요?');
+			navigate('/home?error=true');
+		}
+	}, [isSelectedTimerTaskError, navigate, selectedTimerTaskData?.data.selectedTaskId]);
 
 	return (
 		<div className="fixed">
