@@ -29,7 +29,7 @@ interface BoxTodoProps {
 	isSelected?: boolean;
 	selectedNumber?: number;
 	onClick?: () => void;
-	onToggleComplete?: () => void;
+	onToggleComplete?: (e: MouseEvent<HTMLButtonElement>) => void;
 	updateTodayTodos?: (todo: Omit<TaskType, 'isComplete'>) => void;
 	clickable?: boolean;
 	addingComplete?: boolean;
@@ -38,6 +38,8 @@ interface BoxTodoProps {
 	onPatchTask?: (taskId: number, name: string, startDate: string, endDate: string | null) => void;
 	activeCalendarTask?: boolean;
 	undeletable?: boolean;
+	disableHoverCalendar?: boolean;
+	addingTodayTodoStatus?: boolean;
 }
 
 const BoxTodo = ({
@@ -59,6 +61,7 @@ const BoxTodo = ({
 	onPatchTask,
 	activeCalendarTask,
 	undeletable = false,
+	disableHoverCalendar = false,
 }: BoxTodoProps) => {
 	const { mutate: deleteTask } = useDeleteTask();
 
@@ -134,7 +137,13 @@ const BoxTodo = ({
 			<div className="flex flex-col justify-center">
 				<div className="flex items-center justify-between">
 					<div className="flex w-[22.2rem] items-center gap-[0.6rem]">
-						<button onClick={onToggleComplete} className={disableBtnStyle}>
+						<button
+							onClick={(e) => {
+								e.stopPropagation();
+								onToggleComplete?.(e);
+							}}
+							className={disableBtnStyle}
+						>
 							{CheckBoxIcon}
 						</button>
 						{isEditing ? (
@@ -148,7 +157,9 @@ const BoxTodo = ({
 							/>
 						) : (
 							<h3
-								className={`mt-[0.42rem] text-white body-semibold-16 ${nameStyle} truncate ${clickable || isComplete ? 'pointer-events-none' : ''}`}
+								className={`mt-[0.42rem] text-white body-semibold-16 ${nameStyle} truncate ${
+									clickable || isComplete || undeletable ? 'pointer-events-none' : ''
+								}`}
 								onClick={handleNameClick}
 							>
 								{name}
@@ -175,7 +186,9 @@ const BoxTodo = ({
 				</div>
 				<div className="ml-[0.8rem] mt-[0.6rem] flex flex-col gap-[0.2rem]">
 					<button
-						className={`flex max-w-max gap-[0.6rem] rounded-[0.3rem] pr-[0.2rem] ${activeCalendarTask ? 'bg-mint-01' : 'hover:bg-gray-bg-03'} ${clickable || isComplete ? 'pointer-events-none' : ''}`}
+						className={`flex max-w-max gap-[0.6rem] rounded-[0.3rem] pr-[0.2rem] ${
+							activeCalendarTask ? 'bg-mint-01' : disableHoverCalendar ? 'cursor-default' : 'hover:bg-gray-bg-03'
+						} ${clickable || isComplete ? 'pointer-events-none' : ''}`}
 						onClick={handleCalendarToggle}
 					>
 						{activeCalendarTask ? <ButtonCalendartBlackIcon /> : <ButtonCalendarIcon />}

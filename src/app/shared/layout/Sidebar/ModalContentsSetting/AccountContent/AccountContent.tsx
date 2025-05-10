@@ -79,7 +79,7 @@ const AccountContent = ({ ...props }: AccountContentProps) => {
 			<div className="flex h-[9.2rem] w-full items-center justify-between py-[2rem]">
 				<div className="flex flex-col gap-[0.5rem]">
 					<p className="text-white subhead-semibold-18">데스크톱 푸시 알림</p>
-					<p className="text-gray-04 body-reg-16">데스크톱 앱에서 작성의 푸시 알림을 즉시 받으세요.</p>
+					<p className="text-gray-04 body-reg-16">데스크톱 앱에서 모립의 푸시 알림을 즉시 받으세요.</p>
 				</div>
 				<ButtonStatusToggle isToggleOn={isToggleOn} onToggle={handleToggle} />
 			</div>
@@ -100,7 +100,9 @@ const AccountContent = ({ ...props }: AccountContentProps) => {
 			<div className="flex w-full items-center">
 				<div className="flex h-[9.2rem] w-full flex-col gap-[0.5rem] py-[2rem]">
 					<p className="text-error-01 subhead-semibold-18">내 계정 삭제</p>
-					<p className="text-gray-04 body-reg-16">본 기기를 포함한 모든 기기에서 로그아웃합니다.</p>
+					<p className="text-gray-04 body-reg-16">
+						계정을 영구적으로 삭제하고 모든 워크스페이스에서 액세스 권한을 제거합니다.
+					</p>
 				</div>
 				<button type="button" onClick={handleOpenDeleteAccountModal}>
 					<ArrowRightIcon className="rounded-[1.6rem] hover:bg-gray-bg-05" />

@@ -49,7 +49,7 @@ const DropdownRoot = ({ children, onOpenChange }: DropdownRootProps) => {
 
 	return (
 		<DropdownContext.Provider value={contextValue}>
-			<div ref={ref} className="relative z-50 flex">
+			<div ref={ref} className="relative flex">
 				{children}
 			</div>
 		</DropdownContext.Provider>
@@ -95,7 +95,7 @@ const DropdownContent = forwardRef<HTMLUListElement, DropdownContentProps>(
 			<ul
 				ref={ref}
 				onClick={handleToggleClose}
-				className={`absolute overflow-y-scroll rounded-[4px] ${shadowStyle} ${maxHeight} ${className}`}
+				className={`absolute z-10 overflow-y-scroll rounded-[4px] ${shadowStyle} ${maxHeight} ${className}`}
 			>
 				{open && children}
 			</ul>

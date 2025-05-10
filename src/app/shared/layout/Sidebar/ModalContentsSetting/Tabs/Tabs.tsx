@@ -73,7 +73,7 @@ interface TabsCategoryProps {
 const TabsCategory = ({ children, title }: TabsCategoryProps) => {
 	return (
 		<div>
-			<p className="p-[1rem] font-semibold text-gray-04">{title}</p>
+			<p className="p-[1rem] text-gray-04 detail-reg-14">{title}</p>
 			{children}
 		</div>
 	);
