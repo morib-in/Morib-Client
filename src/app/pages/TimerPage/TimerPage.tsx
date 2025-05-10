@@ -85,13 +85,14 @@ const TimerPageContent = () => {
 
 	useEffect(() => {
 		if (isSelectedTimerTaskError || selectedTimerTaskData?.data.selectedTaskId === null) {
-			// 시스템 알림 띄우기 함수
-			const showSystemNotification = (title: string, message: string) => {
-				if ('Notification' in window) {
-					new window.Notification(title, { body: message });
-				}
-			};
-			showSystemNotification('타이머에서 선택된 할일이 초기화 되었어요.', '다시 할 일을 선택하고 몰입해 볼까요?');
+			// Electron 시스템 알림 사용
+			if (window.electron && window.electron.notification) {
+				window.electron.notification.showSystemNotification(
+					'타이머에서 선택된 할일이 초기화 되었어요.',
+					'다시 타이머를 실행해주세요.',
+				);
+			}
+
 			navigate('/home?error=true');
 		}
 	}, [isSelectedTimerTaskError, navigate, selectedTimerTaskData?.data.selectedTaskId]);

@@ -43,4 +43,12 @@ contextBridge.exposeInMainWorld('electron', {
 			ipcRenderer.send('auth:relogin');
 		},
 	},
+
+	// 시스템 알림 관련 API 추가
+	notification: {
+		// 시스템 알림 표시 함수
+		showSystemNotification: (title: string, body: string) => {
+			ipcRenderer.send('notification:show', { title, body });
+		},
+	},
 });

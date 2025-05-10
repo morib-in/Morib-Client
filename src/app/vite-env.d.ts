@@ -24,5 +24,9 @@ interface Window {
 		auth?: {
 			relogin: () => void;
 		};
+
+		notification?: {
+			showSystemNotification: (title: string, body: string) => void;
+		};
 	};
 }

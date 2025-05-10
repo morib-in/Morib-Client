@@ -1,4 +1,4 @@
-import { BrowserWindow, app, ipcMain, screen, shell } from 'electron';
+import { BrowserWindow, Notification, app, ipcMain, screen, shell } from 'electron';
 import path from 'path';
 
 import { startBrowserMonitoring, stopBrowserMonitoring } from './browserMonitor.js';
@@ -365,4 +365,18 @@ ipcMain.on('shell:open', () => {
 	const pageDirectory = __dirname.replace('app.asar', 'app.asar.unpacked');
 	const pagePath = path.join('file://', pageDirectory, 'index.html');
 	shell.openExternal(pagePath);
+});
+
+// 시스템 알림 표시 IPC 핸들러
+ipcMain.on('notification:show', (_, { title, body }) => {
+	const iconPath = path.join(app.getAppPath(), 'dist-electron/morib_logo.png');
+
+	const notification = new Notification({
+		title,
+		body,
+		icon: iconPath,
+		silent: false,
+	});
+
+	notification.show();
 });
