@@ -54,6 +54,7 @@ export const useGetSelectedTimerTask = (
 	return useQuery<GetSelectedTimerTaskRes, Error>({
 		queryKey: timerKeys.selectedTimerTask({ targetDate }),
 		queryFn: () => getSelectedTimerTask({ targetDate }),
+		throwOnError: false,
 		staleTime: 5000, // 5초 동안 캐시 데이터 사용
 		...options,
 	});
