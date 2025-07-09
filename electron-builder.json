@@ -1,0 +1,28 @@
+{
+    "appId": "com.morib.client",
+    "productName": "Morib",
+    "icon": "public/logo_icon.png",
+    "files": [
+        "dist-react",
+        "dist-electron"
+    ],
+    "extraResources": [
+        "dist-electron/preload.cjs"
+    ],
+    "mac": {
+        "target": ["dmg"],
+        "hardenedRuntime": true,
+        "gatekeeperAssess": false,
+        "entitlements": "build/entitlements.mac.plist",
+        "entitlementsInherit": "build/entitlements.mac.plist",
+        "notarize": true
+    },
+    "afterSign": "scripts/notarize.cjs",
+    "linux": {
+        "target": "AppImage",
+        "category": "Utility"
+    },
+    "win": {
+        "target": ["portable","msi"]
+    }
+}
