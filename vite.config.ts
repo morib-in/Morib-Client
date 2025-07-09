@@ -8,7 +8,7 @@ export default defineConfig({
 	resolve: {
 		alias: [{ find: '@', replacement: '/src/app' }],
 	},
-	base: './',
+	base: '/',
 	build: {
 		outDir: 'dist-react',
 	},
