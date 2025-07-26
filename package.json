@@ -12,20 +12,21 @@
   "main": "dist-electron/main.js",
   "scripts": {
     "dev": "pnpm dev:react & pnpm dev:electron",
-    "dev:react": "vite",
+    "dev:react": "vite --mode react",
     "dev:electron": "pnpm transpile:electron && cross-env NODE_ENV=development electron .",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build --mode react",
+    "build:electron": "tsc -b && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "transpile:electron": "tsc --project src/electron/tsconfig.json",
-    "dist:mac": "pnpm transpile:electron && pnpm build && electron-builder --mac --arm64",
-    "dist:mac:intel": "pnpm transpile:electron && pnpm build && electron-builder --mac --x64",
-    "dist:mac:universal": "pnpm transpile:electron && pnpm build && electron-builder --mac --universal",
+    "dist:mac": "pnpm transpile:electron && pnpm build:electron && electron-builder --mac --arm64",
+    "dist:mac:intel": "pnpm transpile:electron && pnpm build:electron && electron-builder --mac --x64",
+    "dist:mac:universal": "pnpm transpile:electron && pnpm build:electron && electron-builder --mac --universal",
     "dist:mac:notarize": "./scripts/build-mac.sh",
     "dist:mac:intel:notarize": "./scripts/build-mac-intel.sh",
     "dist:mac:universal:notarize": "./scripts/build-mac-universal.sh",
-    "dist:win": "pnpm transpile:electron && pnpm build && electron-builder --win --x64",
-    "dist:linux": "pnpm transpile:electron && pnpm build && electron-builder --linux --x64"
+    "dist:win": "pnpm transpile:electron && pnpm build:electron && electron-builder --win --x64",
+    "dist:linux": "pnpm transpile:electron && pnpm build:electron && electron-builder --linux --x64"
   },
   "dependencies": {
     "@remix-run/router": "^1.17.0",
