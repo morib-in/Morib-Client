@@ -4,7 +4,7 @@ import ButtonRadius8 from '@/shared/components/ButtonRadius8/ButtonRadius8';
 import ButtonStatusToggle from '@/shared/components/ButtonStatusToggle/ButtonStatusToggle';
 import ModalWrapper, { ModalWrapperRef } from '@/shared/components/ModalWrapper/ModalWrapper';
 
-import { reloginWithoutLogout } from '@/shared/utils/auth';
+import { useLogout } from '@/shared/hooks/useLogout';
 
 import { UserProfileType } from '@/shared/types/profile';
 
@@ -19,11 +19,14 @@ type AccountContentProps = UserProfileType;
 const AccountContent = ({ ...props }: AccountContentProps) => {
 	const logoutModalRef = useRef<ModalWrapperRef>(null);
 	const deleteAccountModalRef = useRef<ModalWrapperRef>(null);
+
 	const { mutate: changeProfile } = usePutChangeProfile();
 	const { mutate: deleteAccount } = useDeleteAccount();
 
 	const [isToggleOn, setIsToggleOn] = useState(props.isPushEnabled);
 	const [userName, setUserName] = useState(props.name);
+
+	const { handleLogout } = useLogout();
 
 	const handleToggle = () => setIsToggleOn((prev) => !prev);
 
@@ -52,7 +55,7 @@ const AccountContent = ({ ...props }: AccountContentProps) => {
 	};
 
 	const handleDeleteAccount = () => {
-		deleteAccount(undefined, { onSuccess: reloginWithoutLogout });
+		deleteAccount(undefined, { onSuccess: handleLogout });
 	};
 
 	return (
@@ -122,7 +125,7 @@ const AccountContent = ({ ...props }: AccountContentProps) => {
 			<ModalWrapper ref={logoutModalRef} backdrop>
 				{(_) => (
 					<ModalContentsAlert.Logout
-						onConfirm={reloginWithoutLogout}
+						onConfirm={handleLogout}
 						onCloseModal={handleCloseLogoutModal}
 						userEmail={props.email}
 					/>
