@@ -1,8 +1,8 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 
 import ButtonRadius8 from '@/shared/components/ButtonRadius8/ButtonRadius8';
 import ButtonStatusToggle from '@/shared/components/ButtonStatusToggle/ButtonStatusToggle';
-import ModalWrapper, { ModalWrapperRef } from '@/shared/components/ModalWrapper/ModalWrapper';
+import { Overlay } from '@/shared/components/Overlay/Overlay';
 
 import { reloginWithoutLogout } from '@/shared/utils/auth';
 
@@ -17,8 +17,6 @@ import { useDeleteAccount, usePutChangeProfile } from '@/shared/apisV2/setting/s
 type AccountContentProps = UserProfileType;
 
 const AccountContent = ({ ...props }: AccountContentProps) => {
-	const logoutModalRef = useRef<ModalWrapperRef>(null);
-	const deleteAccountModalRef = useRef<ModalWrapperRef>(null);
 	const { mutate: changeProfile } = usePutChangeProfile();
 	const { mutate: deleteAccount } = useDeleteAccount();
 
@@ -35,20 +33,26 @@ const AccountContent = ({ ...props }: AccountContentProps) => {
 		changeProfile({ name: userName, imageUrl: props.imageUrl, isPushEnabled: isToggleOn });
 	};
 
-	const handleCloseLogoutModal = () => {
-		logoutModalRef.current?.close();
+	const handleLogoutModal = () => {
+		Overlay({
+			backdrop: true,
+			content: ({ close }) => (
+				<ModalContentsAlert.Logout onConfirm={reloginWithoutLogout} onCloseModal={close} userEmail={props.email} />
+			),
+		});
 	};
 
-	const handleCloseDeleteAccountModal = () => {
-		deleteAccountModalRef.current?.close();
-	};
-
-	const handleOpenLogoutModal = () => {
-		logoutModalRef.current?.open();
-	};
-
-	const handleOpenDeleteAccountModal = () => {
-		deleteAccountModalRef.current?.open();
+	const handleDeleteAccounttModal = () => {
+		Overlay({
+			backdrop: true,
+			content: ({ close }) => (
+				<ModalContentsAlert.DeleteAccount
+					onConfirm={handleDeleteAccount}
+					onCloseModal={close}
+					userEmail={props.email}
+				/>
+			),
+		});
 	};
 
 	const handleDeleteAccount = () => {
@@ -92,7 +96,7 @@ const AccountContent = ({ ...props }: AccountContentProps) => {
 					<p className="text-white subhead-semibold-18">모든 기기에서 로그아웃</p>
 					<p className="text-gray-04 body-reg-16">본 기기를 포함한 모든 기기에서 로그아웃합니다.</p>
 				</div>
-				<button type="button" onClick={handleOpenLogoutModal}>
+				<button type="button" onClick={handleLogoutModal}>
 					<ArrowRightIcon className="rounded-[1.6rem] hover:bg-gray-bg-05" />
 				</button>
 			</div>
@@ -104,7 +108,7 @@ const AccountContent = ({ ...props }: AccountContentProps) => {
 						계정을 영구적으로 삭제하고 모든 워크스페이스에서 액세스 권한을 제거합니다.
 					</p>
 				</div>
-				<button type="button" onClick={handleOpenDeleteAccountModal}>
+				<button type="button" onClick={handleDeleteAccounttModal}>
 					<ArrowRightIcon className="rounded-[1.6rem] hover:bg-gray-bg-05" />
 				</button>
 			</div>
@@ -119,24 +123,6 @@ const AccountContent = ({ ...props }: AccountContentProps) => {
 					변경사항 저장
 				</ButtonRadius8.Md>
 			</div>
-			<ModalWrapper ref={logoutModalRef} backdrop>
-				{(_) => (
-					<ModalContentsAlert.Logout
-						onConfirm={reloginWithoutLogout}
-						onCloseModal={handleCloseLogoutModal}
-						userEmail={props.email}
-					/>
-				)}
-			</ModalWrapper>
-			<ModalWrapper ref={deleteAccountModalRef} backdrop>
-				{(_) => (
-					<ModalContentsAlert.DeleteAccount
-						onConfirm={handleDeleteAccount}
-						onCloseModal={handleCloseDeleteAccountModal}
-						userEmail={props.email}
-					/>
-				)}
-			</ModalWrapper>
 		</>
 	);
 };

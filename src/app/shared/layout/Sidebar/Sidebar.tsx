@@ -1,7 +1,6 @@
-import { useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import ModalWrapper, { ModalWrapperRef } from '@/shared/components/ModalWrapper/ModalWrapper';
+import { Overlay } from '@/shared/components/Overlay/Overlay';
 
 import { getActivePath } from '@/shared/utils/path';
 
@@ -14,15 +13,10 @@ import { ROUTES_CONFIG } from '@/router/routesConfig';
 import ModalContentsSetting from './ModalContentsSetting/ModalContentsSetting';
 
 const Sidebar = () => {
-	const modalRef = useRef<ModalWrapperRef & HTMLDialogElement>(null);
 	const navigate = useNavigate();
 	const location = useLocation();
 
 	const pathName = getActivePath(location.pathname);
-
-	const openSettings = () => {
-		modalRef.current?.open();
-	};
 
 	const navigateHome = () => {
 		navigate(ROUTES_CONFIG.home.path);
@@ -30,6 +24,13 @@ const Sidebar = () => {
 
 	const navigateAllowedService = () => {
 		navigate(ROUTES_CONFIG.allowedService.path);
+	};
+
+	const handleSettingModal = () => {
+		Overlay({
+			backdrop: true,
+			content: ({ isOpen }) => <ModalContentsSetting isModalOpen={isOpen} />,
+		});
 	};
 
 	return (
@@ -56,14 +57,11 @@ const Sidebar = () => {
 						/>
 					</button>
 
-					<button onClick={openSettings}>
+					<button onClick={handleSettingModal}>
 						<GearIcon className="rounded-[1.6rem] hover:bg-gray-bg-04 active:bg-gray-bg-05" />
 					</button>
 				</section>
 			</aside>
-			<ModalWrapper ref={modalRef} backdrop={true}>
-				{({ isModalOpen }) => <ModalContentsSetting isModalOpen={isModalOpen} />}
-			</ModalWrapper>
 		</>
 	);
 };

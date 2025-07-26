@@ -1,8 +1,8 @@
-import { ReactNode, useRef } from 'react';
+import { ReactNode } from 'react';
 
 import Dropdown from '@/shared/components/Dropdown/Dropdown';
 import FaviconImage from '@/shared/components/FaviconImage/FaviconImage';
-import ModalWrapper, { ModalWrapperRef } from '@/shared/components/ModalWrapper/ModalWrapper';
+import { Overlay } from '@/shared/components/Overlay/Overlay';
 import Spacer from '@/shared/components/Spacer/Spacer';
 
 import { AllowedServiceGroupDetailSiteType } from '@/shared/types/allowedService';
@@ -66,23 +66,38 @@ export const AllowedServiceGroupDetailContentTableRow = ({
 	activeGroupId,
 	...allowedSiteData
 }: AllowedServiceGroupDetailContentRootTableRowProps) => {
-	const domainAllowModalRef = useRef<ModalWrapperRef>(null);
-	const confirmDeleteModalRef = useRef<ModalWrapperRef>(null);
-
-	const handleOpenDomainAllowModal = () => {
-		domainAllowModalRef.current?.open();
+	const handleDomainAllowModal = () => {
+		Overlay({
+			backdrop: true,
+			content: ({ close }) => (
+				<ModalContentsAlert.DomainAllowConfirm
+					siteName={allowedSiteData.siteName}
+					onConfirm={() => {
+						allowToMergeParentDomain.mutate({
+							allowedGroupId: activeGroupId,
+							siteUrl: allowedSiteData.siteUrl,
+						});
+						close();
+					}}
+					onCancel={close}
+				/>
+			),
+		});
 	};
 
-	const handleCloseDomainAllowModal = () => {
-		domainAllowModalRef.current?.close();
-	};
-
-	const handleOpenConfirmDeleteModal = () => {
-		confirmDeleteModalRef.current?.open();
-	};
-
-	const handleCloseConfirmDeleteModal = () => {
-		confirmDeleteModalRef.current?.close();
+	const handleConfirmDeleteModal = () => {
+		Overlay({
+			backdrop: true,
+			content: ({ close }) => (
+				<ModalContentsAlert.ConfirmDelete
+					onClick={() => {
+						close();
+						onDeleteAllowedSite();
+					}}
+					pageName={allowedSiteData.pageName}
+				/>
+			),
+		});
 	};
 
 	const allowToMergeParentDomain = usePostMergeToParentDomain();
@@ -110,44 +125,18 @@ export const AllowedServiceGroupDetailContentTableRow = ({
 							<MeatBallDefaultIcon className="cursor-pointer hover:rounded-full hover:bg-gray-bg-05" />
 						</Dropdown.Trigger>
 						<Dropdown.Content className="absolute right-0 top-[2.4rem] w-[16.7rem]">
-							<Dropdown.Item label="상위 도메인 허용" onClick={handleOpenDomainAllowModal} />
+							<Dropdown.Item label="상위 도메인 허용" onClick={handleDomainAllowModal} />
 							<Dropdown.Item
 								label="허용 사이트 삭제"
 								textColor="red"
 								onClick={() => {
-									handleOpenConfirmDeleteModal();
+									handleConfirmDeleteModal();
 								}}
 							/>
 						</Dropdown.Content>
 					</Dropdown>
 				</div>
 			</div>
-			<ModalWrapper ref={domainAllowModalRef} backdrop>
-				{() => (
-					<ModalContentsAlert.DomainAllowConfirm
-						siteName={allowedSiteData.siteName}
-						onConfirm={() => {
-							allowToMergeParentDomain.mutate({
-								allowedGroupId: activeGroupId,
-								siteUrl: allowedSiteData.siteUrl,
-							});
-							handleCloseDomainAllowModal();
-						}}
-						onCancel={handleCloseDomainAllowModal}
-					/>
-				)}
-			</ModalWrapper>
-			<ModalWrapper ref={confirmDeleteModalRef} backdrop>
-				{() => (
-					<ModalContentsAlert.ConfirmDelete
-						onClick={() => {
-							handleCloseConfirmDeleteModal();
-							onDeleteAllowedSite();
-						}}
-						pageName={allowedSiteData.pageName}
-					/>
-				)}
-			</ModalWrapper>
 		</div>
 	);
 };
