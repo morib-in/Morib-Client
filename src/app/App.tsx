@@ -1,4 +1,5 @@
 import { Provider } from 'jotai';
+import { OverlayProvider } from 'overlay-kit';
 
 import { RouterProvider } from 'react-router-dom';
 
@@ -15,9 +16,11 @@ const App = () => {
 			<div style={{ fontSize: '16px' }}>
 				<ReactQueryDevtools initialIsOpen={false} />
 			</div>
-			<Provider>
-				<RouterProvider router={router} />
-			</Provider>
+			<OverlayProvider>
+				<Provider>
+					<RouterProvider router={router} />
+				</Provider>
+			</OverlayProvider>
 		</QueryClientProvider>
 	);
 };
