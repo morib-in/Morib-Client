@@ -48,8 +48,8 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
       react-lottie:
-        specifier: ^1.2.4
-        version: 1.2.4(react@18.3.1)
+        specifier: ^1.2.10
+        version: 1.2.10(react@18.3.1)
       react-router-dom:
         specifier: ^6.24.0
         version: 6.24.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -101,7 +101,7 @@ importers:
         version: 35.1.5
       electron-builder:
         specifier: ^26.0.12
-        version: 26.0.12(electron-builder-squirrel-windows@26.0.12)
+        version: 26.0.12(electron-builder-squirrel-windows@26.0.12(dmg-builder@26.0.12))
       eslint:
         specifier: ^8.57.0
         version: 8.57.0
@@ -123,6 +123,9 @@ importers:
       eslint-plugin-react-refresh:
         specifier: ^0.4.7
         version: 0.4.7(eslint@8.57.0)
+      husky:
+        specifier: ^9.1.7
+        version: 9.1.7
       msw:
         specifier: ^2.7.0
         version: 2.7.0(@types/node@22.10.3)(typescript@5.5.2)
@@ -2051,6 +2054,11 @@ packages:
   humanize-ms@1.2.1:
     resolution: {integrity: sha512-Fl70vYtsAFb/C06PTS9dZBo7ihau+Tu/DNCk/OyHhea07S+aeMWpFFkUaXRa8fI+ScZbEI8dfSxwY7gxZ9SAVQ==}
 
+  husky@9.1.7:
+    resolution: {integrity: sha512-5gs5ytaNjBrh5Ow3zrvdUUY+0VxIuWVL4i9irt6friV+BqdCfmV11CQTWMiBYWHbXhco+J1kHfTOUkePhCDvMA==}
+    engines: {node: '>=18'}
+    hasBin: true
+
   iconv-corefoundation@1.1.7:
     resolution: {integrity: sha512-T10qvkw0zz4wnm560lOEg0PovVqUXuOFhhHAkixw8/sycy7TJt7v/RrkEKEQnAw2viPSJu6iAkErxnzR0g8PpQ==}
     engines: {node: ^8.11.2 || >=10}
@@ -2367,8 +2375,8 @@ packages:
     resolution: {integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==}
     hasBin: true
 
-  lottie-web@5.12.2:
-    resolution: {integrity: sha512-uvhvYPC8kGPjXT3MyKMrL3JitEAmDMp30lVkuq/590Mw9ok6pWcFCwXJveo0t5uqYw1UREQHofD+jVpdjBv8wg==}
+  lottie-web@5.13.0:
+    resolution: {integrity: sha512-+gfBXl6sxXMPe8tKQm7qzLnUy5DUPJPKIyRHwtpCpyUEYjHYRJC/5gjUvdkuO2c3JllrPtHXH5UJJK8LRYl5yQ==}
 
   lower-case@2.0.2:
     resolution: {integrity: sha512-7fm3l3NAF9WfN6W3JOmf5drwpVqX78JtoGJ3A6W0a6ZnldM41w2fV5D490psKFTpMds8TJse/eHLFFsNHHjHgg==}
@@ -2882,9 +2890,8 @@ packages:
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
 
-  react-lottie@1.2.4:
-    resolution: {integrity: sha512-kBGxI+MIZGBf4wZhNCWwHkMcVP+kbpmrLWH/SkO0qCKc7D7eSPcxQbfpsmsCo8v2KCBYjuGSou+xTqK44D/jMg==}
-    engines: {npm: ^3.0.0}
+  react-lottie@1.2.10:
+    resolution: {integrity: sha512-x0eWX3Z6zSx1XM5QSjnLupc6D22LlMCB0PH06O/N/epR2hsLaj1Vxd9RtMnbbEHjJ/qlsgHJ6bpN3vnZI92hjw==}
     peerDependencies:
       react: '>=15.0.0'
 
@@ -4571,7 +4578,7 @@ snapshots:
 
   app-builder-bin@5.0.0-alpha.12: {}
 
-  app-builder-lib@26.0.12(dmg-builder@26.0.12)(electron-builder-squirrel-windows@26.0.12):
+  app-builder-lib@26.0.12(dmg-builder@26.0.12(electron-builder-squirrel-windows@26.0.12))(electron-builder-squirrel-windows@26.0.12(dmg-builder@26.0.12)):
     dependencies:
       '@develar/schema-utils': 2.6.5
       '@electron/asar': 3.2.18
@@ -5090,7 +5097,7 @@ snapshots:
 
   dmg-builder@26.0.12(electron-builder-squirrel-windows@26.0.12):
     dependencies:
-      app-builder-lib: 26.0.12(dmg-builder@26.0.12)(electron-builder-squirrel-windows@26.0.12)
+      app-builder-lib: 26.0.12(dmg-builder@26.0.12(electron-builder-squirrel-windows@26.0.12))(electron-builder-squirrel-windows@26.0.12(dmg-builder@26.0.12))
       builder-util: 26.0.11
       builder-util-runtime: 9.3.1
       fs-extra: 10.1.0
@@ -5142,7 +5149,7 @@ snapshots:
 
   electron-builder-squirrel-windows@26.0.12(dmg-builder@26.0.12):
     dependencies:
-      app-builder-lib: 26.0.12(dmg-builder@26.0.12)(electron-builder-squirrel-windows@26.0.12)
+      app-builder-lib: 26.0.12(dmg-builder@26.0.12(electron-builder-squirrel-windows@26.0.12))(electron-builder-squirrel-windows@26.0.12(dmg-builder@26.0.12))
       builder-util: 26.0.11
       electron-winstaller: 5.4.0
     transitivePeerDependencies:
@@ -5150,9 +5157,9 @@ snapshots:
       - dmg-builder
       - supports-color
 
-  electron-builder@26.0.12(electron-builder-squirrel-windows@26.0.12):
+  electron-builder@26.0.12(electron-builder-squirrel-windows@26.0.12(dmg-builder@26.0.12)):
     dependencies:
-      app-builder-lib: 26.0.12(dmg-builder@26.0.12)(electron-builder-squirrel-windows@26.0.12)
+      app-builder-lib: 26.0.12(dmg-builder@26.0.12(electron-builder-squirrel-windows@26.0.12))(electron-builder-squirrel-windows@26.0.12(dmg-builder@26.0.12))
       builder-util: 26.0.11
       builder-util-runtime: 9.3.1
       chalk: 4.1.2
@@ -5829,6 +5836,8 @@ snapshots:
     dependencies:
       ms: 2.1.2
 
+  husky@9.1.7: {}
+
   iconv-corefoundation@1.1.7:
     dependencies:
       cli-truncate: 2.1.0
@@ -6107,7 +6116,7 @@ snapshots:
     dependencies:
       js-tokens: 4.0.0
 
-  lottie-web@5.12.2: {}
+  lottie-web@5.13.0: {}
 
   lower-case@2.0.2:
     dependencies:
@@ -6562,10 +6571,11 @@ snapshots:
 
   react-is@16.13.1: {}
 
-  react-lottie@1.2.4(react@18.3.1):
+  react-lottie@1.2.10(react@18.3.1):
     dependencies:
       babel-runtime: 6.26.0
-      lottie-web: 5.12.2
+      lottie-web: 5.13.0
+      prop-types: 15.8.1
       react: 18.3.1
 
   react-onclickoutside@6.13.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1):

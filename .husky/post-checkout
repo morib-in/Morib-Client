@@ -1,0 +1,25 @@
+# 현재 브랜치와 이전 브랜치의 pnpm-lock.yaml 파일의 변경 여부를 확인하는 함수
+check_pnpm_lock_changes() {
+  local previous_head=$1
+  local new_head=$2
+
+  # pnpm-lock.yaml 파일의 변경 여부를 확인
+  git diff --name-only "$previous_head" "$new_head" | grep -q "pnpm-lock.yaml"
+}
+
+# 이전 HEAD와 새 HEAD를 인자로 받아옴
+previous_head="$1"
+new_head="$2"
+
+# 이전 HEAD가 비어 있으면 초기 체크아웃이므로 무시
+if [ -z "$previous_head" ]; then
+  exit 0
+fi
+
+# pnpm-lock.yaml 파일이 변경되었는지 확인
+if check_pnpm_lock_changes "$previous_head" "$new_head"; then
+  echo "pnpm-lock.yaml 파일이 변경되었습니다. pnpm install을 실행합니다."
+  pnpm install
+else
+  echo "pnpm-lock.yaml 파일이 변경되지 않았습니다. pnpm install을 건너뜁니다."
+fi

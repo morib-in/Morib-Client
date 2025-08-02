@@ -128,6 +128,7 @@ export default {
 			},
 			lineHeight: {
 				120: '120%',
+				130: '130%',
 				140: '140%',
 			},
 			backgroundImage: {

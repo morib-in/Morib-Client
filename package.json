@@ -26,7 +26,8 @@
     "dist:mac:intel:notarize": "./scripts/build-mac-intel.sh",
     "dist:mac:universal:notarize": "./scripts/build-mac-universal.sh",
     "dist:win": "pnpm transpile:electron && pnpm build:electron && electron-builder --win --x64",
-    "dist:linux": "pnpm transpile:electron && pnpm build:electron && electron-builder --linux --x64"
+    "dist:linux": "pnpm transpile:electron && pnpm build:electron && electron-builder --linux --x64",
+    "prepare": "husky"
   },
   "dependencies": {
     "@remix-run/router": "^1.17.0",
@@ -42,7 +43,7 @@
     "react": "^18.3.1",
     "react-datepicker": "^7.3.0",
     "react-dom": "^18.3.1",
-    "react-lottie": "^1.2.4",
+    "react-lottie": "^1.2.10",
     "react-router-dom": "^6.24.0",
     "socket.io-client": "^4.7.5",
     "timezone": "^1.0.23"
@@ -69,6 +70,7 @@
     "eslint-plugin-react": "^7.34.3",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.7",
+    "husky": "^9.1.7",
     "msw": "^2.7.0",
     "postcss": "^8.4.39",
     "prettier": "^3.3.2",
