@@ -1,4 +1,4 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 
 import ErrorBoundary from '@/shared/components/ErrorBoundary/ErrorBoundary';
 
@@ -9,9 +9,12 @@ import { ROUTES_CONFIG } from './routesConfig';
 
 const ProtectedRoute = () => {
 	const accessToken = getAccessToken();
+	const navigate = useNavigate();
+
 	if (!accessToken) {
 		alert(mapStatusToMessage(401));
-		return <Navigate to={ROUTES_CONFIG.login.path} replace />;
+		navigate(ROUTES_CONFIG.login.path, { replace: true });
+		return null;
 	}
 
 	return (

@@ -1,9 +1,14 @@
+import { useEffect } from 'react';
 import Lottie from 'react-lottie';
+import { useNavigate } from 'react-router-dom';
 
-import LottieData from '@/shared/assets/lotties/morib_logo_motion.json';
+import LottieData from '@/shared/assets/lotties/main_motion.json';
 import GoogleLoginIcon from '@/shared/assets/svgs/google_login.svg?react';
 
+import { ROUTES_CONFIG } from '@/router/routesConfig';
+
 import { useLottieAnimation } from '@/pages/LoginPage/hooks/useLottieAnimation';
+import { authConfig } from '@/shared/config/auth';
 
 const defaultOptions = {
 	autoplay: true,
@@ -14,17 +19,15 @@ const defaultOptions = {
 	},
 };
 
-const API_URL = `${import.meta.env.VITE_GOOGLE_URL}`;
-const ELECTRON_URL = `${import.meta.env.VITE_ELECTRON_AUTH_URL}`;
-
 const LoginPage = () => {
 	const { isAnimationComplete, lottieRef, handleAnimationComplete } = useLottieAnimation();
+	const navigate = useNavigate();
 
 	const handleClick = () => {
 		if (window.electron) {
-			window.open(ELECTRON_URL, '_blank');
+			window.open(authConfig.google.url.electron, '_blank');
 		} else {
-			window.location.href = API_URL;
+			window.location.href = authConfig.google.url.react;
 		}
 	};
 
@@ -34,9 +37,15 @@ const LoginPage = () => {
 		});
 	};
 
+	useEffect(() => {
+		if (authConfig.isAuthenticated()) {
+			navigate(ROUTES_CONFIG.home.path);
+		}
+	}, [navigate]);
+
 	return (
 		<div className="flex h-screen items-center justify-center bg-login bg-login-bg bg-cover">
-			<div className="h-[37rem] w-[60rem]">
+			<div className="flex flex-col items-center justify-center">
 				<Lottie
 					ref={lottieRef}
 					options={defaultOptions}
@@ -55,7 +64,7 @@ const LoginPage = () => {
 				<button
 					onMouseEnter={handleMouseEnter}
 					onClick={handleClick}
-					className={`ml-[12rem] transition-opacity duration-300 ${isAnimationComplete ? 'opacity-100' : 'opacity-0'}`}
+					className={`transition-opacity duration-300 ${isAnimationComplete ? 'opacity-100' : 'opacity-0'}`}
 				>
 					<GoogleLoginIcon />
 				</button>

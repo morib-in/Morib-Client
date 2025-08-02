@@ -10,13 +10,13 @@ import LoadingOverlay from '@/shared/components/LoadingOverlay/LoadingOverlay';
 import AllowedServicePage from '@/pages/AllowedServicePage/AllowedServicePage';
 import HomePage from '@/pages/HomePage/HomePage';
 import NotFoundPage from '@/pages/NotFoundPage/NotFoundPage';
+import RedirectPage from '@/pages/RedirectPage/RedirectPage';
 import Layout from '@/shared/layout/Layout';
 
 import ProtectedRoute from './ProtectedRoute';
 import { ROUTES_CONFIG } from './routesConfig';
 
 const LoginPage = lazy(() => import('@/pages/LoginPage/LoginPage'));
-const RedirectPage = lazy(() => import('@/pages/RedirectPage/RedirectPage'));
 const OnboardingPage = lazy(() => import('@/pages/OnboardingPage/OnboardingPage'));
 const TimerPage = lazy(() => import('@/pages/TimerPage/TimerPage'));
 

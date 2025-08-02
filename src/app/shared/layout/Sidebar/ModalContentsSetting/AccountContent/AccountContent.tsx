@@ -3,7 +3,8 @@ import React, { useState } from 'react';
 import ButtonRadius8 from '@/shared/components/ButtonRadius8/ButtonRadius8';
 import ButtonStatusToggle from '@/shared/components/ButtonStatusToggle/ButtonStatusToggle';
 
-import { reloginWithoutLogout } from '@/shared/utils/auth';
+import { useLogout } from '@/shared/hooks/useLogout';
+
 import { overlay } from '@/shared/utils/overlay';
 
 import { UserProfileType } from '@/shared/types/profile';
@@ -23,6 +24,8 @@ const AccountContent = ({ ...props }: AccountContentProps) => {
 	const [isToggleOn, setIsToggleOn] = useState(props.isPushEnabled);
 	const [userName, setUserName] = useState(props.name);
 
+	const { handleLogout } = useLogout();
+
 	const handleToggle = () => setIsToggleOn((prev) => !prev);
 
 	const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,7 +40,7 @@ const AccountContent = ({ ...props }: AccountContentProps) => {
 		overlay({
 			backdrop: true,
 			content: ({ close }) => (
-				<ModalContentsAlert.Logout onConfirm={reloginWithoutLogout} onCloseModal={close} userEmail={props.email} />
+				<ModalContentsAlert.Logout onConfirm={handleLogout} onCloseModal={close} userEmail={props.email} />
 			),
 		});
 	};
@@ -56,7 +59,7 @@ const AccountContent = ({ ...props }: AccountContentProps) => {
 	};
 
 	const handleDeleteAccount = () => {
-		deleteAccount(undefined, { onSuccess: reloginWithoutLogout });
+		deleteAccount(undefined, { onSuccess: handleLogout });
 	};
 
 	return (
