@@ -1,4 +1,5 @@
 import type { Router } from '@remix-run/router';
+import { OverlayProvider } from 'overlay-kit';
 
 import { Suspense, lazy } from 'react';
 import { Outlet, createBrowserRouter, createHashRouter } from 'react-router-dom';
@@ -22,83 +23,94 @@ const TimerPage = lazy(() => import('@/pages/TimerPage/TimerPage'));
 
 const routerInfo = [
 	{
-		//public 라우트들
+		// 리액트 라우터 컨텍스트 내에서 적용되어야 하는 프로바이더 (내부 컴포넌트가 리액트 라우터 API를 사용하는 경우 )
 		path: '/',
 		element: (
-			<ErrorBoundary>
+			<OverlayProvider>
 				<Outlet />
-			</ErrorBoundary>
+			</OverlayProvider>
 		),
 		children: [
 			{
-				path: ROUTES_CONFIG.login.path,
+				//public 라우트들
+				path: '/',
 				element: (
-					<Suspense fallback={<LoadingOverlay isLoading dim={false} />}>
-						<LoginPage />
-					</Suspense>
+					<ErrorBoundary>
+						<Outlet />
+					</ErrorBoundary>
 				),
-			},
-			{
-				path: ROUTES_CONFIG.redirect.path,
-				element: <RedirectPage />,
-			},
-		],
-	},
-
-	{
-		//권한이 있어야 접근 가능한 라우트들
-		path: '/',
-		element: <ProtectedRoute />,
-		children: [
-			{
-				path: '',
-				element: <HeartBeatBoundary />,
 				children: [
 					{
-						path: ROUTES_CONFIG.home.path,
-						element: (
-							<Layout>
-								<HomePage />
-							</Layout>
-						),
-					},
-					{
-						path: ROUTES_CONFIG.onboarding.path,
-						element: (
-							<Layout>
-								<OnboardingPage />
-							</Layout>
-						),
-					},
-					{
-						path: ROUTES_CONFIG.timer.path,
+						path: ROUTES_CONFIG.login.path,
 						element: (
 							<Suspense fallback={<LoadingOverlay isLoading dim={false} />}>
-								<TimerPage />
+								<LoginPage />
 							</Suspense>
 						),
 					},
 					{
-						path: ROUTES_CONFIG.allowedService.path,
-						element: (
-							<Layout>
-								<AllowedServicePage />
-							</Layout>
-						),
+						path: ROUTES_CONFIG.redirect.path,
+						element: <RedirectPage />,
 					},
 				],
 			},
-		],
-	},
 
-	{
-		//404 페이지
-		path: '*',
-		element: (
-			<Layout>
-				<NotFoundPage />
-			</Layout>
-		),
+			{
+				//권한이 있어야 접근 가능한 라우트들
+				path: '/',
+				element: <ProtectedRoute />,
+				children: [
+					{
+						path: '',
+						element: <HeartBeatBoundary />,
+						children: [
+							{
+								path: ROUTES_CONFIG.home.path,
+								element: (
+									<Layout>
+										<HomePage />
+									</Layout>
+								),
+							},
+							{
+								path: ROUTES_CONFIG.onboarding.path,
+								element: (
+									<Layout>
+										<OnboardingPage />
+									</Layout>
+								),
+							},
+							{
+								path: ROUTES_CONFIG.timer.path,
+								element: (
+									<Suspense fallback={<LoadingOverlay isLoading dim={false} />}>
+										<TimerPage />
+									</Suspense>
+								),
+							},
+							{
+								path: ROUTES_CONFIG.allowedService.path,
+								element: (
+									<Layout>
+										<AllowedServicePage />
+									</Layout>
+								),
+							},
+						],
+					},
+				],
+			},
+
+			{
+				//404 페이지
+				path: '*',
+				element: (
+					<Layout>
+						<NotFoundPage />
+					</Layout>
+				),
+			},
+		],
 	},
 ];
 
