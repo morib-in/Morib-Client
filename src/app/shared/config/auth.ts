@@ -5,7 +5,10 @@ import { ROUTES_CONFIG } from '@/router/routesConfig';
 import { getAccessToken, getIsOnboardingCompleted } from '../utils/auth';
 
 export const authConfig = {
-	authUrl: import.meta.env.VITE_MORIB_AUTH_URL,
+	authUrl: {
+		react: `${import.meta.env.VITE_MORIB_AUTH_URL}?type=web`,
+		electron: `${import.meta.env.VITE_MORIB_AUTH_URL}?type=electron`,
+	},
 
 	isAuthenticated: () => {
 		const accessToken = getAccessToken();

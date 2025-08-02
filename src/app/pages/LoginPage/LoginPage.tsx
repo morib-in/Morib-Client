@@ -70,9 +70,9 @@ const LoginPage = () => {
 		setIsExiting(true);
 		setTimeout(() => {
 			if (window.electron) {
-				window.open(authConfig.authUrl, '_blank');
+				window.open(authConfig.authUrl.electron, '_blank');
 			} else {
-				window.location.href = authConfig.authUrl;
+				window.location.href = authConfig.authUrl.react;
 			}
 		}, 700);
 	};
