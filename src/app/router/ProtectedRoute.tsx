@@ -1,6 +1,8 @@
-import { Navigate, Outlet, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 import ErrorBoundary from '@/shared/components/ErrorBoundary/ErrorBoundary';
+import LoadingOverlay from '@/shared/components/LoadingOverlay/LoadingOverlay';
 
 import { getAccessToken } from '@/shared/utils/auth';
 import { mapStatusToMessage } from '@/shared/utils/error';
@@ -11,10 +13,15 @@ const ProtectedRoute = () => {
 	const accessToken = getAccessToken();
 	const navigate = useNavigate();
 
+	useEffect(() => {
+		if (!accessToken) {
+			alert(mapStatusToMessage(401));
+			navigate(ROUTES_CONFIG.login.path, { replace: true });
+		}
+	}, [accessToken, navigate]);
+
 	if (!accessToken) {
-		alert(mapStatusToMessage(401));
-		navigate(ROUTES_CONFIG.login.path, { replace: true });
-		return null;
+		return <LoadingOverlay isLoading dim={false} />;
 	}
 
 	return (
