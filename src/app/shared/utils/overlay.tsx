@@ -1,4 +1,4 @@
-import { overlay } from 'overlay-kit';
+import { overlay as overlayKit } from 'overlay-kit';
 
 import { ReactNode } from 'react';
 
@@ -7,8 +7,8 @@ interface OverlayProps {
 	content: (props: { isOpen: boolean; close: () => void }) => ReactNode;
 }
 
-export const Overlay = ({ content, backdrop = true }: OverlayProps) => {
-	overlay.open(({ isOpen, close }) =>
+export const overlay = ({ content, backdrop = true }: OverlayProps) => {
+	overlayKit.open(({ isOpen, close }) =>
 		isOpen ? (
 			<div
 				className={`fixed inset-0 z-50 flex items-center justify-center ${
