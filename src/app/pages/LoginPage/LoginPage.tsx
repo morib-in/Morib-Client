@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import loginTimerURL from '@/shared/assets/svgs/login/ic_login_timer.svg';
+import logoURL from '@/shared/assets/svgs/login/ic_logo.svg';
+
 import { ROUTES_CONFIG } from '@/router/routesConfig';
 
 import { authConfig } from '@/shared/config/auth';
@@ -96,7 +99,7 @@ const LoginPage = () => {
 					className={`relative z-10 flex h-full w-full items-center transition-all duration-700 ${isExiting ? 'translate-y-12 opacity-0' : ''}`}
 				>
 					<section className="flex h-[39.63vh] flex-[4] flex-col items-center justify-center gap-[8rem] md:items-start">
-						<img src="/logo.svg" alt="Morib 로고" className="logo-animate h-auto w-[22.4rem]" />
+						<img src={logoURL} alt="Morib 로고" className="logo-animate h-auto w-[22.4rem]" />
 
 						{/* 제목 - 피그마 기준 72px 폰트, 줄간격 1.3 */}
 						<div className="flex w-full flex-col items-center md:items-start">
@@ -119,7 +122,7 @@ const LoginPage = () => {
 					</section>
 
 					<section className="relative hidden h-full flex-[10] items-center md:flex">
-						<img src="/timer.svg" alt="몰입 타이머 시각화" className="img-animate mr-[3.7rem] h-auto w-full" />
+						<img src={loginTimerURL} alt="몰입 타이머 시각화" className="img-animate mr-[3.7rem] h-auto w-full" />
 					</section>
 				</div>
 			</div>
