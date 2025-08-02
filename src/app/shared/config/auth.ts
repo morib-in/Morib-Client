@@ -28,4 +28,11 @@ export const authConfig = {
 			window.location.replace(ROUTES_CONFIG.login.path);
 		}
 	},
+	redirectToMoribAuth: () => {
+		if (window.electron) {
+			window.open(authConfig.authUrl.electron, '_blank');
+		} else {
+			window.location.href = authConfig.authUrl.react;
+		}
+	},
 };

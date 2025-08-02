@@ -69,11 +69,7 @@ const LoginPage = () => {
 	const navigateToLogin = () => {
 		setIsExiting(true);
 		setTimeout(() => {
-			if (window.electron) {
-				window.open(authConfig.authUrl.electron, '_blank');
-			} else {
-				window.location.href = authConfig.authUrl.react;
-			}
+			authConfig.redirectToMoribAuth();
 		}, 700);
 	};
 
