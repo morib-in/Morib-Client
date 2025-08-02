@@ -3,7 +3,7 @@
 interface ImportMetaEnv {
 	readonly VITE_BASE_URL: string;
 	readonly VITE_GOOGLE_URL: string;
-	readonly VITE_ELECTRON_URL: string;
+	readonly VITE_MORIB_AUTH_URL: string;
 	readonly VITE_SENTRY_DSN: string;
 }
 

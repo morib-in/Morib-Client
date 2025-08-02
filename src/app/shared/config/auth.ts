@@ -5,12 +5,7 @@ import { ROUTES_CONFIG } from '@/router/routesConfig';
 import { getAccessToken, getIsOnboardingCompleted } from '../utils/auth';
 
 export const authConfig = {
-	google: {
-		url: {
-			react: import.meta.env.VITE_GOOGLE_URL,
-			electron: import.meta.env.VITE_ELECTRON_AUTH_URL,
-		},
-	},
+	authUrl: import.meta.env.VITE_MORIB_AUTH_URL,
 
 	isAuthenticated: () => {
 		const accessToken = getAccessToken();
