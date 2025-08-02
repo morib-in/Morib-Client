@@ -81,6 +81,11 @@ if (!gotTheLock) {
 				getAuthenticatedWindowPath(accessToken || '', refreshToken || '', isOnboardingCompleted || ''),
 			);
 
+			if (!mainWindow.isVisible()) {
+				mainWindow.show();
+			}
+			mainWindow.focus();
+
 			// 브라우저 URL 모니터링을 위한 IPC 핸들러 등록
 			addBrowserMonitorIpcHandler(mainWindow);
 		} else {
