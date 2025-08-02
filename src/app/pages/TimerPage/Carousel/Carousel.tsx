@@ -3,9 +3,10 @@ import { useRef } from 'react';
 import ButtonArrowSVG from '@/shared/components/ButtonArrowSVG/ButtonArrowSVG';
 import ButtonRadius8 from '@/shared/components/ButtonRadius8/ButtonRadius8';
 import ModalContentsFriends from '@/shared/components/ModalContentsFriends/ModalContentsFriends';
-import ModalWrapper, { ModalWrapperRef } from '@/shared/components/ModalWrapper/ModalWrapper';
 
 import useCarousel from '@/shared/hooks/useCarousel';
+
+import { overlay } from '@/shared/utils/overlay';
 
 import { Direction } from '@/shared/types/global';
 
@@ -17,15 +18,17 @@ import CarouselFriend from './CarouselFriend';
  * 타이머 페이지 하단 친구 캐러셀 컴포넌트
  */
 const Carousel = () => {
-	const friendsModalRef = useRef<ModalWrapperRef>(null);
 	const carouselRef = useRef<HTMLDivElement>(null);
 
 	const { data: friendsList } = useGetTimerFriends();
 
 	const { handleNext, handlePrev } = useCarousel({ carouselRef });
 
-	const handleOpenFriendsModal = () => {
-		friendsModalRef.current?.open();
+	const handleFriendsModal = () => {
+		overlay({
+			backdrop: true,
+			content: ({ isOpen }) => <ModalContentsFriends isModalOpen={isOpen} />,
+		});
 	};
 
 	return (
@@ -35,7 +38,7 @@ const Carousel = () => {
 				{!friendsList?.data || friendsList.data.length === 0 ? (
 					<div className="flex h-full w-full flex-col items-center justify-center gap-y-[1.6rem]">
 						<h3 className="text-gray-04 subhead-bold-20">함께 몰입할 친구를 추가해보아요!</h3>
-						<ButtonRadius8.Md onClick={handleOpenFriendsModal}>친구 추가하기</ButtonRadius8.Md>
+						<ButtonRadius8.Md onClick={handleFriendsModal}>친구 추가하기</ButtonRadius8.Md>
 					</div>
 				) : (
 					<>
@@ -55,9 +58,6 @@ const Carousel = () => {
 				)}
 			</div>
 			<ButtonArrowSVG direction={Direction.RIGHT} onClick={handleNext} />
-			<ModalWrapper ref={friendsModalRef} backdrop={true}>
-				{({ isModalOpen }) => <ModalContentsFriends isModalOpen={isModalOpen} />}
-			</ModalWrapper>
 		</div>
 	);
 };

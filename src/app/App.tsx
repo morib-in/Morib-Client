@@ -15,6 +15,7 @@ const App = () => {
 			<div style={{ fontSize: '16px' }}>
 				<ReactQueryDevtools initialIsOpen={false} />
 			</div>
+
 			<Provider>
 				<RouterProvider router={router} />
 			</Provider>

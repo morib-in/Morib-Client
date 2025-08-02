@@ -35,6 +35,9 @@ importers:
       jotai:
         specifier: ^2.8.4
         version: 2.8.4(@types/react@18.3.3)(react@18.3.1)
+      overlay-kit:
+        specifier: ^1.8.4
+        version: 1.8.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -2615,6 +2618,12 @@ packages:
 
   outvariant@1.4.3:
     resolution: {integrity: sha512-+Sl2UErvtsoajRDKCE5/dBz4DIvHXQQnAxtQTF04OJxY0+DyZXSo5P5Bb7XYWOh81syohlYL24hbDwxedPUJCA==}
+
+  overlay-kit@1.8.4:
+    resolution: {integrity: sha512-CqFrMWStiLDqW6jr8Zj9O/n8eSBAnrHe2w6M77cFiEn724xmigk56sPcYtQXCYDcbvwV47oJjoKQQvfutL5yFw==}
+    peerDependencies:
+      react: ^16.8 || ^17 || ^18 || ^19
+      react-dom: ^16.8 || ^17 || ^18 || ^19
 
   p-cancelable@2.1.1:
     resolution: {integrity: sha512-BZOr3nRQHOntUjTrH8+Lh54smKHoHyur8We1V8DSMVrl5A2malOOwuJRnKRDjSnkoeBh4at6BwEnb5I7Jl31wg==}
@@ -6371,6 +6380,11 @@ snapshots:
       wcwidth: 1.0.1
 
   outvariant@1.4.3: {}
+
+  overlay-kit@1.8.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+    dependencies:
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
 
   p-cancelable@2.1.1: {}
 

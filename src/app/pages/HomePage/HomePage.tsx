@@ -7,13 +7,13 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import AutoFixedGrid from '@/shared/components/AutoFixedGrid/AutoFixedGrid';
 import ModalContentsFriends from '@/shared/components/ModalContentsFriends/ModalContentsFriends';
-import ModalWrapper, { ModalWrapperRef } from '@/shared/components/ModalWrapper/ModalWrapper';
 import NotificationPanel from '@/shared/components/NotificationPanel/NotificationPanel';
 import Spacer from '@/shared/components/Spacer/Spacer';
 
 import useClickOutside from '@/shared/hooks/useClickOutside';
 
 import { getThisWeekRange } from '@/shared/utils/date';
+import { overlay } from '@/shared/utils/overlay';
 import { getDailyCategoryTask, isTaskExist, splitTasksByCompletion } from '@/shared/utils/tasks';
 
 import { TaskType } from '@/shared/types/tasks';
@@ -60,11 +60,8 @@ const HomePage = () => {
 	const categoryRef = useRef<HTMLDivElement>(null);
 
 	const boxAddCategoryRef = useRef<HTMLDivElement>(null);
-	const friendsModalRef = useRef<ModalWrapperRef>(null);
 	const notificationPanelRef = useRef<HTMLDivElement>(null);
 	const bellIconRef = useRef<HTMLButtonElement>(null);
-	const timerRestrictionModalRef = useRef<ModalWrapperRef>(null);
-	const timerErrorModalRef = useRef<ModalWrapperRef>(null);
 
 	const [isNotificationVisible, setIsNotificationVisible] = useState(false);
 
@@ -161,12 +158,25 @@ const HomePage = () => {
 		);
 	};
 
-	const handleCloseTimerErrorModal = () => {
-		timerErrorModalRef.current?.close();
+	const handleFriendsModal = () => {
+		overlay({
+			backdrop: true,
+			content: ({ isOpen }) => <ModalContentsFriends isModalOpen={isOpen} />,
+		});
 	};
 
-	const handleOpenFriendsModal = () => {
-		friendsModalRef.current?.open();
+	const handleTimerErrorModal = () => {
+		overlay({
+			backdrop: true,
+			content: ({ close }) => <ModalContentsTimerError onClick={close} />,
+		});
+	};
+
+	const handleTimerRestrictionModal = () => {
+		overlay({
+			backdrop: true,
+			content: ({ close }) => <TimerRestriction onConfirm={close} />,
+		});
 	};
 
 	const toggleNotification = () => {
@@ -204,7 +214,7 @@ const HomePage = () => {
 
 	const handleSelectedDateChange = (date: Dayjs) => {
 		if (addingTodayTodoStatus && !todayDate.isSame(date, 'day')) {
-			timerRestrictionModalRef.current?.open();
+			handleTimerRestrictionModal();
 			return;
 		}
 		setSelectedDate(date);
@@ -262,7 +272,7 @@ const HomePage = () => {
 
 	useEffect(() => {
 		if (isTimerError) {
-			timerErrorModalRef.current?.open();
+			handleTimerErrorModal();
 		}
 	}, [isTimerError]);
 
@@ -360,7 +370,7 @@ const HomePage = () => {
 			</div>
 
 			<div className={`absolute right-[3.2rem] top-[4rem] flex gap-[0.8rem] 2xl:top-[5.4rem]`}>
-				<button onClick={handleOpenFriendsModal}>
+				<button onClick={handleFriendsModal}>
 					<FriendSettingIcon className="rounded-[1.6rem] hover:bg-gray-bg-04 active:bg-gray-bg-05" />
 				</button>
 				<button ref={bellIconRef} onClick={toggleNotification}>
@@ -476,24 +486,6 @@ const HomePage = () => {
 					onCreateTodayTodos={handleCreateTodayTodos}
 				/>
 			</AutoFixedGrid.Slot>
-
-			<ModalWrapper ref={friendsModalRef} backdrop={true}>
-				{({ isModalOpen }) => <ModalContentsFriends isModalOpen={isModalOpen} />}
-			</ModalWrapper>
-
-			<ModalWrapper ref={timerRestrictionModalRef} backdrop={true}>
-				{() => (
-					<TimerRestriction
-						onConfirm={() => {
-							timerRestrictionModalRef.current?.close();
-						}}
-					/>
-				)}
-			</ModalWrapper>
-
-			<ModalWrapper ref={timerErrorModalRef} backdrop>
-				{() => <ModalContentsTimerError onClick={handleCloseTimerErrorModal} />}
-			</ModalWrapper>
 
 			{isNotificationVisible && <NotificationPanel ref={notificationPanelRef} />}
 		</AutoFixedGrid>

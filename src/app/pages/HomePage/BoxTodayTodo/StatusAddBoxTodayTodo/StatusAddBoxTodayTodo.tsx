@@ -1,10 +1,10 @@
-import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import BoxTodo from '@/shared/components/BoxTodo/BoxTodo';
 import ButtonRadius5 from '@/shared/components/ButtonRadius5/ButtonRadius5';
-import ModalWrapper, { ModalWrapperRef } from '@/shared/components/ModalWrapper/ModalWrapper';
 import Spacer from '@/shared/components/Spacer/Spacer';
+
+import { overlay } from '@/shared/utils/overlay';
 
 import type { TaskType } from '@/shared/types/tasks';
 
@@ -39,7 +39,6 @@ const StatusAddBoxTodayTodo = ({
 	addingTodayTodoStatus,
 }: StatusAddBoxTodayTodoProps) => {
 	const { data: allowedServiceList } = useGetPopoverAllowedServiceList();
-	const registerServiceModalRef = useRef<ModalWrapperRef>(null);
 	const navigate = useNavigate();
 
 	const allowedServicePath = ROUTES_CONFIG.allowedService.path;
@@ -58,10 +57,28 @@ const StatusAddBoxTodayTodo = ({
 
 	const handleStartTimer = () => {
 		if (allowedServiceList && allowedServiceList.data.length === 0) {
-			registerServiceModalRef.current?.open();
+			handleRegisterServiceModal();
 		} else {
 			onCreateTodayTodos();
 		}
+	};
+
+	const handleRegisterServiceModal = () => {
+		overlay({
+			backdrop: true,
+			content: ({ close }) => (
+				<RegisterAllowedService
+					onCloseModal={() => {
+						close();
+						onCreateTodayTodos();
+					}}
+					onConfirm={() => {
+						close();
+						navigate(allowedServicePath);
+					}}
+				/>
+			),
+		});
 	};
 
 	return (
@@ -124,21 +141,6 @@ const StatusAddBoxTodayTodo = ({
 					</ButtonRadius5.Sm>
 				</div>
 			</span>
-
-			<ModalWrapper ref={registerServiceModalRef} backdrop>
-				{() => (
-					<RegisterAllowedService
-						onCloseModal={() => {
-							registerServiceModalRef.current?.close();
-							onCreateTodayTodos();
-						}}
-						onConfirm={() => {
-							registerServiceModalRef.current?.close();
-							navigate(allowedServicePath);
-						}}
-					/>
-				)}
-			</ModalWrapper>
 		</Spacer.Height>
 	);
 };

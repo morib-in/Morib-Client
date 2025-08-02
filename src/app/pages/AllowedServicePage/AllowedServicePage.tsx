@@ -4,13 +4,13 @@ import { useQueryClient } from '@tanstack/react-query';
 
 import AutoFixedGrid from '@/shared/components/AutoFixedGrid/AutoFixedGrid';
 import ModalContentsFriends from '@/shared/components/ModalContentsFriends/ModalContentsFriends';
-import ModalWrapper, { ModalWrapperRef } from '@/shared/components/ModalWrapper/ModalWrapper';
 import NotificationPanel from '@/shared/components/NotificationPanel/NotificationPanel';
 import Spacer from '@/shared/components/Spacer/Spacer';
 import TextField from '@/shared/components/TextField/TextField';
 
 import useClickOutside from '@/shared/hooks/useClickOutside';
 
+import { overlay } from '@/shared/utils/overlay';
 import { isUrlValid } from '@/shared/utils/validation';
 
 import { ColorPaletteType } from '@/shared/types/allowedService';
@@ -49,10 +49,6 @@ const AllowedServicePage = () => {
 	const [isNotificationVisible, setIsNotificationVisible] = useState(false);
 
 	const queryClient = useQueryClient();
-
-	const friendsModalRef = useRef<ModalWrapperRef>(null);
-	const requireTitleModalRef = useRef<ModalWrapperRef>(null);
-
 	const bellIconRef = useRef<HTMLButtonElement>(null);
 	const notificationPanelRef = useRef<HTMLDivElement>(null);
 
@@ -173,7 +169,7 @@ const AllowedServicePage = () => {
 
 	const handleAddAllowedService = (urlInput: string, activeGroupId: number | null) => {
 		if (!activeGroupId) {
-			handleOpenRequireTitleModal();
+			handleRequireTitleModal();
 			return;
 		}
 		if (activeGroupId && !isPending) {
@@ -259,22 +255,24 @@ const AllowedServicePage = () => {
 		}
 	}, [allowedServiceGroupDetail, setTitleInput]);
 
-	const handleOpenFriendsModal = () => {
-		friendsModalRef.current?.open();
+	const handleFriendsModal = () => {
+		overlay({
+			backdrop: true,
+			content: ({ isOpen }) => <ModalContentsFriends isModalOpen={isOpen} />,
+		});
 	};
 
-	const handleOpenRequireTitleModal = () => {
-		requireTitleModalRef.current?.open();
-	};
-
-	const handleCloseRequireTitleModal = () => {
-		requireTitleModalRef.current?.close();
+	const handleRequireTitleModal = () => {
+		overlay({
+			backdrop: true,
+			content: ({ close }) => <ModalContentsAlert.RequireTitle onClick={close} />,
+		});
 	};
 
 	return (
 		<AutoFixedGrid type="allowedService" className="gap-[3rem] bg-gray-bg-01 px-[3.6rem] py-[4.2rem]">
 			<div className="absolute right-[4.2rem] top-[5.4rem] z-50 flex gap-[0.8rem]">
-				<button onClick={handleOpenFriendsModal}>
+				<button onClick={handleFriendsModal}>
 					<FriendSettingIcon className="rounded-[1.6rem] hover:bg-gray-bg-04 active:bg-gray-bg-05" />
 				</button>
 				<button ref={bellIconRef} onClick={toggleNotification}>
@@ -378,13 +376,6 @@ const AllowedServicePage = () => {
 					))}
 				</RecommendService>
 			</AutoFixedGrid.Slot>
-			<ModalWrapper ref={friendsModalRef} backdrop>
-				{({ isModalOpen }) => <ModalContentsFriends isModalOpen={isModalOpen} />}
-			</ModalWrapper>
-
-			<ModalWrapper ref={requireTitleModalRef} backdrop>
-				{() => <ModalContentsAlert.RequireTitle onClick={handleCloseRequireTitleModal} />}
-			</ModalWrapper>
 
 			{isNotificationVisible && <NotificationPanel ref={notificationPanelRef} />}
 		</AutoFixedGrid>
