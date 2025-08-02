@@ -2,8 +2,9 @@ import { useNavigate } from 'react-router-dom';
 
 import BoxTodo from '@/shared/components/BoxTodo/BoxTodo';
 import ButtonRadius5 from '@/shared/components/ButtonRadius5/ButtonRadius5';
-import { Overlay } from '@/shared/components/Overlay/Overlay';
 import Spacer from '@/shared/components/Spacer/Spacer';
+
+import { overlay } from '@/shared/utils/overlay';
 
 import type { TaskType } from '@/shared/types/tasks';
 
@@ -63,7 +64,7 @@ const StatusAddBoxTodayTodo = ({
 	};
 
 	const handleRegisterServiceModal = () => {
-		Overlay({
+		overlay({
 			backdrop: true,
 			content: ({ close }) => (
 				<RegisterAllowedService

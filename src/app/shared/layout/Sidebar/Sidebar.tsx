@@ -1,7 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { Overlay } from '@/shared/components/Overlay/Overlay';
-
+import { overlay } from '@/shared/utils/overlay';
 import { getActivePath } from '@/shared/utils/path';
 
 import LogoIcon from '@/shared/assets/svgs/common/ic_logo.svg?react';
@@ -27,7 +26,7 @@ const Sidebar = () => {
 	};
 
 	const handleSettingModal = () => {
-		Overlay({
+		overlay({
 			backdrop: true,
 			content: ({ isOpen }) => <ModalContentsSetting isModalOpen={isOpen} />,
 		});

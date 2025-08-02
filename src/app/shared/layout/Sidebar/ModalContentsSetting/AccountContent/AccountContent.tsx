@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 
 import ButtonRadius8 from '@/shared/components/ButtonRadius8/ButtonRadius8';
 import ButtonStatusToggle from '@/shared/components/ButtonStatusToggle/ButtonStatusToggle';
-import { Overlay } from '@/shared/components/Overlay/Overlay';
 
 import { reloginWithoutLogout } from '@/shared/utils/auth';
+import { overlay } from '@/shared/utils/overlay';
 
 import { UserProfileType } from '@/shared/types/profile';
 
@@ -34,7 +34,7 @@ const AccountContent = ({ ...props }: AccountContentProps) => {
 	};
 
 	const handleLogoutModal = () => {
-		Overlay({
+		overlay({
 			backdrop: true,
 			content: ({ close }) => (
 				<ModalContentsAlert.Logout onConfirm={reloginWithoutLogout} onCloseModal={close} userEmail={props.email} />
@@ -43,7 +43,7 @@ const AccountContent = ({ ...props }: AccountContentProps) => {
 	};
 
 	const handleDeleteAccounttModal = () => {
-		Overlay({
+		overlay({
 			backdrop: true,
 			content: ({ close }) => (
 				<ModalContentsAlert.DeleteAccount

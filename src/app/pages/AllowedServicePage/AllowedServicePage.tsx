@@ -5,12 +5,12 @@ import { useQueryClient } from '@tanstack/react-query';
 import AutoFixedGrid from '@/shared/components/AutoFixedGrid/AutoFixedGrid';
 import ModalContentsFriends from '@/shared/components/ModalContentsFriends/ModalContentsFriends';
 import NotificationPanel from '@/shared/components/NotificationPanel/NotificationPanel';
-import { Overlay } from '@/shared/components/Overlay/Overlay';
 import Spacer from '@/shared/components/Spacer/Spacer';
 import TextField from '@/shared/components/TextField/TextField';
 
 import useClickOutside from '@/shared/hooks/useClickOutside';
 
+import { overlay } from '@/shared/utils/overlay';
 import { isUrlValid } from '@/shared/utils/validation';
 
 import { ColorPaletteType } from '@/shared/types/allowedService';
@@ -256,14 +256,14 @@ const AllowedServicePage = () => {
 	}, [allowedServiceGroupDetail, setTitleInput]);
 
 	const handleFriendsModal = () => {
-		Overlay({
+		overlay({
 			backdrop: true,
 			content: ({ isOpen }) => <ModalContentsFriends isModalOpen={isOpen} />,
 		});
 	};
 
 	const handleRequireTitleModal = () => {
-		Overlay({
+		overlay({
 			backdrop: true,
 			content: ({ close }) => <ModalContentsAlert.RequireTitle onClick={close} />,
 		});

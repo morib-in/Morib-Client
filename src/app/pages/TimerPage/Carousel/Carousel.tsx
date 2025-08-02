@@ -3,9 +3,10 @@ import { useRef } from 'react';
 import ButtonArrowSVG from '@/shared/components/ButtonArrowSVG/ButtonArrowSVG';
 import ButtonRadius8 from '@/shared/components/ButtonRadius8/ButtonRadius8';
 import ModalContentsFriends from '@/shared/components/ModalContentsFriends/ModalContentsFriends';
-import { Overlay } from '@/shared/components/Overlay/Overlay';
 
 import useCarousel from '@/shared/hooks/useCarousel';
+
+import { overlay } from '@/shared/utils/overlay';
 
 import { Direction } from '@/shared/types/global';
 
@@ -24,7 +25,7 @@ const Carousel = () => {
 	const { handleNext, handlePrev } = useCarousel({ carouselRef });
 
 	const handleFriendsModal = () => {
-		Overlay({
+		overlay({
 			backdrop: true,
 			content: ({ isOpen }) => <ModalContentsFriends isModalOpen={isOpen} />,
 		});

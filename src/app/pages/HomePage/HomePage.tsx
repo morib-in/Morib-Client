@@ -8,12 +8,12 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import AutoFixedGrid from '@/shared/components/AutoFixedGrid/AutoFixedGrid';
 import ModalContentsFriends from '@/shared/components/ModalContentsFriends/ModalContentsFriends';
 import NotificationPanel from '@/shared/components/NotificationPanel/NotificationPanel';
-import { Overlay } from '@/shared/components/Overlay/Overlay';
 import Spacer from '@/shared/components/Spacer/Spacer';
 
 import useClickOutside from '@/shared/hooks/useClickOutside';
 
 import { getThisWeekRange } from '@/shared/utils/date';
+import { overlay } from '@/shared/utils/overlay';
 import { getDailyCategoryTask, isTaskExist, splitTasksByCompletion } from '@/shared/utils/tasks';
 
 import { TaskType } from '@/shared/types/tasks';
@@ -159,21 +159,21 @@ const HomePage = () => {
 	};
 
 	const handleFriendsModal = () => {
-		Overlay({
+		overlay({
 			backdrop: true,
 			content: ({ isOpen }) => <ModalContentsFriends isModalOpen={isOpen} />,
 		});
 	};
 
 	const handleTimerErrorModal = () => {
-		Overlay({
+		overlay({
 			backdrop: true,
 			content: ({ close }) => <ModalContentsTimerError onClick={close} />,
 		});
 	};
 
 	const handleTimerRestrictionModal = () => {
-		Overlay({
+		overlay({
 			backdrop: true,
 			content: ({ close }) => <TimerRestriction onConfirm={close} />,
 		});

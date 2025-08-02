@@ -2,8 +2,9 @@ import { ReactNode } from 'react';
 
 import Dropdown from '@/shared/components/Dropdown/Dropdown';
 import FaviconImage from '@/shared/components/FaviconImage/FaviconImage';
-import { Overlay } from '@/shared/components/Overlay/Overlay';
 import Spacer from '@/shared/components/Spacer/Spacer';
+
+import { overlay } from '@/shared/utils/overlay';
 
 import { AllowedServiceGroupDetailSiteType } from '@/shared/types/allowedService';
 
@@ -67,7 +68,7 @@ export const AllowedServiceGroupDetailContentTableRow = ({
 	...allowedSiteData
 }: AllowedServiceGroupDetailContentRootTableRowProps) => {
 	const handleDomainAllowModal = () => {
-		Overlay({
+		overlay({
 			backdrop: true,
 			content: ({ close }) => (
 				<ModalContentsAlert.DomainAllowConfirm
@@ -86,7 +87,7 @@ export const AllowedServiceGroupDetailContentTableRow = ({
 	};
 
 	const handleConfirmDeleteModal = () => {
-		Overlay({
+		overlay({
 			backdrop: true,
 			content: ({ close }) => (
 				<ModalContentsAlert.ConfirmDelete
