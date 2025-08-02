@@ -1,8 +1,6 @@
-import { redirect } from 'react-router-dom';
-
 import { ROUTES_CONFIG } from '@/router/routesConfig';
 
-import { getAccessToken, getIsOnboardingCompleted } from '../utils/auth';
+import { getAccessToken, getIsOnboardingCompleted, removeAllTokens } from '../utils/auth';
 
 export const authConfig = {
 	authUrl: {
@@ -21,6 +19,13 @@ export const authConfig = {
 	},
 
 	redirectToLogin: () => {
-		redirect(ROUTES_CONFIG.login.path);
+		removeAllTokens();
+		if (window.electron) {
+			// pathname은 프로토콜·호스트(scheme, host)와 쿼리(?...), **해시(#...)**를 제외한 경로
+			// 일렉트론은 해쉬 라우터를 사용하고 있기 때문에 루트 패스로 이동이 가능함.
+			window.location.replace(window.location.pathname);
+		} else {
+			window.location.replace(ROUTES_CONFIG.login.path);
+		}
 	},
 };
