@@ -1,8 +1,10 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
-import { getAccessToken, reloginWithoutLogout, setAccessToken, setRefreshToken } from '@/shared/utils/auth';
+import { getAccessToken, setAccessToken, setRefreshToken } from '@/shared/utils/auth';
 
 import { postReissueToken } from '@/shared/apisV2/auth/auth.api';
+
+import { authConfig } from '../config/auth';
 
 export const API_URL = `${import.meta.env.VITE_BASE_URL}`;
 
@@ -48,7 +50,7 @@ const addAuthInterceptor = (axiosClient: AxiosInstance) => {
 
 					return axiosClient(prevRequest);
 				} catch (reissueError) {
-					reloginWithoutLogout();
+					authConfig.redirectToLogin();
 				}
 			}
 			return Promise.reject(e);

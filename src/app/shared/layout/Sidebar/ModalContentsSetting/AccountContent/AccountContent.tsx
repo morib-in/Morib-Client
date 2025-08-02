@@ -3,8 +3,6 @@ import React, { useState } from 'react';
 import ButtonRadius8 from '@/shared/components/ButtonRadius8/ButtonRadius8';
 import ButtonStatusToggle from '@/shared/components/ButtonStatusToggle/ButtonStatusToggle';
 
-import { useLogout } from '@/shared/hooks/useLogout';
-
 import { overlay } from '@/shared/utils/overlay';
 
 import { UserProfileType } from '@/shared/types/profile';
@@ -14,6 +12,7 @@ import MailIcon from '@/shared/assets/svgs/mail.svg?react';
 
 import ModalContentsAlert from '@/pages/HomePage/ModalContentsAlert/ModalContentsAlert';
 import { useDeleteAccount, usePutChangeProfile } from '@/shared/apisV2/setting/setting.mutations';
+import { authConfig } from '@/shared/config/auth';
 
 type AccountContentProps = UserProfileType;
 
@@ -23,8 +22,6 @@ const AccountContent = ({ ...props }: AccountContentProps) => {
 
 	const [isToggleOn, setIsToggleOn] = useState(props.isPushEnabled);
 	const [userName, setUserName] = useState(props.name);
-
-	const { handleLogout } = useLogout();
 
 	const handleToggle = () => setIsToggleOn((prev) => !prev);
 
@@ -40,7 +37,11 @@ const AccountContent = ({ ...props }: AccountContentProps) => {
 		overlay({
 			backdrop: true,
 			content: ({ close }) => (
-				<ModalContentsAlert.Logout onConfirm={handleLogout} onCloseModal={close} userEmail={props.email} />
+				<ModalContentsAlert.Logout
+					onConfirm={authConfig.redirectToLogin}
+					onCloseModal={close}
+					userEmail={props.email}
+				/>
 			),
 		});
 	};
@@ -59,7 +60,7 @@ const AccountContent = ({ ...props }: AccountContentProps) => {
 	};
 
 	const handleDeleteAccount = () => {
-		deleteAccount(undefined, { onSuccess: handleLogout });
+		deleteAccount(undefined, { onSuccess: authConfig.redirectToLogin });
 	};
 
 	return (
