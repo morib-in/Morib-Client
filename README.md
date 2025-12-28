@@ -42,7 +42,7 @@
     <th align="baseline"> 김한서 <a href="https://github.com/seueooo"><img src="https://img.shields.io/badge/Github-181717?style=flat-square&logo=Github&logoColor=white"/></a></th>
     <tr>
     <td > 팀원 소개 </td>
-    	<td width="25%"><img src="https://github.com/morib-in/Morib-Client/assets/108131226/0f078d57-a325-4112-8c98-29de5e461000" width="100%"></td>
+    	<td width="25%"><img src="https://github.com/user-attachments/assets/846091f7-f5c3-420c-a8b5-bac76b79c32a" width="100%"></td>
     	<td width="25%"><img src="https://github.com/morib-in/Morib-Client/assets/108131226/69b20ba7-bcac-4e31-8674-f2024bc6b3ac"  width="100%"></td>
       <td width="25%"><img src="https://github.com/morib-in/Morib-Client/assets/108131226/892026e3-d94a-4301-ace6-4054dbc32efb" width="100%"></td>
     	<td width="25%"><img src="https://github.com/morib-in/Morib-Client/assets/108131226/5c6f0b66-b779-4d0e-8dc3-47896aed3681" width="100%"></td>
